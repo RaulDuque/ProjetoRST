@@ -17,7 +17,9 @@ Antes de adicionar `use bevy` num arquivo puro, crie um arquivo Bevy separado.
 ## Comunicação entre módulos
 
 - Mensagens (`#[derive(Message)]`) em `src/core/events.rs`: `CommandResolved`,
-  `SkillActivated`, `BasicAttackRequested`, `DamageDealt`, `EnemyDefeated`, `Notification`.
+  `SkillActivated` (pedido), `SkillStarted` (ativação confirmada por `begin_skill`;
+  os executores de efeito só reagem a ela), `BasicAttackRequested`, `DamageDealt`,
+  `EnemyDefeated`, `Notification`.
 - Um módulo **não** altera componentes de outro módulo para aplicar efeitos:
   ele emite uma mensagem e o dono reage (ex.: combate emite `DamageDealt`;
   player e enemies aplicam o dano cada um no seu `receive_damage`).

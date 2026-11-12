@@ -11,7 +11,7 @@ Mudança pedida: $ARGUMENTS
 ## 1. Analisar o combate existente
 Leia, na ordem:
 - `docs/COMBAT_SYSTEM.md`, `docs/SKILL_SYSTEM.md`, `docs/MAGIC_SYSTEM.md`, `docs/INPUT_SYSTEM.md`;
-- pipeline: `combat/command_input.rs` → `skills/execution.rs::resolve_command` → mensagem `SkillActivated` / `BasicAttackRequested` → `skills/systems.rs::begin_skill` (custos, cooldown, estado) → efeito em `combat/attacks.rs` (físico) ou `magic/casting.rs` (magia) → `combat/hitboxes.rs::detect_hits` → `DamageDealt` → `receive_damage` do alvo.
+- pipeline: `combat/command_input.rs` → `skills/execution.rs::resolve_command` → pedido `SkillActivated` (o ataque básico vai por `BasicAttackRequested` direto a `basic_attack`) → `skills/systems.rs::begin_skill` (revalida com o estado atual; se confirmar: estado, custos, cooldown, `SkillStarted` + `CommandResolved`; se rejeitar: só `CommandResolved` com o motivo) → `SkillStarted` → efeito em `combat/attacks.rs` (físico) ou `magic/casting.rs` (magia) → `combat/hitboxes.rs::detect_hits` → `DamageDealt` → `receive_damage` do alvo.
 
 ## 2. Verificar colisões e hitboxes
 - Hitbox: tamanho, offset (`AttachedToOwner`), `lifetime`, `pierce`, time (`Team`).
