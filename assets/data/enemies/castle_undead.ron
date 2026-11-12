@@ -1,0 +1,21 @@
+[
+    (
+        id: "bone_sentry",
+        name: "Bone Sentry",
+        max_hp: 60,
+        attack: 14,
+        defense: 4,
+        magic_defense: 2,
+        resistances: (values: [(Light, -0.5), (Dark, 0.5), (Fire, -0.25)]),
+        move_speed: 90.0,
+        size: (30.0, 50.0),
+        attack_cooldown: 1.4,
+        attack_hitbox: (40.0, 30.0),
+        contact_damage_multiplier: 0.5,
+        experience: 25,
+        drops: [(item: "minor_tonic", chance: 0.15)],
+        ai: (aggro_range: 260.0, leash_range: 420.0, attack_range: 46.0, flee_below_hp: 0.0),
+        color: (0.85, 0.82, 0.7),
+        respawn_time: 6.0,
+    ),
+]

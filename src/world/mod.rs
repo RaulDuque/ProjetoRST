@@ -2,3 +2,4 @@
 
 pub mod collision;
 pub mod progress;
+pub mod rooms;
