@@ -5,6 +5,7 @@ use bevy::prelude::*;
 use super::states::{GameSet, GameState};
 use crate::combat::CombatPlugin;
 use crate::core::CorePlugin;
+use crate::enemies::EnemiesPlugin;
 use crate::input::InputPlugin;
 use crate::magic::MagicPlugin;
 use crate::player::PlayerPlugin;
@@ -39,6 +40,7 @@ impl Plugin for GamePlugin {
                 CombatPlugin,
                 SkillsPlugin,
                 MagicPlugin,
+                EnemiesPlugin,
             ));
     }
 }
