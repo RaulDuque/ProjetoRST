@@ -10,3 +10,4 @@ pub mod inventory;
 pub mod magic;
 pub mod player;
 pub mod skills;
+pub mod world;
