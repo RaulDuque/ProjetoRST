@@ -6,3 +6,4 @@
 
 pub mod core;
 pub mod magic;
+pub mod player;
