@@ -71,3 +71,49 @@ Não fixamos `target-dir`: `target/` já é o padrão, e `CARGO_TARGET_DIR`
 sobrescreveria a config de qualquer forma. A proibição de `/tmp` e de diretórios
 de build extras é uma regra de processo ("Compilação segura" no `CLAUDE.md`).
 Custo: um build do zero fica mais lento. Os builds incrementais não mudam.
+
+## D-012 — Política de segurança do Claude Code em duas camadas
+A auditoria (A6) mostrou que as permissões liberavam `git diff --output=<arquivo>`,
+`rm -r`, `find -delete` e escritas em `Md-usario/` e `saves/`. Regras de permissão
+comparam o **texto** do comando; a própria documentação do Claude Code avisa que
+não são uma fronteira de segurança (`/bin/rm`, `bash -c '...'` e variáveis escapam).
+Por isso usamos duas camadas em `.claude/settings.json`:
+
+1. **Permissões:** `deny` para os padrões destrutivos conhecidos e
+   `Edit(/Md-usario/**)`/`Edit(/saves/**)` (cobre Edit, Write, NotebookEdit e
+   redirecionamentos `>` reconhecidos); `ask` para `git push`, `--amend` e builds
+   `--release`/`--profile`; `allow` só para `cargo fmt --check` (não mais `cargo fmt`)
+   e comandos de leitura/compilação; `disableBypassPermissionsMode`.
+2. **Hook `PreToolUse` (`.claude/hooks/guard.py`):** tokeniza o comando, remove
+   wrappers (`sudo`, `env`, `timeout`, `command`, `xargs`, atribuições) e analisa
+   `bash -c`/`eval`. Bloqueia `rm` recursivo, `find -delete`, git destrutivo
+   (`reset --hard`, `clean`, push forçado ou `+refspec`, `checkout --`/`.`,
+   `restore` fora do `--staged`, `stash drop`, `branch -D`, `worktree add`, `rebase`,
+   `--output`), `git add` de `Md-usario/`/`saves/`, escrita nessas pastas,
+   `cargo clean`, `--target-dir`/`CARGO_TARGET_DIR` fora do `target/` da raiz,
+   mais de 4 jobs e `cargo run --example autoplay` (grava no save real até a
+   etapa 3). Também separa comandos por quebra de linha e crase, acompanha `cd`
+   dentro do mesmo comando e bloqueia `git stash -u/-a` (tiraria os arquivos não
+   rastreados de `Md-usario/` da árvore). Se não conseguir analisar a chamada
+   (JSON inválido, campos com tipo errado), bloqueia (falha fechada).
+   Testes: `python3 -B .claude/hooks/test_guard.py` (testam só o hook, não as
+   regras de `settings.json`).
+
+**Regras de texto × hook:** quando divergem, vale a mais restritiva. Ex.:
+`git clean -n` passa pelo hook mas é negado pela regra `Bash(git clean *)`;
+`--target-dir` é negado mesmo apontando para o `target/` da raiz (a exceção de
+worktree usa `CARGO_TARGET_DIR`, que o hook aceita só para esse `target/`);
+`git rebase --abort` também fica negado e precisa ser feito pelo usuário.
+**Falsos positivos conhecidos:** o corpo de um heredoc é analisado como comandos,
+então uma linha que comece com `rm -r` ou `git reset --hard` dentro de um heredoc
+é bloqueada; `ln` que apenas aponte para um arquivo protegido também.
+
+**Limitações:** continua possível escapar com scripts e interpretadores
+(`python -c`, `perl -e`), variáveis expandidas (`"$PWD"/saves`), globs
+parciais (`sa*/`), aliases e programas que gravam
+arquivos por conta própria (o próprio jogo grava em `saves/` no F5). Sem
+`python3` no PATH o hook falha sem bloquear. A proteção real de sistema de
+arquivos seria o sandbox do Claude Code (`sandbox.enabled` +
+`sandbox.filesystem.denyWrite`), que no Linux exige `bubblewrap` e `socat`;
+`socat` não está instalado, então ele não foi ativado. `disableAllHooks`
+desativa a camada 2.
