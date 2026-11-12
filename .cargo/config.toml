@@ -1,0 +1,8 @@
+# Project-wide Cargo configuration.
+#
+# Compiling Bevy is memory hungry: on the 12-thread development machine the
+# default (one job per thread) exhausted the 14 GiB of RAM. Four parallel jobs
+# keep a full rebuild within a safe memory budget. `-j N` or CARGO_BUILD_JOBS
+# override this on purpose; see "Compilação segura" in CLAUDE.md before doing so.
+[build]
+jobs = 4

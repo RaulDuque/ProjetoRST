@@ -62,3 +62,12 @@ vários alvos; projéteis (`pierce: false`) somem no primeiro acerto.
 `examples/autoplay.rs` injeta teclas no app real após `InputSystems`, registra
 resultados e salva screenshots com a API de screenshot do Bevy. Complementa
 `tests/app_smoke_tests.rs` (headless, roda no `cargo test`).
+
+## D-011 — Compilação limitada a 4 jobs, sempre no `target/` da raiz
+O build do Bevy com o paralelismo padrão (12 jobs) e artefatos em `/tmp`
+(tmpfs, que fica na RAM) esgotou os 14 GiB da máquina e travou o computador
+duas vezes. `.cargo/config.toml` fixa `build.jobs = 4` como padrão do projeto.
+Não fixamos `target-dir`: `target/` já é o padrão, e `CARGO_TARGET_DIR`
+sobrescreveria a config de qualquer forma. A proibição de `/tmp` e de diretórios
+de build extras é uma regra de processo ("Compilação segura" no `CLAUDE.md`).
+Custo: um build do zero fica mais lento. Os builds incrementais não mudam.
