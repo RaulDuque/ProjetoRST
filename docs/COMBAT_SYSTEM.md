@@ -3,15 +3,26 @@
 ## Fluxo
 
 ```
-PlayerInput ─► record_and_resolve_commands ─► resolve_command (puro)
-                 │                                  │
-                 │                 CommandOutcome ──┴─► CommandResolved (HUD)
-                 ├─ Executed ─► SkillActivated ─► begin_skill (custos, cooldown, estado Casting)
-                 │                               ├─► melee_techniques (físico)  ─┐
-                 │                               └─► cast_spells (magia)         ├─► Hitbox
-                 └─ ATTACK sem comando ─► BasicAttackRequested ─► basic_attack ──┘
+PlayerInput ─► record_and_resolve_commands ─► resolve_command (puro, estado do frame anterior)
+                 ├─ Executed ─► SkillActivated (pedido) ─► begin_skill
+                 │      revalida com o estado atual (validate_activation) e trava em Casting
+                 │      ├─ rejeitado ─► CommandResolved(motivo)          (nenhum efeito)
+                 │      └─ confirmado ─► paga MP+Hearts, cooldown, avanço
+                 │                       ─► SkillStarted + CommandResolved(Executed)
+                 │                            ├─► melee_techniques (físico) ─┐
+                 │                            └─► cast_spells (magia)        ├─► Hitbox
+                 ├─ outro resultado ─► CommandResolved (HUD)                 │
+                 └─   … no botão ATTACK ─► BasicAttackRequested ─► basic_attack ┘
 Hitbox × Hurtbox ─► detect_hits (calculate_damage) ─► DamageDealt ─► receive_damage (alvo)
 ```
+
+Cada tentativa gera exatamente um `CommandResolved`: o do reconhecedor, ou o de
+`begin_skill` quando o reconhecedor achou uma habilidade. Uma habilidade
+rejeitada nunca é anunciada como executada e não cobra custo, não inicia
+cooldown, não aplica avanço nem cria hitbox/projétil/cura. Os custos de MP e
+Hearts são pagos juntos, só depois de os dois serem validados. O ataque básico
+de reserva (D-GAME-003, pendente) só vem do reconhecedor: uma rejeição feita por
+`begin_skill` não gera ataque básico.
 
 ## Fórmula de dano (`src/combat/damage.rs`, puro)
 
@@ -43,11 +54,27 @@ Regras: morto não age; dano interrompe tudo menos esquiva; guarda bloqueia 70%
 do dano frontal sem stagger; não se pula nem esquiva no ar; técnicas podem
 cancelar o ataque básico (`usable_in: [.., Attacking]`).
 
+Dano recebido pelo jogador (`player::systems::receive_damage`):
+- a invulnerabilidade é conferida **a cada mensagem**: num frame com vários
+  acertos, só o primeiro que causa dano é aplicado; ele inicia a
+  invulnerabilidade (`PLAYER_INVULNERABILITY`) e os seguintes são ignorados;
+- `Miss` e acertos de dano 0 não consomem a invulnerabilidade;
+- com o jogador morto, as mensagens restantes são descartadas (não ficam para
+  o frame seguinte nem atingem o jogador depois do respawn).
+
 ## Hitboxes (`src/combat/hitboxes.rs`)
 
 - `Hitbox { owner, team, size, attack, hit, lifetime, pierce, already_hit }`.
 - `AttachedToOwner { offset }` mantém o golpe à frente do dono (espelhado pela orientação).
 - `Hurtbox { team, size }`; `Invulnerable { remaining }` ignora acertos.
+- Interrupção: `cancel_interrupted_hitboxes` (set `Resolution`, depois do
+  `receive_damage` do jogador) remove as hitboxes com `AttachedToOwner` cujo
+  dono entrou em `Hurt` ou `Dead`. Assim o golpe não continua acertando durante
+  o recuo, depois da morte nem no ponto de respawn. Um acerto do jogador no mesmo
+  frame em que ele leva dano vale (troca simultânea: `Combat` roda antes de
+  `Resolution`). Dano bloqueado (invulnerabilidade, `Miss`, dano 0) não
+  interrompe; a guarda impede o `Hurt`, mas um golpe letal mata e cancela.
+  Hitboxes de inimigos e projéteis já lançados não são afetados.
 - Times: `Player` × `Enemy` — sem fogo amigo.
 - Dano por contato com inimigos: `enemies/behavior.rs::contact_damage`.
 

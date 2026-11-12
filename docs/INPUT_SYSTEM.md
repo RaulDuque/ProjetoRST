@@ -64,3 +64,10 @@ Classificação (`Recognition`) → validação (`skills/execution.rs`) → `Com
 | `NotAllowedNow` | estado atual não permite (`usable_in`) |
 
 Todos os casos têm testes em `tests/command_parser_tests.rs`. O HUD exibe o resultado (canto superior direito).
+
+O `Executed` do reconhecedor é provisório: ele usa o estado do frame anterior e
+só emite o pedido `SkillActivated`. `skills/systems.rs::begin_skill` revalida
+com o estado atual e emite o resultado definitivo (`Executed`, ou o motivo da
+rejeição, por exemplo `NotAllowedNow` depois de um pulo ou esquiva no mesmo
+frame). Cada tentativa gera um único `CommandResolved`; os demais resultados
+continuam vindo do reconhecedor (ver `COMBAT_SYSTEM.md`).

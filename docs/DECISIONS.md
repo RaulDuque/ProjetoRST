@@ -149,3 +149,50 @@ byte a byte de `saves/` ao final, que reprova a execução.
 não toma dano no roteiro, então a verificação fica "não aplicável"); o roteiro
 depende do passo de 16 ms, porque a física varia com o intervalo entre frames
 (M17).
+
+## D-014 — Ativação confirmada, dano por mensagem e cancelamento de golpes (Fase 4)
+Correções dos defeitos A1, A2 e A3 da auditoria E2, com decisões do usuário
+(Q1–Q6 em `Md-usario/DarkCastleR-F4-3.md`).
+
+**A1 — pedido × confirmação.** `SkillActivated` passou a ser só um **pedido**
+do reconhecedor, que valida com o estado do frame anterior. `begin_skill` é o
+único leitor: revalida com o estado **atual** (`validate_activation`, que aplica
+`usable_in`), trava o personagem em `Casting` e só então cobra MP e Hearts
+(juntos: os dois já foram validados, então não há cobrança parcial), inicia o
+cooldown, aplica o avanço e emite `SkillStarted`. Os executores de efeito
+(`melee_techniques`, `cast_spells`) leem só `SkillStarted`. Cada tentativa gera
+exatamente um `CommandResolved`: o reconhecedor deixou de emitir `Executed`;
+quem emite o resultado definitivo (executado ou o motivo da rejeição) é
+`begin_skill` (Q1, opção B). `begin_skill` passou a rodar depois de
+`tick_cooldowns` (os dois usam `SkillBook`; a ordem era ambígua). Efeito: o
+cooldown começa cheio no frame da ativação e o reconhecedor, que lê o valor do
+frame anterior, só aceita a habilidade de novo um frame depois de ele zerar
+(ex.: 0,8 s ≈ 51 frames de 16 ms, em vez de 50 numa das ordens antigas). Consequência
+aprovada (Q2): pulo ou esquiva no mesmo frame do comando de uma habilidade que
+não é permitida nesse estado não faz nada. Assimetria registrada, ligada à
+D-GAME-003 (pendente, não alterada): quando o próprio reconhecedor rejeita no
+botão ATAQUE, sai um ataque básico; quando a rejeição vem de `begin_skill`, não.
+
+**A3 — invulnerabilidade por mensagem.** `player::systems::receive_damage`
+confere `Invulnerable` a cada `DamageDealt`: num frame com vários acertos só o
+primeiro que causa dano é aplicado. `Miss` e dano 0 não consomem a
+invulnerabilidade. Com o jogador morto, as mensagens restantes são descartadas
+(antes, um `break` as deixava para o frame seguinte). Fórmulas e durações não
+mudaram. Consequência: quando dois acertos chegam no mesmo frame, vale o que foi
+escrito primeiro, e a ordem entre `contact_damage` e `detect_hits` continua
+ambígua (já apontada na auditoria como BAIXO).
+
+**A2 — cancelamento de golpes interrompidos.** `cancel_interrupted_hitboxes`
+(set `Resolution`, depois do `receive_damage` do jogador) remove as hitboxes com
+`AttachedToOwner` cujo dono está em `Hurt` ou `Dead`. A regra olha o estado, não
+o evento: hoje nenhuma hitbox nasce com o dono nesses estados. Com
+`attack_speed` acima de ~1,67 a hitbox de uma técnica dura mais que o `Casting`
+(o tempo de vida não é dividido pela velocidade, M18 da auditoria) e também é
+removida se o jogador for atingido nessa janela. Um acerto no
+mesmo frame em que o jogador leva dano vale (troca simultânea). Dano bloqueado
+não interrompe. Hitboxes de inimigos (sem `ActionState`) e projéteis já lançados
+não são afetados (Q5). O `quick_load` (F9) ainda revive o jogador sem remover
+hitboxes: adiado para a Fase 6 (Q3).
+
+**Mending Light (Q4):** continua com efeito instantâneo; `Casting` é tempo de
+recuperação. Conjuração com preparo interrompível segue pendente (D-GAME-002).

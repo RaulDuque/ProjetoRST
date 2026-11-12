@@ -46,11 +46,11 @@ As regras puras são testadas sem inicializar a engine (`tests/*.rs`).
 | Conjunto | O que acontece |
 |---|---|
 | `Input` | `read_keyboard` preenche `PlayerInput` |
-| `Commands` | `update_facing`; `record_and_resolve_commands` grava o buffer e, ao apertar ATAQUE/MAGIA, classifica o comando → `CommandResolved` + (`SkillActivated` ou `BasicAttackRequested`) |
-| `Actions` | timers de estado, respawn, guarda/esquiva, locomoção, regeneração; `begin_skill` (custos/cooldown/estado); efeitos: `basic_attack`, `melee_techniques`, `cast_spells`; IA dos inimigos |
+| `Commands` | `update_facing`; `record_and_resolve_commands` grava o buffer e, ao apertar ATAQUE/MAGIA, classifica o comando: habilidade reconhecida → pedido `SkillActivated`; qualquer outro resultado → `CommandResolved` (+ `BasicAttackRequested` no botão ATAQUE) |
+| `Actions` | timers de estado, respawn, guarda/esquiva, locomoção, regeneração; `begin_skill` revalida o pedido com o estado **atual** e confirma (custos, cooldown, `Casting`, `SkillStarted` + `CommandResolved`) ou rejeita (só `CommandResolved` com o motivo); efeitos: `basic_attack`, `melee_techniques` e `cast_spells` (estes dois só para `SkillStarted`); IA dos inimigos |
 | `Physics` | gravidade, `move_bodies` (colisão AABB), projéteis |
 | `Combat` | invulnerabilidade, hitboxes seguem o dono, `detect_hits` e dano por contato → `DamageDealt` |
-| `Resolution` | `receive_damage` do jogador e dos inimigos; morte → `EnemyDefeated` |
+| `Resolution` | `receive_damage` do jogador (respeita a invulnerabilidade a cada mensagem) e dos inimigos; morte → `EnemyDefeated`; depois do dano no jogador, `cancel_interrupted_hitboxes` remove as hitboxes presas a um dono em `Hurt`/`Dead` |
 | `Progression` | EXP/level up/drops, sincronização de atributos derivados, desbloqueio automático de habilidades |
 | `Presentation` | visual temporário, câmera, HUD, tela de status, números de dano, salvar/carregar (sempre roda) |
 
