@@ -9,6 +9,7 @@ use crate::enemies::EnemiesPlugin;
 use crate::input::InputPlugin;
 use crate::magic::MagicPlugin;
 use crate::player::PlayerPlugin;
+use crate::save::SavePlugin;
 use crate::skills::SkillsPlugin;
 use crate::ui::UiPlugin;
 use crate::world::WorldPlugin;
@@ -43,6 +44,7 @@ impl Plugin for GamePlugin {
                 MagicPlugin,
                 EnemiesPlugin,
                 UiPlugin,
+                SavePlugin,
             ));
     }
 }
