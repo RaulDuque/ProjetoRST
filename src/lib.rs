@@ -4,9 +4,11 @@
 //! unit-testable without Bevy) from the Bevy systems that drive them.
 //! See `docs/ARCHITECTURE.md`.
 
+pub mod app;
 pub mod combat;
 pub mod core;
 pub mod enemies;
+pub mod input;
 pub mod inventory;
 pub mod magic;
 pub mod player;

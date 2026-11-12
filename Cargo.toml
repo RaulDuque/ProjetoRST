@@ -53,3 +53,7 @@ unsafe_code = "forbid"
 [lints.clippy]
 unwrap_used = "warn"
 expect_used = "warn"
+# Bevy system parameters (queries with filters, many resources) trip these
+# lints by design; the Bevy project itself disables them. See DECISIONS.md.
+type_complexity = "allow"
+too_many_arguments = "allow"
