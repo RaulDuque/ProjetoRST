@@ -1,0 +1,15 @@
+# Build output
+/target
+
+# Local save games produced while playtesting
+/saves/
+
+# Editor / OS clutter
+.idea/
+.vscode/
+*.swp
+*~
+.DS_Store
+
+# Claude Code per-user overrides (shared settings live in .claude/settings.json)
+.claude/settings.local.json

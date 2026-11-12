@@ -1,0 +1,55 @@
+[package]
+name = "dark_castle_rpg"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.97.1"
+description = "2D action RPG / Metroidvania built with Rust and Bevy"
+publish = false
+
+[dependencies]
+# Engine. Only the 2D, UI and audio feature groups are enabled: the game has no
+# 3D rendering, so skipping the default "3d" group saves compile time.
+bevy = { version = "=0.20.1", default-features = false, features = [
+    "2d",
+    "ui",
+    "audio",
+] }
+# Data files (skills, spells, items, saves) are written in RON.
+ron = "=0.12.3"
+serde = { version = "=1.0.229", features = ["derive"] }
+thiserror = "=2.0.21"
+# Used by engine-independent domain modules, which must not depend on Bevy.
+tracing = "=0.1.44"
+
+[features]
+default = []
+# Faster incremental builds during development: `cargo run --features dev`.
+# Never ship a build with this feature enabled.
+dev = ["bevy/dynamic_linking"]
+
+# Development: light optimisation for our code, full optimisation for
+# dependencies (Bevy is unplayably slow at opt-level 0).
+[profile.dev]
+opt-level = 1
+
+[profile.dev.package."*"]
+opt-level = 3
+
+# Release builds used for local playtesting.
+[profile.release]
+lto = "thin"
+
+# Distribution builds: `cargo build --profile dist`.
+[profile.dist]
+inherits = "release"
+lto = "fat"
+codegen-units = 1
+strip = true
+panic = "abort"
+
+[lints.rust]
+unsafe_code = "forbid"
+
+[lints.clippy]
+unwrap_used = "warn"
+expect_used = "warn"
