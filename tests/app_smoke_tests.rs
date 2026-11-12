@@ -11,11 +11,17 @@ use bevy::prelude::*;
 use bevy::state::app::StatesPlugin;
 use bevy::time::TimeUpdateStrategy;
 use dark_castle_rpg::app::plugins::GamePlugin;
+use dark_castle_rpg::app::states::GameSet;
+use dark_castle_rpg::combat::damage::DamageOutcome;
+use dark_castle_rpg::combat::hitboxes::Invulnerable;
 use dark_castle_rpg::core::constants::{DEFAULT_SAVE_SLOT, SAVE_DIR};
+use dark_castle_rpg::core::events::DamageDealt;
 use dark_castle_rpg::core::resources::GameData;
 use dark_castle_rpg::enemies::components::Enemy;
+use dark_castle_rpg::magic::elements::Element;
 use dark_castle_rpg::magic::projectiles::Projectile;
-use dark_castle_rpg::player::components::{Player, SkillBook, Vitals};
+use dark_castle_rpg::player::components::{ActionState, Player, SkillBook, Vitals};
+use dark_castle_rpg::player::state::PlayerState;
 use dark_castle_rpg::save::save_manager::SaveStorage;
 use dark_castle_rpg::save::systems::SaveSlots;
 use dark_castle_rpg::world::physics::Grounded;
@@ -212,4 +218,221 @@ fn quick_save_and_load_use_the_configured_save_dir() {
         real_before,
         "the real saves/ directory must not be touched"
     );
+}
+
+// ---------------------------------------------------------------- A3
+// Several damage messages for the player in one frame must respect the
+// invulnerability started by the first valid hit (audit A3). Messages are
+// injected directly so the order of the hits is deterministic. The player
+// stays at the spawn point, far from the enemies; natural HP regeneration
+// is below 1 point during these short tests, so HP values are exact.
+
+fn player_hp(app: &mut App) -> i32 {
+    let world = app.world_mut();
+    world
+        .query_filtered::<&Vitals, With<Player>>()
+        .single(world)
+        .map(|v| v.hp.current())
+        .unwrap_or_else(|e| panic!("player missing: {e}"))
+}
+
+fn player_state(app: &mut App) -> PlayerState {
+    let world = app.world_mut();
+    world
+        .query_filtered::<&ActionState, With<Player>>()
+        .single(world)
+        .map(|s| s.0.state())
+        .unwrap_or_else(|e| panic!("player missing: {e}"))
+}
+
+fn player_invulnerability(app: &mut App) -> f32 {
+    let world = app.world_mut();
+    world
+        .query_filtered::<&Invulnerable, With<Player>>()
+        .single(world)
+        .map(|i| i.remaining)
+        .unwrap_or_else(|e| panic!("player missing: {e}"))
+}
+
+fn hit(amount: i32) -> DamageOutcome {
+    DamageOutcome::Hit {
+        amount,
+        critical: false,
+        element: Element::Physical,
+    }
+}
+
+/// Damage queued by a test, emitted on the next frame inside `GameSet::Combat`
+/// (where `detect_hits` and `contact_damage` produce real hits), so the
+/// messages live exactly as long as real ones do.
+#[derive(Resource, Default)]
+struct PendingDamage(Vec<DamageOutcome>);
+
+fn emit_pending_damage(
+    mut pending: ResMut<PendingDamage>,
+    player: Query<Entity, With<Player>>,
+    mut damage: MessageWriter<DamageDealt>,
+) {
+    let Ok(player) = player.single() else {
+        return;
+    };
+    for outcome in pending.0.drain(..) {
+        damage.write(DamageDealt {
+            attacker: player,
+            target: player,
+            outcome,
+            direction: 1.0,
+        });
+    }
+}
+
+/// Queues one `DamageDealt` per outcome against the player, in order.
+fn inject_damage(app: &mut App, outcomes: &[DamageOutcome]) {
+    app.world_mut()
+        .resource_mut::<PendingDamage>()
+        .0
+        .extend_from_slice(outcomes);
+}
+
+/// App after the warm-up: player standing at the spawn with full HP.
+fn idle_app() -> App {
+    let mut app = app();
+    app.init_resource::<PendingDamage>()
+        .add_systems(Update, emit_pending_damage.in_set(GameSet::Combat));
+    run_frames(&mut app, 60);
+    app
+}
+
+#[test]
+fn two_hits_in_one_frame_apply_damage_once() {
+    let mut app = idle_app();
+    let before = player_hp(&mut app);
+    inject_damage(&mut app, &[hit(10), hit(10)]);
+    run_frames(&mut app, 1);
+    assert_eq!(player_hp(&mut app), before - 10);
+    assert_eq!(player_state(&mut app), PlayerState::Hurt);
+}
+
+#[test]
+fn three_hits_in_one_frame_apply_only_the_first() {
+    let mut app = idle_app();
+    let before = player_hp(&mut app);
+    inject_damage(&mut app, &[hit(7), hit(10), hit(12)]);
+    run_frames(&mut app, 1);
+    assert_eq!(player_hp(&mut app), before - 7);
+}
+
+#[test]
+fn active_invulnerability_blocks_damage_and_hurt() {
+    let mut app = idle_app();
+    let before = player_hp(&mut app);
+    let state_before = player_state(&mut app);
+    {
+        let world = app.world_mut();
+        let mut invulnerable = world
+            .query_filtered::<&mut Invulnerable, With<Player>>()
+            .single_mut(world)
+            .unwrap_or_else(|e| panic!("player missing: {e}"));
+        invulnerable.remaining = 0.5;
+    }
+    inject_damage(&mut app, &[hit(10)]);
+    run_frames(&mut app, 1);
+    assert_eq!(player_hp(&mut app), before);
+    assert_eq!(player_state(&mut app), state_before);
+}
+
+#[test]
+fn miss_then_hit_applies_the_hit() {
+    let mut app = idle_app();
+    let before = player_hp(&mut app);
+    inject_damage(&mut app, &[DamageOutcome::Miss, hit(10)]);
+    run_frames(&mut app, 1);
+    assert_eq!(player_hp(&mut app), before - 10);
+    assert!(player_invulnerability(&mut app) > 0.0);
+}
+
+#[test]
+fn zero_damage_hit_does_not_consume_invulnerability() {
+    let mut app = idle_app();
+    let before = player_hp(&mut app);
+    inject_damage(&mut app, &[hit(0), hit(10)]);
+    run_frames(&mut app, 1);
+    assert_eq!(player_hp(&mut app), before - 10);
+}
+
+#[test]
+fn hit_then_miss_applies_the_hit_once() {
+    let mut app = idle_app();
+    let before = player_hp(&mut app);
+    inject_damage(&mut app, &[hit(10), DamageOutcome::Miss]);
+    run_frames(&mut app, 1);
+    assert_eq!(player_hp(&mut app), before - 10);
+    // The trailing Miss neither resets the protection nor the stagger.
+    assert!(player_invulnerability(&mut app) > 0.0);
+    assert_eq!(player_state(&mut app), PlayerState::Hurt);
+}
+
+#[test]
+fn fatal_hit_leaves_no_pending_damage_for_the_respawn() {
+    let mut app = idle_app();
+    let lethal = player_hp(&mut app) + 50;
+    inject_damage(&mut app, &[hit(lethal), hit(10), hit(10)]);
+    run_frames(&mut app, 1);
+    assert_eq!(player_state(&mut app), PlayerState::Dead);
+
+    // Respawn on the very next frame: the hits queued behind the fatal one
+    // must not land on the revived player.
+    hold(&mut app, &[KeyCode::KeyR], 1);
+    run_frames(&mut app, 2);
+    let world = app.world_mut();
+    let (hp, max) = world
+        .query_filtered::<&Vitals, With<Player>>()
+        .single(world)
+        .map(|v| (v.hp.current(), v.hp.max()))
+        .unwrap_or_else(|e| panic!("player missing: {e}"));
+    assert_ne!(player_state(&mut app), PlayerState::Dead);
+    assert_eq!(hp, max, "stale damage hit the revived player");
+}
+
+#[test]
+fn hits_queued_behind_a_fatal_hit_are_discarded_that_frame() {
+    // Isolates the drain on death from the respawn i-frames: the player is
+    // revived directly (no `respawn`, no invulnerability), so any hit left
+    // unread in the frame of the death would land on the next frame.
+    let mut app = idle_app();
+    let lethal = player_hp(&mut app) + 50;
+    inject_damage(&mut app, &[hit(lethal), hit(10), hit(10)]);
+    run_frames(&mut app, 1);
+    assert_eq!(player_state(&mut app), PlayerState::Dead);
+    let max = {
+        let world = app.world_mut();
+        let (mut state, mut vitals, mut invulnerable) = world
+            .query_filtered::<(&mut ActionState, &mut Vitals, &mut Invulnerable), With<Player>>()
+            .single_mut(world)
+            .unwrap_or_else(|e| panic!("player missing: {e}"));
+        state.0.revive();
+        vitals.hp.refill();
+        invulnerable.remaining = 0.0;
+        vitals.hp.max()
+    };
+    run_frames(&mut app, 1);
+    assert_eq!(
+        player_hp(&mut app),
+        max,
+        "a hit queued behind the fatal one landed"
+    );
+}
+
+#[test]
+fn damage_applies_again_after_invulnerability_expires() {
+    let mut app = idle_app();
+    inject_damage(&mut app, &[hit(10)]);
+    run_frames(&mut app, 1);
+    // 60 frames x 16 ms = 0.96 s, longer than the 0.9 s of invulnerability.
+    run_frames(&mut app, 60);
+    assert_eq!(player_invulnerability(&mut app), 0.0);
+    let before = player_hp(&mut app);
+    inject_damage(&mut app, &[hit(10)]);
+    run_frames(&mut app, 1);
+    assert_eq!(player_hp(&mut app), before - 10);
 }

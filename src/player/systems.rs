@@ -140,8 +140,16 @@ pub fn receive_damage(
     let (entity, mut vitals, mut state, mut velocity, mut invulnerable, facing) =
         player.into_inner();
     for hit in hits.read().filter(|h| h.target == entity) {
+        // Keep reading instead of `break`, so no hit stays queued for the
+        // next frame (defence in depth: do not rely on the respawn i-frames).
         if state.state() == PlayerState::Dead {
-            break;
+            continue;
+        }
+        // Hits are only generated while the player is vulnerable, but several
+        // can arrive in the same frame: the first one that deals damage starts
+        // the invulnerability and the rest must be ignored.
+        if invulnerable.remaining > 0.0 {
+            continue;
         }
         let mut amount = hit.outcome.amount();
         // Guard blocks hits coming from the front.
