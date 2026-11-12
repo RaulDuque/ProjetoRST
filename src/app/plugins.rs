@@ -10,6 +10,7 @@ use crate::input::InputPlugin;
 use crate::magic::MagicPlugin;
 use crate::player::PlayerPlugin;
 use crate::skills::SkillsPlugin;
+use crate::ui::UiPlugin;
 use crate::world::WorldPlugin;
 
 pub struct GamePlugin;
@@ -41,6 +42,7 @@ impl Plugin for GamePlugin {
                 SkillsPlugin,
                 MagicPlugin,
                 EnemiesPlugin,
+                UiPlugin,
             ));
     }
 }

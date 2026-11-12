@@ -14,4 +14,5 @@ pub mod magic;
 pub mod player;
 pub mod save;
 pub mod skills;
+pub mod ui;
 pub mod world;
