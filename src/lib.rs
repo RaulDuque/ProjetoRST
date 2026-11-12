@@ -9,5 +9,6 @@ pub mod core;
 pub mod inventory;
 pub mod magic;
 pub mod player;
+pub mod save;
 pub mod skills;
 pub mod world;
