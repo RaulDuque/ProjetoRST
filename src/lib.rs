@@ -6,6 +6,7 @@
 
 pub mod combat;
 pub mod core;
+pub mod inventory;
 pub mod magic;
 pub mod player;
 pub mod skills;
