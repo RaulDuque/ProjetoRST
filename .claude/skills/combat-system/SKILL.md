@@ -40,5 +40,5 @@ Leia, na ordem:
 - `cargo test --test command_parser_tests --test combat_tests --test app_smoke_tests`.
 - Novo comando: teste dos 7 resultados relevantes (executado, incompleto, inválido, lento, sem recurso, não aprendido, cooldown).
 - Fórmula alterada: atualize `docs/COMBAT_SYSTEM.md` e os testes numéricos.
-- Com tela: `cargo run --example autoplay` e confira o log `[autoplay] command:/damage:`.
+- Com tela: `cargo run --example autoplay`. Ele salva só em `target/autoplay/saves/` e termina com código ≠ 0 se uma verificação obrigatória falhar; confira as linhas `[autoplay] PASS/FAIL` e `RESULT:`. Se mudar o comportamento de uma habilidade coberta, ajuste a verificação correspondente em `examples/autoplay.rs`.
 - Finalize com `/test-and-validate`.

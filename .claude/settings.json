@@ -47,8 +47,7 @@
       "Bash(git rebase *)",
       "Bash(git * --output*)",
       "Bash(cargo clean*)",
-      "Bash(cargo * --target-dir*)",
-      "Bash(cargo run --example autoplay*)"
+      "Bash(cargo * --target-dir*)"
     ]
   },
   "hooks": {

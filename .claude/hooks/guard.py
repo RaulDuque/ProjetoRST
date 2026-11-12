@@ -227,6 +227,33 @@ def check_git(args: list[str], cwd: str) -> None:
                 deny(f"git {sub} on {hit}/ is forbidden: user files stay out of git operations")
 
 
+# Code the autoplay example must contain to keep its saves out of saves/.
+# This is a TEXT check that only guards against accidents (e.g. an old or
+# rewritten example without the override); it does not prove isolation. The
+# actual guarantee lives in examples/autoplay.rs: it refuses to start unless
+# the SaveSlots override is in effect and fails if saves/ changed byte-wise.
+AUTOPLAY_ISOLATION_MARKERS = ("fn isolated_save_dir()", "insert_resource(SaveSlots(")
+
+
+def is_autoplay(args: list[str]) -> bool:
+    for i, a in enumerate(args):
+        if a == "--example" and i + 1 < len(args) and args[i + 1] == "autoplay":
+            return True
+        if a == "--example=autoplay":
+            return True
+    return False
+
+
+def autoplay_isolated() -> bool:
+    path = os.path.join(project_dir(), "examples", "autoplay.rs")
+    try:
+        with open(path, encoding="utf-8") as source:
+            text = source.read()
+    except OSError:
+        return False
+    return all(marker in text for marker in AUTOPLAY_ISOLATION_MARKERS)
+
+
 def check_cargo(args: list[str], cwd: str) -> None:
     sub = next((a for a in args if not a.startswith("-") and not a.startswith("+")), "")
     if sub == "clean":
@@ -248,12 +275,9 @@ def check_cargo(args: list[str], cwd: str) -> None:
             jobs = a[2:]
         if jobs is not None and (not jobs.isdigit() or int(jobs) > MAX_JOBS):
             deny(f"more than {MAX_JOBS} cargo jobs is forbidden (got {jobs!r})")
-    if sub == "run" and "--example" in args:
-        idx = args.index("--example")
-        if idx + 1 < len(args) and args[idx + 1] == "autoplay":
-            deny("autoplay writes to the real saves/slot1.ron; blocked until stage 3 isolates its save directory")
-    if any(a.startswith("--example=autoplay") for a in args) and sub == "run":
-        deny("autoplay writes to the real saves/slot1.ron; blocked until stage 3 isolates its save directory")
+    if sub == "run" and is_autoplay(args) and not autoplay_isolated():
+        deny("examples/autoplay.rs does not isolate its saves (missing isolated_save_dir / "
+             "SaveSlots override); it would write to the real saves/")
     if "--release" in args or "-r" in args or any(
         a == "--profile" or a.startswith("--profile=") for a in args
     ):

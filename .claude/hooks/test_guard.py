@@ -13,6 +13,7 @@ import os
 import shlex
 import subprocess
 import sys
+import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(HERE))
@@ -103,8 +104,9 @@ BASH_CASES: list[tuple[str, str]] = [
     ("cargo build --jobs=8", "deny"),
     ("CARGO_BUILD_JOBS=12 cargo build", "deny"),
     ("cargo build -j 2", "allow"),
-    ("cargo run --example autoplay", "deny"),
-    ("timeout 120 cargo run --example autoplay", "deny"),
+    ("cargo run --example autoplay", "allow"),
+    ("timeout 120 cargo run --example autoplay", "allow"),
+    ("cargo run --example=autoplay", "allow"),
     ("cargo build --profile dist", "ask"),
     ("cargo build --release", "ask"),
     ("cargo test 2>&1 | tail -20", "allow"),
@@ -177,6 +179,20 @@ def run_raw(payload: str) -> str:
     return f"error({proc.returncode}): {proc.stderr.strip()}"
 
 
+def autoplay_without_isolation() -> str:
+    """A project whose autoplay lacks the save override must stay blocked."""
+    with tempfile.TemporaryDirectory() as fake_root:
+        os.makedirs(os.path.join(fake_root, "examples"))
+        with open(os.path.join(fake_root, "examples", "autoplay.rs"), "w", encoding="utf-8") as f:
+            f.write("fn main() { /* writes to saves/ */ }\n")
+        env = dict(os.environ, CLAUDE_PROJECT_DIR=fake_root)
+        event = {"tool_name": "Bash", "cwd": fake_root,
+                 "tool_input": {"command": "cargo run --example autoplay"}}
+        proc = subprocess.run([sys.executable, "-B", GUARD], input=json.dumps(event),
+                              capture_output=True, text=True, env=env, timeout=10)
+        return "deny" if proc.returncode == 2 else f"exit {proc.returncode}"
+
+
 def main() -> int:
     failures = 0
     total = 0
@@ -199,6 +215,11 @@ def main() -> int:
         if got != expected:
             failures += 1
             print(f"FAIL raw {label}: expected {expected}, got {got}")
+    total += 1
+    got = autoplay_without_isolation()
+    if got != "deny":
+        failures += 1
+        print(f"FAIL autoplay without save isolation: expected deny, got {got}")
     print(f"{total - failures}/{total} passed")
     return 1 if failures else 0
 

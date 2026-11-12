@@ -11,7 +11,7 @@ paths:
   - `attributes_tests.rs`, `progression_tests.rs`, `combat_tests.rs`, `command_parser_tests.rs`, `inventory_tests.rs`, `save_tests.rs`: domínio.
   - `data_tests.rs`: valida os arquivos RON reais de `assets/`.
   - `app_smoke_tests.rs`: app Bevy real **headless** (`MinimalPlugins`), detecta conflitos de query e verifica fluxos (ex.: comando de magia gasta MP e cria projétil). Teclas são injetadas após `InputSystems` via `PendingKeys`.
-- **Fumaça visual**: `cargo run --example autoplay` (precisa de sessão gráfica) imprime os resultados de comandos/dano/derrotas e salva screenshots em `target/autoplay/`. Abra os PNGs para conferir.
+- **Fumaça visual**: `cargo run --example autoplay` (precisa de sessão gráfica) executa um roteiro com verificações objetivas, grava saves só em `target/autoplay/saves/` e sai com código ≠ 0 se alguma verificação obrigatória falhar (`[autoplay] RESULT: PASS/FAIL`). As screenshots em `target/autoplay/` servem só para inspeção visual.
 - Aleatoriedade sempre injetada (`DamageRolls`, `GameRng::seeded`) para testes determinísticos.
 - Toda correção de bug ganha um teste que falhava antes.
 - Nunca enfraqueça uma asserção para "fazer passar"; investigue.
