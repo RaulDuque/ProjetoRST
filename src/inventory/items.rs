@@ -14,6 +14,14 @@ use crate::skills::definitions::Requirements;
 
 pub type ItemId = String;
 
+/// Each point of LCK multiplies drop chances by `1 + LUCK_DROP_BONUS`.
+pub const LUCK_DROP_BONUS: f32 = 0.02;
+
+/// Final chance of a drop: `base * (1 + luck * LUCK_DROP_BONUS)`, in `[0, 1]`.
+pub fn drop_chance(base: f32, luck: i32) -> f32 {
+    (base * (1.0 + luck.max(0) as f32 * LUCK_DROP_BONUS)).clamp(0.0, 1.0)
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize)]
 pub enum ItemCategory {
     Sword,
@@ -201,5 +209,18 @@ impl ItemCatalog {
 
     pub fn iter(&self) -> impl Iterator<Item = &ItemDefinition> {
         self.items.values()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn luck_increases_drop_chance() {
+        assert!((drop_chance(0.1, 0) - 0.1).abs() < 1e-6);
+        assert!((drop_chance(0.1, 50) - 0.2).abs() < 1e-6);
+        assert_eq!(drop_chance(0.9, 1000), 1.0);
+        assert!((drop_chance(0.1, -10) - 0.1).abs() < 1e-6);
     }
 }
