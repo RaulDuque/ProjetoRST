@@ -22,6 +22,7 @@ impl Plugin for SkillsPlugin {
             (
                 systems::tick_cooldowns,
                 systems::begin_skill
+                    .after(systems::tick_cooldowns)
                     .before(melee_techniques)
                     .before(cast_spells),
             )

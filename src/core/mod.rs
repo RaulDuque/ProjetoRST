@@ -10,7 +10,8 @@ use bevy::prelude::*;
 
 use constants::RNG_SEED;
 use events::{
-    BasicAttackRequested, CommandResolved, DamageDealt, EnemyDefeated, Notification, SkillActivated,
+    BasicAttackRequested, CommandResolved, DamageDealt, EnemyDefeated, Notification,
+    SkillActivated, SkillStarted,
 };
 use resources::GameRandom;
 use rng::GameRng;
@@ -23,6 +24,7 @@ impl Plugin for CorePlugin {
         app.insert_resource(GameRandom(GameRng::seeded(RNG_SEED)))
             .add_message::<CommandResolved>()
             .add_message::<SkillActivated>()
+            .add_message::<SkillStarted>()
             .add_message::<BasicAttackRequested>()
             .add_message::<DamageDealt>()
             .add_message::<EnemyDefeated>()

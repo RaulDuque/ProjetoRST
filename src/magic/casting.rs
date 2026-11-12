@@ -1,5 +1,6 @@
-//! Executes spells recognised by the command system. The parser never
-//! applies magical effects: it only emits `SkillActivated`.
+//! Executes spells confirmed by `skills::systems::begin_skill`. The parser
+//! never applies magical effects: it only emits the `SkillActivated`
+//! request; this module reacts to the confirmed `SkillStarted`.
 
 use bevy::prelude::*;
 
@@ -7,7 +8,7 @@ use super::projectiles::Projectile;
 use crate::combat::damage::HitSpec;
 use crate::combat::hitboxes::{CombatProfile, Hitbox, Team};
 use crate::core::constants::Z_EFFECTS;
-use crate::core::events::{Notification, SkillActivated};
+use crate::core::events::{Notification, SkillStarted};
 use crate::core::resources::GameData;
 use crate::magic::elements::Element;
 use crate::player::components::Vitals;
@@ -32,10 +33,11 @@ pub fn element_color(element: Element) -> Color {
     }
 }
 
+/// Applies the effect of every confirmed spell (`SkillStarted`).
 pub fn cast_spells(
     mut commands: Commands,
     data: Res<GameData>,
-    mut activations: MessageReader<SkillActivated>,
+    mut activations: MessageReader<SkillStarted>,
     mut casters: Query<(
         &Transform,
         &FacingDirection,

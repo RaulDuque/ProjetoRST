@@ -15,9 +15,19 @@ pub struct CommandResolved {
     pub outcome: CommandOutcome,
 }
 
-/// A validated skill must be executed by `caster`.
+/// Request: the recogniser matched a skill for `caster` (validated with the
+/// state of the previous frame). Only `begin_skill` reads it; it re-validates
+/// with the current state and either confirms ([`SkillStarted`]) or rejects.
 #[derive(Message, Debug, Clone)]
 pub struct SkillActivated {
+    pub caster: Entity,
+    pub skill_id: String,
+}
+
+/// Confirmed activation: costs paid, cooldown started and caster locked.
+/// Effect executors (melee techniques, spells) react only to this message.
+#[derive(Message, Debug, Clone)]
+pub struct SkillStarted {
     pub caster: Entity,
     pub skill_id: String,
 }

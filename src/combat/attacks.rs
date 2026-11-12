@@ -7,7 +7,7 @@ use super::hitboxes::{AttachedToOwner, CombatProfile, Hitbox, Team};
 use crate::core::constants::{
     BASIC_ATTACK_HITBOX, BASIC_ATTACK_TIME, HITBOX_ACTIVE_FRACTION, Z_EFFECTS,
 };
-use crate::core::events::{BasicAttackRequested, SkillActivated};
+use crate::core::events::{BasicAttackRequested, SkillStarted};
 use crate::core::resources::GameData;
 use crate::magic::elements::Element;
 use crate::player::components::{ActionState, CharacterSheet};
@@ -91,11 +91,12 @@ pub fn basic_attack(
     }
 }
 
-/// Melee techniques (`SkillEffect::MeleeStrike`).
+/// Melee techniques (`SkillEffect::MeleeStrike`). Reacts only to
+/// `SkillStarted`, i.e. activations already confirmed by `begin_skill`.
 pub fn melee_techniques(
     mut commands: Commands,
     data: Res<GameData>,
-    mut activations: MessageReader<SkillActivated>,
+    mut activations: MessageReader<SkillStarted>,
     casters: Query<&CombatProfile>,
 ) {
     for activation in activations.read() {

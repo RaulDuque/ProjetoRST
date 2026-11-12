@@ -1,8 +1,11 @@
 //! Records the player's inputs into the command buffer and resolves a
 //! command whenever an action button is pressed.
 //!
-//! This system only *classifies* the input. Executing a skill is done by
-//! `skills::systems`, `combat::attacks` and `magic::casting`.
+//! This system only *classifies* the input. A recognised command becomes a
+//! `SkillActivated` request; `skills::systems::begin_skill` re-validates it
+//! with the current state and reports the final `CommandResolved`. Every
+//! other outcome is reported here as `CommandResolved`. Effects are applied
+//! by `combat::attacks` and `magic::casting`.
 
 use bevy::prelude::*;
 
@@ -65,18 +68,22 @@ pub fn record_and_resolve_commands(
     // Every press consumes the buffer: the same inputs never fire twice.
     buffer.clear();
 
+    // `Executed` here is provisional: `begin_skill` re-validates it.
+    debug!(?outcome, "command recognised");
     match &outcome {
+        // Only a request: `begin_skill` re-validates it and writes the single
+        // `CommandResolved` of this activation.
         CommandOutcome::Executed { id } => {
             activated.write(SkillActivated {
                 caster: entity,
                 skill_id: id.clone(),
             });
+            return;
         }
         _ if button == CommandButton::Attack => {
             basic.write(BasicAttackRequested { attacker: entity });
         }
         _ => {}
     }
-    debug!(?outcome, "command resolved");
     resolved.write(CommandResolved { outcome });
 }
