@@ -131,6 +131,13 @@ fn rejects_malformed_notation() {
 }
 
 #[test]
+fn ascii_notation_round_trips() {
+    let original = seq("↓ ↘ → + ATTACK");
+    assert_eq!(original.ascii(), "D DF F + ATTACK");
+    assert_eq!(seq(&original.ascii()), original);
+}
+
+#[test]
 fn notation_round_trips_through_display() {
     let original = seq("D DF F + ATTACK");
     assert_eq!(seq(&original.to_string()), original);

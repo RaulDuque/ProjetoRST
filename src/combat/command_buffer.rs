@@ -51,6 +51,21 @@ impl Motion {
         }
     }
 
+    /// ASCII notation (`D`, `DF`, `F`...), safe for any font.
+    pub fn ascii(self) -> &'static str {
+        match self {
+            Motion::Neutral => "N",
+            Motion::Up => "U",
+            Motion::Down => "D",
+            Motion::Forward => "F",
+            Motion::Back => "B",
+            Motion::UpForward => "UF",
+            Motion::UpBack => "UB",
+            Motion::DownForward => "DF",
+            Motion::DownBack => "DB",
+        }
+    }
+
     /// Arrow glyph as if the character faced right.
     pub fn glyph(self) -> &'static str {
         match self {

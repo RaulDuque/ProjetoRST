@@ -113,6 +113,20 @@ fn parse_token(raw: &str) -> Result<InputToken, NotationError> {
     Ok(token)
 }
 
+impl CommandSequence {
+    /// ASCII rendering (`"D DF F + ATTACK"`), for fonts without arrow glyphs.
+    pub fn ascii(&self) -> String {
+        let mut out = String::new();
+        for m in &self.motions {
+            out.push_str(m.ascii());
+            out.push(' ');
+        }
+        out.push_str("+ ");
+        out.push_str(self.button.label());
+        out
+    }
+}
+
 impl TryFrom<String> for CommandSequence {
     type Error = NotationError;
     fn try_from(value: String) -> Result<Self, Self::Error> {
