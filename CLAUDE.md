@@ -17,10 +17,38 @@ cargo fmt --check
 cargo clippy --all-targets
 cargo test                        # unitários + integração + ECS headless
 cargo check
-cargo build --profile dist        # build de distribuição
+cargo build --profile dist        # build de distribuição (pesado; não é validação rotineira)
 ```
 
 Se `cargo` não for encontrado: `source "$HOME/.cargo/env"`.
+
+## Compilação segura (obrigatório)
+
+O build do Bevy consome muita memória, e `/tmp` nesta máquina é **tmpfs (RAM)**.
+Compilações em `/tmp` e com paralelismo alto já travaram o computador.
+
+1. **Paralelismo:** `.cargo/config.toml` limita a 4 jobs. Não passe `-j` maior nem
+   defina `CARGO_BUILD_JOBS` acima de 4.
+2. **Um único diretório de build:** sempre o `target/` da raiz. `CARGO_TARGET_DIR`
+   e `--target-dir` só podem apontar para esse mesmo `target/` (caso do item 3);
+   nunca para `/tmp`, pastas temporárias ou externas. Nunca crie um segundo `target`.
+3. **Sem cópias do projeto para compilar:** nada de clones ou worktrees em `/tmp`
+   ou fora do projeto, e nada de worktrees para validação rotineira. A validação
+   usa a árvore de trabalho atual. Exceção rara, só com necessidade técnica
+   comprovada **e autorização explícita do usuário**: worktree **dentro de
+   `target/`** com `CARGO_TARGET_DIR="<raiz>/target"`, uma por vez, removida com
+   `git worktree remove` ao final.
+4. **Reaproveite artefatos:** não rode `cargo clean` nem apague `target/`, e não
+   repita uma validação que já passou e continua válida.
+5. **Uma compilação por vez:** nunca rode mais de um comando Cargo que compile ao
+   mesmo tempo (em background, em subagentes ou em terminais diferentes), mesmo
+   que compartilhem o mesmo `target/`.
+6. **Memória antes de builds pesados** (build do zero, mudança de perfil,
+   `--release`, `--profile dist`): confira `free -h`. Com menos de 6 GiB
+   disponíveis, não compile e avise o usuário.
+7. **Perfis:** o desenvolvimento normal usa `cargo check`, `cargo test`,
+   `cargo clippy` e `cargo run` (perfil `dev`). O perfil `dist` (LTO fat,
+   `codegen-units = 1`) só é usado quando o usuário pedir uma build de distribuição.
 
 ## Arquitetura em uma frase
 

@@ -7,6 +7,7 @@ description: Executa a validação completa do Dark Castle RPG (fmt, clippy, tes
 
 Execute na raiz do projeto, **nesta ordem**, e não pare no primeiro sucesso.
 Se `cargo` não existir no PATH: `source "$HOME/.cargo/env"`.
+Siga "Compilação segura" no `CLAUDE.md`: use o `target/` da raiz e os 4 jobs configurados, e confira `free -h` se o build for começar do zero.
 
 1. `cargo fmt --check` — se falhar, rode `cargo fmt` e informe quais arquivos mudaram.
 2. `cargo clippy --all-targets` — zero avisos é o padrão. Liste cada aviso com arquivo:linha.

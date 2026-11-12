@@ -19,6 +19,7 @@ Observação do usuário: $ARGUMENTS
 4. **Validar** — para cada grupo, o código commitado precisa compilar e passar nos testes **sozinho**:
    `cargo fmt --check`, `cargo clippy --all-targets`, `cargo test`.
    Se um grupo depende de outro, commite o outro primeiro.
+   Valide na árvore de trabalho atual, uma compilação por vez, seguindo "Compilação segura" no `CLAUDE.md`. Não crie worktrees para testar cada commit isoladamente (só com autorização explícita do usuário). Grupos só de documentação ou configuração dispensam recompilar: `git diff --check` basta, mais `cargo check` se tocar config do Cargo. Nunca use `/tmp` nem um diretório de build próprio.
 5. **Mensagem** — `tipo(escopo): descrição imperativa em inglês` (≤ 72 caracteres); corpo opcional explicando o *porquê*. Inclua as linhas de atribuição exigidas pelo ambiente, se houver.
 6. **Commitar** — `git add <arquivos do grupo>` (nunca `git add -A` às cegas) e `git commit`.
 7. **Confirmar** — `git log --oneline -n <k>` e `git status` final; relate commits criados e o que ficou pendente.
