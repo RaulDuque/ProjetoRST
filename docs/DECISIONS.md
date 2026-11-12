@@ -91,8 +91,9 @@ Por isso usamos duas camadas em `.claude/settings.json`:
    `restore` fora do `--staged`, `stash drop`, `branch -D`, `worktree add`, `rebase`,
    `--output`), `git add` de `Md-usario/`/`saves/`, escrita nessas pastas,
    `cargo clean`, `--target-dir`/`CARGO_TARGET_DIR` fora do `target/` da raiz,
-   mais de 4 jobs e `cargo run --example autoplay` (grava no save real até a
-   etapa 3). Também separa comandos por quebra de linha e crase, acompanha `cd`
+   mais de 4 jobs e `cargo run --example autoplay` quando `examples/autoplay.rs`
+   não contém o isolamento de saves (`isolated_save_dir` + override de
+   `SaveSlots`; ver D-013). Também separa comandos por quebra de linha e crase, acompanha `cd`
    dentro do mesmo comando e bloqueia `git stash -u/-a` (tiraria os arquivos não
    rastreados de `Md-usario/` da árvore). Se não conseguir analisar a chamada
    (JSON inválido, campos com tipo errado), bloqueia (falha fechada).
@@ -117,3 +118,34 @@ arquivos seria o sandbox do Claude Code (`sandbox.enabled` +
 `sandbox.filesystem.denyWrite`), que no Linux exige `bubblewrap` e `socat`;
 `socat` não está instalado, então ele não foi ativado. `disableAllHooks`
 desativa a camada 2.
+
+## D-013 — Autoplay com verificações e saves isolados
+O autoplay gravava no `saves/slot1.ron` real e saía com sucesso mesmo quando um
+golpe errava (A5, M4). Agora `examples/autoplay.rs`:
+- substitui o recurso `SaveSlots` por `target/autoplay/saves/` antes do primeiro
+  frame, confere que o override está ativo e recusa iniciar se o diretório não
+  estiver dentro de `target/` ou se sobrepuser ao `saves/` real. O jogo normal
+  não muda: `SaveSlots::default()` continua apontando para `saves/`;
+- roda com passo fixo de 16 ms (`TimeUpdateStrategy::ManualDuration`), para o
+  roteiro não depender do FPS;
+- confere jogador, sala inicial, movimento, ataque básico, Crescent Slash,
+  Ember Bolt, Mending Light (cura só quando o HP não está cheio), custos de
+  MP/Hearts (tolerância de 1 ponto de regeneração no frame), Rising Edge
+  rejeitado, save e load no diretório isolado e `saves/` byte a byte igual;
+- termina com código ≠ 0 se uma verificação obrigatória falhar ou se o app
+  fechar antes das verificações. Linhas `INFO` registram pontos ainda sem regra
+  aprovada (ataque básico após comando rejeitado, D-GAME-003).
+O mecanismo também é coberto sem janela por
+`tests/app_smoke_tests.rs::quick_save_and_load_use_the_configured_save_dir`.
+
+**Liberação pelo hook:** `guard.py` só deixa o Claude rodar
+`cargo run --example autoplay` se o arquivo contiver `fn isolated_save_dir()` e
+`insert_resource(SaveSlots(`. Essa checagem é **textual e protege apenas contra
+acidentes** (um exemplo antigo ou reescrito sem o override); não comprova o
+isolamento e não cobre a execução direta do binário em `target/`. A garantia
+vem do próprio autoplay: a recusa em iniciar sem o override e a comparação
+byte a byte de `saves/` ao final, que reprova a execução.
+**Limitações conhecidas:** a cura do Mending Light não é exercitada (o jogador
+não toma dano no roteiro, então a verificação fica "não aplicável"); o roteiro
+depende do passo de 16 ms, porque a física varia com o intervalo entre frames
+(M17).

@@ -14,7 +14,7 @@ combate em tempo real e técnicas/magias executadas por sequências de botões.
 ```bash
 cargo run                       # jogar
 cargo run --features dev        # compilação incremental mais rápida
-cargo run --example autoplay    # demonstração roteirizada + screenshots em target/autoplay/
+cargo run --example autoplay    # roteiro com verificações (saves isolados em target/autoplay/saves/)
 cargo build --profile dist      # build de distribuição
 ```
 
