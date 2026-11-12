@@ -67,6 +67,19 @@ pub enum SkillEffect {
     None,
 }
 
+/// How a skill is obtained.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default, Serialize, Deserialize)]
+pub enum Acquisition {
+    /// Known from the start of the game.
+    Starting,
+    /// Learned automatically as soon as its requirements are met
+    /// (level-up, attribute increase, item obtained...).
+    OnRequirements,
+    /// Found in the world (book, scroll, master, chest).
+    #[default]
+    Discovery,
+}
+
 /// Conditions to learn or use a skill.
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 #[serde(default)]
@@ -130,9 +143,9 @@ pub struct SkillDefinition {
     /// Phases in which the command may be performed.
     #[serde(default = "default_phases")]
     pub usable_in: Vec<ActionPhase>,
-    /// Learned at the start of the game.
+    /// How the character obtains the skill.
     #[serde(default)]
-    pub starts_learned: bool,
+    pub acquisition: Acquisition,
     /// Whether the command is shown on the skill screen as soon as learned.
     /// When false the player must discover it (scroll, master, trial).
     #[serde(default = "default_true")]

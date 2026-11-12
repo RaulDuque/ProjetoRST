@@ -61,7 +61,7 @@ fn skill(id: &str, notation: &str, mp: i32, hearts: i32, cooldown: f32) -> Skill
         inflicts: None,
         requirements: Default::default(),
         usable_in: vec![ActionPhase::Grounded],
-        starts_learned: false,
+        acquisition: Default::default(),
         command_revealed_on_learn: true,
     }
 }
