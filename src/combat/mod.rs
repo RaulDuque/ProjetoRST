@@ -37,6 +37,12 @@ impl Plugin for CombatPlugin {
             )
                 .chain()
                 .in_set(GameSet::Combat),
+        )
+        .add_systems(
+            Update,
+            hitboxes::cancel_interrupted_hitboxes
+                .in_set(GameSet::Resolution)
+                .after(crate::player::systems::receive_damage),
         );
     }
 }

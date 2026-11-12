@@ -12,6 +12,8 @@ use crate::core::events::DamageDealt;
 use crate::core::resources::GameRandom;
 use crate::core::time::frame_delta;
 use crate::player::attributes::DerivedStats;
+use crate::player::components::ActionState;
+use crate::player::state::PlayerState;
 use crate::world::collision::Aabb;
 use crate::world::physics::FacingDirection;
 
@@ -124,6 +126,40 @@ pub fn expire_hitboxes(
     for (entity, mut hitbox) in &mut hitboxes {
         hitbox.lifetime -= dt;
         if hitbox.lifetime <= 0.0 {
+            commands.entity(entity).try_despawn();
+        }
+    }
+}
+
+/// Cancels the melee hitboxes of an action interrupted by damage or death.
+///
+/// Every hitbox attached to its owner ([`AttachedToOwner`]) whose owner has
+/// an [`ActionState`] in [`PlayerState::Hurt`] or [`PlayerState::Dead`] is
+/// despawned, so a staggered or fallen character stops hitting and no
+/// hitbox is carried to the spawn point by the respawn.
+///
+/// Ordering: runs in `GameSet::Resolution` right after the player's
+/// `receive_damage`, in the same frame the damage is applied (before the
+/// next frame's respawn in `GameSet::Actions`). Hits resolved earlier in the
+/// frame by `detect_hits` (`GameSet::Combat`) stand: trading blows in the
+/// same frame is legitimate and is never cancelled retroactively.
+///
+/// Untouched: owners without an `ActionState` (enemies), detached hitboxes
+/// (projectiles already launched) and owners whose damage was blocked
+/// (invulnerability, misses, zero damage), which never enter `Hurt` or
+/// `Dead`. Guarding prevents `Hurt` but a lethal hit still kills (and
+/// cancels). The rule is state-based: a technique hitbox that outlives its
+/// `Casting` (high attack speed) is also removed if the owner gets hurt.
+pub fn cancel_interrupted_hitboxes(
+    mut commands: Commands,
+    hitboxes: Query<(Entity, &Hitbox), With<AttachedToOwner>>,
+    owners: Query<&ActionState>,
+) {
+    for (entity, hitbox) in &hitboxes {
+        let Ok(owner) = owners.get(hitbox.owner) else {
+            continue;
+        };
+        if matches!(owner.state(), PlayerState::Hurt | PlayerState::Dead) {
             commands.entity(entity).try_despawn();
         }
     }

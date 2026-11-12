@@ -13,8 +13,10 @@ use bevy::time::TimeUpdateStrategy;
 use dark_castle_rpg::app::plugins::GamePlugin;
 use dark_castle_rpg::app::states::GameSet;
 use dark_castle_rpg::combat::command_parser::CommandTiming;
-use dark_castle_rpg::combat::damage::{DamageKind, DamageOutcome};
-use dark_castle_rpg::combat::hitboxes::{Hitbox, Invulnerable};
+use dark_castle_rpg::combat::damage::{DamageKind, DamageOutcome, HitSpec};
+use dark_castle_rpg::combat::hitboxes::{
+    AttachedToOwner, CombatProfile, Hitbox, Hurtbox, Invulnerable, Team,
+};
 use dark_castle_rpg::core::constants::{DEFAULT_SAVE_SLOT, SAVE_DIR};
 use dark_castle_rpg::core::events::{
     BasicAttackRequested, CommandResolved, DamageDealt, SkillActivated, SkillStarted,
@@ -33,6 +35,7 @@ use dark_castle_rpg::skills::definitions::{
 };
 use dark_castle_rpg::skills::execution::{CommandOutcome, ResourceKind};
 use dark_castle_rpg::ui::hud::HudMessages;
+use dark_castle_rpg::world::maps::CurrentRoom;
 use dark_castle_rpg::world::physics::{Grounded, Velocity};
 
 const FRAME: Duration = Duration::from_millis(16);
@@ -1140,4 +1143,385 @@ fn unlearned_command_still_falls_back_to_basic_attack() {
     assert!(seen.started.is_empty());
     assert_eq!(after.player_hitboxes, before.player_hitboxes + 1);
     assert_eq!(after.state, PlayerState::Attacking);
+}
+
+// ---------------------------------------------------------------- A2
+// Hitboxes attached to the player (melee strikes) must disappear as soon as
+// the action is interrupted by damage (Hurt) or death (Dead), in the same
+// frame the damage is applied, so they never keep hitting nor follow the
+// player to the spawn point on respawn (audit A2). Projectiles already
+// launched and enemy hitboxes are not affected, and blocked damage does not
+// interrupt anything. Skills are started with the A1 injector and damage is
+// injected with the A3 one; the player stays at the spawn, far from enemies.
+
+/// Every `(attacker, target)` pair of the `DamageDealt` messages seen.
+#[derive(Resource, Default)]
+struct DamageLog(Vec<(Entity, Entity)>);
+
+fn log_damage(mut log: ResMut<DamageLog>, mut damage: MessageReader<DamageDealt>) {
+    log.0.extend(damage.read().map(|d| (d.attacker, d.target)));
+}
+
+/// `skill_app` plus the damage injector and the damage log.
+fn combat_app() -> App {
+    let mut app = skill_app();
+    app.init_resource::<PendingDamage>()
+        .init_resource::<DamageLog>()
+        .add_systems(Update, emit_pending_damage.in_set(GameSet::Combat))
+        .add_systems(Update, log_damage.after(GameSet::Presentation));
+    app
+}
+
+fn player_entity(app: &mut App) -> Entity {
+    let world = app.world_mut();
+    world
+        .query_filtered::<Entity, With<Player>>()
+        .single(world)
+        .unwrap_or_else(|e| panic!("player missing: {e}"))
+}
+
+fn player_position(app: &mut App) -> Vec2 {
+    let world = app.world_mut();
+    world
+        .query_filtered::<&Transform, With<Player>>()
+        .single(world)
+        .map(|t| t.translation.truncate())
+        .unwrap_or_else(|e| panic!("player missing: {e}"))
+}
+
+fn set_player_invulnerability(app: &mut App, remaining: f32) {
+    let world = app.world_mut();
+    let mut invulnerable = world
+        .query_filtered::<&mut Invulnerable, With<Player>>()
+        .single_mut(world)
+        .unwrap_or_else(|e| panic!("player missing: {e}"));
+    invulnerable.remaining = remaining;
+}
+
+/// Hitboxes owned by the player (melee strikes and projectiles).
+fn player_hitboxes(app: &mut App) -> Vec<Entity> {
+    let player = player_entity(app);
+    let world = app.world_mut();
+    world
+        .query::<(Entity, &Hitbox)>()
+        .iter(world)
+        .filter(|(_, h)| h.owner == player)
+        .map(|(e, _)| e)
+        .collect()
+}
+
+fn exists(app: &App, entity: Entity) -> bool {
+    app.world().get_entity(entity).is_ok()
+}
+
+/// Starts Crescent Slash with the A1 injector and runs its first frame:
+/// the player is casting with exactly one melee hitbox attached.
+fn start_crescent_slash(app: &mut App) -> Entity {
+    freeze_regeneration(app);
+    inject_activations(app, &["crescent_slash"]);
+    run_frames(app, 1);
+    assert_eq!(observed(app).started, vec!["crescent_slash".to_owned()]);
+    assert_eq!(player_state(app), PlayerState::Casting);
+    let hitboxes = player_hitboxes(app);
+    assert_eq!(hitboxes.len(), 1, "crescent slash should have one hitbox");
+    let world = app.world_mut();
+    assert!(
+        world.get::<AttachedToOwner>(hitboxes[0]).is_some(),
+        "the melee hitbox follows its owner"
+    );
+    hitboxes[0]
+}
+
+/// A target centred on the player that any hitbox around the player
+/// overlaps (no `Enemy` marker, so no AI, contact damage or death handling).
+fn spawn_dummy_target(app: &mut App) -> Entity {
+    let center = player_position(app);
+    let world = app.world_mut();
+    let profile = world
+        .query_filtered::<&CombatProfile, With<Player>>()
+        .single(world)
+        .cloned()
+        .unwrap_or_else(|e| panic!("player missing: {e}"));
+    world
+        .spawn((
+            Hurtbox {
+                team: Team::Enemy,
+                size: Vec2::splat(400.0),
+            },
+            profile,
+            Transform::from_translation(center.extend(0.0)),
+        ))
+        .id()
+}
+
+/// A melee hitbox attached to an enemy, like the ones enemy attacks spawn.
+fn spawn_enemy_hitbox(app: &mut App) -> (Entity, Entity) {
+    let world = app.world_mut();
+    let (enemy, attack) = world
+        .query_filtered::<(Entity, &CombatProfile), With<Enemy>>()
+        .iter(world)
+        .next()
+        .map(|(e, p)| (e, p.physical.clone()))
+        .unwrap_or_else(|| panic!("no enemy in the start room"));
+    let hitbox = world
+        .spawn((
+            Hitbox {
+                owner: enemy,
+                team: Team::Enemy,
+                size: Vec2::new(10.0, 10.0),
+                attack,
+                hit: HitSpec {
+                    kind: DamageKind::Physical,
+                    element: Element::Physical,
+                    base_damage: 0,
+                    multiplier: 1.0,
+                },
+                lifetime: 1.0,
+                pierce: true,
+                already_hit: Vec::new(),
+            },
+            AttachedToOwner { offset: Vec2::ZERO },
+            Transform::default(),
+        ))
+        .id();
+    (enemy, hitbox)
+}
+
+/// No attached hitbox may survive on an owner that is Hurt or Dead.
+fn assert_no_interrupted_hitboxes(app: &mut App) {
+    let world = app.world_mut();
+    let owners: Vec<Entity> = world
+        .query_filtered::<&Hitbox, With<AttachedToOwner>>()
+        .iter(world)
+        .map(|h| h.owner)
+        .collect();
+    for owner in owners {
+        let state = world.get::<ActionState>(owner).map(|s| s.0.state());
+        assert!(
+            !matches!(state, Some(PlayerState::Hurt | PlayerState::Dead)),
+            "attached hitbox survives on an interrupted owner ({state:?})"
+        );
+    }
+}
+
+#[test]
+fn damage_interrupts_the_attack_and_removes_its_hitbox() {
+    let mut app = combat_app();
+    let hitbox = start_crescent_slash(&mut app);
+    inject_damage(&mut app, &[hit(10)]);
+    run_frames(&mut app, 1);
+    assert_eq!(player_state(&mut app), PlayerState::Hurt);
+    assert!(!exists(&app, hitbox), "interrupted hitbox still alive");
+    assert!(player_hitboxes(&mut app).is_empty());
+    assert_no_interrupted_hitboxes(&mut app);
+}
+
+#[test]
+fn cancelled_hitbox_never_hits_afterwards() {
+    let mut app = combat_app();
+    let player = player_entity(&mut app);
+    // Control: a target overlapping the slash is hit while it is active.
+    let control = spawn_dummy_target(&mut app);
+    start_crescent_slash(&mut app);
+    assert!(
+        app.world()
+            .resource::<DamageLog>()
+            .0
+            .contains(&(player, control)),
+        "the slash should hit a target overlapping it"
+    );
+
+    inject_damage(&mut app, &[hit(10)]);
+    run_frames(&mut app, 1);
+    assert_eq!(player_state(&mut app), PlayerState::Hurt);
+    // A fresh target where the slash would still be: nothing may hit it for
+    // the rest of the hitbox lifetime (0.24 s = 15 frames; run 30).
+    let late = spawn_dummy_target(&mut app);
+    app.world_mut().resource_mut::<DamageLog>().0.clear();
+    for _ in 0..30 {
+        run_frames(&mut app, 1);
+        assert!(player_hitboxes(&mut app).is_empty());
+    }
+    let log = &app.world().resource::<DamageLog>().0;
+    assert!(
+        !log.iter().any(|(attacker, _)| *attacker == player),
+        "cancelled hitbox dealt damage: {log:?}"
+    );
+    assert!(!log.contains(&(player, late)));
+}
+
+#[test]
+fn same_frame_trade_keeps_the_hit_already_landed() {
+    // Activation, the slash hitting a target (Combat) and the player being
+    // hit (Combat → Resolution) all happen in one frame: the slash's hit
+    // stands and only afterwards its hitbox is cancelled.
+    let mut app = combat_app();
+    let player = player_entity(&mut app);
+    let target = spawn_dummy_target(&mut app);
+    freeze_regeneration(&mut app);
+    app.world_mut().resource_mut::<DamageLog>().0.clear();
+    inject_activations(&mut app, &["crescent_slash"]);
+    inject_damage(&mut app, &[hit(10)]);
+    run_frames(&mut app, 1);
+    assert_eq!(observed(&app).started, vec!["crescent_slash".to_owned()]);
+    assert!(
+        app.world()
+            .resource::<DamageLog>()
+            .0
+            .contains(&(player, target)),
+        "the hit landed in the same frame must stand"
+    );
+    assert_eq!(player_state(&mut app), PlayerState::Hurt);
+    assert!(player_hitboxes(&mut app).is_empty());
+}
+
+#[test]
+fn death_during_crescent_slash_removes_its_hitbox() {
+    let mut app = combat_app();
+    let hitbox = start_crescent_slash(&mut app);
+    let lethal = player_hp(&mut app) + 50;
+    inject_damage(&mut app, &[hit(lethal)]);
+    run_frames(&mut app, 1);
+    assert_eq!(player_state(&mut app), PlayerState::Dead);
+    assert!(!exists(&app, hitbox), "hitbox survived the death");
+    assert!(player_hitboxes(&mut app).is_empty());
+    assert_no_interrupted_hitboxes(&mut app);
+}
+
+#[test]
+fn respawn_does_not_bring_the_old_hitbox() {
+    let mut app = combat_app();
+    let hitbox = start_crescent_slash(&mut app);
+    let lethal = player_hp(&mut app) + 50;
+    inject_damage(&mut app, &[hit(lethal)]);
+    run_frames(&mut app, 1);
+    assert_eq!(player_state(&mut app), PlayerState::Dead);
+
+    // R on the very next frame, while the slash would still be active.
+    hold(&mut app, &[KeyCode::KeyR], 1);
+    assert_ne!(player_state(&mut app), PlayerState::Dead);
+    let spawn = {
+        let world = app.world();
+        let room = &world.resource::<CurrentRoom>().0;
+        let def = world
+            .resource::<GameData>()
+            .rooms
+            .get(room)
+            .unwrap_or_else(|| panic!("current room `{room}` missing"));
+        Vec2::new(def.player_spawn.0, def.player_spawn.1)
+    };
+    assert_eq!(player_position(&mut app).x, spawn.x, "respawned at spawn");
+    assert!(!exists(&app, hitbox), "old hitbox carried to the respawn");
+    assert!(player_hitboxes(&mut app).is_empty());
+    let world = app.world_mut();
+    let near_spawn: Vec<Vec2> = world
+        .query_filtered::<&Transform, With<Hitbox>>()
+        .iter(world)
+        .map(|t| t.translation.truncate())
+        .filter(|p| p.distance(spawn) < 200.0)
+        .collect();
+    assert!(near_spawn.is_empty(), "hitboxes near spawn: {near_spawn:?}");
+}
+
+#[test]
+fn blocked_damage_does_not_interrupt_the_attack() {
+    let mut app = combat_app();
+    let hitbox = start_crescent_slash(&mut app);
+    let hp = player_hp(&mut app);
+    set_player_invulnerability(&mut app, 0.5);
+    inject_damage(&mut app, &[hit(10)]);
+    run_frames(&mut app, 1);
+    assert_eq!(player_hp(&mut app), hp, "blocked hit dealt damage");
+    assert_eq!(player_state(&mut app), PlayerState::Casting);
+    assert!(exists(&app, hitbox), "blocked hit cancelled the attack");
+    assert_eq!(player_hitboxes(&mut app), vec![hitbox]);
+}
+
+#[test]
+fn dead_character_starts_no_attacks() {
+    let mut app = combat_app();
+    let lethal = player_hp(&mut app) + 50;
+    inject_damage(&mut app, &[hit(lethal)]);
+    run_frames(&mut app, 1);
+    assert_eq!(player_state(&mut app), PlayerState::Dead);
+    reset_observed(&mut app);
+    let before = snapshot(&mut app, "ember_bolt");
+
+    hold(&mut app, &[KeyCode::KeyX], 1);
+    input_quarter_circle_forward(&mut app);
+    hold(&mut app, &[KeyCode::KeyC], 1);
+    release(&mut app, KeyCode::ArrowRight);
+    for key in [KeyCode::KeyZ, KeyCode::KeyS, KeyCode::KeyA] {
+        hold(&mut app, &[key], 1);
+    }
+    run_frames(&mut app, 1);
+
+    let after = snapshot(&mut app, "ember_bolt");
+    let seen = observed(&app);
+    assert!(seen.started.is_empty(), "skill started: {:?}", seen.started);
+    assert!(!seen.resolved.iter().any(CommandOutcome::is_executed));
+    assert_eq!(after.player_hitboxes, 0, "hitbox spawned while dead");
+    assert_eq!(after.projectiles, before.projectiles, "projectile spawned");
+    assert_eq!(after.mp, before.mp, "MP spent while dead");
+    assert_eq!(after.state, PlayerState::Dead);
+}
+
+#[test]
+fn launched_projectile_survives_damage_to_its_owner() {
+    let mut app = combat_app();
+    freeze_regeneration(&mut app);
+    inject_activations(&mut app, &["ember_bolt"]);
+    run_frames(&mut app, 1);
+    assert_eq!(observed(&app).started, vec!["ember_bolt".to_owned()]);
+    let world = app.world_mut();
+    let projectiles: Vec<Entity> = world
+        .query_filtered::<Entity, With<Projectile>>()
+        .iter(world)
+        .collect();
+    assert_eq!(projectiles.len(), 1, "ember bolt should be in flight");
+
+    inject_damage(&mut app, &[hit(10)]);
+    run_frames(&mut app, 1);
+    assert_eq!(player_state(&mut app), PlayerState::Hurt);
+    assert!(exists(&app, projectiles[0]), "projectile removed by damage");
+}
+
+#[test]
+fn enemy_hitboxes_survive_when_the_player_is_hurt() {
+    let mut app = combat_app();
+    let slash = start_crescent_slash(&mut app);
+    let (enemy, enemy_hitbox) = spawn_enemy_hitbox(&mut app);
+    inject_damage(&mut app, &[hit(10)]);
+    run_frames(&mut app, 1);
+    assert_eq!(player_state(&mut app), PlayerState::Hurt);
+    assert!(!exists(&app, slash), "player hitbox should be cancelled");
+    assert!(exists(&app, enemy), "enemy should still exist");
+    assert!(exists(&app, enemy_hitbox), "enemy hitbox removed");
+}
+
+#[test]
+fn no_attached_hitbox_survives_on_an_interrupted_owner() {
+    let mut app = combat_app();
+    start_crescent_slash(&mut app);
+    let (_, enemy_hitbox) = spawn_enemy_hitbox(&mut app);
+    let lethal = player_hp(&mut app) + 50;
+    inject_damage(&mut app, &[hit(lethal)]);
+    run_frames(&mut app, 1);
+    assert_eq!(player_state(&mut app), PlayerState::Dead);
+    assert_no_interrupted_hitboxes(&mut app);
+    // Whatever stays attached belongs to an owner that still exists and is
+    // able to act (here, the enemy's hitbox).
+    let world = app.world_mut();
+    let survivors: Vec<(Entity, Entity)> = world
+        .query_filtered::<(Entity, &Hitbox), With<AttachedToOwner>>()
+        .iter(world)
+        .map(|(e, h)| (e, h.owner))
+        .collect();
+    assert_eq!(
+        survivors.iter().map(|(e, _)| *e).collect::<Vec<_>>(),
+        vec![enemy_hitbox]
+    );
+    for (_, owner) in survivors {
+        assert!(app.world().get_entity(owner).is_ok(), "orphan hitbox");
+    }
 }
