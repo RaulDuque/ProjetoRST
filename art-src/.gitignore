@@ -1,0 +1,7 @@
+# Regenerable outputs: recreate them with the scripts (see README.md).
+# Approved comparison sheets in player/comparisons/ stay versionable.
+__pycache__/
+player/renders/
+# .blend files wait for the Git LFS decision (docs/ASSET_CONTRACT.md, section 9).
+*.blend
+*.blend1
