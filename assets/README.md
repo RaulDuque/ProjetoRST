@@ -13,7 +13,9 @@ quando o primeiro asset correspondente existir.
 | `maps/` | Salas (`RoomDefinition`) |
 
 Planejadas (ainda sem arquivos): `sprites/{player,enemies,bosses,effects,environment}`,
-`animations/`, `audio/{music,sfx}`, `fonts/`, `ui/`.
+`animations/`, `audio/{music,sfx}`, `fonts/`, `ui/`. Formatos, nomes e pivôs
+dos sprites: `docs/ASSET_CONTRACT.md` (fonte única). Fontes de produção
+(Blender, scripts) ficam em `art-src/`, fora do runtime.
 
 Enquanto não houver arte, o jogo usa formas coloridas geradas em código.
 Nunca adicione arte ou áudio protegidos por direitos autorais.
