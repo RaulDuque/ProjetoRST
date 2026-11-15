@@ -2,6 +2,8 @@
 
 pub mod constants;
 pub mod events;
+pub mod pixel_art;
+pub mod pixel_image;
 pub mod resources;
 pub mod rng;
 pub mod time;
