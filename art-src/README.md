@@ -199,6 +199,26 @@ novos. 43 ossos, 36 de deformação. Comandos: seção 11 de
 [`player/RIG_SPECIFICATION.md`](player/RIG_SPECIFICATION.md). Resultados antes/depois:
 [`player/RIG_VALIDATION_V006.md`](player/RIG_VALIDATION_V006.md).
 
+## Corpo sem arma e âncoras (V2.2)
+
+```bash
+for m in v1_3 v1_4 v1_5; do
+  blender --background --factory-startup art-src/player/blender/swordsman_rig_v007.blend \
+    --python art-src/player/scripts/bpy/build_game_sprites_v2_2.py -- --module $m --overwrite
+done
+python3 art-src/player/scripts/post/game_sprites_v2_2.py
+python3 art-src/player/scripts/post/publish_guard.py check --stage art-src/player/renders/v2_2_weaponless/stage
+```
+
+- Mesmas poses das V1.3–V1.5 (hash dos keyframes conferido com cada build),
+  com os seis objetos do sabre ocultos; nenhum `.blend` é salvo.
+- Mede por quadro as âncoras (mão direita com ângulo da lâmina, mão
+  esquerda, cabeça, peito, costas) na câmera do contrato.
+- Saídas: `renders/v2_2_weaponless/{v1_3,v1_4,v1_5}/` e o staging
+  `renders/v2_2_weaponless/stage/`; folha
+  `comparisons/v2_2_weaponless/published_vs_weaponless.png`.
+- **Publicar só com autorização** (`docs/VISUAL_EQUIPMENT_V2_2.md` §4). Publicada em 2026-11-15 (estado `1cd66a2977d0`).
+
 ## Sprites do jogo e publicação segura (V1.5)
 
 Desde a V1.5, **nenhum script de pós-processamento escreve em `assets/`**. Eles

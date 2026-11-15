@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "pipeline_version": "1.5",
-  "generator": "game_sprites_v1_5.py",
-  "published_at": "2026-11-14T01:52:51+00:00",
+  "pipeline_version": "2.2",
+  "generator": "game_sprites_v2_2.py",
+  "published_at": "2026-11-15T16:55:18+00:00",
   "clips": {
     "attack_basic": "combat",
     "attack_basic_air": "combat",
@@ -27,10 +27,11 @@
     "vfx_revive": "effects"
   },
   "files": {
-    "animations/player.ron": "7695c26c4f73b5de6ed055d4adff7b7cf2262abe7e4367f6da8e3b5b4052d2c9",
-    "sprites/player/player_combat.png": "6025e1d1976be1ffc7c68444d58838b8daaa2211ccd944337a99890ddb2b3fa7",
+    "animations/player.ron": "7491f714364997b6278b7821438f3a101f039fcc3423790523116cc0f40c0c3a",
+    "animations/player_sockets.ron": "f4c8f93812af85a545fe9aa5aed82bb742d736e6ed8fe8de5f05b5c28d26d68a",
+    "sprites/player/player_combat.png": "286735f6a500a0f8b10870a1f24bdfd503ec0140a03c0a4a247ea2eb56139637",
     "sprites/player/player_effects.png": "9e08d365a01c07da3e10aa3c72383851b6b456c07edb325dd13af7a68dc58996",
-    "sprites/player/player_locomotion.png": "8620e601faf90c9963bac5e12cd100d813aa88a736ce55619d2a066d6e03c3fa"
+    "sprites/player/player_locomotion.png": "6373c896d2fcde5e192728574e7a787adb859da4d63edd76df8b0aca6e648580"
   },
-  "state_id": "c670bdc45f61"
+  "state_id": "1cd66a2977d0"
 }
