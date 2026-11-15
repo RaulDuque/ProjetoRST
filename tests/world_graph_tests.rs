@@ -256,6 +256,7 @@ fn lone_room(id: &str, x: i32) -> WorldRoom {
         secrets: vec![],
         objects: vec![],
         veils: vec![],
+        decor: vec![],
     }
 }
 

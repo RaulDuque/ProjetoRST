@@ -55,6 +55,14 @@ pub const ENEMY_HURT_FLASH: f32 = 0.15;
 // ---------------------------------------------------------------- z layers
 
 pub const Z_BACKGROUND: f32 = 0.0;
+// V2.3 scenery (src/world/scenery_systems.rs): everything decorative stays
+// behind the platforms (1.0) except thin front pieces, drawn translucent.
+pub const Z_BACKDROP_FAR: f32 = 0.1;
+pub const Z_BACKDROP_MID: f32 = 0.2;
+pub const Z_DECOR_BACK: f32 = 0.5;
+pub const Z_LIGHTS: f32 = 0.6;
+pub const Z_FOG: f32 = 0.7;
+pub const Z_DECOR_FRONT: f32 = 9.0;
 pub const Z_PLATFORMS: f32 = 1.0;
 pub const Z_ENEMIES: f32 = 5.0;
 pub const Z_PLAYER: f32 = 6.0;

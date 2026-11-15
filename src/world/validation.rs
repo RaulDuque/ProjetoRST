@@ -149,6 +149,8 @@ pub enum Issue {
         veil: String,
         problem: VeilProblem,
     },
+    /// Decoration or region visual that cannot be drawn as written (V2.3).
+    BadScenery(super::scenery::SceneryError),
 }
 
 /// What is wrong with a veil (V1.9).
@@ -314,7 +316,16 @@ pub fn reachable(world: &WorldDefinition, with_secrets: bool) -> (BTreeSet<Strin
 
 fn structural(world: &WorldDefinition, report: &mut Report) {
     let obtainable = world.obtainable();
+    // V2.3: scenery is checked like any other data (never silently dropped).
+    for region in world.regions.values() {
+        if let Some(Err(e)) = region.visual.map(|v| v.validate(&region.id)) {
+            report.errors.push(Issue::BadScenery(e));
+        }
+    }
     for room in world.rooms.values() {
+        if let Err(e) = super::scenery::validate_decor(&room.id, room.size(), &room.decor) {
+            report.errors.push(Issue::BadScenery(e));
+        }
         if !world.regions.contains_key(&room.region) {
             report.errors.push(Issue::UnknownRegion {
                 room: room.id.clone(),

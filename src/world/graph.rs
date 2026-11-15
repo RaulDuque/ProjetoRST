@@ -372,6 +372,9 @@ pub struct WorldRoom {
     /// Barriers only a transformation passes (V1.9).
     #[serde(default)]
     pub veils: Vec<Veil>,
+    /// Decoration (V2.3): drawn only, never collides (`world::scenery`).
+    #[serde(default)]
+    pub decor: Vec<super::scenery::Decor>,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -380,6 +383,9 @@ pub struct RegionDef {
     pub name: String,
     /// Map colour of the region.
     pub color: (f32, f32, f32),
+    /// Backdrop, palette, light and fog (V2.3); `None` keeps the V2.2 look.
+    #[serde(default)]
+    pub visual: Option<super::scenery::RegionVisual>,
 }
 
 /// One file of `assets/world/regions/`.
@@ -853,6 +859,7 @@ mod tests {
             secrets: vec![],
             objects: vec![],
             veils: vec![],
+            decor: vec![],
         }
     }
 

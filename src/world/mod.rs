@@ -18,6 +18,9 @@ pub mod physics;
 pub mod progress;
 pub mod restore;
 pub mod rooms;
+pub mod scenery;
+pub mod scenery_art;
+pub mod scenery_systems;
 pub mod transitions;
 pub mod validation;
 
@@ -37,6 +40,11 @@ impl Plugin for WorldPlugin {
         transitions::configure(app);
         app.init_resource::<physics::RoomGeometry>()
             .init_resource::<WorldState>()
+            .init_resource::<scenery_systems::SceneryCache>()
+            .add_systems(
+                Update,
+                scenery_systems::spawn_scenery.in_set(transitions::RoomStep::React),
+            )
             .add_plugins(exploration_systems::WorldExplorationPlugin)
             .add_systems(
                 Startup,
@@ -57,6 +65,8 @@ impl Plugin for WorldPlugin {
                     camera::apply_zoom,
                     camera::snap_on_start,
                     camera::follow_player,
+                    scenery_systems::update_parallax,
+                    scenery_systems::animate_scenery,
                 )
                     .chain()
                     .in_set(GameSet::Presentation),
