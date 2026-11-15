@@ -18,7 +18,10 @@
 // (Emberlined Cloak) and the barbican (Bloodstone Pendant).
 // V2.1: the shaft's right door at cell 1 leads to the Village of Ashes.
 (
-    region: (id: "vigil_gates", name: "Vigil Gates", color: (0.55, 0.42, 0.62)),
+    region: (id: "vigil_gates", name: "Vigil Gates", color: (0.55, 0.42, 0.62),
+        // V2.3 look (src/world/scenery.rs; docs/WORLD_VISUAL_V2_3.md §5).
+        visual: Some((backdrop: Castle, stone: (0.34, 0.33, 0.4), light: (1.0, 0.68, 0.36),
+            sky: (0.07, 0.07, 0.13), fog: Some((color: (0.45, 0.45, 0.55), density: 0.12))))),
     rooms: [
         (
             id: "vigil_gates_approach",
@@ -64,6 +67,25 @@
                 // V2.0: a cloak past the sentry.
                 (id: "vg_causeway_chest", kind: Chest(tier: Rare, reward: Item("emberlined_cloak")),
                     area: (min: (1800.0, 40.0), size: (48.0, 36.0))),
+            ],
+            // V2.3 decoration (drawn only, never collides).
+            decor: [
+                (kind: Pillar(height: 640.0), at: (420.0, 40.0)),
+                (kind: Pillar(height: 640.0), at: (1660.0, 40.0)),
+                (kind: Pillar(height: 640.0), at: (2290.0, 40.0)),
+                (kind: TallWindow(height: 230.0), at: (250.0, 250.0)),
+                (kind: Arch(width: 220.0, height: 330.0), at: (1040.0, 40.0)),
+                (kind: TallWindow(height: 230.0), at: (2050.0, 250.0)),
+                (kind: Torch, at: (560.0, 300.0)),
+                (kind: Torch, at: (1530.0, 320.0)),
+                (kind: Torch, at: (1900.0, 300.0)),
+                (kind: Banner(length: 170.0, color: (0.45, 0.08, 0.11)), at: (1040.0, 600.0)),
+                (kind: Banner(length: 150.0, color: (0.45, 0.08, 0.11)), at: (2420.0, 600.0)),
+                (kind: Statue, at: (1380.0, 40.0)),
+                (kind: Rubble(width: 80.0), at: (1560.0, 40.0)),
+                (kind: Rubble(width: 70.0), at: (2180.0, 40.0)),
+                (kind: Chain(length: 150.0), at: (880.0, 680.0), layer: Front),
+                (kind: Chain(length: 110.0), at: (1780.0, 680.0), layer: Front),
             ],
             doors: [
                 (id: "from_approach", side: Left, to: (room: "vigil_gates_approach", door: "to_causeway")),
