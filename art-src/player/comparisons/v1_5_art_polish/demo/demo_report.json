@@ -1,0 +1,34 @@
+{
+  "source": "examples/player_demo.rs (Bevy window screenshots)",
+  "frame_ms": 48,
+  "crop_world_units": [
+    360,
+    220
+  ],
+  "sequences": {
+    "seq1": {
+      "frames": 159,
+      "duration_s": 7.63,
+      "gifs": {
+        "1x": "seq1_bevy_1x.gif",
+        "2x_inspecao": "seq1_bevy_2x_inspecao.gif"
+      },
+      "stills": "seq1_bevy_stills_1x.png"
+    },
+    "seq2": {
+      "frames": 179,
+      "duration_s": 8.59,
+      "gifs": {
+        "1x": "seq2_bevy_1x.gif",
+        "2x_inspecao": "seq2_bevy_2x_inspecao.gif"
+      },
+      "stills": "seq2_bevy_stills_1x.png"
+    }
+  },
+  "offline_comparison": {
+    "hurt_1x": "offline_hurt_v1_4_vs_v1_5_1x.gif",
+    "hurt_3x": "offline_hurt_v1_4_vs_v1_5_3x.gif",
+    "fall_1x": "offline_fall_v1_4_vs_v1_5_1x.gif",
+    "fall_3x": "offline_fall_v1_4_vs_v1_5_3x.gif"
+  }
+}

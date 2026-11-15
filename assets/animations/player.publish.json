@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "pipeline_version": "1.5",
+  "generator": "game_sprites_v1_5.py",
+  "published_at": "2026-11-14T01:52:51+00:00",
+  "clips": {
+    "attack_basic": "combat",
+    "attack_basic_air": "combat",
+    "cast_forward": "combat",
+    "cast_up": "combat",
+    "crouch": "locomotion",
+    "death": "locomotion",
+    "dodge": "locomotion",
+    "fall": "locomotion",
+    "guard_start": "locomotion",
+    "hurt": "locomotion",
+    "idle": "locomotion",
+    "jump_rise": "locomotion",
+    "land": "locomotion",
+    "run": "locomotion",
+    "slash_crescent": "combat",
+    "slash_rising": "combat",
+    "vfx_arc_gold": "effects",
+    "vfx_arc_white": "effects",
+    "vfx_guard_spark": "effects",
+    "vfx_light_motes": "effects",
+    "vfx_revive": "effects"
+  },
+  "files": {
+    "animations/player.ron": "7695c26c4f73b5de6ed055d4adff7b7cf2262abe7e4367f6da8e3b5b4052d2c9",
+    "sprites/player/player_combat.png": "6025e1d1976be1ffc7c68444d58838b8daaa2211ccd944337a99890ddb2b3fa7",
+    "sprites/player/player_effects.png": "9e08d365a01c07da3e10aa3c72383851b6b456c07edb325dd13af7a68dc58996",
+    "sprites/player/player_locomotion.png": "8620e601faf90c9963bac5e12cd100d813aa88a736ce55619d2a066d6e03c3fa"
+  },
+  "state_id": "c670bdc45f61"
+}

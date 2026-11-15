@@ -1,0 +1,749 @@
+{
+  "clips": {
+    "idle": {
+      "frames": 12,
+      "duration_s": 1.0,
+      "worst_severity": "Baixo",
+      "max_sword_drift_m": 2e-07,
+      "max_shell_residual_m": 2.1e-06,
+      "lowest_z_range_m": [
+        0.0,
+        0.0
+      ],
+      "pops": {},
+      "edge_touches": {},
+      "lowest_opaque_row": [
+        127,
+        127
+      ],
+      "pivot_y": 126.0,
+      "duplicates": [],
+      "sizes": [
+        [
+          128,
+          128
+        ]
+      ],
+      "loop_closure_max_m": 0.0,
+      "stance_speed_m_s": {
+        "R": [
+          -0.001,
+          -0.001,
+          0.0,
+          0.0,
+          0.001,
+          0.001,
+          0.002,
+          0.0,
+          0.001,
+          -0.001,
+          0.0,
+          -0.002
+        ],
+        "L": [
+          -0.001,
+          -0.001,
+          -0.001,
+          0.001,
+          0.001,
+          0.001,
+          0.001,
+          0.0,
+          0.001,
+          -0.001,
+          0.0,
+          -0.001
+        ]
+      },
+      "sole_row_minus_expected": [
+        1.0,
+        1.0
+      ]
+    },
+    "run": {
+      "frames": 10,
+      "duration_s": 0.416667,
+      "worst_severity": "Baixo",
+      "max_sword_drift_m": 1e-07,
+      "max_shell_residual_m": 1.2e-05,
+      "lowest_z_range_m": [
+        -0.0,
+        0.13768
+      ],
+      "pops": {},
+      "edge_touches": {},
+      "lowest_opaque_row": [
+        119,
+        127
+      ],
+      "pivot_y": 126.0,
+      "duplicates": [],
+      "sizes": [
+        [
+          128,
+          128
+        ]
+      ],
+      "loop_closure_max_m": 0.0,
+      "stance_speed_m_s": {
+        "R": [
+          6.998,
+          7.166
+        ],
+        "L": [
+          7.001,
+          7.171
+        ]
+      },
+      "sole_row_minus_expected": [
+        0.87,
+        5.87
+      ]
+    },
+    "attack_basic": {
+      "frames": 7,
+      "duration_s": 0.28,
+      "worst_severity": "Baixo",
+      "max_sword_drift_m": 2e-07,
+      "max_shell_residual_m": 2e-06,
+      "lowest_z_range_m": [
+        0.0,
+        0.0
+      ],
+      "pops": {},
+      "edge_touches": {},
+      "lowest_opaque_row": [
+        191,
+        191
+      ],
+      "pivot_y": 190.0,
+      "duplicates": [],
+      "sizes": [
+        [
+          256,
+          192
+        ]
+      ],
+      "sole_row_minus_expected": [
+        1.0,
+        1.0
+      ]
+    },
+    "dodge": {
+      "frames": 7,
+      "duration_s": 0.28,
+      "worst_severity": "Baixo",
+      "max_sword_drift_m": 1e-07,
+      "max_shell_residual_m": 4.1e-06,
+      "lowest_z_range_m": [
+        -0.0,
+        -0.0
+      ],
+      "pops": {},
+      "edge_touches": {},
+      "lowest_opaque_row": [
+        127,
+        127
+      ],
+      "pivot_y": 126.0,
+      "duplicates": [],
+      "sizes": [
+        [
+          128,
+          128
+        ]
+      ],
+      "sole_row_minus_expected": [
+        1.0,
+        1.0
+      ]
+    },
+    "hurt": {
+      "frames": 9,
+      "duration_s": 0.35,
+      "worst_severity": "Baixo",
+      "max_sword_drift_m": 2e-07,
+      "max_shell_residual_m": 2.1e-06,
+      "lowest_z_range_m": [
+        0.0,
+        0.0
+      ],
+      "pops": {},
+      "edge_touches": {},
+      "lowest_opaque_row": [
+        127,
+        127
+      ],
+      "pivot_y": 126.0,
+      "duplicates": [],
+      "sizes": [
+        [
+          128,
+          128
+        ]
+      ],
+      "sole_row_minus_expected": [
+        1.0,
+        1.0
+      ]
+    },
+    "death": {
+      "frames": 8,
+      "duration_s": 0.666667,
+      "worst_severity": "Baixo",
+      "max_sword_drift_m": 1e-07,
+      "max_shell_residual_m": 6.4e-06,
+      "lowest_z_range_m": [
+        -0.0,
+        0.02043
+      ],
+      "pops": {},
+      "edge_touches": {},
+      "lowest_opaque_row": [
+        127,
+        127
+      ],
+      "pivot_y": 126.0,
+      "duplicates": [],
+      "sizes": [
+        [
+          128,
+          128
+        ]
+      ],
+      "sole_row_minus_expected": [
+        1.0,
+        2.17
+      ]
+    },
+    "jump_rise": {
+      "frames": 4,
+      "duration_s": 0.333333,
+      "worst_severity": "Baixo",
+      "max_sword_drift_m": 1e-07,
+      "max_shell_residual_m": 2.3e-06,
+      "lowest_z_range_m": [
+        0.0,
+        0.0
+      ],
+      "pops": {},
+      "edge_touches": {},
+      "lowest_opaque_row": [
+        127,
+        127
+      ],
+      "pivot_y": 126.0,
+      "duplicates": [],
+      "sizes": [
+        [
+          128,
+          128
+        ]
+      ],
+      "sole_row_minus_expected": [
+        1.0,
+        1.0
+      ]
+    },
+    "fall": {
+      "frames": 4,
+      "duration_s": 0.333333,
+      "worst_severity": "Baixo",
+      "max_sword_drift_m": 3e-07,
+      "max_shell_residual_m": 4.2e-06,
+      "lowest_z_range_m": [
+        -0.0,
+        -0.0
+      ],
+      "pops": {},
+      "edge_touches": {},
+      "lowest_opaque_row": [
+        127,
+        127
+      ],
+      "pivot_y": 126.0,
+      "duplicates": [],
+      "sizes": [
+        [
+          128,
+          128
+        ]
+      ],
+      "loop_closure_max_m": 0.0,
+      "stance_speed_m_s": {
+        "R": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "L": []
+      },
+      "sole_row_minus_expected": [
+        1.0,
+        1.0
+      ]
+    },
+    "land": {
+      "frames": 4,
+      "duration_s": 0.166667,
+      "worst_severity": "Baixo",
+      "max_sword_drift_m": 1e-07,
+      "max_shell_residual_m": 2e-06,
+      "lowest_z_range_m": [
+        0.0,
+        0.0
+      ],
+      "pops": {},
+      "edge_touches": {},
+      "lowest_opaque_row": [
+        127,
+        127
+      ],
+      "pivot_y": 126.0,
+      "duplicates": [],
+      "sizes": [
+        [
+          128,
+          128
+        ]
+      ],
+      "sole_row_minus_expected": [
+        1.0,
+        1.0
+      ]
+    },
+    "crouch": {
+      "frames": 3,
+      "duration_s": 0.125,
+      "worst_severity": "Baixo",
+      "max_sword_drift_m": 1e-07,
+      "max_shell_residual_m": 2e-06,
+      "lowest_z_range_m": [
+        0.0,
+        0.0
+      ],
+      "pops": {},
+      "edge_touches": {},
+      "lowest_opaque_row": [
+        127,
+        127
+      ],
+      "pivot_y": 126.0,
+      "duplicates": [],
+      "sizes": [
+        [
+          128,
+          128
+        ]
+      ],
+      "sole_row_minus_expected": [
+        1.0,
+        1.0
+      ]
+    },
+    "guard_start": {
+      "frames": 3,
+      "duration_s": 0.125,
+      "worst_severity": "Baixo",
+      "max_sword_drift_m": 2e-07,
+      "max_shell_residual_m": 2e-06,
+      "lowest_z_range_m": [
+        -0.0,
+        -0.0
+      ],
+      "pops": {},
+      "edge_touches": {},
+      "lowest_opaque_row": [
+        127,
+        127
+      ],
+      "pivot_y": 126.0,
+      "duplicates": [],
+      "sizes": [
+        [
+          128,
+          128
+        ]
+      ],
+      "sole_row_minus_expected": [
+        1.0,
+        1.0
+      ]
+    },
+    "slash_crescent": {
+      "frames": 10,
+      "duration_s": 0.4,
+      "worst_severity": "Baixo",
+      "max_sword_drift_m": 2e-07,
+      "max_shell_residual_m": 2e-06,
+      "lowest_z_range_m": [
+        0.0,
+        0.0
+      ],
+      "pops": {},
+      "edge_touches": {},
+      "lowest_opaque_row": [
+        191,
+        191
+      ],
+      "pivot_y": 190.0,
+      "duplicates": [],
+      "sizes": [
+        [
+          256,
+          192
+        ]
+      ],
+      "sole_row_minus_expected": [
+        1.0,
+        1.0
+      ]
+    },
+    "slash_rising": {
+      "frames": 11,
+      "duration_s": 0.45,
+      "worst_severity": "Baixo",
+      "max_sword_drift_m": 2e-07,
+      "max_shell_residual_m": 2.1e-06,
+      "lowest_z_range_m": [
+        0.0,
+        0.0
+      ],
+      "pops": {},
+      "edge_touches": {},
+      "lowest_opaque_row": [
+        191,
+        191
+      ],
+      "pivot_y": 190.0,
+      "duplicates": [],
+      "sizes": [
+        [
+          256,
+          192
+        ]
+      ],
+      "sole_row_minus_expected": [
+        1.0,
+        1.0
+      ]
+    },
+    "cast_forward": {
+      "frames": 8,
+      "duration_s": 0.3,
+      "worst_severity": "Baixo",
+      "max_sword_drift_m": 1e-07,
+      "max_shell_residual_m": 2.2e-06,
+      "lowest_z_range_m": [
+        0.0,
+        0.0
+      ],
+      "pops": {},
+      "edge_touches": {},
+      "lowest_opaque_row": [
+        191,
+        191
+      ],
+      "pivot_y": 190.0,
+      "duplicates": [],
+      "sizes": [
+        [
+          256,
+          192
+        ]
+      ],
+      "sole_row_minus_expected": [
+        1.0,
+        1.0
+      ]
+    },
+    "cast_up": {
+      "frames": 15,
+      "duration_s": 0.6,
+      "worst_severity": "Baixo",
+      "max_sword_drift_m": 2e-07,
+      "max_shell_residual_m": 2.1e-06,
+      "lowest_z_range_m": [
+        0.0,
+        0.0
+      ],
+      "pops": {},
+      "edge_touches": {},
+      "lowest_opaque_row": [
+        191,
+        191
+      ],
+      "pivot_y": 190.0,
+      "duplicates": [],
+      "sizes": [
+        [
+          256,
+          192
+        ]
+      ],
+      "sole_row_minus_expected": [
+        1.0,
+        1.0
+      ]
+    },
+    "attack_basic_air": {
+      "frames": 7,
+      "duration_s": 0.28,
+      "worst_severity": "Baixo",
+      "max_sword_drift_m": 2e-07,
+      "max_shell_residual_m": 3.67e-05,
+      "lowest_z_range_m": [
+        0.0,
+        0.0
+      ],
+      "pops": {},
+      "edge_touches": {},
+      "lowest_opaque_row": [
+        191,
+        191
+      ],
+      "pivot_y": 190.0,
+      "duplicates": [],
+      "sizes": [
+        [
+          256,
+          192
+        ]
+      ],
+      "sole_row_minus_expected": [
+        1.0,
+        1.0
+      ]
+    }
+  },
+  "failures": [],
+  "hurt": "hurt_a",
+  "fall": "fall_v15",
+  "layout": {
+    "locomotion": {
+      "cell": [
+        128,
+        128
+      ],
+      "columns": 8,
+      "rows": 8,
+      "first": {
+        "idle": 0,
+        "run": 12,
+        "dodge": 22,
+        "hurt": 29,
+        "death": 38,
+        "jump_rise": 46,
+        "fall": 50,
+        "land": 54,
+        "crouch": 58,
+        "guard_start": 61
+      },
+      "size": [
+        1038,
+        1038
+      ],
+      "frames": 64
+    },
+    "combat": {
+      "cell": [
+        256,
+        192
+      ],
+      "columns": 7,
+      "rows": 9,
+      "first": {
+        "attack_basic": 0,
+        "slash_crescent": 7,
+        "slash_rising": 17,
+        "cast_forward": 28,
+        "cast_up": 36,
+        "attack_basic_air": 51
+      },
+      "size": [
+        1804,
+        1744
+      ],
+      "frames": 58
+    }
+  },
+  "effects_layout": {
+    "first": {
+      "vfx_arc_white": 0,
+      "vfx_arc_gold": 8,
+      "vfx_light_motes": 17,
+      "vfx_guard_spark": 29,
+      "vfx_revive": 34
+    },
+    "rows": 6,
+    "size": [
+      1038,
+      586
+    ]
+  },
+  "game_durations_s": {
+    "hurt": 0.35,
+    "slash_crescent": 0.4,
+    "slash_rising": 0.45,
+    "cast_forward": 0.3,
+    "cast_up": 0.6,
+    "attack_basic_air": 0.28
+  },
+  "skill_animations": {
+    "crescent_slash": "slash_crescent",
+    "rising_edge": "slash_rising",
+    "ember_bolt": "cast_forward",
+    "mending_light": "cast_up"
+  },
+  "experimental": {
+    "clips": {
+      "hurt_b": {
+        "frames": 9,
+        "duration_s": 0.35,
+        "worst_severity": "Baixo",
+        "max_sword_drift_m": 1e-07,
+        "max_shell_residual_m": 2.1e-06,
+        "lowest_z_range_m": [
+          0.0,
+          0.0
+        ],
+        "pops": {},
+        "edge_touches": {},
+        "lowest_opaque_row": [
+          127,
+          127
+        ],
+        "pivot_y": 126.0,
+        "duplicates": [],
+        "sizes": [
+          [
+            128,
+            128
+          ]
+        ],
+        "sole_row_minus_expected": [
+          1.0,
+          1.0
+        ],
+        "blade_lowest_z_m": 0.014
+      },
+      "death_lying": {
+        "frames": 12,
+        "duration_s": 1.0,
+        "worst_severity": "Baixo",
+        "max_sword_drift_m": 1e-07,
+        "max_shell_residual_m": 5.7e-06,
+        "lowest_z_range_m": [
+          -0.0,
+          0.06604
+        ],
+        "pops": {},
+        "edge_touches": {},
+        "lowest_opaque_row": [
+          191,
+          191
+        ],
+        "pivot_y": 190.0,
+        "duplicates": [],
+        "sizes": [
+          [
+            256,
+            192
+          ]
+        ],
+        "sole_row_minus_expected": [
+          1.0,
+          4.77
+        ],
+        "blade_lowest_z_m": 0.0242
+      }
+    },
+    "failures": []
+  },
+  "sheets": {
+    "hurt_1x": "hurt_compare_1x.png",
+    "fall_1x": "fall_compare_1x.png",
+    "death_1x": "death_compare_1x.png",
+    "attack_1x": "attack_air_compare_1x.png",
+    "hurt_3x": "hurt_compare_3x.png",
+    "fall_3x": "fall_compare_3x.png",
+    "death_3x": "death_compare_3x.png",
+    "attack_3x": "attack_air_compare_3x.png",
+    "effects": "vfx_v1_5.png"
+  },
+  "previews": {
+    "hurt_a": {
+      "file": "hurt_a_C.gif",
+      "delays_ms": [
+        40,
+        40,
+        50,
+        40,
+        40,
+        40,
+        40,
+        40,
+        20
+      ]
+    },
+    "hurt_b": {
+      "file": "hurt_b_C.gif",
+      "delays_ms": [
+        40,
+        40,
+        50,
+        40,
+        40,
+        40,
+        40,
+        40,
+        20
+      ]
+    },
+    "fall_v15": {
+      "file": "fall_v15_C.gif",
+      "delays_ms": [
+        80,
+        90,
+        80,
+        80
+      ]
+    },
+    "death_lying": {
+      "file": "death_lying_C.gif",
+      "delays_ms": [
+        80,
+        90,
+        80,
+        80,
+        90,
+        80,
+        80,
+        90,
+        80,
+        80,
+        90,
+        80
+      ]
+    },
+    "attack_basic_air": {
+      "file": "attack_basic_air_C.gif",
+      "delays_ms": [
+        40,
+        40,
+        50,
+        40,
+        40,
+        40,
+        30
+      ]
+    }
+  },
+  "staged": {
+    "ron_sha256": "7695c26c4f73b5de6ed055d4adff7b7cf2262abe7e4367f6da8e3b5b4052d2c9",
+    "locomotion": "8620e601faf90c9963bac5e12cd100d813aa88a736ce55619d2a066d6e03c3fa",
+    "combat": "6025e1d1976be1ffc7c68444d58838b8daaa2211ccd944337a99890ddb2b3fa7",
+    "effects": "9e08d365a01c07da3e10aa3c72383851b6b456c07edb325dd13af7a68dc58996"
+  }
+}

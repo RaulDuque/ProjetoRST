@@ -1,0 +1,100 @@
+{
+  "id": "walk",
+  "finish": "B",
+  "group": "locomotion",
+  "texture": "walk_B.png",
+  "cell": [
+    128,
+    128
+  ],
+  "density": 2,
+  "pivot": [
+    64.0,
+    126.0
+  ],
+  "columns": 8,
+  "rows": 2,
+  "padding": 2,
+  "offset": null,
+  "first": 0,
+  "count": 16,
+  "facing": "Right",
+  "loop": true,
+  "mode": "Loop",
+  "production_fps": 24,
+  "frame_times_s": [
+    0.0,
+    0.041667,
+    0.083333,
+    0.125,
+    0.166667,
+    0.208333,
+    0.25,
+    0.291667,
+    0.333333,
+    0.375,
+    0.416667,
+    0.458333,
+    0.5,
+    0.541667,
+    0.583333,
+    0.625
+  ],
+  "frame_durations_s": [
+    0.041667,
+    0.041667,
+    0.041667,
+    0.041667,
+    0.041667,
+    0.041667,
+    0.041667,
+    0.041667,
+    0.041667,
+    0.041667,
+    0.041667,
+    0.041667,
+    0.041667,
+    0.041667,
+    0.041667,
+    0.041667
+  ],
+  "duration_s": 0.666667,
+  "derived_12fps": [
+    {
+      "source_frame": 0,
+      "duration_s": 0.083333
+    },
+    {
+      "source_frame": 2,
+      "duration_s": 0.083334
+    },
+    {
+      "source_frame": 4,
+      "duration_s": 0.083333
+    },
+    {
+      "source_frame": 6,
+      "duration_s": 0.083333
+    },
+    {
+      "source_frame": 8,
+      "duration_s": 0.083334
+    },
+    {
+      "source_frame": 10,
+      "duration_s": 0.083333
+    },
+    {
+      "source_frame": 12,
+      "duration_s": 0.083333
+    },
+    {
+      "source_frame": 14,
+      "duration_s": 0.083334
+    }
+  ],
+  "root_motion": "none: vertical grounding only, the game moves the entity",
+  "colour": "sRGB, straight alpha",
+  "alpha": "soft",
+  "note": "Experimental (V1.2-G). Not loaded by the game; the atlas per group of the contract is V1.3+."
+}

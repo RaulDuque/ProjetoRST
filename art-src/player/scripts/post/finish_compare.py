@@ -18,6 +18,7 @@ from PIL import Image, ImageDraw
 
 from labels import font
 from palette import CHARACTER, CHARACTER_RGB, SCENE_BACKGROUND_FALLBACK
+from resample import resize
 
 PLAYER_DIR = Path(__file__).resolve().parents[2]
 RENDERS = PLAYER_DIR / "renders"
@@ -37,7 +38,7 @@ def show(sprite: Image.Image, target: int, smooth: bool) -> Image.Image:
         return sprite
     if smooth:
         return sprite.resize((target, target), Image.Resampling.BILINEAR)
-    return sprite.resize((target, target), Image.Resampling.NEAREST)
+    return resize(sprite, (target, target), Image.Resampling.NEAREST)
 
 
 def main() -> None:

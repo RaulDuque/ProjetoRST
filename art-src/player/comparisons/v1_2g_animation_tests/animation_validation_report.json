@@ -1,0 +1,658 @@
+{
+  "clips": {
+    "walk": {
+      "duration_s": 0.666667,
+      "derived_12fps_duration_s": 0.666667,
+      "worst_severity": "Baixo",
+      "frames_medio_or_worse": [],
+      "max_sword_drift_m": 1e-07,
+      "max_shell_residual_m": 2.2e-06,
+      "scale_failures": [],
+      "pops": {},
+      "max_body_step_m": 0.1325,
+      "lowest_z_range_m": [
+        -0.0,
+        -0.0
+      ],
+      "min_boot_volume_ratio": 1.0145,
+      "loop_closure_max_m": 0.0,
+      "loop_step_max_body_m": 0.05829,
+      "loop_step_vs_mean_step": 0.613,
+      "masters_touching_cell_edges": {},
+      "sprites": {
+        "A": {
+          "size": [
+            64,
+            64
+          ],
+          "frames": 16,
+          "lowest_opaque_row": [
+            63,
+            63
+          ],
+          "pivot_y": 63.0,
+          "duplicates": [],
+          "problems": []
+        },
+        "B": {
+          "size": [
+            128,
+            128
+          ],
+          "frames": 16,
+          "lowest_opaque_row": [
+            127,
+            127
+          ],
+          "pivot_y": 126.0,
+          "duplicates": [],
+          "problems": []
+        },
+        "C": {
+          "size": [
+            128,
+            128
+          ],
+          "frames": 16,
+          "lowest_opaque_row": [
+            127,
+            127
+          ],
+          "pivot_y": 126.0,
+          "duplicates": [],
+          "problems": []
+        }
+      }
+    },
+    "attack_basic": {
+      "duration_s": 0.28,
+      "duration_matches_game": true,
+      "derived_12fps_duration_s": 0.28,
+      "worst_severity": "Baixo",
+      "frames_medio_or_worse": [],
+      "max_sword_drift_m": 2e-07,
+      "max_shell_residual_m": 2e-06,
+      "scale_failures": [],
+      "pops": {},
+      "max_body_step_m": 0.21157,
+      "lowest_z_range_m": [
+        0.0,
+        0.0
+      ],
+      "min_boot_volume_ratio": 0.9862,
+      "masters_touching_cell_edges": {},
+      "sprites": {
+        "A": {
+          "size": [
+            128,
+            96
+          ],
+          "frames": 7,
+          "lowest_opaque_row": [
+            95,
+            95
+          ],
+          "pivot_y": 95.0,
+          "duplicates": [],
+          "problems": []
+        },
+        "B": {
+          "size": [
+            256,
+            192
+          ],
+          "frames": 7,
+          "lowest_opaque_row": [
+            191,
+            191
+          ],
+          "pivot_y": 190.0,
+          "duplicates": [],
+          "problems": []
+        },
+        "C": {
+          "size": [
+            256,
+            192
+          ],
+          "frames": 7,
+          "lowest_opaque_row": [
+            191,
+            191
+          ],
+          "pivot_y": 190.0,
+          "duplicates": [],
+          "problems": []
+        }
+      }
+    },
+    "dodge": {
+      "duration_s": 0.28,
+      "duration_matches_game": true,
+      "derived_12fps_duration_s": 0.28,
+      "worst_severity": "Baixo",
+      "frames_medio_or_worse": [],
+      "max_sword_drift_m": 1e-07,
+      "max_shell_residual_m": 4.1e-06,
+      "scale_failures": [],
+      "pops": {},
+      "max_body_step_m": 0.22355,
+      "lowest_z_range_m": [
+        -0.0,
+        -0.0
+      ],
+      "min_boot_volume_ratio": 0.9989,
+      "masters_touching_cell_edges": {},
+      "sprites": {
+        "A": {
+          "size": [
+            64,
+            64
+          ],
+          "frames": 7,
+          "lowest_opaque_row": [
+            63,
+            63
+          ],
+          "pivot_y": 63.0,
+          "duplicates": [],
+          "problems": []
+        },
+        "B": {
+          "size": [
+            128,
+            128
+          ],
+          "frames": 7,
+          "lowest_opaque_row": [
+            127,
+            127
+          ],
+          "pivot_y": 126.0,
+          "duplicates": [],
+          "problems": []
+        },
+        "C": {
+          "size": [
+            128,
+            128
+          ],
+          "frames": 7,
+          "lowest_opaque_row": [
+            127,
+            127
+          ],
+          "pivot_y": 126.0,
+          "duplicates": [],
+          "problems": []
+        }
+      }
+    }
+  },
+  "failures": [],
+  "sheets": {
+    "shoulder": "shoulder_before_after.png",
+    "walk_contact": "walk_contact_sheet.png",
+    "walk_12_vs_24": "walk_12_vs_24.png",
+    "attack_basic_contact": "attack_basic_contact_sheet.png",
+    "attack_basic_12_vs_24": "attack_basic_12_vs_24.png",
+    "dodge_contact": "dodge_contact_sheet.png",
+    "dodge_12_vs_24": "dodge_12_vs_24.png",
+    "finish_abc": "finish_abc_animation_comparison.png",
+    "game_scale": "game_scale_animation_comparison.png"
+  },
+  "spritesheets": {
+    "walk_A": {
+      "file": "walk_A.png",
+      "size": [
+        526,
+        130
+      ],
+      "sha256": "c105b998e637244ab52ff2f70d2c31173e18b25520c2f7265db3e61346ae4566"
+    },
+    "walk_B": {
+      "file": "walk_B.png",
+      "size": [
+        1038,
+        258
+      ],
+      "sha256": "55f8172a21f0229446b63ecc99d37ad2ffa471c47c34e735f44bba8aa443f293"
+    },
+    "walk_C": {
+      "file": "walk_C.png",
+      "size": [
+        1038,
+        258
+      ],
+      "sha256": "b74f19ebdf37be5918af760550ac1ab070928bcb8cd4822664ea9ea0e77841ee"
+    },
+    "attack_basic_A": {
+      "file": "attack_basic_A.png",
+      "size": [
+        908,
+        96
+      ],
+      "sha256": "2b0dc50ad4becb2a6b01003b03d92c1a2128ebba521b041f83b0b810a55e50f3"
+    },
+    "attack_basic_B": {
+      "file": "attack_basic_B.png",
+      "size": [
+        1804,
+        192
+      ],
+      "sha256": "601f22371e9c0b3128723b8be7542bb53d7cb58edc86d5c5e06d3011b4ec959a"
+    },
+    "attack_basic_C": {
+      "file": "attack_basic_C.png",
+      "size": [
+        1804,
+        192
+      ],
+      "sha256": "70379f134b733409bc5bf6ca4883eecbe46a4f7d598d7120c42478b1c4967240"
+    },
+    "dodge_A": {
+      "file": "dodge_A.png",
+      "size": [
+        460,
+        64
+      ],
+      "sha256": "e330ddf62c5d57d229b3c0c9998a2b70ffcc91a65fdec67a2f4bc3065a9cffd6"
+    },
+    "dodge_B": {
+      "file": "dodge_B.png",
+      "size": [
+        908,
+        128
+      ],
+      "sha256": "0f6ff5c4995ddb02b449b574464ede24279992f5e804ba75d9b7a931089a7527"
+    },
+    "dodge_C": {
+      "file": "dodge_C.png",
+      "size": [
+        908,
+        128
+      ],
+      "sha256": "e6a2efb82f7f1ba3296df027e24d494e9ac117b8ac1f1fcd7402bf6c85aeb257"
+    }
+  },
+  "previews": {
+    "walk_A_24": {
+      "file": "walk_A_24fps.gif",
+      "frames": 16,
+      "delays_ms": [
+        40,
+        40,
+        50,
+        40,
+        40,
+        40,
+        40,
+        40,
+        50,
+        40,
+        40,
+        40,
+        40,
+        40,
+        50,
+        40
+      ],
+      "total_ms": 670,
+      "clip_ms": 666.7
+    },
+    "walk_A_12": {
+      "file": "walk_A_12fps.gif",
+      "frames": 8,
+      "delays_ms": [
+        80,
+        90,
+        80,
+        80,
+        90,
+        80,
+        80,
+        90
+      ],
+      "total_ms": 670,
+      "clip_ms": 666.7
+    },
+    "walk_B_24": {
+      "file": "walk_B_24fps.gif",
+      "frames": 16,
+      "delays_ms": [
+        40,
+        40,
+        50,
+        40,
+        40,
+        40,
+        40,
+        40,
+        50,
+        40,
+        40,
+        40,
+        40,
+        40,
+        50,
+        40
+      ],
+      "total_ms": 670,
+      "clip_ms": 666.7
+    },
+    "walk_B_12": {
+      "file": "walk_B_12fps.gif",
+      "frames": 8,
+      "delays_ms": [
+        80,
+        90,
+        80,
+        80,
+        90,
+        80,
+        80,
+        90
+      ],
+      "total_ms": 670,
+      "clip_ms": 666.7
+    },
+    "walk_C_24": {
+      "file": "walk_C_24fps.gif",
+      "frames": 16,
+      "delays_ms": [
+        40,
+        40,
+        50,
+        40,
+        40,
+        40,
+        40,
+        40,
+        50,
+        40,
+        40,
+        40,
+        40,
+        40,
+        50,
+        40
+      ],
+      "total_ms": 670,
+      "clip_ms": 666.7
+    },
+    "walk_C_12": {
+      "file": "walk_C_12fps.gif",
+      "frames": 8,
+      "delays_ms": [
+        80,
+        90,
+        80,
+        80,
+        90,
+        80,
+        80,
+        90
+      ],
+      "total_ms": 670,
+      "clip_ms": 666.7
+    },
+    "attack_basic_A_24": {
+      "file": "attack_basic_A_24fps.gif",
+      "frames": 7,
+      "delays_ms": [
+        40,
+        40,
+        50,
+        40,
+        40,
+        40,
+        30
+      ],
+      "total_ms": 280,
+      "clip_ms": 280.0
+    },
+    "attack_basic_A_12": {
+      "file": "attack_basic_A_12fps.gif",
+      "frames": 4,
+      "delays_ms": [
+        80,
+        90,
+        80,
+        30
+      ],
+      "total_ms": 280,
+      "clip_ms": 280.0
+    },
+    "attack_basic_B_24": {
+      "file": "attack_basic_B_24fps.gif",
+      "frames": 7,
+      "delays_ms": [
+        40,
+        40,
+        50,
+        40,
+        40,
+        40,
+        30
+      ],
+      "total_ms": 280,
+      "clip_ms": 280.0
+    },
+    "attack_basic_B_12": {
+      "file": "attack_basic_B_12fps.gif",
+      "frames": 4,
+      "delays_ms": [
+        80,
+        90,
+        80,
+        30
+      ],
+      "total_ms": 280,
+      "clip_ms": 280.0
+    },
+    "attack_basic_C_24": {
+      "file": "attack_basic_C_24fps.gif",
+      "frames": 7,
+      "delays_ms": [
+        40,
+        40,
+        50,
+        40,
+        40,
+        40,
+        30
+      ],
+      "total_ms": 280,
+      "clip_ms": 280.0
+    },
+    "attack_basic_C_12": {
+      "file": "attack_basic_C_12fps.gif",
+      "frames": 4,
+      "delays_ms": [
+        80,
+        90,
+        80,
+        30
+      ],
+      "total_ms": 280,
+      "clip_ms": 280.0
+    },
+    "dodge_A_24": {
+      "file": "dodge_A_24fps.gif",
+      "frames": 7,
+      "delays_ms": [
+        40,
+        40,
+        50,
+        40,
+        40,
+        40,
+        30
+      ],
+      "total_ms": 280,
+      "clip_ms": 280.0
+    },
+    "dodge_A_12": {
+      "file": "dodge_A_12fps.gif",
+      "frames": 4,
+      "delays_ms": [
+        80,
+        90,
+        80,
+        30
+      ],
+      "total_ms": 280,
+      "clip_ms": 280.0
+    },
+    "dodge_B_24": {
+      "file": "dodge_B_24fps.gif",
+      "frames": 7,
+      "delays_ms": [
+        40,
+        40,
+        50,
+        40,
+        40,
+        40,
+        30
+      ],
+      "total_ms": 280,
+      "clip_ms": 280.0
+    },
+    "dodge_B_12": {
+      "file": "dodge_B_12fps.gif",
+      "frames": 4,
+      "delays_ms": [
+        80,
+        90,
+        80,
+        30
+      ],
+      "total_ms": 280,
+      "clip_ms": 280.0
+    },
+    "dodge_C_24": {
+      "file": "dodge_C_24fps.gif",
+      "frames": 7,
+      "delays_ms": [
+        40,
+        40,
+        50,
+        40,
+        40,
+        40,
+        30
+      ],
+      "total_ms": 280,
+      "clip_ms": 280.0
+    },
+    "dodge_C_12": {
+      "file": "dodge_C_12fps.gif",
+      "frames": 4,
+      "delays_ms": [
+        80,
+        90,
+        80,
+        30
+      ],
+      "total_ms": 280,
+      "clip_ms": 280.0
+    }
+  },
+  "sprite_sha256": {
+    "walk/A/walk_000.png": "9e4bb0204f7d43eb7f4dfb79acdba50db4d28247971244814722622610cd1e85",
+    "walk/A/walk_001.png": "4daf1ef565886da1da6fd14cba22897a38eeb964317450074a115559a891adf0",
+    "walk/A/walk_002.png": "5209c99e29cca4f3f570e3aefe500f9ee912a03141f3ecbf5f86f807ce5d36f6",
+    "walk/A/walk_003.png": "0b7f45b8ec78e49acde53c59b1d9611dd40c781792a24fb29a61be100f42c659",
+    "walk/A/walk_004.png": "3fcd4ce98a2ee97ccdcda8d4eefd4182f807d3739dff3c4aa9a8196d3d0d89e7",
+    "walk/A/walk_005.png": "55613aadb56176888a33e9e4de1428466bb2400f5b54d8ceab2548fecba6d190",
+    "walk/A/walk_006.png": "a2ef02d2c184a50e4cf8bc43e70a2135335d9b85ec48883d6302fe0f13b14628",
+    "walk/A/walk_007.png": "0089b0493fe01d4644fd67ae32640e1b3e7c32f0e5e1f3ed0f9154c95c53c088",
+    "walk/A/walk_008.png": "42c35f54de77c77b8b4e7db09a57ba05a52102cfa093a873282ad67fcfca2d1b",
+    "walk/A/walk_009.png": "3d6af0e5737aa9fbefb54ace28c5ff52fe7763f0bbb405182d5e742bce012e1e",
+    "walk/A/walk_010.png": "8cefdd0e6b26cec9cd7e2754a3ecd0b8b4aecff4f141860cc9a1a2ae8c7db124",
+    "walk/A/walk_011.png": "53155c3f128936d649fd0134069d8b8723cd2faaf9de63708d9f4f7f3172691c",
+    "walk/A/walk_012.png": "a000ac37828779d4ca3995dc14ea8f9d96c743200e96e751a6ab825aeb09b05d",
+    "walk/A/walk_013.png": "588a182011ad89144a05ae6c9a7e734f1e37d68daca0eb222439860652c6ee5f",
+    "walk/A/walk_014.png": "1fde2c73ee2491d601f68cfccc9d1b72087cc092cc680d45721e08c0a4bcfd89",
+    "walk/A/walk_015.png": "9dc4aba04e5dc01bd619efcc01b95f6f13141de5a502ed1f44cc2d3b397885b0",
+    "walk/B/walk_000.png": "c988dc53b574032bb5a6a346490652f2cdc7b00b888968ce45721a11e313ac15",
+    "walk/B/walk_001.png": "cd567e49614ef03539bbf21c615e713c23f2e1e258b0f4cc699c176ee08d03c8",
+    "walk/B/walk_002.png": "d4fa62e6826ff3e0f2ffc4d643486f209d5c0c6c943d2a9ddf2ce386724b51bb",
+    "walk/B/walk_003.png": "06355ebd285b32d9b6ca034c1515bc9e11188d7e3dcf6f3be834ae346dfba51b",
+    "walk/B/walk_004.png": "314ab186599e75e9966b2ae745d93f617fa5a887ab9e8f0ac121f46ac37719e2",
+    "walk/B/walk_005.png": "f425b035339a9478812b931e405cc8d8ee5a0c0a854fc29ac414b4f9499aa653",
+    "walk/B/walk_006.png": "66a6883de8c3c78a8d1f47e999872ce607e20e985d04abf1ff94f1618a8a1a6d",
+    "walk/B/walk_007.png": "45e28a9a33e6876085c02853d5df733d1b99fb24c01d45d61d52f4ccb416a9a1",
+    "walk/B/walk_008.png": "93a780729f987f54ea2c5891ebe4ef8f5a075e08d152a26eab8718a3a8ec8f29",
+    "walk/B/walk_009.png": "f63f4aa4b5e747ca4826cf45afcd086759f703a02840a88491d0997a5fb68955",
+    "walk/B/walk_010.png": "08d41cd99bf208d36a7d91e956e8da51a73d0cb28b028c60d2308598c55431e5",
+    "walk/B/walk_011.png": "386afd488a5ca5d6f23c5996928d7bad3ff57a9f8a0e3ac8f15c8e10b3939307",
+    "walk/B/walk_012.png": "509768823da1b2e99c28c1ed9c14cfa14a04511dbccfd3cb5d58b98ecffee7b2",
+    "walk/B/walk_013.png": "1461105feed0cf15e056b8fd91c587ca3eab400ac2fbe42c56b3753607560671",
+    "walk/B/walk_014.png": "c4440a366ad19c8520973b13ca7675c884c6e193a5b112abfb367c7e9f5b3449",
+    "walk/B/walk_015.png": "0618cf7669a6eb92d4b6c5366cc5314b599e5c261cb40a731f3fffcc4134722e",
+    "walk/C/walk_000.png": "84a8404b2bdf50f4291231ebaabb91ec4778e6a00d3b074da4a0d6620a2e6066",
+    "walk/C/walk_001.png": "a707b40c8852b6bf083ca0fe92c06d6a620a6b103072f73afcae4252c995b708",
+    "walk/C/walk_002.png": "3f2594d370a9162922cb754f2f6bfa33ed316e8a9d9cb7bd333c3d0db92c3b36",
+    "walk/C/walk_003.png": "0ffa955304d7fb8e36092d98b1a662bd5174ee76197dffc648a924be8caa8013",
+    "walk/C/walk_004.png": "1e48d6d81b310b20fc38cbf5601c136e41e4b0fb21d2bcf98ec97f4e1d396abc",
+    "walk/C/walk_005.png": "d7bb05355df8e87847c609e08c1f5222de032c2e77e3773675b0ec121cbb0446",
+    "walk/C/walk_006.png": "ea60e97ded5ebeabf8b85dce8d0eb774eff6dcee8cec6b40f5b8d40578c9433f",
+    "walk/C/walk_007.png": "366bd179149fa539d43c61fe88679a602d15bf7c0e17a3d8cded693cfa6e7a54",
+    "walk/C/walk_008.png": "dfc3f44c700d95b861b52a0a85dd2591c7a7669dcabde770d2b4a6274e01a6cb",
+    "walk/C/walk_009.png": "74fe58a630fa3d245f15f7f40fdf58bf8db10ed9ce076a0d4c78930a20574176",
+    "walk/C/walk_010.png": "052be12d879ddd9393724494b6cb3caee6ddea585e35eb7c5012033b9e57a7cd",
+    "walk/C/walk_011.png": "144d0e75a194f035667741b9fbc9e4dfa5c5fa1ce5327edade9dea48a2f83945",
+    "walk/C/walk_012.png": "2f594b5db90c78794a54b5bb14311d2da8ec2f3b62a9f5f09b4938858644b535",
+    "walk/C/walk_013.png": "428929db17f34b09dff0c03e8b2cbeed59632487bca675f466e4848745ef39f8",
+    "walk/C/walk_014.png": "6ae6a396eda3ca9c0664dcc0f2d37752685e21c368f786797cbb901f630bb92b",
+    "walk/C/walk_015.png": "ba7ebaa9cdad74c4a45ca4f8ca0dd2b9c5d0fc4f6a815d85b311ba963e0239fa",
+    "attack_basic/A/attack_basic_000.png": "f976449773252f74cecabd90347116e74b58e8714fd9008e349b7d6182c48404",
+    "attack_basic/A/attack_basic_001.png": "59b88945d7f40ddf2bc3c6fcb83326c907d3db61efbd6e338611629fd5b25f03",
+    "attack_basic/A/attack_basic_002.png": "4cbb45f08a3efd6a17fda0a1cc9ca06763f130fad8c5dc5bcd099f006129cf1b",
+    "attack_basic/A/attack_basic_003.png": "8732b6da3cc04144c0824200cab79c26195509f45e8be406e90c8eb0c6fdbb67",
+    "attack_basic/A/attack_basic_004.png": "661ca66df5ff7398e7c304466c1054e1b247eb42d94dd201dfede1bc05d775b6",
+    "attack_basic/A/attack_basic_005.png": "c059447094e10e5e67f22776ab9fcbcec186444d89e0d3957b1b751a77d8f3e3",
+    "attack_basic/A/attack_basic_006.png": "e1c3fefaff1a0518a9a4c1d3e8c23c86b1838e76ad2bfe5c40e6bc3af847a7e9",
+    "attack_basic/B/attack_basic_000.png": "de4b76847a5ddcea0562661f1ed140de0c66e5e9fcae5bb3929073e7a2c029d1",
+    "attack_basic/B/attack_basic_001.png": "80d76df32d11ef2a416906290efb43127d6e8b2e8346b859b949b944899ecf67",
+    "attack_basic/B/attack_basic_002.png": "32cb2a31926fb8bd3a8ee4e8e36e8e59562f8bfbba59c7c002d424e8fafb4530",
+    "attack_basic/B/attack_basic_003.png": "59d3d55dd93fecd63272a9add8afcd09e784d88e8d6ff2b64cb78e5e9270d17e",
+    "attack_basic/B/attack_basic_004.png": "2eb6188788a06bb7b0b6b3b45344618236261684c7baf702d2f6d55cbd98e097",
+    "attack_basic/B/attack_basic_005.png": "d18fc5b9d109f1917bdfc894debb769a18434561fb1f86b9e417f4b11fc07d26",
+    "attack_basic/B/attack_basic_006.png": "d3571a55c1f914880135c9f7b4c1649d2db4f28b8a235dff0a383e418077e58c",
+    "attack_basic/C/attack_basic_000.png": "162b40c978ec67a13894c7065666df7e04106349e0343db6ee4bb80b83965cb5",
+    "attack_basic/C/attack_basic_001.png": "05338e5c3826c3b14ae78b77ebdc7ae4bd029f9b85d2323786c20148e26c09aa",
+    "attack_basic/C/attack_basic_002.png": "e34eafc3a4031c3f8460bb1375d0bb73412c687554c932ee9a647f61abc9da7c",
+    "attack_basic/C/attack_basic_003.png": "baf98e3fc7c25f9bc31c87aa4ad91a97bbe5416587c4246d2b8cd508ef79c1c7",
+    "attack_basic/C/attack_basic_004.png": "0fef6bf71505e7e03dbb2d429e6e2a86f6fb5e9c0702fb678f73e9087c1ff948",
+    "attack_basic/C/attack_basic_005.png": "ea04032c64c13465ba3bb248ed2067441cbca6b6daeaa8745b7a070a4ead7057",
+    "attack_basic/C/attack_basic_006.png": "4de6389a651a42414c47749edf52eacd5c1d5088909ea56ab7bd2872fe4a2985",
+    "dodge/A/dodge_000.png": "3f31c1e3199e6a741c32e27d3cf7ba137bc8fb96babe98538ec1a572d11f9cee",
+    "dodge/A/dodge_001.png": "ef6f96a89d99f4abb975d8edbf4ee52b63b3396c3e1fcb46dd0ad1e8d78ee240",
+    "dodge/A/dodge_002.png": "dc07cfba09a86c0b013fa9813e60b17001dbf323bc72c8f4e10048b75e7ecf60",
+    "dodge/A/dodge_003.png": "74c75ab4de0f0418e5f486dfba164eb8d548edddc140362aa9a7a18043a605b2",
+    "dodge/A/dodge_004.png": "c529b0386b15e41ec7e94dcd389b1c5fa36e88df313b09f0f6ff8632ef4654bb",
+    "dodge/A/dodge_005.png": "a8a95504a2d75138bdf904216727306d7c7f61007327a12cd2d6f9fe39aceebb",
+    "dodge/A/dodge_006.png": "bf4d4e9399464c49925d21edcc37e299ed42c36e9a3a614116a5fdf676b9befc",
+    "dodge/B/dodge_000.png": "139509ec3749f7c226577cf5c31aefdc03f4a0357748f84d36be184809e005ad",
+    "dodge/B/dodge_001.png": "ef8025708f96cb5eee841e44e06fe8578502c3bb6a344a7692bfda4964216619",
+    "dodge/B/dodge_002.png": "cb82ea5f77827f5632d4d1436d75be274b31d74da74d46ccdad160ae5f2f0fd4",
+    "dodge/B/dodge_003.png": "24eb4496b6f728b4dae96cb306807b7d0922c85d36468cdbb1805dedd18ed71d",
+    "dodge/B/dodge_004.png": "8bbf02b4191ef31caf613cab44c1839e14d887eb0f96200ae6a5760b044acff8",
+    "dodge/B/dodge_005.png": "b8333e6655891646c8561cc375e5cf47b0fee997ec94023915c3d93f66997f09",
+    "dodge/B/dodge_006.png": "d6a9f5022a9c3f09e932751178248b76ed2070f8247580c7309ab8743b201563",
+    "dodge/C/dodge_000.png": "6a589b078d36b66d3b971ddc121dd731f1c2ad7140109f7c5ecba9a4e8e18ff6",
+    "dodge/C/dodge_001.png": "87b409f54d79c116685c2bf52f7e7b75112f26847f81a115df8caacabbbaca42",
+    "dodge/C/dodge_002.png": "8c791a22e3366d70c65c176357834c0a441d556aa02d91a3076f5ff060c9c6dc",
+    "dodge/C/dodge_003.png": "3dc1bcd98b49210761ce992e6a04af8e1786f96119a1202dbfd8089c034017d0",
+    "dodge/C/dodge_004.png": "1a718557642fdf48419c20e85efc933e79a9209b2d44f78271449cbf0ed437db",
+    "dodge/C/dodge_005.png": "e56aa2b59381dc2aacaad500aa93bba533ea95f2205df5b56725412bda155586",
+    "dodge/C/dodge_006.png": "8e125afe2917c89f01845e5f0b87d20bdec9df84362d02042589c0804e5ef967"
+  },
+  "walk_speed": {
+    "animation_px_s": 35.71,
+    "game_px_s": 190.0
+  }
+}

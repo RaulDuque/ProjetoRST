@@ -9,6 +9,11 @@ and to x2, on the room colour.
 
 Usage:
     python3 art-src/player/scripts/post/version_compare.py --out SHEET.png
+    # any two versions (V1.2-D), masters or close-ups:
+    python3 art-src/player/scripts/post/version_compare.py --out SHEET.png \
+        --old "v003" "art-src/player/renders/v003/swordsman_base_v003_{view}_master.png" \
+        --new "v004" "art-src/player/renders/v004/swordsman_base_v004_{view}_master.png" \
+        --title "..." [--closes close_face,close_hair]
 """
 
 from __future__ import annotations
@@ -56,21 +61,61 @@ def game_scale(path: Path) -> Image.Image:
     return tile
 
 
+def close_pair(pattern: str, view: str, size: int) -> Image.Image:
+    image = Image.open(Path(pattern.replace("{view}_master", view).format(view=view))).convert("RGBA")
+    base = Image.new("RGBA", image.size, (*BACKGROUND, 255))
+    base.alpha_composite(image)
+    return base.resize((size, size), Image.Resampling.LANCZOS)
+
+
+def closes_sheet(args: argparse.Namespace, rows: tuple[tuple[str, str], ...]) -> None:
+    """Same close-up cameras for both versions, one column per view."""
+    size, title_h, label_h = 330, 70, 28
+    views = args.closes.split(",")
+    width = PAD + len(views) * (size + PAD)
+    height = title_h + len(rows) * (label_h + size + PAD)
+    sheet = Image.new("RGBA", (width, height), (*BACKGROUND, 255))
+    draw = ImageDraw.Draw(sheet)
+    draw.text((PAD, 10), args.title, fill=TEXT, font=font(20))
+    draw.text((PAD, 40), "Closes com as mesmas câmeras, luz e fundo nas duas versões.", fill=MUTED, font=font(14))
+    y = title_h
+    for label, pattern in rows:
+        draw.text((PAD, y + 4), label, fill=TEXT, font=font(16))
+        for i, view in enumerate(views):
+            x = PAD + i * (size + PAD)
+            sheet.alpha_composite(close_pair(pattern, view, size), (x, y + label_h))
+        y += label_h + size + PAD
+    args.out.parent.mkdir(parents=True, exist_ok=True)
+    sheet.convert("RGB").save(args.out)
+    print(f"[version_compare] {args.out} {sheet.size[0]}x{sheet.size[1]}")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--out", type=Path, required=True)
+    parser.add_argument("--old", nargs=2, metavar=("LABEL", "PATTERN"),
+                        help="older row: label and path pattern with {view} (default: relit v002)")
+    parser.add_argument("--new", nargs=2, metavar=("LABEL", "PATTERN"),
+                        help="newer row: label and path pattern with {view} (default: v003)")
+    parser.add_argument("--title", default="Espadachim: v002 × v003, mesmas vistas, escala, luz e fundo")
+    parser.add_argument("--closes", help="comma-separated close-up views instead of the masters")
     args = parser.parse_args()
 
-    rows = (OLD, NEW)
-    sample = framed(Path(str(NEW[1]).format(view="side")))
+    old = tuple(args.old) if args.old else (OLD[0], str(OLD[1]))
+    new = tuple(args.new) if args.new else (NEW[0], str(NEW[1]))
+    rows = (old, new)
+    if args.closes:
+        closes_sheet(args, rows)
+        return
+    sample = framed(Path(str(new[1]).format(view="side")))
     cell_w = sample.size[0]
-    scale_w = game_scale(Path(str(NEW[1]).format(view="side"))).size[0]
+    scale_w = game_scale(Path(str(new[1]).format(view="side"))).size[0]
     title_h, label_h = 70, 28
     width = PAD + len(VIEWS) * (cell_w + PAD) + scale_w + PAD
     height = title_h + len(rows) * (label_h + CELL_H + PAD)
     sheet = Image.new("RGBA", (width, height), (*BACKGROUND, 255))
     draw = ImageDraw.Draw(sheet)
-    draw.text((PAD, 10), "Espadachim: v002 × v003, mesmas vistas, escala, luz e fundo", fill=TEXT, font=font(20))
+    draw.text((PAD, 10), args.title, fill=TEXT, font=font(20))
     draw.text((PAD, 40), "Masters ortográficos na escala do contrato (sola na linha do pivô). "
               "Última coluna: lateral reduzida a 1:1 (~52 px) e ×2, no fundo da sala.",
               fill=MUTED, font=font(14))

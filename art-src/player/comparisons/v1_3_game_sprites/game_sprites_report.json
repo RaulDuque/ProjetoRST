@@ -1,0 +1,307 @@
+{
+  "clips": {
+    "idle": {
+      "frames": 12,
+      "duration_s": 1.0,
+      "worst_severity": "Baixo",
+      "max_sword_drift_m": 2e-07,
+      "max_shell_residual_m": 2.1e-06,
+      "lowest_z_range_m": [
+        0.0,
+        0.0
+      ],
+      "pops": {},
+      "edge_touches": {},
+      "lowest_opaque_row": [
+        127,
+        127
+      ],
+      "pivot_y": 126.0,
+      "duplicates": [],
+      "sizes": [
+        [
+          128,
+          128
+        ]
+      ],
+      "loop_closure_max_m": 0.0,
+      "stance_speed_m_s": {
+        "R": [
+          -0.001,
+          -0.001,
+          0.0,
+          0.0,
+          0.001,
+          0.001,
+          0.002,
+          0.0,
+          0.001,
+          -0.001,
+          0.0,
+          -0.002
+        ],
+        "L": [
+          -0.001,
+          -0.001,
+          -0.001,
+          0.001,
+          0.001,
+          0.001,
+          0.001,
+          0.0,
+          0.001,
+          -0.001,
+          0.0,
+          -0.001
+        ]
+      },
+      "sole_row_minus_expected": [
+        1.0,
+        1.0
+      ]
+    },
+    "run": {
+      "frames": 10,
+      "duration_s": 0.416667,
+      "worst_severity": "Baixo",
+      "max_sword_drift_m": 1e-07,
+      "max_shell_residual_m": 1.2e-05,
+      "lowest_z_range_m": [
+        -0.0,
+        0.13768
+      ],
+      "pops": {},
+      "edge_touches": {},
+      "lowest_opaque_row": [
+        119,
+        127
+      ],
+      "pivot_y": 126.0,
+      "duplicates": [],
+      "sizes": [
+        [
+          128,
+          128
+        ]
+      ],
+      "loop_closure_max_m": 0.0,
+      "stance_speed_m_s": {
+        "R": [
+          6.998,
+          7.166
+        ],
+        "L": [
+          7.001,
+          7.171
+        ]
+      },
+      "sole_row_minus_expected": [
+        0.87,
+        5.87
+      ]
+    },
+    "attack_basic": {
+      "frames": 7,
+      "duration_s": 0.28,
+      "worst_severity": "Baixo",
+      "max_sword_drift_m": 2e-07,
+      "max_shell_residual_m": 2e-06,
+      "lowest_z_range_m": [
+        0.0,
+        0.0
+      ],
+      "pops": {},
+      "edge_touches": {},
+      "lowest_opaque_row": [
+        191,
+        191
+      ],
+      "pivot_y": 190.0,
+      "duplicates": [],
+      "sizes": [
+        [
+          256,
+          192
+        ]
+      ],
+      "sole_row_minus_expected": [
+        1.0,
+        1.0
+      ]
+    },
+    "dodge": {
+      "frames": 7,
+      "duration_s": 0.28,
+      "worst_severity": "Baixo",
+      "max_sword_drift_m": 1e-07,
+      "max_shell_residual_m": 4.1e-06,
+      "lowest_z_range_m": [
+        -0.0,
+        -0.0
+      ],
+      "pops": {},
+      "edge_touches": {},
+      "lowest_opaque_row": [
+        127,
+        127
+      ],
+      "pivot_y": 126.0,
+      "duplicates": [],
+      "sizes": [
+        [
+          128,
+          128
+        ]
+      ],
+      "sole_row_minus_expected": [
+        1.0,
+        1.0
+      ]
+    }
+  },
+  "failures": [],
+  "atlases": {
+    "locomotion": {
+      "C": {
+        "file": "sprites/player/player_locomotion.png",
+        "size": [
+          1038,
+          518
+        ],
+        "sha256": "543ac309d78fa59858274aab457b99c257f0d891e57e728c8bcec23f0758d9e9",
+        "bytes_rgba": 2150736
+      },
+      "B": {
+        "size": [
+          1038,
+          518
+        ],
+        "sha256": "276dd3b930e19bfd073742a490b4d8f36e8fc21c0ab0835fbae46df08be801c0"
+      }
+    },
+    "combat": {
+      "C": {
+        "file": "sprites/player/player_combat.png",
+        "size": [
+          1804,
+          192
+        ],
+        "sha256": "06a60d1740b7abb04654ce024e146d9491f919371ada1d5d8978854ab9b80143",
+        "bytes_rgba": 1385472
+      },
+      "B": {
+        "size": [
+          1804,
+          192
+        ],
+        "sha256": "ad1fbc79f7d040aeb73907743749bedb9c44e2ee3cbef755468e39ca83e47ccc"
+      }
+    }
+  },
+  "layout": {
+    "locomotion": {
+      "cell": [
+        128,
+        128
+      ],
+      "columns": 8,
+      "rows": 4,
+      "first": {
+        "idle": 0,
+        "run": 12,
+        "dodge": 22
+      },
+      "size": [
+        1038,
+        518
+      ]
+    },
+    "combat": {
+      "cell": [
+        256,
+        192
+      ],
+      "columns": 7,
+      "rows": 1,
+      "first": {
+        "attack_basic": 0
+      },
+      "size": [
+        1804,
+        192
+      ]
+    }
+  },
+  "manifest_ron_sha256": "9ce15539dc878ad064690320a51996ad32bb68e7ac60c1f5e26fb17e42f4e8cd",
+  "sheets": {
+    "contact": "game_sprites_contact_sheet.png",
+    "run": "run_cycle_v1_3.png"
+  },
+  "previews": {
+    "idle": {
+      "file": "idle_C.gif",
+      "delays_ms": [
+        80,
+        90,
+        80,
+        80,
+        90,
+        80,
+        80,
+        90,
+        80,
+        80,
+        90,
+        80
+      ]
+    },
+    "run": {
+      "file": "run_C.gif",
+      "delays_ms": [
+        40,
+        40,
+        50,
+        40,
+        40,
+        40,
+        40,
+        40,
+        50,
+        40
+      ]
+    },
+    "attack_basic": {
+      "file": "attack_basic_C.gif",
+      "delays_ms": [
+        40,
+        40,
+        50,
+        40,
+        40,
+        40,
+        30
+      ]
+    },
+    "dodge": {
+      "file": "dodge_C.gif",
+      "delays_ms": [
+        40,
+        40,
+        50,
+        40,
+        40,
+        40,
+        30
+      ]
+    }
+  },
+  "run_design": {
+    "reference_speed_px_s": 190.0,
+    "reference_speed_m_s": 6.65,
+    "stance_travel_m": 0.76,
+    "stance_share": 0.2743,
+    "steps_per_cycle": 2,
+    "body_travel_per_cycle_m": 2.7708,
+    "body_travel_per_cycle_px": 79.17
+  }
+}

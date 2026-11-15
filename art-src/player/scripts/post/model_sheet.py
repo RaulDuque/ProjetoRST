@@ -8,6 +8,7 @@ The masters come from ``bpy/previews.py`` and the other views from
 
 ``--layout v003`` (V1.2-C) adds a third row (boots, sword, flat "toon"
 render, readable-sword variant) and close-ups of face and hair;
+``--layout v004`` (V1.2-D) adds face front/profile and torso close-ups;
 ``--background dark`` uses the room colour instead of the neutral grey.
 
 Usage:
@@ -64,6 +65,16 @@ ROWS_V003 = (
      ("side_master_toon", "Lateral, cores chapadas (teste C)"),
      ("side_master_readable", "Lateral, lâmina ×1,7 (variante)")),
 )
+ROWS_V004 = (
+    ROWS_V003[0],
+    (("close_face", "Close: rosto (3/4)"), ("close_face_front", "Close: rosto (frente)"),
+     ("close_face_profile", "Close: rosto (perfil)"), ("close_hair", "Close: cabelo (costas, 3/4)")),
+    (("close_torso", "Close: tronco, colete e cinto"), ("close_coat", "Close: casaca, forro, cinto"),
+     ("close_cape", "Close: meia-capa e fecho"), ("close_boots", "Close: botas")),
+    (("close_sword", "Close: espada e mão"), ("side_master_toon", "Lateral, cores chapadas (teste C)"),
+     ("side_master_readable", "Lateral, lâmina ×1,7 (variante)"),
+     ("side_master_readable_toon", "Lateral, lâmina ×1,7, cores chapadas")),
+)
 LAYOUTS = {
     "v002": ((ROW_TURNAROUND, ROW_DETAILS),
              "Experimental, feito de primitivas, sem rig. Não é arte final. "
@@ -71,6 +82,9 @@ LAYOUTS = {
     "v003": (ROWS_V003,
              "Experimental: malhas procedurais (seções, tubos ao longo de curvas, tecido com espessura), "
              "sem rig. Não é arte final. Luz relativa à câmera em todas as vistas."),
+    "v004": (ROWS_V004,
+             "Experimental: refinamento localizado do v003 (rosto, cabelo, corpo, vestuário, materiais), "
+             "sem rig. Não é arte final. Mesmas câmeras e luz do v003."),
 }
 
 

@@ -47,6 +47,7 @@ from palette import (
     SCENE_PLATFORM,
     srgb_float,
 )
+from resample import resize
 
 PLAYER_DIR = Path(__file__).resolve().parents[2]
 PROJECT = PLAYER_DIR.parents[1]
@@ -229,20 +230,20 @@ def frame(
     if zoom != int(zoom) or (density > 1 and zoom != density):
         # Generic path (V1.2-B): fractional zoom, or a sprite whose density
         # differs from the zoom; the sprite is resampled to zoom / density.
-        screen = world.resize(WINDOW, Image.Resampling.NEAREST)
+        screen = resize(world, WINDOW, Image.Resampling.NEAREST)
         scale = zoom / density
         size = (round(sprite.size[0] * scale), round(sprite.size[1] * scale))
         smooth = Image.Resampling.LANCZOS if density > 1 else Image.Resampling.NEAREST
-        scaled = sprite.resize(size, smooth)
+        scaled = resize(sprite, size, smooth)
         feet = ((player_x - view_min[0]) * zoom, WINDOW[1] - (ground - view_min[1]) * zoom)
         pivot = (PIVOT[0] * density * scale, PIVOT[1] * density * scale)
         screen.alpha_composite(scaled, (round(feet[0] - pivot[0]), round(feet[1] - pivot[1])))
     elif density == 1 and zoom > 1:
         # A 1x sprite in world space is magnified with the scene (nearest).
         place_sprite(world, sprite, (player_x - view_min[0], view[1] - (ground - view_min[1])), 1)
-        screen = world.resize(WINDOW, Image.Resampling.NEAREST)
+        screen = resize(world, WINDOW, Image.Resampling.NEAREST)
     else:
-        screen = world.resize(WINDOW, Image.Resampling.NEAREST) if zoom > 1 else world
+        screen = resize(world, WINDOW, Image.Resampling.NEAREST) if zoom > 1 else world
         feet = ((player_x - view_min[0]) * zoom, WINDOW[1] - (ground - view_min[1]) * zoom)
         place_sprite(screen, sprite, feet, density)
     if hud is not None:
