@@ -53,4 +53,5 @@ Locked ──(available_if)──▶ Available ──(aceitar)──▶ Active �
   mercenários das Casernas), com reputação de −100 a 100 por facção.
 - **Efeitos:** preços condicionais, NPCs que aparecem ou somem, missões exclusivas.
 - **Persistência:** `reputation: BTreeMap<FactionId, i32>` no save.
-- Só depois da V2.4, se o design pedir.
+- Só depois da versão de missões e narrativa (item futuro, sem número;
+  `GAME_VISION_MASTER.md` §6), se o design pedir.

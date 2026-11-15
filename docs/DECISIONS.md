@@ -583,3 +583,34 @@ protagonista pequeno, muito espaço vazio e salas com cara de teste.
 
 **Consequências:** `world_camera_tests` passaram a usar a vista configurada
 (as mesmas checagens). Sem mudança de save.
+
+## D-028 — V2.4 = Combat Feel; roadmap realinhado ao que foi entregue (consolidação SOTN)
+
+**Contexto:** a tabela de `GAME_VISION_MASTER.md` §6 previa V2.2 = conteúdo
+do castelo, V2.3 = chefes, V2.4 = missões e V2.5 = expansão. As versões
+entregues foram outras (V2.2 = equipamentos visuais, D-025/D-026; V2.3 =
+câmera e atmosfera, D-027). A pesquisa técnica SOTN (Fases 1 e 2,
+`docs/REFERENCIAS_SOTN.md` e documentos ligados) apontou a sensação de
+combate como a maior lacuna. O proprietário aprovou a direção na tarefa de
+consolidação da pesquisa.
+
+**Decisão:**
+- **V2.4 = Combat Feel / Peso do Golpe**, conforme
+  `docs/PLANO_V2_4_COMBAT_FEEL.md`. A **direção** está aprovada; a
+  **implementação** de cada etapa exige autorização específica.
+- A tabela-direção passa a registrar V2.2 e V2.3 como foram entregues.
+- Conteúdo do castelo, chefes e progressão, missões e narrativa e expansão do
+  mundo continuam como **itens futuros sem número**. A ordem sugerida está em
+  `docs/PROPOSTA_ROADMAP_POS_V2_4.md` e depende de aprovação.
+- Princípios do plano: campos novos opcionais com padrão igual ao
+  comportamento atual; nenhuma arma existente (inclusive a Iron Sword) muda
+  sem nova decisão; o gameplay continua guiado por temporizadores em dados,
+  e a arte o acompanha (`docs/ESTUDO_SOTN_ANIMACOES.md` §3).
+- Pesquisa: nenhum código, tabela, asset ou nome do SOTN entra no projeto
+  (sotn-decomp é AGPL-3.0; SymphonyRecomp não tem licença).
+
+**Consequências:** só documentação. Referências "V2.4 = missões" em
+`QUEST_FACTION_SYSTEM.md` e `WORLD_PERSISTENCE.md` passaram a apontar para
+o item futuro. Os documentos da Fase 1 receberam notas de correção (respawn
+na reentrada já existente no DCR) sem perder o texto original. Sem mudança
+de código, dados ou save.

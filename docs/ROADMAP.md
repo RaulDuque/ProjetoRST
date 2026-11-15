@@ -4,9 +4,16 @@
 Validação de referência: `cargo test` (unitários, integração e ECS headless) e
 `cargo run --example autoplay` (execução real com screenshots).
 
-A direção de longo prazo (V1.6 → V2.5) está em
+A direção de longo prazo (V1.6 → V2.4, mais itens futuros sem número) está em
 [`GAME_VISION_MASTER.md`](GAME_VISION_MASTER.md) §6. Esta lista registra o que
 já está feito, etapa por etapa.
+
+## Versões recentes e próxima
+
+- [x] **V2.2 — Equipamentos visuais:** arma em camada com âncoras, figuras de NPC, marcadores no mapa, HUD empilhado ([`VISUAL_EQUIPMENT_V2_2.md`](VISUAL_EQUIPMENT_V2_2.md))
+- [x] **V2.3 — Câmera, cenários góticos, parallax e atmosfera** ([`WORLD_VISUAL_V2_3.md`](WORLD_VISUAL_V2_3.md))
+- [ ] **V2.4 — Combat Feel / Peso do Golpe** (planejada, D-028; implementação aguarda autorização): [`PLANO_V2_4_COMBAT_FEEL.md`](PLANO_V2_4_COMBAT_FEEL.md)
+- Futuro, sem número: conteúdo do castelo, chefes e progressão, missões e narrativa, expansão do mundo ([`PROPOSTA_ROADMAP_POS_V2_4.md`](PROPOSTA_ROADMAP_POS_V2_4.md))
 
 ## Etapa 1 — Infraestrutura
 - [x] Projeto Cargo `dark_castle_rpg`, Rust 2024, dependências fixadas e `Cargo.lock` versionado

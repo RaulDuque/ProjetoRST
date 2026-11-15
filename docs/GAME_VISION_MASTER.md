@@ -52,7 +52,7 @@ cidade de uma linhagem de guardiões. O castelo despertou, e suas regiões se
 deslocam a cada eclipse. O protagonista, um espadachim com sangue da antiga
 vigília, entra para selar o coração do castelo. Os nomes de regiões estão em
 [`CASTLE_WORLD_DESIGN.md`](CASTLE_WORLD_DESIGN.md). A história completa fica
-para a V2.4.
+para o item futuro "Missões e narrativa" (§6).
 
 ## 4. Escala-alvo (capacidade, não meta desta fase)
 
@@ -105,10 +105,20 @@ encontradas na V1.6:
 | **V1.9** | Primeira transformação | Perfis de movimento por forma, Forma Espectral completa (física, combate, animação), recurso de forma | V1.8 |
 | **V2.0** | Equipamentos | Categorias de armas (3 a 4 primeiro), slots novos, aparência híbrida (capa e arma em camada), técnicas por arma | V1.7 (save v2) |
 | **V2.1** | NPCs e comércio | Vauvrel (cidade), diálogos por condição, loja (compra e venda), ferreiro (melhoria) | V1.8 (interação), V2.0 |
-| **V2.2** | Conteúdo do castelo | 3 a 4 regiões completas (~80 a 120 salas) com o pipeline de conteúdo | V1.8, V1.9 |
-| **V2.3** | Chefes e progressão | Chefes com fases, recompensas, desbloqueios de habilidade, inimigos raros | V2.2 |
-| **V2.4** | Missões e narrativa | Missões, estados, NPCs narrativos, história | V2.1 |
-| **V2.5** | Expansão do mundo | Mais regiões, Limiar Onírico, exploração avançada, conteúdo opcional | V2.2–V2.4 |
+| **V2.2** | Equipamentos visuais | Arma visível em camada com âncoras, figuras de NPC, marcadores no mapa, HUD empilhado ([`VISUAL_EQUIPMENT_V2_2.md`](VISUAL_EQUIPMENT_V2_2.md)) — **entregue** | V2.0, V2.1 |
+| **V2.3** | Câmera e atmosfera | Câmera por dados, cenários góticos, parallax, iluminação e névoa ([`WORLD_VISUAL_V2_3.md`](WORLD_VISUAL_V2_3.md)) — **entregue** | V2.2 |
+| **V2.4** | Combat Feel / Peso do Golpe | Linha do tempo do golpe por arma, cancelamento, recuo e atordoamento por intensidade, reacerto, controle aéreo, hurtbox por postura ([`PLANO_V2_4_COMBAT_FEEL.md`](PLANO_V2_4_COMBAT_FEEL.md)) — **planejada; implementação aguarda autorização** | V2.3 |
+
+**Itens futuros, sem número de versão** (eram V2.2–V2.5 na tabela
+original; renumerados pela D-028). Ordem sugerida em
+[`PROPOSTA_ROADMAP_POS_V2_4.md`](PROPOSTA_ROADMAP_POS_V2_4.md):
+
+| Item futuro | Entregas principais | Depende de |
+|---|---|---|
+| Conteúdo do castelo | 3 a 4 regiões completas (~80 a 120 salas) com o pipeline de conteúdo | V1.8, V1.9 |
+| Chefes e progressão | Chefes com fases, recompensas, desbloqueios de habilidade, inimigos raros ([`ESTUDO_SOTN_CHEFES.md`](ESTUDO_SOTN_CHEFES.md)) | V2.4 (atordoamento e telegrafia) |
+| Missões e narrativa | Missões, estados, NPCs narrativos, história | V2.1 |
+| Expansão do mundo | Mais regiões, Limiar Onírico, exploração avançada, conteúdo opcional | Conteúdo do castelo, chefes, missões |
 
 O [`ROADMAP.md`](ROADMAP.md) continua registrando o que está feito, etapa por
 etapa. Esta tabela é a direção.

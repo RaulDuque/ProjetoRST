@@ -56,7 +56,7 @@ SaveFile { version: 2, data: SaveData {
     },
     world: WorldProgress { ...v1... },              // portas, baús, chefes, flags: mantidos
     exploration: ExplorationState,                  // novo: mapa, segredos, coletas, concessões
-    quests: BTreeMap<QuestId, QuestState>,          // V2.4 (vazio antes)
+    quests: BTreeMap<QuestId, QuestState>,          // versão de missões (futura; vazio antes)
     play_time,
 }}
 ```
