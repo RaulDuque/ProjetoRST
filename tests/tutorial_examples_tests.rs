@@ -7,8 +7,8 @@
 //! world (nothing under `assets/` changes), validated like `app::load_world`
 //! does, and walked with real keys from the village cottage.
 //!
-//! Tutorials live in `Md-usario/tutorias/`; while that folder cannot be
-//! written they are staged in `docs/tutorias/` (the first one found is used).
+//! V2.2: the official tutorials are `docs/tutorias/` (the owner copies them
+//! to `Md-usario/tutorias/` by hand); only `docs/tutorias/` is read.
 
 use std::path::{Path, PathBuf};
 use std::time::Duration;
@@ -23,9 +23,12 @@ use dark_castle_rpg::core::events::{Arrival, RoomRequest};
 use dark_castle_rpg::core::resources::GameData;
 use dark_castle_rpg::economy::shop::{ShopDefinition, ShopEntry, ShopLibrary};
 use dark_castle_rpg::enemies::definitions::EnemyDefinition;
+use dark_castle_rpg::inventory::appearance::ItemVisual;
 use dark_castle_rpg::inventory::items::{ItemCatalog, ItemDataFile, ItemDefinition};
 use dark_castle_rpg::inventory::weapons::WeaponClass;
+use dark_castle_rpg::npc::art::NpcLook;
 use dark_castle_rpg::npc::definitions::{DialogueNode, NpcDefinition, NpcLibrary};
+use dark_castle_rpg::player::visual::sockets::FrameSockets;
 use dark_castle_rpg::save::save_manager::SaveStorage;
 use dark_castle_rpg::save::systems::SaveSlots;
 use dark_castle_rpg::world::exploration_systems::{activate_world, install_world};
@@ -46,13 +49,11 @@ fn root() -> &'static Path {
     Path::new(env!("CARGO_MANIFEST_DIR"))
 }
 
+/// The official tutorials (V2.2): `docs/tutorias/`. The owner copies them
+/// by hand to `Md-usario/tutorias/`, which is never read or written here
+/// (the copy may lag behind until the owner syncs it).
 fn tutorial_dir() -> PathBuf {
-    let owner = root().join("Md-usario/tutorias");
-    if owner.is_dir() {
-        owner
-    } else {
-        root().join("docs/tutorias")
-    }
+    root().join("docs/tutorias")
 }
 
 /// (file, kind, body) of every verified block.
@@ -168,6 +169,16 @@ fn example() -> (Example, usize) {
             }
             "Mercadoria" => {
                 let _: ShopEntry = parse(file, kind, body);
+            }
+            // V2.2 excerpts: item visual, NPC look, one frame of sockets.
+            "Visual" => {
+                let _: ItemVisual = parse(file, kind, body);
+            }
+            "AparenciaNpc" => {
+                let _: NpcLook = parse(file, kind, body);
+            }
+            "QuadroAncoras" => {
+                let _: FrameSockets = parse(file, kind, body);
             }
             other => panic!("{file}: unknown block kind `{other}`"),
         }
@@ -333,6 +344,12 @@ fn every_tutorial_follows_the_template_and_every_block_parses() {
         "21_CADASTRAR_MERCADORIAS.md",
         "22_CONFIGURAR_PRECOS.md",
         "23_CRIAR_CIDADE.md",
+        "24_CRIAR_ARMA_COM_APARENCIA.md",
+        "25_CONFIGURAR_POSICAO_DA_ARMA.md",
+        "26_CRIAR_SPRITES_DE_NPCS.md",
+        "27_ASSOCIAR_SPRITES_A_NPCS.md",
+        "28_ADICIONAR_MARCADORES_NO_MAPA.md",
+        "29_TESTAR_EQUIPAMENTOS_VISUAIS.md",
     ];
     let sections = [
         "## 1. O que vamos fazer?",
