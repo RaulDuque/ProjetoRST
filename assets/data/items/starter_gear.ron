@@ -3,7 +3,9 @@
         (id: "common", name: "Common", color: (0.85, 0.85, 0.85), tier: 0),
         (id: "uncommon", name: "Uncommon", color: (0.4, 0.85, 0.4), tier: 1),
         (id: "rare", name: "Rare", color: (0.35, 0.55, 1.0), tier: 2),
-        (id: "legendary", name: "Legendary", color: (1.0, 0.7, 0.2), tier: 3),
+        // V2.0: Epic between Rare and Legendary (tier is only a sort order).
+        (id: "epic", name: "Epic", color: (0.7, 0.4, 0.95), tier: 3),
+        (id: "legendary", name: "Legendary", color: (1.0, 0.7, 0.2), tier: 4),
     ],
     items: [
         (
@@ -34,6 +36,27 @@
             rarity: "uncommon",
             modifiers: (intelligence: 2, resistances: (values: [(Fire, 0.25)])),
             sell_value: 120,
+        ),
+        (
+            // V1.8: reward of the Forgotten Galleries' rare chest.
+            id: "warden_greaves",
+            name: "Warden Greaves",
+            description: "Iron-shod boots of the old gallery wardens.",
+            category: Boots,
+            rarity: "rare",
+            modifiers: (defense: 3),
+            weight: 3.0,
+            sell_value: 90,
+        ),
+        (
+            // V1.9: reward of the Veiled Shrine (behind the spectral veils).
+            id: "veilwoven_band",
+            name: "Veilwoven Band",
+            description: "A ring of grey thread that hums near the veils.",
+            category: Ring,
+            rarity: "rare",
+            modifiers: (max_mp: 6, mp_regen: 0.2),
+            sell_value: 140,
         ),
         (
             id: "minor_tonic",

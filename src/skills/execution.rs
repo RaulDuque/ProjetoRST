@@ -59,6 +59,8 @@ pub enum CommandOutcome {
     OnCooldown { id: SkillId, remaining: f32 },
     /// Learned and affordable, but not usable in the current state.
     NotAllowedNow { id: SkillId },
+    /// V2.0: the equipped weapon cannot perform this technique.
+    WrongWeapon { id: SkillId },
 }
 
 impl CommandOutcome {
@@ -95,7 +97,21 @@ impl fmt::Display for CommandOutcome {
                 write!(f, "{id}: cooldown {remaining:.1}s")
             }
             CommandOutcome::NotAllowedNow { id } => write!(f, "{id}: cannot use now"),
+            CommandOutcome::WrongWeapon { id } => write!(f, "{id}: wrong weapon"),
         }
+    }
+}
+
+/// V2.0: whether the equipped weapon (category, `None` unarmed) can perform
+/// `def`. `None` when it can; otherwise the outcome to report.
+pub fn check_weapon(
+    def: &SkillDefinition,
+    weapon: Option<crate::inventory::items::ItemCategory>,
+) -> Option<CommandOutcome> {
+    if def.weapons.is_empty() || weapon.is_some_and(|w| def.weapons.contains(&w)) {
+        None
+    } else {
+        Some(CommandOutcome::WrongWeapon { id: def.id.clone() })
     }
 }
 

@@ -8,7 +8,7 @@ use bevy::prelude::*;
 use super::damage::{
     AttackProfile, DamageKind, DamageRolls, DefenseProfile, HitSpec, calculate_damage,
 };
-use crate::core::events::DamageDealt;
+use crate::core::events::{DamageDealt, RoomChanged};
 use crate::core::resources::GameRandom;
 use crate::core::time::frame_delta;
 use crate::player::attributes::DerivedStats;
@@ -162,6 +162,24 @@ pub fn cancel_interrupted_hitboxes(
         if matches!(owner.state(), PlayerState::Hurt | PlayerState::Dead) {
             commands.entity(entity).try_despawn();
         }
+    }
+}
+
+/// Room lifecycle (V1.7): every hitbox belongs to the room it was created
+/// in. A room change (door or load) despawns all of them in the same frame
+/// (`RoomStep::React`, before the next `GameSet::Combat`), whatever their
+/// remaining lifetime: enemy strikes, the player's slashes and techniques,
+/// projectiles. Inside a room nothing changes (lifetime, size, damage).
+pub fn clear_on_room_change(
+    mut commands: Commands,
+    mut changes: MessageReader<RoomChanged>,
+    hitboxes: Query<Entity, With<Hitbox>>,
+) {
+    if changes.read().count() == 0 {
+        return;
+    }
+    for entity in &hitboxes {
+        commands.entity(entity).try_despawn();
     }
 }
 

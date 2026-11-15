@@ -141,6 +141,27 @@ impl ElementalResistances {
             .map_or(0.0, |(_, v)| *v)
     }
 
+    /// A copy with every raw value clamped to `[min, max]` (V2.0: the cap
+    /// of the character's summed equipment resistances).
+    pub fn capped(&self, min: f32, max: f32) -> Self {
+        Self {
+            values: self
+                .values
+                .iter()
+                .map(|(e, v)| {
+                    (
+                        *e,
+                        if v.is_finite() {
+                            v.clamp(min, max)
+                        } else {
+                            0.0
+                        },
+                    )
+                })
+                .collect(),
+        }
+    }
+
     /// Damage multiplier for an element: `1 - resistance`.
     pub fn damage_multiplier(&self, element: Element) -> f32 {
         1.0 - self.get(element)

@@ -13,12 +13,13 @@ use crate::core::constants::{
     GUARD_DAMAGE_REDUCTION, PLAYER_HURT_KNOCKBACK, PLAYER_HURT_TIME, PLAYER_INVULNERABILITY,
     PLAYER_SIZE, Z_PLAYER,
 };
-use crate::core::events::{DamageDealt, EnemyDefeated, Notification};
+use crate::core::events::{DamageDealt, EnemyDefeated, Notification, PickupCollected};
 use crate::core::resources::{GameData, GameRandom};
 use crate::core::time::frame_delta;
 use crate::input::PlayerInput;
 use crate::inventory::items::drop_chance;
 use crate::skills::definitions::Acquisition;
+use crate::world::graph::Grant;
 use crate::world::maps::CurrentRoom;
 use crate::world::physics::{AffectedByGravity, Body, FacingDirection, Grounded, Velocity};
 
@@ -153,7 +154,7 @@ pub fn receive_damage(
         }
         let mut amount = hit.outcome.amount();
         // Guard blocks hits coming from the front.
-        let from_front = hit.direction == -facing.sign();
+        let from_front = facing.0.faces_hit(hit.direction);
         if state.state() == PlayerState::Guarding && from_front {
             amount = (amount as f32 * (1.0 - GUARD_DAMAGE_REDUCTION)).round() as i32;
         }
@@ -204,6 +205,25 @@ pub fn respawn(
     transform.translation.y = room.player_spawn.1;
     velocity.0 = Vec2::ZERO;
     invulnerable.remaining = PLAYER_INVULNERABILITY;
+}
+
+/// World pickups that grant an `Item` put one of it in the inventory
+/// (V1.7). The pickup itself is recorded once by the world module, so the
+/// item cannot be collected twice (doors, revisits and loads included).
+pub fn receive_world_items(
+    data: Res<GameData>,
+    mut collected: MessageReader<PickupCollected>,
+    player: Single<&mut Belongings, With<Player>>,
+) {
+    let mut belongings = player.into_inner();
+    for pickup in collected.read() {
+        let Grant::Item(item) = &pickup.grant else {
+            continue;
+        };
+        if let Err(error) = belongings.inventory.add(item, 1, &data.items) {
+            warn!(%error, pickup = %pickup.pickup, "world item not added");
+        }
+    }
 }
 
 pub fn collect_rewards(

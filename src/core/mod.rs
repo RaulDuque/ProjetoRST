@@ -10,8 +10,8 @@ use bevy::prelude::*;
 
 use constants::RNG_SEED;
 use events::{
-    BasicAttackRequested, CommandResolved, DamageDealt, EnemyDefeated, Notification,
-    SkillActivated, SkillStarted,
+    BasicAttackRequested, CommandResolved, DamageDealt, EnemyDefeated, FormChanged, Notification,
+    PickupCollected, ProjectileBlocked, RoomChanged, RoomRequest, SkillActivated, SkillStarted,
 };
 use resources::GameRandom;
 use rng::GameRng;
@@ -28,6 +28,14 @@ impl Plugin for CorePlugin {
             .add_message::<BasicAttackRequested>()
             .add_message::<DamageDealt>()
             .add_message::<EnemyDefeated>()
-            .add_message::<Notification>();
+            .add_message::<Notification>()
+            .add_message::<RoomChanged>()
+            .add_message::<RoomRequest>()
+            .add_message::<PickupCollected>()
+            .add_message::<ProjectileBlocked>()
+            .add_message::<FormChanged>()
+            .add_message::<events::EquipRequest>()
+            .add_message::<events::EquipmentChanged>()
+            .add_message::<events::TradeRequest>();
     }
 }

@@ -48,6 +48,23 @@ pub fn follow_player(
         .smooth_nudge(&destination, CAMERA_FOLLOW_RATE, time.delta_secs());
 }
 
+/// Once, on the first frame with a loaded room: puts the camera on the
+/// player (V1.7). Before, the camera was spawned at the origin and slid to
+/// the player, showing the area outside the room for a few frames. Room
+/// changes snap in `world::transitions`; the follow itself is unchanged.
+pub fn snap_on_start(
+    mut done: Local<bool>,
+    geometry: Res<RoomGeometry>,
+    player: Single<&Transform, (With<Player>, Without<MainCamera>)>,
+    mut camera: Single<&mut Transform, (With<MainCamera>, Without<Player>)>,
+) {
+    if *done || geometry.size == Vec2::ZERO {
+        return;
+    }
+    snap_to(&mut camera, player.translation.truncate(), &geometry);
+    *done = true;
+}
+
 /// Places the camera on the player immediately (start, load, respawn).
 pub fn snap_to(camera: &mut Transform, position: Vec2, geometry: &RoomGeometry) {
     camera.translation.x = clamp_axis(position.x, geometry.size.x, WINDOW_WIDTH as f32);

@@ -20,6 +20,8 @@
         animation: "slash_crescent",
         vfx: "arc_white",
         effect: MeleeStrike(width: 70.0, height: 44.0, lunge_speed: 260.0),
+        // V2.0: a sword technique.
+        weapons: [Sword],
         usable_in: [Grounded, Attacking],
         acquisition: Starting,
     ),
@@ -41,6 +43,8 @@
         animation: "slash_rising",
         vfx: "arc_gold",
         effect: MeleeStrike(width: 44.0, height: 90.0, lunge_speed: 0.0),
+        // V2.0: a sword technique.
+        weapons: [Sword],
         requirements: (min_level: 3),
         usable_in: [Grounded, Airborne, Attacking],
         acquisition: OnRequirements,

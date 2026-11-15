@@ -40,6 +40,10 @@ impl Plugin for CombatPlugin {
         )
         .add_systems(
             Update,
+            hitboxes::clear_on_room_change.in_set(crate::world::transitions::RoomStep::React),
+        )
+        .add_systems(
+            Update,
             hitboxes::cancel_interrupted_hitboxes
                 .in_set(GameSet::Resolution)
                 .after(crate::player::systems::receive_damage),

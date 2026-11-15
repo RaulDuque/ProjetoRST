@@ -1,0 +1,231 @@
+// Region "Vigil Gates" (Portões da Vigília): V1.6 vertical slice, 9 rooms.
+// Provisional geometry. Map cells are 1280x720 world units; walls, floor,
+// ceiling, door openings and the ledges under raised side doors are
+// generated (src/world/graph.rs), so rooms only list their interior.
+//
+//   y=2  [ gallery (1..2) ]<->[shaft]
+//   y=1  [postern]            [shaft]
+//   y=0  [reliquary][sealed][approach]<->[causeway (1..2)]<->[shaft]<->[barbican]<~>[hidden cache]
+//         postern drops into approach through its ceiling (one way); sealed
+//         needs VeilStep (relic in the gallery); the cache is behind a false wall.
+// V1.8: the reliquary opens to the Forgotten Galleries (left, after the
+// Gatekeeper's Sigil) and the sealed hall receives the galleries' shortcut
+// through its ceiling (arrival only).
+// V1.9: the gallery's floor has a spectral veil over a hole to the Veiled
+// Cloister (a human walks on it; the Spectral Form sinks through), and the
+// causeway's ceiling receives the cloister's two drops (arrival only).
+// V2.0: equipment chests in the approach (Watch Pike), the causeway
+// (Emberlined Cloak) and the barbican (Bloodstone Pendant).
+// V2.1: the shaft's right door at cell 1 leads to the Village of Ashes.
+(
+    region: (id: "vigil_gates", name: "Vigil Gates", color: (0.55, 0.42, 0.62)),
+    rooms: [
+        (
+            id: "vigil_gates_approach",
+            name: "Gate Approach",
+            region: "vigil_gates",
+            role: Required,
+            map: (x: 0, y: 0, w: 1, h: 1),
+            background: (0.07, 0.06, 0.10),
+            platforms: [
+                (min: (420.0, 40.0), size: (120.0, 50.0)),
+                (min: (820.0, 190.0), size: (220.0, 16.0), one_way: true),
+            ],
+            objects: [
+                // V2.0: the first weapon found, next to the start.
+                (id: "vg_approach_chest", kind: Chest(tier: Common, reward: Item("watch_pike")),
+                    area: (min: (240.0, 40.0), size: (48.0, 36.0))),
+            ],
+            doors: [
+                (id: "to_causeway", side: Right, to: (room: "vigil_gates_causeway", door: "from_approach")),
+                (id: "to_sealed", side: Left, to: (room: "vigil_gates_sealed_hall", door: "from_approach"),
+                    requires: Some(Ability(VeilStep))),
+                (id: "from_postern", side: Top, to: (room: "vigil_gates_postern", door: "to_approach"),
+                    entry_only: true),
+            ],
+        ),
+        (
+            id: "vigil_gates_causeway",
+            name: "Broken Causeway",
+            region: "vigil_gates",
+            role: Required,
+            map: (x: 1, y: 0, w: 2, h: 1),
+            background: (0.06, 0.07, 0.10),
+            platforms: [
+                (min: (700.0, 40.0), size: (100.0, 70.0)),
+                (min: (1500.0, 200.0), size: (260.0, 16.0), one_way: true),
+                // V1.7: 120 -> 100 u tall (jump margin at low frame rates).
+                (min: (2000.0, 40.0), size: (80.0, 100.0)),
+            ],
+            enemies: [
+                (enemy: "bone_sentry", position: (1300.0, 70.0), patrol_half_width: 220.0),
+            ],
+            objects: [
+                // V2.0: a cloak past the sentry.
+                (id: "vg_causeway_chest", kind: Chest(tier: Rare, reward: Item("emberlined_cloak")),
+                    area: (min: (1800.0, 40.0), size: (48.0, 36.0))),
+            ],
+            doors: [
+                (id: "from_approach", side: Left, to: (room: "vigil_gates_approach", door: "to_causeway")),
+                (id: "to_shaft", side: Right, to: (room: "vigil_gates_shaft", door: "from_causeway")),
+                // V1.9: drops from the Veiled Cloister (one way).
+                (id: "from_shrine", side: Top, cell: 0, to: (room: "vc_veiled_shrine", door: "to_causeway"),
+                    entry_only: true),
+                (id: "from_well", side: Top, cell: 1, to: (room: "vc_veiled_well", door: "to_causeway"),
+                    entry_only: true),
+            ],
+        ),
+        (
+            id: "vigil_gates_shaft",
+            name: "Watch Shaft",
+            region: "vigil_gates",
+            role: Required,
+            map: (x: 3, y: 0, w: 1, h: 3),
+            background: (0.05, 0.06, 0.09),
+            platforms: [
+            // V1.7: first step lowered from 150 to 130 (a 106 u rise like the
+            // others, ~110), so the climb keeps a margin under the 130-136 u
+            // jump at any frame rate. Rises between steps: <= 110 u.
+            (min: (560.0, 130.0), size: (240.0, 16.0), one_way: true),
+            (min: (520.0, 260.0), size: (240.0, 16.0), one_way: true),
+            (min: (560.0, 370.0), size: (240.0, 16.0), one_way: true),
+            (min: (500.0, 480.0), size: (240.0, 16.0), one_way: true),
+            (min: (540.0, 590.0), size: (240.0, 16.0), one_way: true),
+            (min: (470.0, 700.0), size: (240.0, 16.0), one_way: true),
+            (min: (500.0, 810.0), size: (240.0, 16.0), one_way: true),
+            (min: (430.0, 920.0), size: (240.0, 16.0), one_way: true),
+            (min: (450.0, 1030.0), size: (240.0, 16.0), one_way: true),
+            (min: (380.0, 1140.0), size: (240.0, 16.0), one_way: true),
+            (min: (330.0, 1250.0), size: (240.0, 16.0), one_way: true),
+            (min: (240.0, 1370.0), size: (240.0, 16.0), one_way: true),
+            // V2.1: a step on the right to the Village of Ashes door (cell 1):
+            // walking right off the 810 step drops onto it, and off its end
+            // onto the door's ledge.
+            (min: (750.0, 760.0), size: (260.0, 16.0), one_way: true),
+            ],
+            doors: [
+                (id: "from_causeway", side: Left, to: (room: "vigil_gates_causeway", door: "to_shaft")),
+                (id: "to_barbican", side: Right, to: (room: "vigil_gates_barbican", door: "from_shaft")),
+                (id: "to_gallery", side: Left, cell: 2, to: (room: "vigil_gates_gallery", door: "from_shaft")),
+                // V2.1: the road out to the Village of Ashes (optional).
+                (id: "to_village", side: Right, cell: 1, to: (room: "av_gate_road", door: "to_shaft")),
+            ],
+        ),
+        (
+            id: "vigil_gates_barbican",
+            name: "Barbican",
+            region: "vigil_gates",
+            role: Optional,
+            map: (x: 4, y: 0, w: 1, h: 1),
+            background: (0.08, 0.06, 0.08),
+            platforms: [
+                (min: (560.0, 40.0), size: (160.0, 40.0)),
+            ],
+            objects: [
+                // V2.0: an accessory in the optional barbican.
+                (id: "vg_barbican_chest", kind: Chest(tier: Common, reward: Item("bloodstone_pendant")),
+                    area: (min: (300.0, 40.0), size: (48.0, 36.0))),
+            ],
+            secrets: [
+                // Drawn as wall over the right door; no collision.
+                (id: "barbican_false_wall", kind: IllusoryWall, area: (min: (1160.0, 40.0), size: (120.0, 240.0))),
+            ],
+            doors: [
+                (id: "from_shaft", side: Left, to: (room: "vigil_gates_shaft", door: "to_barbican")),
+                (id: "to_cache", side: Right, to: (room: "vigil_gates_hidden_cache", door: "from_barbican"),
+                    hidden_by: Some("barbican_false_wall")),
+            ],
+        ),
+        (
+            id: "vigil_gates_hidden_cache",
+            name: "Hidden Cache",
+            region: "vigil_gates",
+            role: Secret,
+            map: (x: 5, y: 0, w: 1, h: 1),
+            background: (0.10, 0.08, 0.05),
+            pickups: [
+                (id: "cache_tonic_bundle", name: "Bundle of tonics", position: (900.0, 70.0), grants: Item("minor_tonic")),
+            ],
+            doors: [
+                (id: "from_barbican", side: Left, to: (room: "vigil_gates_barbican", door: "to_cache")),
+            ],
+        ),
+        (
+            id: "vigil_gates_gallery",
+            name: "Upper Gallery",
+            region: "vigil_gates",
+            role: Required,
+            map: (x: 1, y: 2, w: 2, h: 1),
+            background: (0.07, 0.07, 0.11),
+            platforms: [
+                (min: (1100.0, 40.0), size: (160.0, 60.0)),
+            ],
+            pickups: [
+                (id: "veil_relic", name: "Relic of the Veil", position: (500.0, 70.0), grants: Ability(VeilStep)),
+            ],
+            doors: [
+                (id: "from_shaft", side: Right, to: (room: "vigil_gates_shaft", door: "to_gallery")),
+                (id: "to_postern", side: Left, to: (room: "vigil_gates_postern", door: "from_gallery")),
+                // V1.9: under the floor veil (tutorial of the Spectral Form).
+                (id: "to_veiled_well", side: Bottom, cell: 1, to: (room: "vc_veiled_well", door: "from_gallery")),
+            ],
+            veils: [
+                (id: "vg_gallery_floor_veil", door: "to_veiled_well", kind: Spectral),
+            ],
+        ),
+        (
+            id: "vigil_gates_postern",
+            name: "Postern Drop",
+            region: "vigil_gates",
+            role: Optional,
+            map: (x: 0, y: 1, w: 1, h: 2),
+            background: (0.05, 0.05, 0.08),
+            platforms: [
+                // Funnels the fall towards the floor opening.
+                (min: (760.0, 600.0), size: (480.0, 30.0)),
+            ],
+            doors: [
+                // Too high to climb back: arrival only (validator: no way back up).
+                (id: "from_gallery", side: Right, cell: 1, to: (room: "vigil_gates_gallery", door: "to_postern"),
+                    entry_only: true),
+                (id: "to_approach", side: Bottom, to: (room: "vigil_gates_approach", door: "from_postern")),
+            ],
+        ),
+        (
+            id: "vigil_gates_sealed_hall",
+            name: "Sealed Hall",
+            region: "vigil_gates",
+            role: Required,
+            map: (x: -1, y: 0, w: 1, h: 1),
+            background: (0.06, 0.05, 0.09),
+            platforms: [
+                (min: (500.0, 160.0), size: (260.0, 16.0), one_way: true),
+            ],
+            doors: [
+                (id: "from_approach", side: Right, to: (room: "vigil_gates_approach", door: "to_sealed"),
+                    requires: Some(Ability(VeilStep))),
+                (id: "to_reliquary", side: Left, to: (room: "vigil_gates_reliquary", door: "from_sealed")),
+                // V1.8: drop from the galleries' return bridge (shortcut, one way).
+                (id: "from_return_bridge", side: Top, to: (room: "fg_return_bridge", door: "to_sealed_hall"),
+                    entry_only: true),
+            ],
+        ),
+        (
+            id: "vigil_gates_reliquary",
+            name: "Gate Reliquary",
+            region: "vigil_gates",
+            role: Required,
+            map: (x: -2, y: 0, w: 1, h: 1),
+            background: (0.09, 0.07, 0.04),
+            pickups: [
+                (id: "gatekeeper_sigil", name: "Gatekeeper's Sigil", position: (400.0, 70.0), grants: Flag("vigil_gates_cleared")),
+            ],
+            doors: [
+                (id: "from_sealed", side: Right, to: (room: "vigil_gates_sealed_hall", door: "to_reliquary")),
+                // V1.8: the way on, once the sigil is taken.
+                (id: "to_galleries", side: Left, to: (room: "fg_threshold", door: "to_reliquary"),
+                    requires: Some(Flag("vigil_gates_cleared"))),
+            ],
+        ),
+    ],
+)

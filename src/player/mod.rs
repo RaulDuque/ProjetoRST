@@ -8,6 +8,7 @@ pub mod movement;
 pub mod progression;
 pub mod state;
 pub mod systems;
+pub mod visual;
 
 use bevy::prelude::*;
 
@@ -17,7 +18,8 @@ pub struct PlayerPlugin;
 
 impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Startup, systems::spawn_player)
+        app.add_plugins(visual::PlayerVisualPlugin)
+            .add_systems(Startup, systems::spawn_player)
             .add_systems(Update, movement::update_facing.in_set(GameSet::Commands))
             .add_systems(
                 Update,
@@ -36,14 +38,20 @@ impl Plugin for PlayerPlugin {
             .add_systems(Update, systems::receive_damage.in_set(GameSet::Resolution))
             .add_systems(
                 Update,
-                (systems::collect_rewards, systems::sync_derived_stats)
+                (
+                    systems::collect_rewards,
+                    systems::receive_world_items,
+                    systems::sync_derived_stats,
+                )
                     .chain()
                     .in_set(GameSet::Progression),
             )
             .add_systems(
                 Update,
                 (animation::attach_visor, animation::update_player_visuals)
-                    .in_set(GameSet::Presentation),
+                    .in_set(GameSet::Presentation)
+                    // Same frame as the sprite: no frame with both box and sprite.
+                    .after(visual::PlayerVisualSystems),
             );
     }
 }

@@ -26,6 +26,12 @@ impl Facing {
             Facing::Right => 1.0,
         }
     }
+
+    /// Whether a hit travelling in `hit_direction` (+1 right, −1 left) comes
+    /// from the front, i.e. toward the face. A guard only blocks those hits.
+    pub fn faces_hit(self, hit_direction: f32) -> bool {
+        hit_direction == -self.sign()
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default, Serialize, Deserialize)]
@@ -150,6 +156,12 @@ pub struct PlayerStateMachine {
 impl PlayerStateMachine {
     pub fn state(&self) -> PlayerState {
         self.state
+    }
+
+    /// Time left in the current timed action (0 for locomotion, guard and
+    /// death). Read-only: the sprite visual uses it to follow the action.
+    pub fn remaining(&self) -> f32 {
+        self.remaining
     }
 
     /// Whether a timed action is still running (or the player is dead).

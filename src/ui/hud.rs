@@ -1,5 +1,10 @@
 //! In-game HUD: HP/MP/EXP bars, Hearts, level, cooldowns, command feedback
 //! and notifications. Each element is updated by its own small system.
+//!
+//! V1.9: a line under the MP bar shows the form (human or spectral), what
+//! the transformation costs, its upkeep, the MP it has used and why it
+//! cannot start. The controls hint moved from the bottom edge (where it
+//! covered the floor) into the status panel, as three short lines.
 
 use bevy::prelude::*;
 
@@ -12,10 +17,20 @@ use crate::core::events::{CommandResolved, Notification};
 use crate::core::resources::GameData;
 use crate::player::components::{CharacterSheet, Player, SkillBook, Vitals};
 use crate::skills::execution::CommandOutcome;
+use crate::transform::systems::Transformation;
+use crate::world::exploration_systems::Exploration;
+
+/// Colour of the form line while a form is active.
+const FORM_ACTIVE: Color = Color::srgb(0.6, 0.88, 1.0);
+/// Colour of the form line when the form cannot start or MP is low.
+const FORM_WARNING: Color = Color::srgb(0.95, 0.55, 0.4);
 
 const BAR_WIDTH: f32 = 220.0;
 const BAR_HEIGHT: f32 = 14.0;
 const MAX_NOTIFICATIONS: usize = 4;
+const CONTROLS_HINT: &str = "Arrows move  Shift run  Z jump  X attack  C magic\n\
+     A guard  S dodge  D use  T form\n\
+     M map  Tab status  I equip  F5 save  F9 load";
 
 #[derive(Component, Debug, Clone, Copy, PartialEq, Eq)]
 pub enum BarKind {
@@ -40,6 +55,10 @@ pub struct HeartsText;
 
 #[derive(Component, Debug, Clone, Copy)]
 pub struct CooldownText;
+
+/// Current form and transformation availability (V1.9).
+#[derive(Component, Debug, Clone, Copy)]
+pub struct FormText;
 
 #[derive(Component, Debug, Clone, Copy)]
 pub struct CommandFeedbackText;
@@ -108,12 +127,16 @@ pub fn spawn_hud(mut commands: Commands) {
             panel.spawn((LevelText, text("", FONT_NORMAL, TEXT_GOLD)));
             bar(panel, BarKind::Hp, HP_COLOR, "HP ");
             bar(panel, BarKind::Mp, MP_COLOR, "MP ");
+            panel.spawn((FormText, text("", FONT_SMALL, TEXT_DIM)));
             bar(panel, BarKind::Exp, EXP_COLOR, "EXP");
             panel.spawn((HeartsText, text("", FONT_SMALL, TEXT_MAIN)));
             panel.spawn((CooldownText, text("", FONT_SMALL, TEXT_DIM)));
+            // Controls hint (V1.9: moved here from the bottom edge, where it
+            // covered the floor, and kept clear of the map in the top right).
+            panel.spawn(text(CONTROLS_HINT, FONT_SMALL, TEXT_DIM));
         });
 
-    // Command feedback, top centre.
+    // Command feedback, top right.
     commands.spawn((
         CommandFeedbackText,
         text("", FONT_NORMAL, TEXT_GOLD),
@@ -132,22 +155,6 @@ pub fn spawn_hud(mut commands: Commands) {
         Node {
             position_type: PositionType::Absolute,
             bottom: px(40),
-            left: px(16),
-            ..default()
-        },
-    ));
-
-    // Controls hint.
-    commands.spawn((
-        text(
-            "Arrows move | Shift run | Z jump | X attack | C magic | A guard | S dodge | \
-             Tab status | F5 save | F9 load",
-            FONT_SMALL,
-            TEXT_DIM,
-        ),
-        Node {
-            position_type: PositionType::Absolute,
-            bottom: px(10),
             left: px(16),
             ..default()
         },
@@ -191,11 +198,18 @@ pub fn update_bars(
 }
 
 pub fn update_level_and_hearts(
-    player: Single<(&Vitals, &CharacterSheet), With<Player>>,
+    player: Single<
+        (
+            &Vitals,
+            &CharacterSheet,
+            Option<&crate::economy::systems::PlayerPurse>,
+        ),
+        With<Player>,
+    >,
     mut level: Single<&mut Text, (With<LevelText>, Without<HeartsText>)>,
     mut hearts: Single<&mut Text, (With<HeartsText>, Without<LevelText>)>,
 ) {
-    let (vitals, sheet) = player.into_inner();
+    let (vitals, sheet, purse) = player.into_inner();
     let points = sheet.progression().unspent_points();
     level.0 = if points > 0 {
         format!(
@@ -205,7 +219,13 @@ pub fn update_level_and_hearts(
     } else {
         format!("Level {}", sheet.progression().level())
     };
-    hearts.0 = format!("Hearts {}/{}", vitals.hearts.current(), vitals.hearts.max());
+    // V2.1: the coins ("marks") share the Hearts line.
+    let coins = purse.map_or(0, |p| p.coins());
+    hearts.0 = format!(
+        "Hearts {}/{}   Marks {coins}",
+        vitals.hearts.current(),
+        vitals.hearts.max()
+    );
 }
 
 pub fn update_cooldowns(
@@ -259,6 +279,20 @@ fn describe(outcome: &CommandOutcome, data: &GameData) -> Option<String> {
             format!("{} - cooldown {remaining:.1}s", name(id))
         }
         CommandOutcome::NotAllowedNow { id } => format!("{} - cannot use now", name(id)),
+        CommandOutcome::WrongWeapon { id } => {
+            let needs = data
+                .skills
+                .get(id)
+                .map(|d| {
+                    d.weapons
+                        .iter()
+                        .map(|c| c.display_name().to_lowercase())
+                        .collect::<Vec<_>>()
+                        .join(" or ")
+                })
+                .unwrap_or_default();
+            format!("{} - needs a {needs}", name(id))
+        }
     };
     Some(text)
 }
@@ -314,4 +348,71 @@ pub fn update_messages(
         .map(|(text, _)| text.as_str())
         .collect::<Vec<_>>()
         .join("\n");
+}
+
+/// The form line (V1.9): `Form: Human` plus what `T` would do, or the
+/// active form with its upkeep, the MP it has used and how long it lasts.
+pub fn update_form_text(
+    data: Res<GameData>,
+    exploration: Option<Res<Exploration>>,
+    player: Single<(&Vitals, Option<&Transformation>), With<Player>>,
+    mut line: Single<(&mut Text, &mut TextColor), With<FormText>>,
+) {
+    let (vitals, form) = player.into_inner();
+    let Some(def) = data.transformations.primary() else {
+        line.0.0 = String::new();
+        return;
+    };
+    let mp = vitals.mp.current();
+    let (text, color) = match form.filter(|f| f.is_active()) {
+        Some(form) => {
+            let rate = def.costs.mp_per_second;
+            let left = if rate > 0.0 {
+                mp as f32 / rate
+            } else {
+                f32::INFINITY
+            };
+            let status = if form.ending().is_some() {
+                "returning...".to_owned()
+            } else {
+                format!("-{rate:.0} MP/s  ~{left:.0}s")
+            };
+            let color = if form.ending().is_none() && left < def.visual.low_mp_seconds {
+                FORM_WARNING
+            } else {
+                FORM_ACTIVE
+            };
+            (
+                format!("Form: {}  {status}  (used {} MP)", def.name, form.spent()),
+                color,
+            )
+        }
+        None => {
+            let unlocked = exploration
+                .as_ref()
+                .is_some_and(|e| def.unlock.is_met(&e.capabilities()));
+            let cost = def.costs.activation_mp;
+            if !unlocked {
+                (format!("Form: Human  T: {} (locked)", def.name), TEXT_DIM)
+            } else if mp < cost {
+                (
+                    format!("Form: Human  T: {} needs {cost} MP", def.name),
+                    FORM_WARNING,
+                )
+            } else {
+                (
+                    format!(
+                        "Form: Human  T: {} ({cost} MP, {:.0} MP/s)",
+                        def.name, def.costs.mp_per_second
+                    ),
+                    TEXT_MAIN,
+                )
+            }
+        }
+    };
+    let (mut current, mut current_color) = line.into_inner();
+    if current.0 != text {
+        current.0 = text;
+    }
+    current_color.0 = color;
 }

@@ -1,0 +1,98 @@
+// Region "Village of Ashes" (Vila das Cinzas, V2.1): the first inhabited
+// area. Optional: the approved main progression never needs it. Reached from
+// the Watch Shaft's right door at its second cell (a step at y 724 leads to
+// it); the way back is the same road. NPCs: assets/data/npcs/ash_village.ron.
+//
+//   y=1  [shaft] <-> [gate road] <-> [square] <-> [merchant row] <-> [outfitter] <-> [smithy] <-> [cottage]
+//          x=3          x=4            x=5            x=6               x=7            x=8          x=9
+(
+    region: (id: "ash_village", name: "Village of Ashes", color: (0.72, 0.52, 0.32)),
+    rooms: [
+        (
+            id: "av_gate_road",
+            name: "Ash Road Gate",
+            region: "ash_village",
+            role: Optional,
+            map: (x: 4, y: 1, w: 1, h: 1),
+            background: (0.09, 0.07, 0.06),
+            platforms: [
+                (min: (520.0, 130.0), size: (200.0, 16.0), one_way: true),
+            ],
+            doors: [
+                (id: "to_shaft", side: Left, to: (room: "vigil_gates_shaft", door: "to_village")),
+                (id: "to_square", side: Right, to: (room: "av_square", door: "to_gate_road")),
+            ],
+        ),
+        (
+            id: "av_square",
+            name: "Cinder Square",
+            region: "ash_village",
+            role: Optional,
+            map: (x: 5, y: 1, w: 1, h: 1),
+            background: (0.11, 0.08, 0.06),
+            platforms: [
+                // The old well's rim.
+                (min: (560.0, 40.0), size: (160.0, 30.0)),
+            ],
+            doors: [
+                (id: "to_gate_road", side: Left, to: (room: "av_gate_road", door: "to_square")),
+                (id: "to_merchant_row", side: Right, to: (room: "av_merchant_row", door: "to_square")),
+            ],
+        ),
+        (
+            id: "av_merchant_row",
+            name: "Merchant Row",
+            region: "ash_village",
+            role: Optional,
+            map: (x: 6, y: 1, w: 1, h: 1),
+            background: (0.10, 0.08, 0.07),
+            platforms: [
+                (min: (300.0, 150.0), size: (220.0, 16.0), one_way: true),
+                (min: (780.0, 150.0), size: (220.0, 16.0), one_way: true),
+            ],
+            doors: [
+                (id: "to_square", side: Left, to: (room: "av_square", door: "to_merchant_row")),
+                (id: "to_outfitter", side: Right, to: (room: "av_outfitter", door: "to_merchant_row")),
+            ],
+        ),
+        (
+            id: "av_outfitter",
+            name: "Hessa's Outfitters",
+            region: "ash_village",
+            role: Optional,
+            map: (x: 7, y: 1, w: 1, h: 1),
+            background: (0.12, 0.09, 0.06),
+            doors: [
+                (id: "to_merchant_row", side: Left, to: (room: "av_merchant_row", door: "to_outfitter")),
+                (id: "to_smithy", side: Right, to: (room: "av_smithy", door: "to_outfitter")),
+            ],
+        ),
+        (
+            id: "av_smithy",
+            name: "Garrick's Smithy",
+            region: "ash_village",
+            role: Optional,
+            map: (x: 8, y: 1, w: 1, h: 1),
+            background: (0.13, 0.07, 0.05),
+            platforms: [
+                // The anvil block.
+                (min: (820.0, 40.0), size: (90.0, 36.0)),
+            ],
+            doors: [
+                (id: "to_outfitter", side: Left, to: (room: "av_outfitter", door: "to_smithy")),
+                (id: "to_cottage", side: Right, to: (room: "av_cottage", door: "to_smithy")),
+            ],
+        ),
+        (
+            id: "av_cottage",
+            name: "Wenna's Cottage",
+            region: "ash_village",
+            role: Optional,
+            map: (x: 9, y: 1, w: 1, h: 1),
+            background: (0.08, 0.07, 0.06),
+            doors: [
+                (id: "to_smithy", side: Left, to: (room: "av_smithy", door: "to_cottage")),
+            ],
+        ),
+    ],
+)

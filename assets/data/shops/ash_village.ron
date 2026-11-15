@@ -1,0 +1,23 @@
+// Shops of the Village of Ashes (V2.1). Format: src/economy/shop.rs.
+// price: what the player pays (must be above the item's sell_value, so
+// buying and selling back always loses coins). stock: Unlimited or
+// Limited(n). when: conditions for the entry to appear. buys: the shop buys
+// the player's items at their sell_value.
+[
+    (
+        id: "hessa_outfitters",
+        name: "Hessa's Outfitters",
+        keeper: "hessa_outfitter",
+        buys: true,
+        entries: [
+            (item: "minor_tonic", price: 25, stock: Unlimited),
+            (item: "gutter_knife", price: 80, stock: Unlimited),
+            (item: "sentry_coif", price: 60, stock: Unlimited),
+            // V2.1.1: one unit (the limited stock the save keeps).
+            (item: "watch_buckler", price: 90, stock: Limited(1)),
+            (item: "quiet_soles", price: 260, stock: Limited(1)),
+            // Only after the Relic of the Veil.
+            (item: "still_water_amulet", price: 320, stock: Limited(1), when: [Ability(VeilStep)]),
+        ],
+    ),
+]

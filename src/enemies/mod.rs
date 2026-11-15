@@ -26,6 +26,10 @@ impl Plugin for EnemiesPlugin {
             .add_systems(Update, behavior::receive_damage.in_set(GameSet::Resolution))
             .add_systems(
                 Update,
+                spawning::enter_new_room.in_set(crate::world::transitions::RoomStep::React),
+            )
+            .add_systems(
+                Update,
                 behavior::update_enemy_visuals.in_set(GameSet::Presentation),
             );
     }

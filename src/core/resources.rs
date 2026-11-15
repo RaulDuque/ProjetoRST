@@ -14,6 +14,7 @@ use crate::inventory::items::{CatalogError, ItemCatalog};
 use crate::player::attributes::{BaseAttributes, StatFormulas};
 use crate::player::progression::ProgressionRules;
 use crate::skills::definitions::{LibraryError, SkillLibrary};
+use crate::transform::definitions::{TransformError, TransformLibrary};
 use crate::world::rooms::RoomDefinition;
 
 /// Gameplay random source.
@@ -37,6 +38,9 @@ pub struct StartingCharacter {
     pub items: Vec<(String, u32)>,
     #[serde(default)]
     pub equipped: Vec<(EquipmentSlot, String)>,
+    /// V2.1: coins at the start (and after a load, see `economy::systems`).
+    #[serde(default)]
+    pub coins: u32,
 }
 
 #[derive(Debug, Error)]
@@ -45,6 +49,15 @@ pub enum DataError {
     Skills(#[from] LibraryError),
     #[error(transparent)]
     Items(#[from] CatalogError),
+    #[error(transparent)]
+    Transformations(#[from] TransformError),
+    #[error(transparent)]
+    Npcs(#[from] crate::npc::definitions::NpcError),
+    #[error(transparent)]
+    Shops(#[from] crate::economy::shop::ShopError),
+    /// V2.1: an NPC names a shop that does not exist or does not name it back.
+    #[error("NPC `{npc}` and shop `{shop}` do not match")]
+    ShopKeeper { npc: String, shop: String },
     #[error("cannot read {path}: {source}")]
     Io {
         path: String,
@@ -61,6 +74,15 @@ pub enum DataError {
     UnknownEnemy { room: String, enemy: String },
     #[error("starting item `{0}` does not exist")]
     UnknownStartingItem(String),
+    /// V2.0: every weapon needs the class of its category.
+    #[error("weapon `{0}` has no weapon class for its category")]
+    WeaponWithoutClass(String),
+    /// V2.0: a skill restricted to something that is not a weapon category.
+    #[error("skill `{skill}` lists `{category:?}`, which is not a weapon category")]
+    SkillWeapon {
+        skill: String,
+        category: crate::inventory::items::ItemCategory,
+    },
 }
 
 /// Every data file, validated and indexed. Inserted once at startup.
@@ -71,6 +93,12 @@ pub struct GameData {
     pub enemies: BTreeMap<String, EnemyDefinition>,
     pub rooms: BTreeMap<String, RoomDefinition>,
     pub character: CharacterConfig,
+    /// Transformations (V1.9, `assets/data/transformations.ron`).
+    pub transformations: TransformLibrary,
+    /// NPCs and dialogues (V2.1, `assets/data/npcs/`, `assets/data/dialogues/`).
+    pub npcs: crate::npc::definitions::NpcLibrary,
+    /// Shops (V2.1, `assets/data/shops/`).
+    pub shops: crate::economy::shop::ShopLibrary,
 }
 
 /// Directory containing `assets/`: `BEVY_ASSET_ROOT`, then
@@ -140,6 +168,34 @@ impl GameData {
         }
 
         let character: CharacterConfig = read_ron(&data.join("character.ron"))?;
+        let transformations = TransformLibrary::load(&data.join("transformations.ron"))?;
+
+        // V2.1: NPCs, dialogues and shops (optional folders: none = empty).
+        let list_dir = |dir: &str| -> Result<Vec<PathBuf>, DataError> {
+            let path = data.join(dir);
+            if path.is_dir() {
+                ron_files(&path)
+            } else {
+                Ok(Vec::new())
+            }
+        };
+        let mut npc_defs = Vec::new();
+        for file in list_dir("npcs")? {
+            let list: Vec<crate::npc::definitions::NpcDefinition> = read_ron(&file)?;
+            npc_defs.extend(list);
+        }
+        let mut nodes = Vec::new();
+        for file in list_dir("dialogues")? {
+            let list: Vec<crate::npc::definitions::DialogueNode> = read_ron(&file)?;
+            nodes.extend(list);
+        }
+        let npcs = crate::npc::definitions::NpcLibrary::new(npc_defs, nodes)?;
+        let mut shop_defs = Vec::new();
+        for file in list_dir("shops")? {
+            let list: Vec<crate::economy::shop::ShopDefinition> = read_ron(&file)?;
+            shop_defs.extend(list);
+        }
+        let shops = crate::economy::shop::ShopLibrary::new(shop_defs, &items)?;
 
         let game_data = Self {
             skills,
@@ -147,6 +203,9 @@ impl GameData {
             enemies,
             rooms,
             character,
+            transformations,
+            npcs,
+            shops,
         };
         game_data.validate()?;
         Ok(game_data)
@@ -177,6 +236,39 @@ impl GameData {
         for id in starting_ids {
             if self.items.get(id).is_none() {
                 return Err(DataError::UnknownStartingItem(id.clone()));
+            }
+        }
+        for npc in self.npcs.npcs() {
+            if let Some(shop) = &npc.shop
+                && self.shops.get(shop).is_none_or(|s| s.keeper != npc.id)
+            {
+                return Err(DataError::ShopKeeper {
+                    npc: npc.id.clone(),
+                    shop: shop.clone(),
+                });
+            }
+        }
+        for shop in self.shops.iter() {
+            if self
+                .npcs
+                .npc(&shop.keeper)
+                .is_none_or(|n| n.shop.as_deref() != Some(shop.id.as_str()))
+            {
+                return Err(DataError::ShopKeeper {
+                    npc: shop.keeper.clone(),
+                    shop: shop.id.clone(),
+                });
+            }
+        }
+        if let Some(id) = self.items.weapons_without_class().first() {
+            return Err(DataError::WeaponWithoutClass((*id).to_owned()));
+        }
+        for skill in self.skills.iter() {
+            if let Some(category) = skill.weapons.iter().find(|c| !c.is_weapon()) {
+                return Err(DataError::SkillWeapon {
+                    skill: skill.id.clone(),
+                    category: *category,
+                });
             }
         }
         Ok(())

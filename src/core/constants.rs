@@ -71,3 +71,6 @@ pub const DEFAULT_SAVE_SLOT: u32 = 1;
 
 /// Seconds a notification stays on screen.
 pub const NOTIFICATION_TIME: f32 = 2.5;
+/// Seconds the black overlay takes to fade out after a room change (V1.8).
+/// Presentation only: input, physics and the room lifecycle never wait.
+pub const ROOM_FADE_TIME: f32 = 0.22;

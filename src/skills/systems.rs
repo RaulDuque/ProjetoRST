@@ -7,7 +7,7 @@ use std::collections::BTreeSet;
 use bevy::prelude::*;
 
 use super::definitions::{Acquisition, SkillEffect};
-use super::execution::{CasterSnapshot, CommandOutcome, validate_activation};
+use super::execution::{CasterSnapshot, CommandOutcome, check_weapon, validate_activation};
 use super::unlock::RequirementContext;
 use crate::core::events::{CommandResolved, Notification, SkillActivated, SkillStarted};
 use crate::core::resources::GameData;
@@ -40,6 +40,7 @@ pub fn begin_skill(
         &mut Velocity,
         &FacingDirection,
         &CharacterSheet,
+        Option<&Belongings>,
     )>,
     mut started: MessageWriter<SkillStarted>,
     mut resolved: MessageWriter<CommandResolved>,
@@ -52,7 +53,7 @@ pub fn begin_skill(
             });
             continue;
         };
-        let Ok((mut vitals, mut book, mut state, mut velocity, facing, sheet)) =
+        let Ok((mut vitals, mut book, mut state, mut velocity, facing, sheet, belongings)) =
             casters.get_mut(activation.caster)
         else {
             warn!(id = %def.id, "skill activated by a missing caster");
@@ -69,7 +70,14 @@ pub fn begin_skill(
                 hearts: vitals.hearts.current(),
                 phase: state.state().phase(),
             };
-            validate_activation(def, &caster)
+            let weapon = belongings.and_then(|b| data.items.weapon_category(&b.equipment));
+            let outcome = validate_activation(def, &caster);
+            match (outcome.is_executed(), belongings) {
+                // Casters without belongings (tests, future NPCs) are not
+                // checked; a player always has them.
+                (true, Some(_)) => check_weapon(def, weapon).unwrap_or(outcome),
+                _ => outcome,
+            }
         };
         if !outcome.is_executed() {
             resolved.write(CommandResolved { outcome });

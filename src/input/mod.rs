@@ -24,6 +24,23 @@ pub struct InputBindings {
     pub respawn: KeyCode,
     pub quick_save: KeyCode,
     pub quick_load: KeyCode,
+    /// Opens and closes the map panel (V1.7).
+    pub map: KeyCode,
+    /// Uses a chest, lever or hidden switch the player stands on (V1.8).
+    /// A free key of its own: `↑` is part of commands (`↓ ↑ + ATTACK`), and
+    /// in that sequence the `↑` frame is no longer a crouch, so sharing it
+    /// would use objects by accident.
+    pub interact: KeyCode,
+    /// Enters and leaves the transformation (V1.9: Spectral Form). `T` was
+    /// free: no command, menu or debug key uses it.
+    pub transform: KeyCode,
+    /// Opens and closes the equipment/inventory screen (V2.0). `I` was free:
+    /// no command, menu or debug key uses it. Inside the screen (simulation
+    /// paused) `↑`/`↓` select and `Enter` equips or removes; gameplay keys
+    /// are not read there, so nothing conflicts with combat.
+    pub inventory: KeyCode,
+    /// Confirms in the inventory screen (V2.0).
+    pub confirm: KeyCode,
 }
 
 impl Default for InputBindings {
@@ -43,6 +60,11 @@ impl Default for InputBindings {
             respawn: KeyCode::KeyR,
             quick_save: KeyCode::F5,
             quick_load: KeyCode::F9,
+            map: KeyCode::KeyM,
+            interact: KeyCode::KeyD,
+            transform: KeyCode::KeyT,
+            inventory: KeyCode::KeyI,
+            confirm: KeyCode::Enter,
         }
     }
 }
@@ -63,6 +85,8 @@ pub struct PlayerInput {
     pub guard_held: bool,
     pub dodge_pressed: bool,
     pub respawn_pressed: bool,
+    pub interact_pressed: bool,
+    pub transform_pressed: bool,
 }
 
 fn axis(keys: &ButtonInput<KeyCode>, negative: KeyCode, positive: KeyCode) -> i8 {
@@ -86,6 +110,8 @@ pub fn read_keyboard(
         guard_held: keys.pressed(bindings.guard),
         dodge_pressed: keys.just_pressed(bindings.dodge),
         respawn_pressed: keys.just_pressed(bindings.respawn),
+        interact_pressed: keys.just_pressed(bindings.interact),
+        transform_pressed: keys.just_pressed(bindings.transform),
     };
 }
 

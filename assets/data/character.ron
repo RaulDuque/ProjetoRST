@@ -34,6 +34,8 @@
         dodge_per_luck: 0.002,
         max_dodge: 0.25,
         min_speed_multiplier: 0.25,
+        // V2.0: cap of summed equipment resistances (never immunity).
+        max_resistance: 0.75,
     ),
     start: (
         room: "entry_hall",
@@ -41,5 +43,7 @@
         hearts: 20,
         items: [("minor_tonic", 3)],
         equipped: [(Weapon, "iron_sword"), (Body, "leather_jerkin")],
+        // V2.1: coins ("marks") at the start.
+        coins: 120,
     ),
 )

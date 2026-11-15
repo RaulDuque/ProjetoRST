@@ -19,6 +19,11 @@ impl Plugin for MagicPlugin {
                 projectiles::move_projectiles
                     .in_set(GameSet::Physics)
                     .after(crate::world::physics::move_bodies),
+            )
+            .add_systems(
+                Update,
+                projectiles::clear_on_room_change
+                    .in_set(crate::world::transitions::RoomStep::React),
             );
     }
 }

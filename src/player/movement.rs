@@ -1,5 +1,9 @@
 //! Player locomotion: facing, walking/running, jumping, crouching, guard
 //! and dodge. Physics integration itself is done by `world::physics`.
+//!
+//! V1.9: a transformation may give the player a [`LocomotionProfile`]; while
+//! it is present, free movement follows the profile instead of the human
+//! constants. Without it (the human form) the code path is the one of V1.8.
 
 use bevy::prelude::*;
 
@@ -16,6 +20,15 @@ use crate::world::physics::{FacingDirection, Grounded, Velocity};
 
 /// How fast horizontal speed decays while locked in an attack or skill.
 const ACTION_FRICTION: f32 = 10.0;
+
+/// Free movement of a transformed body (V1.9): a fixed horizontal speed,
+/// no running, no crouching and, unless `can_jump`, no jump. Inserted and
+/// removed only by the transformation module.
+#[derive(Component, Debug, Clone, Copy, PartialEq)]
+pub struct LocomotionProfile {
+    pub speed: f32,
+    pub can_jump: bool,
+}
 
 /// Turns the character towards the pressed direction when it may move.
 /// Runs before command recording so that motions are interpreted relative
@@ -83,12 +96,13 @@ pub fn locomotion(
             &FacingDirection,
             &Grounded,
             &CharacterSheet,
+            Option<&LocomotionProfile>,
         ),
         With<Player>,
     >,
 ) {
     let dt = frame_delta(&time);
-    let (mut state, mut velocity, mut jump, facing, grounded, sheet) = player.into_inner();
+    let (mut state, mut velocity, mut jump, facing, grounded, sheet, profile) = player.into_inner();
     let current = state.state();
 
     match current {
@@ -108,6 +122,11 @@ pub fn locomotion(
             return;
         }
         _ => {}
+    }
+
+    if let Some(profile) = profile {
+        transformed_locomotion(profile, &input, &mut state, &mut velocity, grounded);
+        return;
     }
 
     let crouching = grounded.on_ground && input.axis_y < 0;
@@ -140,6 +159,33 @@ pub fn locomotion(
         PlayerState::Crouching
     } else if input.axis_x != 0 && input.run_held {
         PlayerState::Running
+    } else if input.axis_x != 0 {
+        PlayerState::Walking
+    } else {
+        PlayerState::Idle
+    };
+    state.set_locomotion(next);
+}
+
+/// Free movement under a [`LocomotionProfile`] (same states as the human
+/// form, so animation, hurt and death keep working).
+fn transformed_locomotion(
+    profile: &LocomotionProfile,
+    input: &PlayerInput,
+    state: &mut ActionState,
+    velocity: &mut Velocity,
+    grounded: &Grounded,
+) {
+    velocity.x = f32::from(input.axis_x) * profile.speed;
+    if profile.can_jump && input.jump_pressed && grounded.on_ground && velocity.y <= 0.0 {
+        velocity.y = PLAYER_JUMP_SPEED;
+    }
+    let next = if !grounded.on_ground {
+        if velocity.y > 0.0 {
+            PlayerState::Jumping
+        } else {
+            PlayerState::Falling
+        }
     } else if input.axis_x != 0 {
         PlayerState::Walking
     } else {

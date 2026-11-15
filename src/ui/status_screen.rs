@@ -37,6 +37,8 @@ pub fn toggle_status_screen(
     next.set(match state.get() {
         GameState::Playing => GameState::StatusScreen,
         GameState::StatusScreen => GameState::Playing,
+        // V2.0: Tab does nothing on the inventory screen (I closes it).
+        GameState::Inventory | GameState::Dialogue | GameState::Shop => return,
     });
 }
 

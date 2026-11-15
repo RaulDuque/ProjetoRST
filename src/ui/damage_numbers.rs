@@ -5,7 +5,7 @@ use bevy::prelude::*;
 use super::theme::{FONT_NORMAL, TEXT_DIM};
 use crate::combat::damage::DamageOutcome;
 use crate::core::constants::Z_EFFECTS;
-use crate::core::events::DamageDealt;
+use crate::core::events::{DamageDealt, RoomChanged};
 use crate::magic::casting::element_color;
 
 const LIFETIME: f32 = 0.8;
@@ -57,6 +57,21 @@ pub fn spawn_damage_numbers(
                 Z_EFFECTS + 1.0,
             ),
         ));
+    }
+}
+
+/// Numbers float in world space: a room change removes them (they would
+/// hang over the new room at the old coordinates).
+pub fn clear_on_room_change(
+    mut commands: Commands,
+    mut changes: MessageReader<RoomChanged>,
+    numbers: Query<Entity, With<DamageNumber>>,
+) {
+    if changes.read().count() == 0 {
+        return;
+    }
+    for entity in &numbers {
+        commands.entity(entity).try_despawn();
     }
 }
 

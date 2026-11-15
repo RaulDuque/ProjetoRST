@@ -150,6 +150,11 @@ pub struct SkillDefinition {
     /// When false the player must discover it (scroll, master, trial).
     #[serde(default = "default_true")]
     pub command_revealed_on_learn: bool,
+    /// V2.0: weapon categories this skill can be performed with. Empty:
+    /// any weapon or none (spells, movement). Checked by
+    /// `execution::check_weapon` when the skill starts.
+    #[serde(default)]
+    pub weapons: Vec<crate::inventory::items::ItemCategory>,
 }
 
 fn default_element() -> Element {

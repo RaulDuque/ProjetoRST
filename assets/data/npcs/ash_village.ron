@@ -1,0 +1,69 @@
+// NPCs of the Village of Ashes (V2.1). Format: src/npc/definitions.rs.
+// position: body centre in room coordinates (floor top y 40 + half height).
+// greetings: checked in order; the first whose `when` holds starts the talk.
+[
+    (
+        id: "bram_road_warden",
+        name: "Bram, the Road Warden",
+        kind: Informant,
+        room: "av_gate_road",
+        position: (900.0, 63.0),
+        size: (28.0, 46.0),
+        color: (0.45, 0.5, 0.62),
+        greetings: [
+            (when: [Ability(VeilStep)], node: "bram_after_relic"),
+            (node: "bram_intro"),
+        ],
+    ),
+    (
+        id: "hooded_pilgrim",
+        name: "Hooded Pilgrim",
+        kind: QuestGiver,
+        room: "av_square",
+        position: (980.0, 63.0),
+        size: (26.0, 48.0),
+        color: (0.3, 0.26, 0.4),
+        greetings: [
+            (when: [Visited("vc_veiled_well")], node: "pilgrim_well_seen"),
+            (node: "pilgrim_hint"),
+        ],
+    ),
+    (
+        id: "hessa_outfitter",
+        name: "Hessa",
+        kind: Merchant,
+        room: "av_outfitter",
+        position: (700.0, 63.0),
+        size: (26.0, 46.0),
+        color: (0.75, 0.55, 0.3),
+        greetings: [
+            (node: "hessa_greet"),
+        ],
+        shop: Some("hessa_outfitters"),
+    ),
+    (
+        id: "garrick_smith",
+        name: "Garrick",
+        kind: Smith,
+        room: "av_smithy",
+        position: (700.0, 64.0),
+        size: (32.0, 48.0),
+        color: (0.6, 0.35, 0.25),
+        greetings: [
+            (node: "garrick_greet"),
+        ],
+    ),
+    (
+        id: "old_wenna",
+        name: "Old Wenna",
+        kind: Villager,
+        room: "av_cottage",
+        position: (640.0, 61.0),
+        size: (24.0, 42.0),
+        color: (0.7, 0.65, 0.55),
+        greetings: [
+            (when: [RegionVisited("forgotten_galleries")], node: "wenna_galleries"),
+            (node: "wenna_intro"),
+        ],
+    ),
+]

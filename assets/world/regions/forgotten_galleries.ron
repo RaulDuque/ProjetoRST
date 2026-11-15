@@ -1,0 +1,238 @@
+// Region "Forgotten Galleries" (Galerias Esquecidas), V1.8. Original content.
+// Provisional geometry, built for the real physics (jump ~136 u, every
+// climb step rises <= 110 u). Docs: docs/WORLD_EXPLORATION_V1_8.md.
+//
+//   y=2  [stair]  [relic chapel]<->[collapsed walk]<~>[hidden oratory]
+//   y=1  [stair]  [ upper gallery (2) ]<->[lever hall]=>[astral gate]=>[return bridge]
+//   y=0  [cache]<~[stair]<->[ long gallery (2) ]<->[threshold]<->(Vigil reliquary)
+//                                                                  return bridge drops into
+//                                                                  the Vigil sealed hall (shortcut)
+//   <~> secret (breakable wall at the stair, hidden switch in the collapsed walk)
+//   =>  special doors: lever gate (lever hall), astral seal (Astral Emblem)
+//   The collapsed walk drops into the upper gallery: a loop
+//   stair -> chapel -> walk -> upper gallery -> stair.
+(
+    region: (id: "forgotten_galleries", name: "Forgotten Galleries", color: (0.36, 0.52, 0.5)),
+    rooms: [
+        (
+            id: "fg_threshold",
+            name: "Gallery Threshold",
+            region: "forgotten_galleries",
+            role: Required,
+            map: (x: -3, y: 0, w: 1, h: 1),
+            background: (0.05, 0.08, 0.08),
+            platforms: [
+                (min: (560.0, 40.0), size: (120.0, 50.0)),
+            ],
+            doors: [
+                (id: "to_reliquary", side: Right, to: (room: "vigil_gates_reliquary", door: "to_galleries"),
+                    requires: Some(Flag("vigil_gates_cleared"))),
+                (id: "to_long_gallery", side: Left, to: (room: "fg_long_gallery", door: "to_threshold")),
+            ],
+        ),
+        (
+            id: "fg_long_gallery",
+            name: "Long Gallery",
+            region: "forgotten_galleries",
+            role: Required,
+            map: (x: -5, y: 0, w: 2, h: 1),
+            background: (0.05, 0.07, 0.08),
+            platforms: [
+                (min: (900.0, 40.0), size: (100.0, 70.0)),
+                (min: (1200.0, 190.0), size: (260.0, 16.0), one_way: true),
+            ],
+            enemies: [
+                (enemy: "bone_sentry", position: (1500.0, 70.0), patrol_half_width: 220.0),
+            ],
+            objects: [
+                (id: "fg_gallery_chest", kind: Chest(tier: Common, reward: Item("minor_tonic")),
+                    area: (min: (2200.0, 40.0), size: (48.0, 36.0))),
+            ],
+            doors: [
+                (id: "to_threshold", side: Right, to: (room: "fg_threshold", door: "to_long_gallery")),
+                (id: "to_stair", side: Left, to: (room: "fg_stair", door: "to_long_gallery")),
+            ],
+        ),
+        (
+            id: "fg_stair",
+            name: "Hollow Stair",
+            region: "forgotten_galleries",
+            role: Required,
+            map: (x: -6, y: 0, w: 1, h: 3),
+            background: (0.04, 0.06, 0.07),
+            platforms: [
+                // To the upper gallery (ledge of the right door, cell 1, top 760).
+                (min: (260.0, 130.0), size: (240.0, 16.0), one_way: true),
+                (min: (360.0, 240.0), size: (240.0, 16.0), one_way: true),
+                (min: (460.0, 350.0), size: (240.0, 16.0), one_way: true),
+                (min: (560.0, 460.0), size: (240.0, 16.0), one_way: true),
+                (min: (660.0, 570.0), size: (240.0, 16.0), one_way: true),
+                (min: (760.0, 680.0), size: (240.0, 16.0), one_way: true),
+                // To the relic chapel (ledge of the right door, cell 2, top 1480).
+                (min: (860.0, 850.0), size: (240.0, 16.0), one_way: true),
+                (min: (760.0, 960.0), size: (240.0, 16.0), one_way: true),
+                (min: (660.0, 1070.0), size: (240.0, 16.0), one_way: true),
+                (min: (760.0, 1180.0), size: (240.0, 16.0), one_way: true),
+                (min: (860.0, 1290.0), size: (240.0, 16.0), one_way: true),
+                (min: (760.0, 1400.0), size: (240.0, 16.0), one_way: true),
+            ],
+            objects: [
+                // Cracked masonry over the left door: any attack breaks it.
+                (id: "fg_cracked_wall", kind: BreakableWall(breaks_on: AnyAttack),
+                    area: (min: (0.0, 40.0), size: (80.0, 160.0))),
+            ],
+            doors: [
+                (id: "to_long_gallery", side: Right, to: (room: "fg_long_gallery", door: "to_stair")),
+                (id: "to_cracked_cache", side: Left, to: (room: "fg_cracked_cache", door: "to_stair"),
+                    hidden_by: Some("fg_cracked_wall")),
+                (id: "to_upper_gallery", side: Right, cell: 1, to: (room: "fg_upper_gallery", door: "to_stair")),
+                (id: "to_chapel", side: Right, cell: 2, to: (room: "fg_relic_chapel", door: "to_stair")),
+            ],
+        ),
+        (
+            id: "fg_cracked_cache",
+            name: "Cracked Cache",
+            region: "forgotten_galleries",
+            role: Secret,
+            map: (x: -7, y: 0, w: 1, h: 1),
+            background: (0.09, 0.08, 0.05),
+            objects: [
+                (id: "fg_cache_chest", kind: Chest(tier: Secret, reward: Item("ashen_ring")),
+                    area: (min: (500.0, 40.0), size: (48.0, 36.0))),
+            ],
+            doors: [
+                (id: "to_stair", side: Right, to: (room: "fg_stair", door: "to_cracked_cache")),
+            ],
+        ),
+        (
+            id: "fg_upper_gallery",
+            name: "Upper Gallery",
+            region: "forgotten_galleries",
+            role: Required,
+            map: (x: -5, y: 1, w: 2, h: 1),
+            background: (0.05, 0.07, 0.09),
+            platforms: [
+                (min: (700.0, 40.0), size: (100.0, 80.0)),
+            ],
+            doors: [
+                (id: "to_stair", side: Left, to: (room: "fg_stair", door: "to_upper_gallery")),
+                (id: "to_lever_hall", side: Right, to: (room: "fg_lever_hall", door: "to_upper_gallery")),
+                // The collapsed walk drops in here (one way: the loop of the region).
+                (id: "from_collapsed_walk", side: Top, cell: 1, to: (room: "fg_collapsed_walk", door: "to_upper_gallery"),
+                    entry_only: true),
+            ],
+        ),
+        (
+            id: "fg_lever_hall",
+            name: "Lever Hall",
+            region: "forgotten_galleries",
+            role: Required,
+            map: (x: -3, y: 1, w: 1, h: 1),
+            background: (0.06, 0.07, 0.07),
+            platforms: [
+                (min: (300.0, 130.0), size: (240.0, 16.0), one_way: true),
+            ],
+            objects: [
+                // On the ledge: reached by jumping, not from the floor.
+                (id: "fg_hall_lever", kind: Lever(sets: "fg_hall_gate_open"),
+                    area: (min: (400.0, 146.0), size: (16.0, 40.0))),
+            ],
+            doors: [
+                (id: "to_upper_gallery", side: Left, to: (room: "fg_upper_gallery", door: "to_lever_hall")),
+                (id: "to_astral_gate", side: Right, to: (room: "fg_astral_gate", door: "to_lever_hall"),
+                    requires: Some(Flag("fg_hall_gate_open"))),
+            ],
+        ),
+        (
+            id: "fg_astral_gate",
+            name: "Astral Gate",
+            region: "forgotten_galleries",
+            role: Required,
+            map: (x: -2, y: 1, w: 1, h: 1),
+            background: (0.05, 0.05, 0.10),
+            enemies: [
+                (enemy: "bone_sentry", position: (700.0, 70.0), patrol_half_width: 200.0),
+            ],
+            doors: [
+                (id: "to_lever_hall", side: Left, to: (room: "fg_lever_hall", door: "to_astral_gate"),
+                    requires: Some(Flag("fg_hall_gate_open"))),
+                (id: "to_return_bridge", side: Right, to: (room: "fg_return_bridge", door: "to_astral_gate"),
+                    requires: Some(Ability(AstralKey))),
+            ],
+        ),
+        (
+            id: "fg_return_bridge",
+            name: "Return Bridge",
+            region: "forgotten_galleries",
+            role: Required,
+            map: (x: -1, y: 1, w: 1, h: 1),
+            background: (0.08, 0.07, 0.04),
+            objects: [
+                (id: "fg_trapdoor_lever", kind: Lever(sets: "fg_trapdoor_open"),
+                    area: (min: (260.0, 40.0), size: (16.0, 40.0))),
+                (id: "fg_bridge_chest", kind: Chest(tier: Rare, reward: Item("warden_greaves")),
+                    area: (min: (1000.0, 40.0), size: (56.0, 40.0))),
+            ],
+            doors: [
+                (id: "to_astral_gate", side: Left, to: (room: "fg_astral_gate", door: "to_return_bridge"),
+                    requires: Some(Ability(AstralKey))),
+                // Trapdoor into the Vigil sealed hall: the way back to the gates.
+                (id: "to_sealed_hall", side: Bottom, to: (room: "vigil_gates_sealed_hall", door: "from_return_bridge"),
+                    requires: Some(Flag("fg_trapdoor_open")), shortcut: true),
+            ],
+        ),
+        (
+            id: "fg_relic_chapel",
+            name: "Relic Chapel",
+            region: "forgotten_galleries",
+            role: Required,
+            map: (x: -5, y: 2, w: 1, h: 1),
+            background: (0.07, 0.06, 0.10),
+            pickups: [
+                (id: "astral_emblem", name: "Astral Emblem", position: (640.0, 70.0), grants: Ability(AstralKey)),
+            ],
+            doors: [
+                (id: "to_stair", side: Left, to: (room: "fg_stair", door: "to_chapel")),
+                (id: "to_collapsed_walk", side: Right, to: (room: "fg_collapsed_walk", door: "to_chapel")),
+            ],
+        ),
+        (
+            id: "fg_collapsed_walk",
+            name: "Collapsed Walk",
+            region: "forgotten_galleries",
+            role: Optional,
+            map: (x: -4, y: 2, w: 1, h: 1),
+            background: (0.05, 0.06, 0.08),
+            platforms: [
+                // Over the collapsed floor (the drop to the upper gallery).
+                (min: (480.0, 100.0), size: (320.0, 16.0), one_way: true),
+            ],
+            objects: [
+                // A loose brick low on the far wall: interact to open the oratory.
+                (id: "fg_loose_brick", kind: HiddenSwitch,
+                    area: (min: (1150.0, 50.0), size: (24.0, 24.0))),
+            ],
+            doors: [
+                (id: "to_chapel", side: Left, to: (room: "fg_relic_chapel", door: "to_collapsed_walk")),
+                (id: "to_upper_gallery", side: Bottom, to: (room: "fg_upper_gallery", door: "from_collapsed_walk")),
+                (id: "to_oratory", side: Right, to: (room: "fg_hidden_oratory", door: "to_collapsed_walk"),
+                    hidden_by: Some("fg_loose_brick")),
+            ],
+        ),
+        (
+            id: "fg_hidden_oratory",
+            name: "Hidden Oratory",
+            region: "forgotten_galleries",
+            role: Secret,
+            map: (x: -3, y: 2, w: 1, h: 1),
+            background: (0.09, 0.07, 0.07),
+            objects: [
+                (id: "fg_oratory_chest", kind: Chest(tier: Secret, reward: Item("minor_tonic")),
+                    area: (min: (700.0, 40.0), size: (48.0, 36.0))),
+            ],
+            doors: [
+                (id: "to_collapsed_walk", side: Left, to: (room: "fg_collapsed_walk", door: "to_oratory")),
+            ],
+        ),
+    ],
+)

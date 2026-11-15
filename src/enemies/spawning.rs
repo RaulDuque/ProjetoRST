@@ -8,6 +8,7 @@ use super::definitions::EnemyDefinition;
 use crate::combat::damage::{AttackProfile, DefenseProfile};
 use crate::combat::hitboxes::{CombatProfile, Hurtbox, Team};
 use crate::core::constants::Z_ENEMIES;
+use crate::core::events::RoomChanged;
 use crate::core::resources::GameData;
 use crate::core::time::frame_delta;
 use crate::player::attributes::ResourcePool;
@@ -79,6 +80,32 @@ pub fn spawn_enemy(commands: &mut Commands, def: &EnemyDefinition, spawn: &Enemy
 
 pub fn spawn_room_enemies(mut commands: Commands, data: Res<GameData>) {
     let Some(room) = data.rooms.get(&data.character.start.room) else {
+        return;
+    };
+    for spawn in &room.enemies {
+        if let Some(def) = data.enemies.get(&spawn.enemy) {
+            spawn_enemy(&mut commands, def, spawn);
+        }
+    }
+}
+
+/// Room lifecycle (V1.7): a room change (door or load) forgets the respawn
+/// timers of the previous room (they would spawn into the wrong room) and
+/// spawns the enemies of the new one. The world module has already queued
+/// the despawn of the old room's entities, enemies included (`RoomEntity`).
+/// Runs in `RoomStep::React`, the same frame as the change.
+pub fn enter_new_room(
+    mut commands: Commands,
+    data: Res<GameData>,
+    mut changes: MessageReader<RoomChanged>,
+    mut pending: ResMut<PendingRespawns>,
+) {
+    let Some(change) = changes.read().last() else {
+        return;
+    };
+    pending.0.clear();
+    let Some(room) = data.rooms.get(&change.to) else {
+        warn!(room = %change.to, "entered a room without a definition");
         return;
     };
     for spawn in &room.enemies {

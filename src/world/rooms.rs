@@ -5,7 +5,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use super::collision::{Aabb, Solid};
+use super::collision::{Aabb, BarrierKind, Solid};
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct EnemySpawn {
@@ -28,6 +28,10 @@ pub struct Platform {
     pub size: (f32, f32),
     #[serde(default)]
     pub one_way: bool,
+    /// A barrier some transformation passes (V1.9: spectral veils). Written
+    /// by the world graph, never by map files.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub barrier: Option<BarrierKind>,
 }
 
 impl Platform {
@@ -41,6 +45,7 @@ impl Platform {
                 self.size,
             ),
             one_way: self.one_way,
+            barrier: self.barrier,
         }
     }
 }

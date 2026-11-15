@@ -22,6 +22,20 @@ pub enum EquipmentSlot {
 }
 
 impl EquipmentSlot {
+    /// Label in the inventory (the slot's body part, V2.0).
+    pub fn display_name(self) -> &'static str {
+        match self {
+            EquipmentSlot::Weapon => "Weapon",
+            EquipmentSlot::Offhand => "Off-hand",
+            EquipmentSlot::Head => "Head",
+            EquipmentSlot::Body => "Body",
+            EquipmentSlot::Gloves => "Arms",
+            EquipmentSlot::Boots => "Legs",
+            EquipmentSlot::Accessory1 => "Accessory 1",
+            EquipmentSlot::Accessory2 => "Accessory 2",
+        }
+    }
+
     pub const ALL: [EquipmentSlot; 8] = [
         EquipmentSlot::Weapon,
         EquipmentSlot::Offhand,
@@ -79,12 +93,44 @@ impl Equipment {
     }
 
     /// Sum of the modifiers of every equipped item known to the catalog.
+    /// Recomputed from the slots every time (never accumulated), so equipping
+    /// and removing any number of times cannot leave a bonus behind. An item
+    /// in a slot its category does not fit (a hand-edited save) counts for
+    /// nothing.
     pub fn total_modifiers(&self, catalog: &ItemCatalog) -> AttributeModifiers {
         AttributeModifiers::sum(
             self.slots
-                .values()
-                .filter_map(|id| catalog.get(id))
+                .iter()
+                .filter_map(|(slot, id)| {
+                    catalog
+                        .get(id)
+                        .filter(|def| def.category.slots().contains(slot))
+                })
                 .map(|def| &def.modifiers),
         )
+    }
+
+    /// A copy with `slot` holding `item` (or emptied), without any check:
+    /// only for previews (the comparison), never for the real equipment.
+    pub fn preview(&self, slot: EquipmentSlot, item: Option<&str>) -> Equipment {
+        let mut copy = self.clone();
+        match item {
+            Some(id) => {
+                copy.slots.insert(slot, id.to_owned());
+            }
+            None => {
+                copy.slots.remove(&slot);
+            }
+        }
+        copy
+    }
+
+    /// Number of occupied slots.
+    pub fn len(&self) -> usize {
+        self.slots.len()
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.slots.is_empty()
     }
 }

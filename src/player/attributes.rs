@@ -8,7 +8,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::magic::elements::{ElementalResistances, StatusResistances};
+use crate::magic::elements::{ElementalResistances, MIN_RESISTANCE, StatusResistances};
 
 /// Primary attributes, raised by levelling and attribute points.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -218,6 +218,10 @@ pub struct StatFormulas {
     pub dodge_per_luck: f32,
     pub max_dodge: f32,
     pub min_speed_multiplier: f32,
+    /// V2.0: highest elemental resistance the character can reach by
+    /// stacking equipment (below 1.0, so equipment never gives immunity,
+    /// and a hit always deals damage instead of healing).
+    pub max_resistance: f32,
 }
 
 impl Default for StatFormulas {
@@ -248,6 +252,7 @@ impl Default for StatFormulas {
             dodge_per_luck: 0.002,
             max_dodge: 0.25,
             min_speed_multiplier: 0.25,
+            max_resistance: 0.75,
         }
     }
 }
@@ -305,7 +310,9 @@ impl StatFormulas {
                 + modifiers.mp_regen)
                 .max(0.0),
             dodge: (luck * self.dodge_per_luck + modifiers.dodge).clamp(0.0, self.max_dodge),
-            resistances: modifiers.resistances.clone(),
+            resistances: modifiers
+                .resistances
+                .capped(MIN_RESISTANCE, self.max_resistance.min(1.0)),
             status_resistances: modifiers.status_resistances.clone(),
             effective: attrs,
         }

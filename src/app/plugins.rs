@@ -5,12 +5,16 @@ use bevy::prelude::*;
 use super::states::{GameSet, GameState};
 use crate::combat::CombatPlugin;
 use crate::core::CorePlugin;
+use crate::economy::systems::EconomyPlugin;
 use crate::enemies::EnemiesPlugin;
 use crate::input::InputPlugin;
+use crate::inventory::systems::InventoryPlugin;
 use crate::magic::MagicPlugin;
+use crate::npc::NpcPlugin;
 use crate::player::PlayerPlugin;
 use crate::save::SavePlugin;
 use crate::skills::SkillsPlugin;
+use crate::transform::TransformPlugin;
 use crate::ui::UiPlugin;
 use crate::world::WorldPlugin;
 
@@ -33,6 +37,12 @@ impl Plugin for GamePlugin {
                     .chain()
                     .run_if(in_state(GameState::Playing)),
             )
+            .configure_sets(
+                Update,
+                GameSet::Rooms
+                    .after(GameSet::Resolution)
+                    .before(GameSet::Progression),
+            )
             .configure_sets(Update, GameSet::Presentation.after(GameSet::Progression))
             .add_plugins((
                 CorePlugin,
@@ -45,6 +55,10 @@ impl Plugin for GamePlugin {
                 EnemiesPlugin,
                 UiPlugin,
                 SavePlugin,
+                TransformPlugin,
+                InventoryPlugin,
+                NpcPlugin,
+                EconomyPlugin,
             ));
     }
 }

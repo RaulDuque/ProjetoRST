@@ -1,0 +1,54 @@
+// Region "Veiled Cloister" (V1.9): two rooms under the Upper Gallery that
+// only the Spectral Form reaches. Demonstrates the form: the gallery's floor
+// veil (tutorial), a two-sided side veil (optional passage), a chest behind
+// it (reward) and two drops back to the Broken Causeway (return route; no
+// room is left without a human exit).
+//
+//   y=2  [gallery (1..2)]           gallery floor veil -> well (top, one way)
+//   y=1  [shrine] <~veil~> [well]
+//   y=0  [causeway (1..2)]          shrine and well drop into its ceiling
+(
+    region: (id: "veiled_cloister", name: "Veiled Cloister", color: (0.45, 0.62, 0.78)),
+    rooms: [
+        (
+            id: "vc_veiled_well",
+            name: "Veiled Well",
+            region: "veiled_cloister",
+            role: Optional,
+            map: (x: 2, y: 1, w: 1, h: 1),
+            background: (0.05, 0.07, 0.10),
+            platforms: [
+                // Catches the slow fall from the gallery before the floor hole.
+                (min: (500.0, 380.0), size: (280.0, 20.0)),
+            ],
+            doors: [
+                (id: "from_gallery", side: Top, to: (room: "vigil_gates_gallery", door: "to_veiled_well"),
+                    entry_only: true),
+                (id: "to_shrine", side: Left, to: (room: "vc_veiled_shrine", door: "to_well")),
+                (id: "to_causeway", side: Bottom, to: (room: "vigil_gates_causeway", door: "from_well")),
+            ],
+            veils: [
+                (id: "vc_well_west_veil", door: "to_shrine", kind: Spectral, depth: 80.0),
+            ],
+        ),
+        (
+            id: "vc_veiled_shrine",
+            name: "Veiled Shrine",
+            region: "veiled_cloister",
+            role: Optional,
+            map: (x: 1, y: 1, w: 1, h: 1),
+            background: (0.07, 0.06, 0.11),
+            objects: [
+                (id: "vc_shrine_chest", kind: Chest(tier: Rare, reward: Item("veilwoven_band")),
+                    area: (min: (880.0, 40.0), size: (56.0, 40.0))),
+            ],
+            doors: [
+                (id: "to_well", side: Right, to: (room: "vc_veiled_well", door: "to_shrine")),
+                (id: "to_causeway", side: Bottom, to: (room: "vigil_gates_causeway", door: "from_shrine")),
+            ],
+            veils: [
+                (id: "vc_shrine_east_veil", door: "to_well", kind: Spectral, depth: 80.0),
+            ],
+        ),
+    ],
+)

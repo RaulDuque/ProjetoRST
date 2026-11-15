@@ -8,7 +8,9 @@ use std::path::Path;
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
-use super::equipment::EquipmentSlot;
+use super::appearance::{ItemVisual, VisualError};
+use super::equipment::{Equipment, EquipmentSlot};
+use super::weapons::{StrikeProfile, WeaponClass, WeaponError, WeaponStats};
 use crate::player::attributes::AttributeModifiers;
 use crate::skills::definitions::Requirements;
 
@@ -64,6 +66,39 @@ impl ItemCategory {
     pub fn is_equipment(self) -> bool {
         !self.slots().is_empty()
     }
+
+    /// The five weapon categories (each has a `WeaponClass`, V2.0).
+    pub fn is_weapon(self) -> bool {
+        matches!(
+            self,
+            ItemCategory::Sword
+                | ItemCategory::Dagger
+                | ItemCategory::Axe
+                | ItemCategory::Spear
+                | ItemCategory::HeavyWeapon
+        )
+    }
+
+    /// Short label for the inventory.
+    pub fn display_name(self) -> &'static str {
+        match self {
+            ItemCategory::Sword => "Sword",
+            ItemCategory::Dagger => "Dagger",
+            ItemCategory::Axe => "Axe",
+            ItemCategory::Spear => "Spear",
+            ItemCategory::HeavyWeapon => "Heavy weapon",
+            ItemCategory::Armor => "Body",
+            ItemCategory::Helmet => "Head",
+            ItemCategory::Gloves => "Arms",
+            ItemCategory::Boots => "Legs",
+            ItemCategory::Shield => "Off-hand",
+            ItemCategory::Ring => "Ring",
+            ItemCategory::Amulet => "Amulet",
+            ItemCategory::Consumable => "Consumable",
+            ItemCategory::Material => "Material",
+            ItemCategory::QuestItem => "Key item",
+        }
+    }
 }
 
 /// A rarity tier, defined in data (`assets/data/items/rarities.ron`).
@@ -106,6 +141,12 @@ pub struct ItemDefinition {
     pub sell_value: u32,
     #[serde(default = "default_stack")]
     pub max_stack: u32,
+    /// V2.0: element and reach of a weapon (weapon categories only).
+    #[serde(default)]
+    pub weapon: Option<WeaponStats>,
+    /// V2.0: what the item changes on the character's look.
+    #[serde(default)]
+    pub visual: Option<ItemVisual>,
 }
 
 fn default_stack() -> u32 {
@@ -118,6 +159,8 @@ fn default_stack() -> u32 {
 pub struct ItemDataFile {
     pub rarities: Vec<RarityDefinition>,
     pub items: Vec<ItemDefinition>,
+    /// V2.0: the basic attack of each weapon category.
+    pub weapon_classes: Vec<WeaponClass>,
 }
 
 #[derive(Debug, Error)]
@@ -136,12 +179,65 @@ pub enum CatalogError {
     DuplicateId(String),
     #[error("item `{item}` uses unknown rarity `{rarity}`")]
     UnknownRarity { item: String, rarity: String },
+    #[error(transparent)]
+    Weapon(#[from] WeaponError),
+    #[error(transparent)]
+    Visual(#[from] VisualError),
+    #[error("item `{item}`: {problem}")]
+    InvalidItem { item: String, problem: &'static str },
 }
 
 #[derive(Debug, Clone, Default)]
 pub struct ItemCatalog {
     items: BTreeMap<ItemId, ItemDefinition>,
     rarities: BTreeMap<String, RarityDefinition>,
+    weapon_classes: BTreeMap<ItemCategory, WeaponClass>,
+}
+
+/// Checks the V2.0 parts of an item: weapon data only on weapons with a
+/// sane reach, a visual that fits the category, finite modifiers.
+fn validate_item(item: &ItemDefinition) -> Result<(), CatalogError> {
+    if let Some(stats) = &item.weapon {
+        if !item.category.is_weapon() {
+            return Err(WeaponError::StatsOnNonWeapon {
+                item: item.id.clone(),
+            }
+            .into());
+        }
+        if !stats.reach_bonus.is_finite() {
+            return Err(WeaponError::ItemReach {
+                item: item.id.clone(),
+                reach: stats.reach_bonus,
+            }
+            .into());
+        }
+    }
+    if let Some(visual) = item.visual {
+        visual.validate(&item.id, item.category)?;
+    }
+    let m = &item.modifiers;
+    let floats = [
+        m.critical_chance,
+        m.critical_damage,
+        m.attack_speed,
+        m.movement_speed,
+        m.hp_regen,
+        m.mp_regen,
+        m.dodge,
+    ];
+    if floats.iter().any(|v| !v.is_finite()) {
+        return Err(CatalogError::InvalidItem {
+            item: item.id.clone(),
+            problem: "non-finite modifier",
+        });
+    }
+    if item.max_stack == 0 {
+        return Err(CatalogError::InvalidItem {
+            item: item.id.clone(),
+            problem: "max_stack must be at least 1",
+        });
+    }
+    Ok(())
 }
 
 impl ItemCatalog {
@@ -156,8 +252,16 @@ impl ItemCatalog {
                 catalog.rarities.insert(rarity.id.clone(), rarity);
             }
             items.extend(file.items);
+            for class in file.weapon_classes {
+                class.validate()?;
+                if catalog.weapon_classes.contains_key(&class.category) {
+                    return Err(WeaponError::Duplicate(class.category).into());
+                }
+                catalog.weapon_classes.insert(class.category, class);
+            }
         }
         for item in items {
+            validate_item(&item)?;
             if !catalog.rarities.contains_key(&item.rarity) {
                 return Err(CatalogError::UnknownRarity {
                     item: item.id,
@@ -209,6 +313,54 @@ impl ItemCatalog {
 
     pub fn iter(&self) -> impl Iterator<Item = &ItemDefinition> {
         self.items.values()
+    }
+
+    pub fn weapon_class(&self, category: ItemCategory) -> Option<&WeaponClass> {
+        self.weapon_classes.get(&category)
+    }
+
+    pub fn weapon_classes(&self) -> impl Iterator<Item = &WeaponClass> {
+        self.weapon_classes.values()
+    }
+
+    /// Weapon items whose category has no class (the game data requires
+    /// none; the catalog alone accepts them and they strike unarmed).
+    pub fn weapons_without_class(&self) -> Vec<&str> {
+        self.items
+            .values()
+            .filter(|d| d.category.is_weapon() && !self.weapon_classes.contains_key(&d.category))
+            .map(|d| d.id.as_str())
+            .collect()
+    }
+
+    /// Strike of the basic attack with this equipment: the weapon's class
+    /// and stats, or the unarmed strike (no weapon, unknown weapon or a
+    /// category without a class).
+    pub fn strike_profile(&self, equipment: &Equipment, attack_speed: f32) -> StrikeProfile {
+        equipment
+            .get(EquipmentSlot::Weapon)
+            .and_then(|id| self.get(id))
+            .and_then(|def| {
+                let class = self.weapon_classes.get(&def.category)?;
+                let stats = def.weapon.clone().unwrap_or_default();
+                Some(StrikeProfile::resolve(class, &stats, attack_speed))
+            })
+            .unwrap_or_else(|| StrikeProfile::unarmed(attack_speed))
+    }
+
+    /// V2.1: whether this item is a weapon whose class needs both hands.
+    pub fn is_two_handed(&self, item: &str) -> bool {
+        self.get(item)
+            .and_then(|d| self.weapon_classes.get(&d.category))
+            .is_some_and(|c| c.two_handed)
+    }
+
+    /// Category of the equipped weapon, if any (technique compatibility).
+    pub fn weapon_category(&self, equipment: &Equipment) -> Option<ItemCategory> {
+        equipment
+            .get(EquipmentSlot::Weapon)
+            .and_then(|id| self.get(id))
+            .map(|d| d.category)
     }
 }
 

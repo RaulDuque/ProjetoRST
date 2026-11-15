@@ -1,10 +1,15 @@
-//! Temporary visuals: until sprites exist, the player is a coloured box
-//! whose colour, squash and "visor" show the current state and facing.
+//! Placeholder visuals: the player is a coloured box whose colour, squash
+//! and "visor" show the current state and facing. Since V1.3 the sprite
+//! child (`player::visual`) replaces it once its textures are loaded; the
+//! box then turns transparent, keeps scale 1 (a squashed parent would
+//! squash the sprite) and hides the visor. Without sprites (missing
+//! manifest, headless apps) it works as before.
 
 use bevy::prelude::*;
 
 use super::components::{ActionState, Player};
 use super::state::PlayerState;
+use super::visual::PlayerVisual;
 use crate::combat::hitboxes::Invulnerable;
 use crate::world::physics::FacingDirection;
 
@@ -14,8 +19,10 @@ pub struct Visor;
 
 const VISOR_SIZE: Vec2 = Vec2::new(8.0, 6.0);
 const VISOR_OFFSET: Vec2 = Vec2::new(7.0, 12.0);
-/// Blink frequency while invulnerable (Hz).
-const BLINK_RATE: f32 = 16.0;
+/// Blink frequency while invulnerable (Hz); shared with the sprite visual.
+pub const BLINK_RATE: f32 = 16.0;
+/// Alpha of the "off" phase of the invulnerability blink.
+pub const BLINK_ALPHA: f32 = 0.35;
 
 fn state_color(state: PlayerState) -> Color {
     match state {
@@ -46,6 +53,7 @@ pub fn update_player_visuals(
     time: Res<Time>,
     players: Query<
         (
+            Entity,
             &ActionState,
             &FacingDirection,
             &Invulnerable,
@@ -53,26 +61,40 @@ pub fn update_player_visuals(
             &mut Sprite,
             &mut Transform,
         ),
-        (With<Player>, Without<Visor>),
+        (With<Player>, Without<Visor>, Without<PlayerVisual>),
     >,
-    mut visors: Query<&mut Transform, With<Visor>>,
+    mut visors: Query<(&mut Transform, &mut Visibility), (With<Visor>, Without<PlayerVisual>)>,
+    sprites: Query<(&ChildOf, &Visibility), (With<PlayerVisual>, Without<Visor>)>,
 ) {
     let blink_on = (time.elapsed_secs() * BLINK_RATE).sin() > 0.0;
-    for (state, facing, invulnerable, children, mut sprite, mut transform) in players {
-        let mut color = state_color(state.state());
-        if invulnerable.remaining > 0.0 && state.state() != PlayerState::Dead && blink_on {
-            color = color.with_alpha(0.35);
+    for (entity, state, facing, invulnerable, children, mut sprite, mut transform) in players {
+        let sprite_shown = sprites.iter().any(|(parent, visibility)| {
+            parent.parent() == entity && *visibility != Visibility::Hidden
+        });
+        if sprite_shown {
+            sprite.color = Color::NONE;
+            transform.scale = Vec3::ONE;
+        } else {
+            let mut color = state_color(state.state());
+            if invulnerable.remaining > 0.0 && state.state() != PlayerState::Dead && blink_on {
+                color = color.with_alpha(BLINK_ALPHA);
+            }
+            sprite.color = color;
+            let squash = match state.state() {
+                PlayerState::Crouching => 0.65,
+                PlayerState::Dead => 0.3,
+                _ => 1.0,
+            };
+            transform.scale = Vec3::new(1.0, squash, 1.0);
         }
-        sprite.color = color;
-        let squash = match state.state() {
-            PlayerState::Crouching => 0.65,
-            PlayerState::Dead => 0.3,
-            _ => 1.0,
-        };
-        transform.scale = Vec3::new(1.0, squash, 1.0);
         for child in children.iter() {
-            if let Ok(mut visor) = visors.get_mut(child) {
+            if let Ok((mut visor, mut visibility)) = visors.get_mut(child) {
                 visor.translation.x = VISOR_OFFSET.x * facing.sign();
+                visibility.set_if_neq(if sprite_shown {
+                    Visibility::Hidden
+                } else {
+                    Visibility::Inherited
+                });
             }
         }
     }

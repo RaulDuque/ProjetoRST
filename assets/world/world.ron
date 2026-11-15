@@ -1,0 +1,20 @@
+// World graph. Loaded by the main game since V1.7 (`app::run`); the
+// single room of `assets/maps/` stays as a test fixture and as a legacy
+// room: a save v1 made there resumes at `legacy_rooms`.
+// Format: src/world/graph.rs; docs: docs/WORLD_ARCHITECTURE.md, docs/V1_6_VERTICAL_SLICE.md.
+(
+    start_room: "vigil_gates_approach",
+    start_door: "to_sealed",
+    // V1.8: the main progression now ends in the Forgotten Galleries.
+    goal_room: "fg_return_bridge",
+    // V1.9: what lets the player through each kind of barrier. Must match
+    // the unlock of the form that passes it (assets/data/transformations.ron);
+    // app::load_world refuses the world otherwise.
+    passages: {
+        Spectral: Ability(VeilStep),
+    },
+    legacy_rooms: {
+        // The pre-graph single room: resume at the region's entrance.
+        "entry_hall": (room: "vigil_gates_approach", door: "to_sealed"),
+    },
+)

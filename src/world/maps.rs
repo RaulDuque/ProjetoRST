@@ -15,8 +15,18 @@ pub struct CurrentRoom(pub String);
 #[derive(Component, Debug, Clone, Copy)]
 pub struct RoomEntity;
 
-const PLATFORM_COLOR: Color = Color::srgb(0.32, 0.29, 0.36);
+/// Colour of solid level geometry (also used by false walls, V1.6).
+pub const PLATFORM_COLOR: Color = Color::srgb(0.32, 0.29, 0.36);
 const ONE_WAY_COLOR: Color = Color::srgb(0.45, 0.36, 0.25);
+/// Colour of a spectral veil (V1.9): translucent, cold, clearly not masonry.
+pub const VEIL_COLOR: Color = Color::srgba(0.55, 0.82, 1.0, 0.5);
+
+/// A drawn veil (V1.9); its base colour, animated by the transformation's
+/// presentation (`transform::visual::shimmer_veils`).
+#[derive(Component, Debug, Clone, Copy)]
+pub struct VeilSurface {
+    pub color: Color,
+}
 
 pub fn spawn_start_room(mut commands: Commands, data: Res<GameData>) {
     let room_id = data.character.start.room.clone();
@@ -37,16 +47,21 @@ pub fn spawn_room(commands: &mut Commands, room: &RoomDefinition) {
 
     for platform in &room.platforms {
         let solid = platform.solid();
-        let color = if platform.one_way {
+        let color = if platform.barrier.is_some() {
+            VEIL_COLOR
+        } else if platform.one_way {
             ONE_WAY_COLOR
         } else {
             PLATFORM_COLOR
         };
-        commands.spawn((
+        let mut entity = commands.spawn((
             RoomEntity,
             Sprite::from_color(color, Vec2::new(platform.size.0, platform.size.1)),
             Transform::from_xyz(solid.aabb.center.0, solid.aabb.center.1, Z_PLATFORMS),
         ));
+        if platform.barrier.is_some() {
+            entity.insert(VeilSurface { color });
+        }
     }
 
     commands.insert_resource(RoomGeometry {

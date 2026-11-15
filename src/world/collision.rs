@@ -3,6 +3,10 @@
 //! Pure module: no Bevy types. Movement is resolved one axis at a time
 //! (X then Y) against static solids. One-way platforms only block bodies
 //! falling onto them from above.
+//!
+//! V1.9: a solid may be a *barrier* of some [`BarrierKind`] (e.g. a spectral
+//! veil). Barriers are ordinary solids for every body; only a body that
+//! phases through that kind ([`move_and_collide_phased`]) ignores them.
 
 use serde::{Deserialize, Serialize};
 
@@ -45,12 +49,30 @@ impl Aabb {
     }
 }
 
+/// Material of a barrier that some transformation passes through (V1.9).
+/// Walls, floors and platforms have none: no form ever passes them.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
+pub enum BarrierKind {
+    /// A veil of the Spectral Form (`assets/data/transformations.ron`).
+    Spectral,
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
 pub struct Solid {
     pub aabb: Aabb,
     /// Only collides from above (jump-through platform).
     #[serde(default)]
     pub one_way: bool,
+    /// A barrier that bodies phasing through this kind ignore (V1.9).
+    #[serde(default)]
+    pub barrier: Option<BarrierKind>,
+}
+
+impl Solid {
+    /// Whether a body that phases through `passes` collides with it.
+    pub fn stops(&self, passes: &[BarrierKind]) -> bool {
+        self.barrier.is_none_or(|kind| !passes.contains(&kind))
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Default)]
@@ -64,6 +86,19 @@ pub struct MoveResult {
 
 /// Moves `body` by `velocity * dt`, stopping at solids.
 pub fn move_and_collide(body: Aabb, velocity: (f32, f32), dt: f32, solids: &[Solid]) -> MoveResult {
+    move_and_collide_phased(body, velocity, dt, solids, &[])
+}
+
+/// [`move_and_collide`] for a body that passes the barriers of the kinds in
+/// `passes` (V1.9). With an empty `passes` it is exactly `move_and_collide`:
+/// every solid, barriers included, stops the body.
+pub fn move_and_collide_phased(
+    body: Aabb,
+    velocity: (f32, f32),
+    dt: f32,
+    solids: &[Solid],
+    passes: &[BarrierKind],
+) -> MoveResult {
     let mut result = MoveResult {
         center: body.center,
         velocity,
@@ -75,7 +110,7 @@ pub fn move_and_collide(body: Aabb, velocity: (f32, f32), dt: f32, solids: &[Sol
         center: (body.center.0 + velocity.0 * dt, body.center.1),
         half: body.half,
     };
-    for solid in solids.iter().filter(|s| !s.one_way) {
+    for solid in solids.iter().filter(|s| !s.one_way && s.stops(passes)) {
         if moved.intersects(&solid.aabb) {
             if velocity.0 > 0.0 {
                 moved.center.0 = solid.aabb.left() - body.half.0;
@@ -90,7 +125,7 @@ pub fn move_and_collide(body: Aabb, velocity: (f32, f32), dt: f32, solids: &[Sol
     // Vertical pass.
     let previous_bottom = body.bottom();
     moved.center.1 += velocity.1 * dt;
-    for solid in solids {
+    for solid in solids.iter().filter(|s| s.stops(passes)) {
         if !moved.intersects(&solid.aabb) {
             continue;
         }
@@ -122,6 +157,7 @@ mod tests {
         Solid {
             aabb: Aabb::new((0.0, -10.0), (1000.0, 20.0)),
             one_way: false,
+            barrier: None,
         }
     }
 
@@ -139,6 +175,7 @@ mod tests {
         let wall = Solid {
             aabb: Aabb::new((50.0, 20.0), (20.0, 100.0)),
             one_way: false,
+            barrier: None,
         };
         let body = Aabb::new((20.0, 20.0), (20.0, 40.0));
         let r = move_and_collide(body, (400.0, 0.0), 0.1, &[wall]);
@@ -151,6 +188,7 @@ mod tests {
         let platform = Solid {
             aabb: Aabb::new((0.0, 100.0), (200.0, 10.0)),
             one_way: true,
+            barrier: None,
         };
         let below = Aabb::new((0.0, 80.0), (20.0, 40.0));
         let up = move_and_collide(below, (0.0, 300.0), 0.05, &[platform]);
@@ -159,5 +197,42 @@ mod tests {
         let above = Aabb::new((0.0, 126.0), (20.0, 40.0));
         let down = move_and_collide(above, (0.0, -300.0), 0.05, &[platform]);
         assert!(down.grounded);
+    }
+
+    #[test]
+    fn barriers_stop_everyone_except_the_bodies_that_phase_through_them() {
+        let veil = Solid {
+            aabb: Aabb::new((50.0, 20.0), (20.0, 100.0)),
+            one_way: false,
+            barrier: Some(BarrierKind::Spectral),
+        };
+        let wall = Solid {
+            aabb: Aabb::new((120.0, 20.0), (20.0, 100.0)),
+            one_way: false,
+            barrier: None,
+        };
+        let body = Aabb::new((20.0, 20.0), (20.0, 40.0));
+        let solids = [veil, wall];
+        // A plain body (and an empty phase list) is stopped by the veil.
+        let human = move_and_collide(body, (400.0, 0.0), 0.1, &solids);
+        assert_eq!(
+            human,
+            move_and_collide_phased(body, (400.0, 0.0), 0.1, &solids, &[])
+        );
+        assert!(human.hit_wall && (human.center.0 - 30.0).abs() < 1e-3);
+        // A spectral body crosses the veil but not the wall behind it
+        // (frame-sized steps: 8 units, thinner than any solid).
+        let mut spectral = body;
+        for _ in 0..30 {
+            let r = move_and_collide_phased(
+                spectral,
+                (400.0, 0.0),
+                0.02,
+                &solids,
+                &[BarrierKind::Spectral],
+            );
+            spectral.center = r.center;
+        }
+        assert!((spectral.center.0 - 100.0).abs() < 1e-3, "{spectral:?}");
     }
 }

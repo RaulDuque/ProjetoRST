@@ -1,0 +1,116 @@
+// Dialogues of the Village of Ashes (V2.1). Format: src/npc/definitions.rs.
+// A node: who speaks it, its lines (Enter/D advances), then `choices` or
+// `next` (or nothing: the talk ends). Choice actions: Goto("node"),
+// OpenShop (only for an NPC with a shop) and End.
+[
+    // ---- Bram, the Road Warden -------------------------------------------
+    (
+        id: "bram_intro",
+        speaker: "bram_road_warden",
+        lines: [
+            "Halt. You came down from the castle road? Few walk it twice.",
+            "This is the Village of Ashes. We keep the gate and we keep quiet.",
+        ],
+        choices: [
+            (text: "What lies inside the castle?", action: Goto("bram_castle")),
+            (text: "Farewell.", action: End),
+        ],
+    ),
+    (
+        id: "bram_castle",
+        speaker: "bram_road_warden",
+        lines: [
+            "Bone sentries on the causeway, and worse above the shaft.",
+            "They say a relic in the high gallery lets the living walk through veils.",
+        ],
+        next: Some("bram_intro"),
+    ),
+    (
+        id: "bram_after_relic",
+        speaker: "bram_road_warden",
+        lines: [
+            "You carry the Relic of the Veil. I can feel the cold of it from here.",
+            "Walk carefully: what the veil lets through, it also lets back.",
+        ],
+    ),
+    // ---- Hooded Pilgrim -----------------------------------------------------
+    (
+        id: "pilgrim_hint",
+        speaker: "hooded_pilgrim",
+        lines: [
+            "...You seek what the walls hide? Then listen.",
+            "In the barbican, east of the shaft, one wall is only paint on air.",
+        ],
+        choices: [
+            (text: "Who are you?", action: Goto("pilgrim_who")),
+            (text: "I will look.", action: End),
+        ],
+    ),
+    (
+        id: "pilgrim_who",
+        speaker: "hooded_pilgrim",
+        lines: ["A pilgrim. Nothing more, for now."],
+    ),
+    (
+        id: "pilgrim_well_seen",
+        speaker: "hooded_pilgrim",
+        lines: [
+            "You have stood in the Veiled Well. Few return with their shadow.",
+            "There are other veils. Not all of them in this castle.",
+        ],
+    ),
+    // ---- Hessa (shop) ---------------------------------------------------------
+    (
+        id: "hessa_greet",
+        speaker: "hessa_outfitter",
+        lines: ["Welcome to Hessa's Outfitters. Coin talks, I listen."],
+        choices: [
+            (text: "Let me see your wares.", action: OpenShop),
+            (text: "Tell me about the village.", action: Goto("hessa_village")),
+            (text: "Goodbye.", action: End),
+        ],
+    ),
+    (
+        id: "hessa_village",
+        speaker: "hessa_outfitter",
+        lines: [
+            "We trade in what the castle spits out. Bring me what you do not need.",
+            "Garrick the smith works next door. Old Wenna knows every story.",
+        ],
+        next: Some("hessa_greet"),
+    ),
+    // ---- Garrick (smith) -----------------------------------------------------
+    (
+        id: "garrick_greet",
+        speaker: "garrick_smith",
+        lines: ["The forge is cold today. Iron needs patience."],
+        choices: [
+            (text: "Can you improve my weapon?", action: Goto("garrick_later")),
+            (text: "Leave him to his work.", action: End),
+        ],
+    ),
+    (
+        id: "garrick_later",
+        speaker: "garrick_smith",
+        lines: [
+            "Not yet. Bring me castle iron and a reason, and we will talk again.",
+        ],
+    ),
+    // ---- Old Wenna (villager) ------------------------------------------------
+    (
+        id: "wenna_intro",
+        speaker: "old_wenna",
+        lines: [
+            "Sit, child. The castle was not always hungry.",
+            "West of the reliquary there were galleries, long forgotten. My father swept them.",
+        ],
+    ),
+    (
+        id: "wenna_galleries",
+        speaker: "old_wenna",
+        lines: [
+            "You have walked the Forgotten Galleries? Then you have seen the astral gate.",
+            "My father said it opened for an emblem, kept in a chapel up the stair.",
+        ],
+    ),
+]
