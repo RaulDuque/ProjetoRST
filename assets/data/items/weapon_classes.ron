@@ -5,6 +5,12 @@
 //   attack_time: swing at attack speed 1 (strike active for the first 60%);
 //   recovery: extra committed time; power: multiplier on ATK.
 //   two_handed (V2.1): no off-hand item (shield) at the same time.
+//   Optional (V2.4, docs/COMBAT_FEEL_V2_4.md; omitted = as before):
+//   startup (s, inside attack_time, before the strike can hit),
+//   active_fraction (default 0.6), cancel_after (share of the whole action
+//   from which jump/dodge/guard/attack cancel it; default none),
+//   air_control (0..1, default 0), turn_window (s, default 0),
+//   rehit_interval (s, default none = each target once).
 // The Sword row is the pre-V2.0 basic attack (core/constants.rs): the
 // starting Iron Sword strikes exactly as before.
 (

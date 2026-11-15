@@ -52,7 +52,10 @@ Testes: `tests/combat_tests.rs`.
 
 Regras: morto não age; dano interrompe tudo menos esquiva; guarda bloqueia 70%
 do dano frontal sem stagger; não se pula nem esquiva no ar; técnicas podem
-cancelar o ataque básico (`usable_in: [.., Attacking]`).
+cancelar o ataque básico (`usable_in: [.., Attacking]`). V2.4: durante
+`Attacking`, a tabela `player/action_rules.rs` decide por fase do golpe;
+com `cancel_after` na arma, pulo, esquiva, guarda e novo ataque também
+cancelam a partir desse ponto (`PlayerStateMachine::cancel_attack`).
 
 Dano recebido pelo jogador (`player::systems::receive_damage`):
 - a invulnerabilidade é conferida **a cada mensagem**: num frame com vários
@@ -66,6 +69,8 @@ Dano recebido pelo jogador (`player::systems::receive_damage`):
 
 - `Hitbox { owner, team, size, attack, hit, lifetime, pierce, already_hit }`.
 - `AttachedToOwner { offset }` mantém o golpe à frente do dono (espelhado pela orientação).
+- V2.4: `PendingStrike { delay }` marca um golpe em antecipação: invisível,
+  sem acertar nem descontar `lifetime` até `arm_pending_strikes` armá-lo.
 - `Hurtbox { team, size }`; `Invulnerable { remaining }` ignora acertos.
 - Interrupção: `cancel_interrupted_hitboxes` (set `Resolution`, depois do
   `receive_damage` do jogador) remove as hitboxes com `AttachedToOwner` cujo
@@ -89,6 +94,21 @@ Sword tem os mesmos valores, então a Iron Sword não mudou. A fórmula de
 dano não mudou. O hitbox leva `WeaponStrike { category }`. Técnicas com
 `weapons` recusam outras armas (`CommandOutcome::WrongWeapon`). Detalhes:
 [`EQUIPMENT_EXPANSION_V2_0.md`](EQUIPMENT_EXPANSION_V2_0.md) §6–7, §21.
+
+## Linha do tempo e cancelamento (V2.4)
+
+Campos opcionais da classe de arma: `startup` (antecipação antes de a
+hitbox poder acertar), `active_fraction` (janela ativa) e `cancel_after`
+(a partir de que fração da ação pulo, esquiva, guarda e novo ataque
+cancelam o golpe). Omitidos, reproduzem o comportamento anterior. Regras
+puras: `combat/strike_timeline.rs` (fases `Startup`/`Active`/`Recovery`) e
+`player/action_rules.rs` (o que cada fase permite). Técnicas continuam
+cancelando o ataque básico a qualquer momento; o que acontece com a
+hitbox do golpe nesse caso é o recurso global `StrikeCancelPolicy`
+(`Preserve` por padrão). Também opcionais: `air_control`, `turn_window`
+(hitboxes armadas mantêm o lado, `SideLock`) e `rehit_interval`
+(`RehitTimers`). Detalhes, garantias e limitações:
+[`COMBAT_FEEL_V2_4.md`](COMBAT_FEEL_V2_4.md).
 
 ## Constantes de sensação
 
