@@ -1,5 +1,9 @@
 # Arquitetura do mundo (V1.6)
 
+> **V2.3:** campos opcionais de apresentação: `visual` em `region: (...)`
+> e `decor` em cada sala (nunca colidem); câmera em `assets/data/camera.ron`.
+> Ver [`WORLD_VISUAL_V2_3.md`](WORLD_VISUAL_V2_3.md).
+
 > Status: legenda em [`GAME_VISION_MASTER.md`](GAME_VISION_MASTER.md).
 > - **[Protótipo]**: grafo, validação, exploração e o plugin de transições.
 >   Existem e são testados, mas **não** estão no `GamePlugin`.

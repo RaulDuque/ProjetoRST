@@ -31,11 +31,13 @@ use dark_castle_rpg::npc::definitions::{DialogueNode, NpcDefinition, NpcLibrary}
 use dark_castle_rpg::player::visual::sockets::FrameSockets;
 use dark_castle_rpg::save::save_manager::SaveStorage;
 use dark_castle_rpg::save::systems::SaveSlots;
+use dark_castle_rpg::world::camera_rules::CameraSettings;
 use dark_castle_rpg::world::exploration_systems::{activate_world, install_world};
 use dark_castle_rpg::world::graph::{
     Door, Grant, Pickup, RegionFile, SecretDef, Veil, WorldDefinition, WorldObject, WorldRoom,
 };
 use dark_castle_rpg::world::rooms::{EnemySpawn, Platform};
+use dark_castle_rpg::world::scenery::{Decor, RegionVisual};
 use dark_castle_rpg::world::validation::validate;
 
 #[path = "support/route_driver.rs"]
@@ -179,6 +181,20 @@ fn example() -> (Example, usize) {
             }
             "QuadroAncoras" => {
                 let _: FrameSockets = parse(file, kind, body);
+            }
+            // V2.3 excerpts: camera settings (validated), decoration, region look.
+            "Camera" => {
+                let body = body.trim_end().trim_end_matches(',');
+                CameraSettings::from_ron(body)
+                    .unwrap_or_else(|e| panic!("{file}: block `{kind}`: {e}"));
+            }
+            "Decoracao" => {
+                let _: Decor = parse(file, kind, body);
+            }
+            "VisualRegiao" => {
+                let v: RegionVisual = parse(file, kind, body);
+                v.validate("tutorial")
+                    .unwrap_or_else(|e| panic!("{file}: block `{kind}`: {e}"));
             }
             other => panic!("{file}: unknown block kind `{other}`"),
         }
@@ -350,6 +366,12 @@ fn every_tutorial_follows_the_template_and_every_block_parses() {
         "27_ASSOCIAR_SPRITES_A_NPCS.md",
         "28_ADICIONAR_MARCADORES_NO_MAPA.md",
         "29_TESTAR_EQUIPAMENTOS_VISUAIS.md",
+        "30_CONFIGURAR_CAMERA.md",
+        "31_CONFIGURAR_ZOOM.md",
+        "32_DECORAR_UMA_SALA.md",
+        "33_CRIAR_FUNDOS_EM_PARALLAX.md",
+        "34_CONFIGURAR_ATMOSFERA_DE_REGIAO.md",
+        "35_TESTAR_CENARIOS_VISUAIS.md",
     ];
     let sections = [
         "## 1. O que vamos fazer?",

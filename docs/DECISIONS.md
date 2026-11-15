@@ -561,3 +561,25 @@ no canto inferior esquerdo, sem fundo, passavam sobre o personagem e os avisos
   regra do proprietário); `Md-usario/tutorias/` é sincronizada à mão.
 
 **Consequências:** sem mudança de save, de diálogo ou de progresso.
+
+## D-027 — Câmera por dados e cenário só de apresentação, gerado em código (V2.3)
+
+**Contexto:** a gravação analisada no briefing `DarkCastleR-V2-3.md` mostrou
+protagonista pequeno, muito espaço vazio e salas com cara de teste.
+
+**Decisão:**
+- **Câmera:** `assets/data/camera.ron` (todos os campos opcionais, padrões
+  seguros e validados) e regras puras em `world::camera_rules`; projeção
+  `FixedVertical` com altura de mundo 405 (×1,78), escolhida por varredura em
+  três salas. Física e colisões independentes do zoom.
+- **Cenário:** campos opcionais `visual` (região) e `decor` (sala) no formato
+  de mundo existente; nada de segundo sistema de salas. Peças só de
+  apresentação (`RoomEntity` sem colisão), validadas pelo validador do mundo.
+- **Arte:** gerada em código (`core::pixel_art`), sem PNG novo em `assets/`
+  (não exige publicação pelo guarda); provisória.
+- **Iluminação:** brilhos e névoa por sprites; sem pós-processamento nem
+  dependências novas; tudo desligável (`effects`).
+- **Pilotos:** três salas de três regiões antes de qualquer expansão.
+
+**Consequências:** `world_camera_tests` passaram a usar a vista configurada
+(as mesmas checagens). Sem mudança de save.

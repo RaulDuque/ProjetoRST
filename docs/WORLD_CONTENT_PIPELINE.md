@@ -1,5 +1,9 @@
 # Pipeline de conteúdo do mundo
 
+> **V2.3:** campos opcionais de apresentação: `visual` em `region: (...)`
+> e `decor` em cada sala (nunca colidem); câmera em `assets/data/camera.ron`.
+> Ver [`WORLD_VISUAL_V2_3.md`](WORLD_VISUAL_V2_3.md).
+
 > - **[Protótipo]:** salas em RON, validador, relatório e grafo (`examples/world_report.rs`).
 > - **[Planejado]:** editor visual de mapa, checagem de alcance físico, CI.
 >

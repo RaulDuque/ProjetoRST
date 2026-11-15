@@ -4,6 +4,17 @@ Formato: [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/). Versioname
 
 ## [Unreleased]
 
+### V2.3 — Câmera, cenários góticos, parallax e atmosfera
+- Câmera configurável (`assets/data/camera.ron`): zoom ×1,78 (altura de mundo
+  405), zonas mortas, olhar à frente suave, enquadramento de pulo e queda,
+  limites por sala, snap em teleportes, independente da física.
+- Cenário por dados: `visual` por região (fundo em parallax de 2 camadas,
+  pedra, luz, céu, névoa) e `decor` por sala (12 peças góticas geradas em
+  código); brilhos de tochas/janelas/lanternas e névoa; tudo desligável.
+- Atmosfera em Vigil Gates, Forgotten Galleries e Village of Ashes; salas
+  piloto `vigil_gates_causeway`, `fg_stair` e `av_square`.
+- Vitrine `world_visual_showcase`, testes `world_scenery_tests`, tutoriais 30–35.
+
 ### V2.2 — Equipamento visível, NPCs, mapa e HUD
 - Corpo do protagonista renderizado sem o sabre (mesmas poses) e âncoras por
   quadro medidas no Blender, publicados em `assets/` pelo guarda (estado

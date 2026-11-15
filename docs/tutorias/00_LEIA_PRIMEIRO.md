@@ -156,3 +156,9 @@ Veja o tutorial **17 — Erros comuns**.
 | 27 | [Associar a figura ao papel do NPC](27_ASSOCIAR_SPRITES_A_NPCS.md) | Funciona |
 | 28 | [Marcadores de NPCs e lojas no mapa](28_ADICIONAR_MARCADORES_NO_MAPA.md) | Funciona (automático) |
 | 29 | [Testar equipamentos visuais](29_TESTAR_EQUIPAMENTOS_VISUAIS.md) | Funciona |
+| 30 | [Configurar a câmera](30_CONFIGURAR_CAMERA.md) | Funciona |
+| 31 | [Configurar o zoom](31_CONFIGURAR_ZOOM.md) | Funciona |
+| 32 | [Decorar uma sala](32_DECORAR_UMA_SALA.md) | Funciona (arte provisória; 3 salas piloto) |
+| 33 | [Fundos em parallax](33_CRIAR_FUNDOS_EM_PARALLAX.md) | Funciona (camadas geradas em código) |
+| 34 | [Atmosfera de uma região](34_CONFIGURAR_ATMOSFERA_DE_REGIAO.md) | Funciona (3 regiões) |
+| 35 | [Testar cenários visuais](35_TESTAR_CENARIOS_VISUAIS.md) | Funciona |
