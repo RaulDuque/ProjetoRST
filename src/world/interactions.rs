@@ -28,7 +28,7 @@ use super::exploration_systems::{Exploration, WorldGraph, room_solids};
 use super::graph::{ChestTier, Grant, ObjectKind, WorldObject, WorldRoom};
 use super::maps::{CurrentRoom, PLATFORM_COLOR, RoomEntity};
 use super::physics::RoomGeometry;
-use crate::combat::hitboxes::{Hitbox, Team};
+use crate::combat::hitboxes::{Hitbox, PendingStrike, Team, is_armed};
 use crate::core::constants::{PLAYER_SIZE, Z_PLATFORMS};
 use crate::core::events::{Notification, PickupCollected, ProjectileBlocked};
 use crate::core::resources::GameData;
@@ -114,7 +114,7 @@ pub fn break_walls(
     exploration: Option<ResMut<Exploration>>,
     current: Option<Res<CurrentRoom>>,
     geometry: Option<ResMut<RoomGeometry>>,
-    hitboxes: Query<(&Transform, &Hitbox)>,
+    hitboxes: Query<(&Transform, &Hitbox, Option<&PendingStrike>)>,
     mut blocked: MessageReader<ProjectileBlocked>,
     mut notifications: MessageWriter<Notification>,
 ) {
@@ -122,8 +122,8 @@ pub fn break_walls(
     // stopped against the geometry.
     let strikes: Vec<(Aabb, _, _)> = hitboxes
         .iter()
-        .filter(|(_, h)| h.team == Team::Player)
-        .map(|(t, h)| {
+        .filter(|(_, h, pending)| h.team == Team::Player && is_armed(*pending))
+        .map(|(t, h, _)| {
             (
                 Aabb::new((t.translation.x, t.translation.y), (h.size.x, h.size.y)),
                 h.hit.kind,

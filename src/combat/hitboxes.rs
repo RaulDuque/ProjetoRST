@@ -92,6 +92,100 @@ pub struct AttachedToOwner {
     pub offset: Vec2,
 }
 
+/// V2.4: a strike still in its anticipation (`startup`). Until `delay`
+/// runs out the hitbox follows its owner hidden, cannot hit and its
+/// lifetime does not run. Interruption and room changes remove it like any
+/// other hitbox.
+#[derive(Component, Debug, Clone, Copy)]
+pub struct PendingStrike {
+    pub delay: f32,
+}
+
+impl PendingStrike {
+    pub fn armed(&self) -> bool {
+        self.delay <= 0.0
+    }
+}
+
+/// V2.4: an attached hitbox that keeps the side (facing sign) it had when
+/// it became able to hit, so turning around never flips a live strike.
+/// While pending it still follows its owner's facing. Attached hitboxes
+/// without it mirror their owner every frame, as before V2.4 (enemy
+/// strikes, techniques).
+#[derive(Component, Debug, Clone, Copy, Default, PartialEq)]
+pub struct SideLock {
+    /// `None` until the hitbox is armed.
+    pub sign: Option<f32>,
+}
+
+/// V2.4: lets one hitbox hit the same target again `interval` seconds
+/// after its last hit on it. Without it a hitbox hits each target once
+/// (`Hitbox::already_hit`, D-009). Entries end when their time runs out
+/// and the whole record goes away with the hitbox.
+#[derive(Component, Debug, Clone, PartialEq)]
+pub struct RehitTimers {
+    interval: f32,
+    recent: Vec<(Entity, f32)>,
+}
+
+impl RehitTimers {
+    pub fn new(interval: f32) -> Self {
+        Self {
+            interval,
+            recent: Vec::new(),
+        }
+    }
+
+    pub fn interval(&self) -> f32 {
+        self.interval
+    }
+
+    /// Runs the timers and forgets the targets whose wait is over.
+    pub fn tick(&mut self, dt: f32) {
+        for (_, remaining) in &mut self.recent {
+            *remaining -= dt;
+        }
+        self.recent.retain(|(_, remaining)| *remaining > 0.0);
+    }
+
+    /// Whether `target` may be hit now.
+    pub fn ready(&self, target: Entity) -> bool {
+        !self.recent.iter().any(|(hit, _)| *hit == target)
+    }
+
+    /// Starts the wait for `target` after a hit.
+    pub fn record(&mut self, target: Entity) {
+        self.recent.push((target, self.interval));
+    }
+
+    /// Targets still waiting.
+    pub fn tracked(&self) -> usize {
+        self.recent.len()
+    }
+}
+
+/// True for every hitbox that can hit now (pending strikes cannot).
+pub fn is_armed(pending: Option<&PendingStrike>) -> bool {
+    pending.is_none_or(PendingStrike::armed)
+}
+
+/// Runs the anticipation of pending strikes and shows them once armed.
+pub fn arm_pending_strikes(
+    time: Res<Time>,
+    mut pending: Query<(&mut PendingStrike, &mut Visibility)>,
+) {
+    let dt = frame_delta(&time);
+    for (mut strike, mut visibility) in &mut pending {
+        if strike.armed() {
+            continue;
+        }
+        strike.delay -= dt;
+        if strike.armed() {
+            *visibility = Visibility::Inherited;
+        }
+    }
+}
+
 pub fn tick_invulnerability(time: Res<Time>, mut query: Query<&mut Invulnerable>) {
     let dt = frame_delta(&time);
     for mut inv in &mut query {
@@ -103,13 +197,29 @@ pub fn tick_invulnerability(time: Res<Time>, mut query: Query<&mut Invulnerable>
 
 pub fn follow_owners(
     mut commands: Commands,
-    mut hitboxes: Query<(Entity, &Hitbox, &AttachedToOwner, &mut Transform)>,
+    mut hitboxes: Query<(
+        Entity,
+        &Hitbox,
+        &AttachedToOwner,
+        &mut Transform,
+        Option<&mut SideLock>,
+        Option<&PendingStrike>,
+    )>,
     owners: Query<(&Transform, &FacingDirection), Without<Hitbox>>,
 ) {
-    for (entity, hitbox, attached, mut transform) in &mut hitboxes {
+    for (entity, hitbox, attached, mut transform, lock, pending) in &mut hitboxes {
         match owners.get(hitbox.owner) {
             Ok((owner, facing)) => {
-                transform.translation.x = owner.translation.x + attached.offset.x * facing.sign();
+                let sign = match lock {
+                    Some(mut lock) => {
+                        if lock.sign.is_none() && is_armed(pending) {
+                            lock.sign = Some(facing.sign());
+                        }
+                        lock.sign.unwrap_or_else(|| facing.sign())
+                    }
+                    None => facing.sign(),
+                };
+                transform.translation.x = owner.translation.x + attached.offset.x * sign;
                 transform.translation.y = owner.translation.y + attached.offset.y;
             }
             Err(_) => commands.entity(entity).try_despawn(),
@@ -120,10 +230,13 @@ pub fn follow_owners(
 pub fn expire_hitboxes(
     mut commands: Commands,
     time: Res<Time>,
-    mut hitboxes: Query<(Entity, &mut Hitbox)>,
+    mut hitboxes: Query<(Entity, &mut Hitbox, Option<&PendingStrike>)>,
 ) {
     let dt = frame_delta(&time);
-    for (entity, mut hitbox) in &mut hitboxes {
+    for (entity, mut hitbox, pending) in &mut hitboxes {
+        if !is_armed(pending) {
+            continue;
+        }
         hitbox.lifetime -= dt;
         if hitbox.lifetime <= 0.0 {
             commands.entity(entity).try_despawn();
@@ -192,10 +305,20 @@ pub fn roll_damage(rng: &mut GameRandom) -> DamageRolls {
     }
 }
 
+/// Overlap test. Each hitbox hits a target once (`already_hit`), or, with
+/// [`RehitTimers`], again after its interval; a target is never hit twice
+/// by the same hitbox in one frame.
 pub fn detect_hits(
     mut commands: Commands,
+    time: Res<Time>,
     mut rng: ResMut<GameRandom>,
-    mut hitboxes: Query<(Entity, &Transform, &mut Hitbox)>,
+    mut hitboxes: Query<(
+        Entity,
+        &Transform,
+        &mut Hitbox,
+        Option<&PendingStrike>,
+        Option<&mut RehitTimers>,
+    )>,
     hurtboxes: Query<(
         Entity,
         &Transform,
@@ -205,7 +328,14 @@ pub fn detect_hits(
     )>,
     mut damage: MessageWriter<DamageDealt>,
 ) {
-    for (hitbox_entity, hitbox_transform, mut hitbox) in &mut hitboxes {
+    let dt = frame_delta(&time);
+    for (hitbox_entity, hitbox_transform, mut hitbox, pending, mut rehit) in &mut hitboxes {
+        if !is_armed(pending) {
+            continue;
+        }
+        if let Some(rehit) = rehit.as_mut() {
+            rehit.tick(dt);
+        }
         let hit_area = Aabb::new(
             (
                 hitbox_transform.translation.x,
@@ -214,8 +344,12 @@ pub fn detect_hits(
             (hitbox.size.x, hitbox.size.y),
         );
         for (target, target_transform, hurtbox, profile, invulnerable) in &hurtboxes {
+            let waiting = match rehit.as_ref() {
+                Some(rehit) => !rehit.ready(target),
+                None => hitbox.already_hit.contains(&target),
+            };
             if hurtbox.team == hitbox.team
-                || hitbox.already_hit.contains(&target)
+                || waiting
                 || invulnerable.is_some_and(|i| i.remaining > 0.0)
             {
                 continue;
@@ -244,11 +378,50 @@ pub fn detect_hits(
                 outcome,
                 direction: if direction == 0.0 { 1.0 } else { direction },
             });
-            hitbox.already_hit.push(target);
+            match rehit.as_mut() {
+                Some(rehit) => rehit.record(target),
+                None => hitbox.already_hit.push(target),
+            }
             if !hitbox.pierce {
                 commands.entity(hitbox_entity).try_despawn();
                 break;
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn two_targets() -> (Entity, Entity) {
+        let mut world = World::new();
+        (world.spawn_empty().id(), world.spawn_empty().id())
+    }
+
+    #[test]
+    fn rehit_waits_per_target_and_forgets_finished_waits() {
+        let (a, b) = two_targets();
+        let mut rehit = RehitTimers::new(0.2);
+        assert!(rehit.ready(a) && rehit.ready(b));
+        rehit.record(a);
+        assert!(!rehit.ready(a), "no second hit right away");
+        assert!(rehit.ready(b), "another target is independent");
+        rehit.tick(0.1);
+        assert!(!rehit.ready(a));
+        rehit.record(b);
+        rehit.tick(0.1);
+        assert!(rehit.ready(a), "wait over");
+        assert!(!rehit.ready(b));
+        assert_eq!(rehit.tracked(), 1, "finished waits are dropped");
+        rehit.tick(0.1);
+        assert_eq!(rehit.tracked(), 0);
+    }
+
+    #[test]
+    fn pending_strikes_are_not_armed_until_their_delay_ends() {
+        assert!(is_armed(None));
+        assert!(!is_armed(Some(&PendingStrike { delay: 0.01 })));
+        assert!(is_armed(Some(&PendingStrike { delay: 0.0 })));
     }
 }

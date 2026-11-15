@@ -7,6 +7,7 @@ pub mod command_input;
 pub mod command_parser;
 pub mod damage;
 pub mod hitboxes;
+pub mod strike_timeline;
 
 use bevy::prelude::*;
 
@@ -17,36 +18,44 @@ pub struct CombatPlugin;
 
 impl Plugin for CombatPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(
-            Update,
-            command_input::record_and_resolve_commands
-                .after(update_facing)
-                .in_set(GameSet::Commands),
-        )
-        .add_systems(
-            Update,
-            (attacks::basic_attack, attacks::melee_techniques).in_set(GameSet::Actions),
-        )
-        .add_systems(
-            Update,
-            (
-                hitboxes::tick_invulnerability,
-                hitboxes::follow_owners,
-                hitboxes::detect_hits,
-                hitboxes::expire_hitboxes,
+        app.init_resource::<attacks::StrikeCancelPolicy>()
+            .add_systems(
+                Update,
+                attacks::apply_strike_cancel_policy
+                    .after(crate::skills::systems::begin_skill)
+                    .in_set(GameSet::Actions),
             )
-                .chain()
-                .in_set(GameSet::Combat),
-        )
-        .add_systems(
-            Update,
-            hitboxes::clear_on_room_change.in_set(crate::world::transitions::RoomStep::React),
-        )
-        .add_systems(
-            Update,
-            hitboxes::cancel_interrupted_hitboxes
-                .in_set(GameSet::Resolution)
-                .after(crate::player::systems::receive_damage),
-        );
+            .add_systems(
+                Update,
+                command_input::record_and_resolve_commands
+                    .after(update_facing)
+                    .in_set(GameSet::Commands),
+            )
+            .add_systems(
+                Update,
+                (attacks::basic_attack, attacks::melee_techniques).in_set(GameSet::Actions),
+            )
+            .add_systems(
+                Update,
+                (
+                    hitboxes::tick_invulnerability,
+                    hitboxes::arm_pending_strikes,
+                    hitboxes::follow_owners,
+                    hitboxes::detect_hits,
+                    hitboxes::expire_hitboxes,
+                )
+                    .chain()
+                    .in_set(GameSet::Combat),
+            )
+            .add_systems(
+                Update,
+                hitboxes::clear_on_room_change.in_set(crate::world::transitions::RoomStep::React),
+            )
+            .add_systems(
+                Update,
+                hitboxes::cancel_interrupted_hitboxes
+                    .in_set(GameSet::Resolution)
+                    .after(crate::player::systems::receive_damage),
+            );
     }
 }

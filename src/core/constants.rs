@@ -41,6 +41,9 @@ pub const BASIC_ATTACK_TIME: f32 = 0.28;
 pub const BASIC_ATTACK_HITBOX: (f32, f32) = (46.0, 26.0);
 /// Hitbox lifetime (active frames) as a fraction of the attack duration.
 pub const HITBOX_ACTIVE_FRACTION: f32 = 0.6;
+/// V2.4: `air_control` is the share of the gap to the wanted speed closed
+/// per frame of this length, so the feel does not depend on the frame rate.
+pub const AIR_CONTROL_REFERENCE_FRAME: f32 = 1.0 / 60.0;
 
 // ---------------------------------------------------------------- enemies
 

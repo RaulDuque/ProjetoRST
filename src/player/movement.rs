@@ -7,8 +7,10 @@
 
 use bevy::prelude::*;
 
+use super::action_rules::steer_in_air;
 use super::components::{ActionState, CharacterSheet, JumpControl, Player};
 use super::state::{Facing, PlayerAction, PlayerState};
+use crate::combat::attacks::ActiveStrike;
 use crate::combat::hitboxes::Invulnerable;
 use crate::core::constants::{
     COYOTE_TIME, JUMP_CUT_FACTOR, PLAYER_DODGE_SPEED, PLAYER_DODGE_TIME, PLAYER_JUMP_SPEED,
@@ -33,12 +35,17 @@ pub struct LocomotionProfile {
 /// Turns the character towards the pressed direction when it may move.
 /// Runs before command recording so that motions are interpreted relative
 /// to the direction the character faces after the input.
+///
+/// V2.4: also inside the weapon's `turn_window` at the start of a basic
+/// attack. Armed strikes keep their side (`SideLock`).
 pub fn update_facing(
     input: Res<PlayerInput>,
-    player: Single<(&ActionState, &mut FacingDirection), With<Player>>,
+    player: Single<(&ActionState, &mut FacingDirection, Option<&ActiveStrike>), With<Player>>,
 ) {
-    let (state, mut facing) = player.into_inner();
-    if !state.state().allows(PlayerAction::Move) || input.axis_x == 0 {
+    let (state, mut facing, strike) = player.into_inner();
+    let may_turn =
+        state.state().allows(PlayerAction::Move) || ActiveStrike::may_turn(state, strike);
+    if !may_turn || input.axis_x == 0 {
         return;
     }
     let wanted = if input.axis_x > 0 {
@@ -61,18 +68,25 @@ pub fn guard_and_dodge(
             &mut Invulnerable,
             &FacingDirection,
             &Grounded,
+            Option<&ActiveStrike>,
         ),
         With<Player>,
     >,
 ) {
-    let (mut state, mut velocity, mut invulnerable, facing, grounded) = player.into_inner();
+    let (mut state, mut velocity, mut invulnerable, facing, grounded, strike) = player.into_inner();
 
     if state.state() == PlayerState::Guarding && (!input.guard_held || !grounded.on_ground) {
         state.stop_guard();
-    } else if input.guard_held && grounded.on_ground && state.start_guard().is_ok() {
-        velocity.x = 0.0;
+    } else if input.guard_held && grounded.on_ground {
+        ActiveStrike::try_cancel(&mut state, strike, PlayerAction::Guard);
+        if state.start_guard().is_ok() {
+            velocity.x = 0.0;
+        }
     }
 
+    if input.dodge_pressed && grounded.on_ground {
+        ActiveStrike::try_cancel(&mut state, strike, PlayerAction::Dodge);
+    }
     if input.dodge_pressed
         && grounded.on_ground
         && state
@@ -97,12 +111,18 @@ pub fn locomotion(
             &Grounded,
             &CharacterSheet,
             Option<&LocomotionProfile>,
+            Option<&ActiveStrike>,
         ),
         With<Player>,
     >,
 ) {
     let dt = frame_delta(&time);
-    let (mut state, mut velocity, mut jump, facing, grounded, sheet, profile) = player.into_inner();
+    let (mut state, mut velocity, mut jump, facing, grounded, sheet, profile, strike) =
+        player.into_inner();
+    let can_jump = grounded.on_ground || grounded.air_time < COYOTE_TIME;
+    if input.jump_pressed && can_jump && velocity.y <= 0.0 {
+        ActiveStrike::try_cancel(&mut state, strike, PlayerAction::Jump);
+    }
     let current = state.state();
 
     match current {
@@ -118,6 +138,10 @@ pub fn locomotion(
         PlayerState::Attacking | PlayerState::Casting => {
             if grounded.on_ground {
                 velocity.x *= 1.0 - (ACTION_FRICTION * dt).min(1.0);
+            } else if let Some(control) = ActiveStrike::air_control(&state, strike) {
+                let speed = profile.map_or_else(|| human_speed(&input, sheet), |p| p.speed);
+                let wanted = f32::from(input.axis_x) * speed;
+                velocity.x = steer_in_air(velocity.x, wanted, control, dt);
             }
             return;
         }
@@ -130,18 +154,13 @@ pub fn locomotion(
     }
 
     let crouching = grounded.on_ground && input.axis_y < 0;
-    let speed = if input.run_held {
-        PLAYER_RUN_SPEED
-    } else {
-        PLAYER_WALK_SPEED
-    } * sheet.derived().movement_speed;
+    let speed = human_speed(&input, sheet);
     velocity.x = if crouching {
         0.0
     } else {
         f32::from(input.axis_x) * speed
     };
 
-    let can_jump = grounded.on_ground || grounded.air_time < COYOTE_TIME;
     if input.jump_pressed && can_jump && velocity.y <= 0.0 {
         velocity.y = PLAYER_JUMP_SPEED;
         jump.cut_applied = false;
@@ -165,6 +184,16 @@ pub fn locomotion(
         PlayerState::Idle
     };
     state.set_locomotion(next);
+}
+
+/// Walking or running speed of the human form.
+fn human_speed(input: &PlayerInput, sheet: &CharacterSheet) -> f32 {
+    let base = if input.run_held {
+        PLAYER_RUN_SPEED
+    } else {
+        PLAYER_WALK_SPEED
+    };
+    base * sheet.derived().movement_speed
 }
 
 /// Free movement under a [`LocomotionProfile`] (same states as the human

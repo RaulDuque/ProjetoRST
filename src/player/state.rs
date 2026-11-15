@@ -257,6 +257,17 @@ impl PlayerStateMachine {
         self.state = PlayerState::Idle;
         self.remaining = 0.0;
     }
+
+    /// V2.4: ends a basic attack early (the caller has checked
+    /// `action_rules`). Returns whether there was an attack to end.
+    pub fn cancel_attack(&mut self) -> bool {
+        if self.state != PlayerState::Attacking {
+            return false;
+        }
+        self.state = PlayerState::Idle;
+        self.remaining = 0.0;
+        true
+    }
 }
 
 #[cfg(test)]
@@ -298,6 +309,26 @@ mod tests {
         assert!(sm.hurt(0.4));
         assert_eq!(sm.state(), PlayerState::Hurt);
         assert!(sm.start_action(PlayerState::Casting, 0.5).is_err());
+    }
+
+    #[test]
+    fn cancel_attack_only_ends_basic_attacks() {
+        let mut sm = PlayerStateMachine::default();
+        assert!(!sm.cancel_attack());
+        assert!(sm.start_action(PlayerState::Attacking, 0.3).is_ok());
+        assert!(sm.cancel_attack());
+        assert_eq!((sm.state(), sm.remaining()), (PlayerState::Idle, 0.0));
+        assert!(sm.start_action(PlayerState::Dodging, 0.3).is_ok());
+        assert!(!sm.cancel_attack());
+        assert_eq!(sm.state(), PlayerState::Dodging);
+        sm.revive();
+        assert!(sm.start_action(PlayerState::Casting, 0.3).is_ok());
+        assert!(!sm.cancel_attack(), "techniques are not cancelled");
+        assert!(sm.hurt(0.3));
+        assert!(!sm.cancel_attack());
+        sm.die();
+        assert!(!sm.cancel_attack());
+        assert_eq!(sm.state(), PlayerState::Dead);
     }
 
     #[test]

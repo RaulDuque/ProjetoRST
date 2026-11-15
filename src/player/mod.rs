@@ -1,6 +1,7 @@
 //! The playable character: attributes, progression, state machine and the
 //! Bevy systems that drive them.
 
+pub mod action_rules;
 pub mod animation;
 pub mod attributes;
 pub mod components;
