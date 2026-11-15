@@ -1,7 +1,8 @@
 // V2.0: the first equipment catalogue. Every name is original. Damage of a
 // weapon is its `modifiers.attack` (ATK) times its class power
 // (weapon_classes.ron); `weapon` adds element and reach; `visual` changes the
-// look (Trail: strike colour, Cape: cape layer, Tint: body colour grade).
+// look (Trail: strike colour and weapon accent, Cape: cape layer, Tint: body
+// colour grade; on a shield, V2.2, the shield colour).
 // Docs: docs/EQUIPMENT_EXPANSION_V2_0.md §13.
 (
     items: [
@@ -211,6 +212,7 @@
             modifiers: (defense: 3),
             weight: 2.0,
             sell_value: 45,
+            visual: Some(Tint(color: (0.7, 0.55, 0.46))),
         ),
         (
             id: "rune_ward",
@@ -221,6 +223,7 @@
             modifiers: (magic_defense: 4, resistances: (values: [(Arcane, 0.15)])),
             weight: 1.0,
             sell_value: 200,
+            visual: Some(Tint(color: (0.5, 0.62, 0.86))),
         ),
         // ---- Accessories (Ashen Ring and Veilwoven Band in starter_gear) --
         (

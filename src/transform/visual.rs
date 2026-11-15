@@ -124,13 +124,15 @@ pub fn tint_form(
             Or<(
                 With<PlayerVisual>,
                 With<crate::inventory::visual::CapeLayer>,
+                With<crate::inventory::held_visual::HeldLayer>,
             )>,
             Without<Player>,
         ),
     >,
 ) {
-    // V2.0: equipment layers (the cape) turn spectral with the body, so no
-    // opaque human layer stays over the translucent form.
+    // V2.0: equipment layers (the cape; V2.2: the held weapon and shield)
+    // turn spectral with the body, so no opaque human layer stays over the
+    // translucent form.
     for (form, vitals, children, mut sprite) in &mut players {
         let Some(def) = active_def(&data, form) else {
             continue;

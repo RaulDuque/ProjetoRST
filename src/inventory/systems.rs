@@ -177,15 +177,23 @@ impl Plugin for InventoryPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(
             Update,
-            (apply_equip_requests, sync_appearance)
+            (
+                apply_equip_requests,
+                sync_appearance,
+                super::held_visual::sync_held_look,
+            )
                 .chain()
                 .in_set(GameSet::Presentation)
                 .before(crate::player::visual::PlayerVisualSystems),
         )
         .add_systems(Startup, super::visual::create_cape_image)
+        .init_resource::<super::held_visual::HeldArtCache>()
         .add_systems(
             Update,
-            super::visual::sync_cape_layer
+            (
+                super::visual::sync_cape_layer,
+                super::held_visual::sync_held_layers,
+            )
                 .in_set(crate::player::visual::PlayerVisualSystems)
                 .after(crate::player::visual::systems::animate_player_visual),
         );

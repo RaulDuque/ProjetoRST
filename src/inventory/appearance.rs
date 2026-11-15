@@ -31,6 +31,12 @@ pub const MIN_TINT: f32 = 0.45;
 #[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
 pub struct Rgb(pub f32, pub f32, pub f32);
 
+impl From<Rgb> for [f32; 3] {
+    fn from(c: Rgb) -> Self {
+        [c.0, c.1, c.2]
+    }
+}
+
 impl Rgb {
     pub const WHITE: Rgb = Rgb(1.0, 1.0, 1.0);
 
@@ -83,9 +89,11 @@ impl ItemVisual {
         let fits = match self {
             ItemVisual::Trail { .. } => category.is_weapon(),
             ItemVisual::Cape { .. } => category == ItemCategory::Armor,
-            ItemVisual::Tint { .. } => {
-                matches!(category, ItemCategory::Armor | ItemCategory::Helmet)
-            }
+            // V2.2: a shield's tint colours the shield layer (`held`).
+            ItemVisual::Tint { .. } => matches!(
+                category,
+                ItemCategory::Armor | ItemCategory::Helmet | ItemCategory::Shield
+            ),
         };
         if !fits {
             return Err(VisualError::WrongCategory {

@@ -19,6 +19,8 @@ use bevy::sprite::Anchor;
 use super::systems::EquipmentAppearance;
 use crate::player::components::{ActionState, Player};
 use crate::player::state::PlayerState;
+use crate::player::visual::systems::VISUAL_OFFSET_Y;
+use crate::player::visual::{PlayerSpriteSet, PlayerVisual, VisualPlayback};
 use crate::world::physics::{FacingDirection, Velocity};
 
 /// Generated cape texture (white; tinted per item).
@@ -35,6 +37,9 @@ pub const CAPE_WIDTH: f32 = 20.0;
 /// Shoulder line above the body centre, and how far behind it hangs.
 const SHOULDER_Y: f32 = 13.0;
 const BEHIND_X: f32 = 5.0;
+/// V2.2: from the back socket (cape collar), a little behind and below it.
+const BACK_SOCKET_BEHIND: f32 = 3.0;
+const BACK_SOCKET_DROP: f32 = 2.0;
 /// The crouch lowers the shoulders.
 const CROUCH_DROP: f32 = 12.0;
 /// Behind the protagonist sprite (`player::visual::systems::VISUAL_Z` 0.05)
@@ -121,6 +126,8 @@ pub fn sync_cape_layer(
         With<Player>,
     >,
     mut capes: Query<(&mut Sprite, &mut Transform, &mut Visibility), With<CapeLayer>>,
+    set: Option<Res<PlayerSpriteSet>>,
+    bodies: Query<(&VisualPlayback, &Sprite), (With<PlayerVisual>, Without<CapeLayer>)>,
 ) {
     for (player, look, action, facing, velocity, children) in &players {
         let cape = look.and_then(|l| l.cape);
@@ -161,8 +168,31 @@ pub fn sync_cape_layer(
         } else {
             0.0
         };
-        transform.translation.x = -sign * BEHIND_X;
-        transform.translation.y = SHOULDER_Y - drop;
+        // V2.2: with sockets, hang from the back socket of the frame shown
+        // (follows crouch, jumps and strikes); otherwise the V2.0 shoulder.
+        let back = set
+            .as_deref()
+            .filter(|s| s.held_layers_enabled())
+            .and_then(|set| {
+                let playback = children
+                    .into_iter()
+                    .flatten()
+                    .find_map(|c| bodies.get(*c).ok().map(|(p, _)| p))?;
+                let key = playback.clip.as_deref()?;
+                let clip = set.manifest.clips.get(key)?;
+                let frame = playback.index.checked_sub(clip.first as usize)?;
+                set.sockets.as_ref()?.frame(key, frame).map(|f| f.back)
+            });
+        match back {
+            Some(back) => {
+                transform.translation.x = sign * back.x - sign * BACK_SOCKET_BEHIND;
+                transform.translation.y = VISUAL_OFFSET_Y + back.y - BACK_SOCKET_DROP;
+            }
+            None => {
+                transform.translation.x = -sign * BEHIND_X;
+                transform.translation.y = SHOULDER_Y - drop;
+            }
+        }
         // Running pushes the hem back; falling lifts it; a slow breath idle.
         let speed = velocity.x.abs() + (-velocity.y).max(0.0) * 0.5;
         let idle = IDLE_SWAY * (time.elapsed_secs() * 2.0).sin();
@@ -170,6 +200,12 @@ pub fn sync_cape_layer(
         transform.rotation = Quat::from_rotation_z(-sign * sway);
         sprite.flip_x = sign < 0.0;
         sprite.custom_size = Some(Vec2::new(CAPE_WIDTH, cape.length));
-        sprite.color = color;
+        // V2.2: blink with the body (invulnerability), like the held layers.
+        let alpha = children
+            .into_iter()
+            .flatten()
+            .find_map(|c| bodies.get(*c).ok())
+            .map_or(1.0, |(_, body)| body.color.alpha());
+        sprite.color = color.with_alpha(alpha);
     }
 }
