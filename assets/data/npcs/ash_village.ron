@@ -1,6 +1,8 @@
 // NPCs of the Village of Ashes (V2.1). Format: src/npc/definitions.rs.
 // position: body centre in room coordinates (floor top y 40 + half height).
 // greetings: checked in order; the first whose `when` holds starts the talk.
+// look (V2.2, optional): provisional figure (outfit, headwear, prop, accent);
+// format and choices in src/npc/art.rs, tutorial docs/tutorias/26_CRIAR_SPRITES_DE_NPCS.md.
 [
     (
         id: "bram_road_warden",
@@ -10,6 +12,7 @@
         position: (900.0, 63.0),
         size: (28.0, 46.0),
         color: (0.45, 0.5, 0.62),
+        look: Some((outfit: Tabard, headwear: Helm, prop: Some(Spear), accent: (0.62, 0.2, 0.2))),
         greetings: [
             (when: [Ability(VeilStep)], node: "bram_after_relic"),
             (node: "bram_intro"),
@@ -23,6 +26,7 @@
         position: (980.0, 63.0),
         size: (26.0, 48.0),
         color: (0.3, 0.26, 0.4),
+        look: Some((outfit: Robe, headwear: Hood, prop: Some(LanternStaff), accent: (0.22, 0.2, 0.3))),
         greetings: [
             (when: [Visited("vc_veiled_well")], node: "pilgrim_well_seen"),
             (node: "pilgrim_hint"),
@@ -36,6 +40,7 @@
         position: (700.0, 63.0),
         size: (26.0, 46.0),
         color: (0.75, 0.55, 0.3),
+        look: Some((outfit: Dress, headwear: Kerchief, prop: Some(Satchel), accent: (0.3, 0.55, 0.45))),
         greetings: [
             (node: "hessa_greet"),
         ],
@@ -49,6 +54,7 @@
         position: (700.0, 64.0),
         size: (32.0, 48.0),
         color: (0.6, 0.35, 0.25),
+        look: Some((outfit: Apron, headwear: Bare, prop: Some(Hammer), accent: (0.3, 0.24, 0.2))),
         greetings: [
             (node: "garrick_greet"),
         ],
@@ -61,6 +67,7 @@
         position: (640.0, 61.0),
         size: (24.0, 42.0),
         color: (0.7, 0.65, 0.55),
+        look: Some((outfit: Shawl, headwear: GreyBun, prop: Some(Cane), accent: (0.55, 0.3, 0.42))),
         greetings: [
             (when: [RegionVisited("forgotten_galleries")], node: "wenna_galleries"),
             (node: "wenna_intro"),

@@ -12,9 +12,10 @@
 //! room logic runs while they are open, and closing them returns to
 //! `GameState::Playing`. Nothing is read from disk after startup.
 
-use std::collections::BTreeSet;
+use std::collections::{BTreeSet, HashMap};
 
 use bevy::prelude::*;
+use bevy::sprite::Anchor;
 
 use super::definitions::DialogueFacts;
 use super::dialogue::{Conversation, Step};
@@ -93,6 +94,8 @@ pub fn spawn_room_npcs(
     mut commands: Commands,
     data: Res<GameData>,
     current: Option<Res<CurrentRoom>>,
+    mut images: Option<ResMut<Assets<Image>>>,
+    mut figures: Local<HashMap<String, (Handle<Image>, Vec2, Vec2)>>,
     mut prepared: Local<Option<String>>,
 ) {
     let Some(current) = current else {
@@ -105,11 +108,37 @@ pub fn spawn_room_npcs(
     for npc in data.npcs.in_room(&current.0) {
         let (r, g, b) = npc.color;
         let size = Vec2::new(npc.size.0, npc.size.1);
+        // V2.2: the generated figure (built once per NPC); headless apps
+        // without image assets keep the V2.1 coloured box.
+        let figure = images.as_deref_mut().map(|images| {
+            figures
+                .entry(npc.id.clone())
+                .or_insert_with(|| {
+                    let art = super::art::npc_art(npc.size, npc.color, npc.look.as_ref());
+                    let (w, h) = art.world_size();
+                    let (ax, ay) = art.anchor(false);
+                    let image = crate::core::pixel_image::pixel_image(art);
+                    (images.add(image), Vec2::new(w, h), Vec2::new(ax, ay))
+                })
+                .clone()
+        });
+        let (sprite, anchor) = match figure {
+            Some((image, world, anchor)) => {
+                let mut sprite = Sprite::from_image(image);
+                sprite.custom_size = Some(world);
+                (sprite, Anchor(anchor))
+            }
+            None => (
+                Sprite::from_color(Color::srgb(r, g, b), size),
+                Anchor::CENTER,
+            ),
+        };
         commands
             .spawn((
                 RoomEntity,
                 NpcMarker { id: npc.id.clone() },
-                Sprite::from_color(Color::srgb(r, g, b), size),
+                sprite,
+                anchor,
                 Transform::from_xyz(npc.position.0, npc.position.1, Z_ENEMIES - 0.5),
             ))
             .with_child((

@@ -21,7 +21,9 @@ use bevy::prelude::*;
 
 use super::theme::{FONT_SMALL, PANEL_BG, PANEL_BORDER, TEXT_MAIN, text};
 use crate::app::states::GameSet;
+use crate::core::resources::GameData;
 use crate::input::InputBindings;
+use crate::npc::definitions::NpcMapMarker;
 use crate::world::exploration::{Discovery, DoorState, ObjectState};
 use crate::world::exploration_systems::{Exploration, WorldGraph};
 use crate::world::graph::{ObjectKind, Side};
@@ -42,6 +44,11 @@ const CHEST_CLOSED_COLOR: Color = Color::srgb(0.98, 0.62, 0.22);
 const CHEST_OPENED_COLOR: Color = Color::srgb(0.38, 0.33, 0.3);
 /// Size of a door mark and of the secret mark, in pixels.
 const MARK_PX: f32 = 4.0;
+/// V2.2: NPC markers (only in visited rooms, like the chests).
+const SHOP_COLOR: Color = Color::srgb(0.78, 0.5, 1.0);
+const NPC_COLOR: Color = Color::srgb(1.0, 0.62, 0.8);
+const SHOP_MARK_PX: f32 = 6.0;
+const LEGEND: &str = "violet: shop  pink: NPC  orange: chest";
 
 /// Whether the player wants the map panel open (toggled with `M`).
 #[derive(Resource, Debug, Clone, Copy, PartialEq, Eq)]
@@ -151,16 +158,36 @@ fn door_mark(side: Side, cell: u32, w: u32, h: u32) -> (f32, f32) {
 }
 
 fn mark(left: f32, top: f32, color: Color) -> (Node, BackgroundColor) {
+    sized_mark(left, top, MARK_PX, color)
+}
+
+fn sized_mark(left: f32, top: f32, size: f32, color: Color) -> (Node, BackgroundColor) {
     (
         Node {
             position_type: PositionType::Absolute,
             left: px(left),
             top: px(top),
-            width: px(MARK_PX),
-            height: px(MARK_PX),
+            width: px(size),
+            height: px(size),
             ..default()
         },
         BackgroundColor(color),
+    )
+}
+
+/// Top-left of a marker of `size` px for a point of the room (room units,
+/// y up) on a room box of `box_px`, kept inside the box (V2.2).
+pub fn marker_spot(
+    point: (f32, f32),
+    room: (f32, f32),
+    box_px: (f32, f32),
+    size: f32,
+) -> (f32, f32) {
+    let left = point.0 / room.0 * box_px.0 - size / 2.0;
+    let top = box_px.1 - point.1 / room.1 * box_px.1 - size;
+    (
+        left.clamp(0.0, (box_px.0 - size - 2.0).max(0.0)),
+        top.clamp(0.0, (box_px.1 - size - 2.0).max(0.0)),
     )
 }
 
@@ -170,6 +197,7 @@ pub fn redraw_map(
     world: Option<Res<WorldGraph>>,
     exploration: Option<Res<Exploration>>,
     current: Option<Res<CurrentRoom>>,
+    data: Option<Res<GameData>>,
     cells: Query<(Entity, Option<&Children>), With<WorldMapCells>>,
     mut label: Query<&mut Text, With<WorldMapLabel>>,
 ) {
@@ -185,6 +213,7 @@ pub fn redraw_map(
     for child in children.into_iter().flatten() {
         commands.entity(*child).try_despawn();
     }
+    let mut npc_marks = 0;
     let rooms = world.0.rooms.values();
     let min_x = rooms.clone().map(|r| r.map.x).min().unwrap_or(0);
     let max_x = rooms
@@ -265,6 +294,17 @@ pub fn redraw_map(
             let chest_mark = commands.spawn(mark(left, top, color)).id();
             commands.entity(node).add_child(chest_mark);
         }
+        // V2.2: shops and NPCs of the room (one marker each, inside the box).
+        for npc in data.iter().flat_map(|d| d.npcs.in_room(&room.id)) {
+            let (color, size) = match npc.map_marker() {
+                NpcMapMarker::Shop => (SHOP_COLOR, SHOP_MARK_PX),
+                NpcMapMarker::Npc => (NPC_COLOR, MARK_PX),
+            };
+            let (left, top) = marker_spot(npc.position, (w, h), (px_w, px_h), size);
+            let npc_mark = commands.spawn(sized_mark(left, top, size, color)).id();
+            commands.entity(node).add_child(npc_mark);
+            npc_marks += 1;
+        }
     }
     for known in exploration.known_doors(&world.0) {
         let (Some(room), Some(door)) = (
@@ -301,6 +341,30 @@ pub fn redraw_map(
         if let Some((name, r)) = region {
             line.push_str(&format!("\n{name} {:.0}%", r.percent));
         }
+        if npc_marks > 0 {
+            line.push('\n');
+            line.push_str(LEGEND);
+        }
         **text = line;
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn markers_stay_inside_the_room_box() {
+        // Middle of a 1280x720 room on a 52x30 px box.
+        let (l, t) = marker_spot((640.0, 360.0), (1280.0, 720.0), (52.0, 30.0), 4.0);
+        assert_eq!((l, t), (24.0, 11.0));
+        // Points on or past the edges are clamped inside.
+        for p in [(0.0, 0.0), (1280.0, 720.0), (-50.0, 900.0), (2000.0, -10.0)] {
+            let (l, t) = marker_spot(p, (1280.0, 720.0), (52.0, 30.0), 6.0);
+            assert!(
+                (0.0..=44.0).contains(&l) && (0.0..=22.0).contains(&t),
+                "{p:?}"
+            );
+        }
     }
 }

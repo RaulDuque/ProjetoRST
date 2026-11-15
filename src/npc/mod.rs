@@ -1,5 +1,6 @@
 //! NPCs and conversations (V2.1).
 //!
+//! - [`art`] (pure, V2.2): provisional figures from `look`;
 //! - [`definitions`] (pure): NPCs, dialogue nodes, conditions, validation;
 //! - [`dialogue`] (pure): a conversation in progress;
 //! - [`systems`] (Bevy): spawning per room, `D` to talk, prompts, the
@@ -7,6 +8,7 @@
 //!
 //! Details: docs/NPC_COMMERCE_V2_1.md.
 
+pub mod art;
 pub mod definitions;
 pub mod dialogue;
 pub mod systems;

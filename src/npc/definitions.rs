@@ -96,6 +96,30 @@ pub struct NpcDefinition {
     /// Shop this NPC runs (`assets/data/shops/`), if any.
     #[serde(default)]
     pub shop: Option<String>,
+    /// V2.2: provisional figure (outfit, headwear, prop, accent). Absent:
+    /// a plain figure of `color` (`npc::art`).
+    #[serde(default)]
+    pub look: Option<super::art::NpcLook>,
+}
+
+/// What the map shows for an NPC (V2.2).
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum NpcMapMarker {
+    /// Runs a shop (buy and sell).
+    Shop,
+    /// Anyone else worth finding again.
+    Npc,
+}
+
+impl NpcDefinition {
+    /// The marker of this NPC on the map: a shop when it runs one.
+    pub fn map_marker(&self) -> NpcMapMarker {
+        if self.shop.is_some() {
+            NpcMapMarker::Shop
+        } else {
+            NpcMapMarker::Npc
+        }
+    }
 }
 
 /// What a choice does.
@@ -197,6 +221,9 @@ impl NpcLibrary {
             let (w, h) = npc.size;
             if !(w > 0.0 && h > 0.0 && w <= 200.0 && h <= 200.0) {
                 return Err(npc_err(&npc.id, "size out of range"));
+            }
+            if npc.look.is_some_and(|l| !l.is_valid()) {
+                return Err(npc_err(&npc.id, "look accent outside 0..1"));
             }
             let (x, y) = npc.position;
             if !(x.is_finite() && y.is_finite()) {
