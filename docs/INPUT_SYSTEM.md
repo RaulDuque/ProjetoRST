@@ -15,6 +15,27 @@
 | Distribuir pontos (na tela de status) | 1–4 |
 | Levantar após morrer | R |
 | Salvar / carregar | F5 / F9 |
+| Abrir / fechar o mapa (V1.7; tecla livre antes) | M |
+| Usar baú, alavanca ou interruptor (V1.8; tecla livre antes) | D |
+| Entrar / sair da Forma Espectral (V1.9; tecla livre antes) | T |
+| Abrir / fechar a tela de equipamento (V2.0; tecla livre antes) | I (fecha também com Esc) |
+| Na tela de equipamento: selecionar / equipar ou remover | ↑ ↓ / Enter |
+| Conversar com um NPC ao alcance (V2.1; objetos têm prioridade) | D |
+| No diálogo: avançar ou confirmar / escolher / sair | Enter ou D / ↑ ↓ / Esc |
+| Na loja: comprar ou vender / selecionar / trocar de aba / sair | Enter / ↑ ↓ / ← → / Esc |
+
+A interação não usa `↑`: no comando `↓ ↑ + ATTACK`, o frame do `↑` já não é
+agachado e usaria um objeto sem querer.
+
+Na forma espectral (V1.9), `transform::systems::mask_form_input` zera, logo
+após a leitura do teclado, as entradas das ações que a forma bloqueia
+(ataque, magia, guarda, esquiva, interação, pulo, corrida): nenhum comando
+é reconhecido nela. A dica de controles fica no painel de status (antes, na
+borda inferior, cobria o chão).
+
+A tela de equipamento (V2.0) pausa a simulação como a tela de status: o
+`GameSet::Input` não roda, então ↑/↓/Enter dentro dela nunca viram
+movimento, comando ou ataque. Tab não age dentro dela.
 
 Agachar: segurar ↓ no chão. Os sistemas de jogo leem `PlayerInput`, nunca as teclas.
 Suporte a gamepad: roadmap.

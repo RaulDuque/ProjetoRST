@@ -193,4 +193,17 @@ Uma imagem por versão do modelo, gerada pelo Blender (`previews.py`):
 - Avaliar o modelo v003 (V1.2-C, malhas procedurais):
   `art-src/player/comparisons/v1_2c_swordsman_v003/`, incluindo o teste C
   (cores chapadas) e a variante de lâmina mais larga. Nada aprovado.
-- Rig: avaliado em `art-src/README.md`, adiado para V1.3/V1.4.
+- Avaliar o modelo v004 (V1.2-D, refinamento localizado do v003):
+  `art-src/player/comparisons/v1_2d_swordsman_v004/` (folhas, comparação
+  v003 × v004 e escala de jogo). Nada aprovado.
+- Rig: experimental na V1.2-E (v005), ver `art-src/player/RIG_SPECIFICATION.md`
+  e `art-src/player/RIG_VALIDATION_V005.md`. Não integrado ao jogo (D8).
+- Rig v006 (V1.2-F), estabilização do v005: `art-src/player/RIG_VALIDATION_V006.md`
+  e `art-src/player/comparisons/v1_2f_rig_v006/`. Sem Crítico, Alto ou Médio nas
+  poses e testes definidos; tornozelo parcialmente corrigido. Experimental,
+  não integrado (D8). Taxa de quadros dos sprites ainda não decidida.
+- V1.2-G: v007 (cascas da ombreira, da casaca e da capa estáveis) e animações
+  técnicas `walk`, `attack_basic` e `dodge` (`art-src/player/ANIMATION_VALIDATION_V1_2G.md`,
+  `art-src/player/comparisons/v1_2g_animation_tests/`). Produção a 24 fps, 12 fps
+  derivado para comparação; taxa de reprodução no Bevy não decidida. Pendente:
+  o ciclo de caminhada natural anda a ~36 px/s e o jogo a 190 px/s (os pés deslizam).

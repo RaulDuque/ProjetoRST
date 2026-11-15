@@ -196,3 +196,316 @@ hitboxes: adiado para a Fase 6 (Q3).
 
 **Mending Light (Q4):** continua com efeito instantâneo; `Casting` é tempo de
 recuperação. Conjuração com preparo interrompível segue pendente (D-GAME-002).
+
+## D-015 — Visual animado do protagonista (V1.3)
+
+**Contexto:** primeira integração dos sprites do modelo v007 (idle, run,
+attack_basic, dodge), só de apresentação.
+
+**Decisão:**
+- O sprite é um filho `PlayerVisual` do jogador (`src/player/visual/`), com
+  manifesto puro e testável (`manifest.rs`, `playback.rs`, `selection.rs`).
+- Ele só lê o estado do gameplay. O único acréscimo fora da apresentação é o
+  getter de leitura `PlayerStateMachine::remaining()`, usado para acompanhar a
+  duração real das ações (inclusive com `attack_speed`).
+- O manifesto fica em `assets/animations/player.ron`, fora de `assets/data/`,
+  por ser dado de apresentação (contrato §7). É carregado pelo próprio plugin
+  visual, não por `GameData`.
+- Ausente ou inválido, o jogo mantém o visual provisório (log de info ou de
+  erro) em vez de encerrar. Um export de arte quebrado não derruba o jogo, e
+  `data_tests` impede entregar um manifesto inválido.
+- Os atlas ficam em `assets/sprites/player/player_{locomotion,combat}.png`, no
+  acabamento C, densidade 2. As escolhas de acabamento, espada (×1,7) e fps são
+  provisórias; D2 e D3 continuam pendentes.
+- `Walking` e `Running` usam o mesmo ciclo `run`, feito para 190 px/s e tocado
+  numa taxa proporcional à velocidade real.
+
+**Consequências:**
+- Estados sem sprite usam o primeiro quadro do idle com um tom de feedback.
+- O espelhamento troca a mão da espada.
+- Detalhes em `docs/PLAYER_VISUAL_ANIMATION_V1_3.md`.
+
+## D-016 — Expansão das animações do protagonista (V1.4)
+
+**Decisão:**
+- A habilidade em execução é identificada pela mensagem existente
+  `SkillStarted` e pelo campo `animation` da habilidade nos RON.
+  - O visual lê a mensagem, sem consumi-la de outros leitores.
+  - Nenhum componente nem estado de gameplay foi criado.
+- A aterrissagem é só apresentação: `Falling` (≥ 0,1 s) → `Idle`, sem teleporte.
+- Novos clipes nas células do contrato, sem mudar o contrato. Os clipes de
+  locomoção (dano, morte, pulo, queda, aterrissagem, agachar, guarda) ficam na
+  célula 64×64, e os de habilidade na 128×96.
+- Quando a sobra do último quadro tem menos de 25 ms, os dois últimos quadros
+  dividem o tempo.
+
+**Consequências:**
+- Uma habilidade nova com `animation` já existente no manifesto não exige código.
+- A morte termina ajoelhada, não deitada: as roupas não têm simulação.
+- Detalhes em `docs/PLAYER_ANIMATION_EXPANSION_V1_4.md`.
+
+## D-017 — Publicação segura dos sprites e camada de VFX (V1.5)
+
+**Decisão:**
+- Só `art-src/player/scripts/post/publish_guard.py` escreve
+  `assets/sprites/player/` e `assets/animations/player.ron`.
+  - Os scripts de pós-processamento geram um diretório de staging; um destino
+    dentro de `assets/` é recusado antes de qualquer leitura ou escrita.
+  - A publicação valida PNG, manifesto, pivôs, durações do jogo e quadros não
+    vazios; exige versão do gerador ≥ a publicada e todos os clipes já
+    publicados; faz backup, escreve por arquivos temporários com journal e
+    desfaz tudo em caso de falha.
+  - O que está publicado fica registrado em `assets/animations/player.publish.json`
+    (versão, gerador, clipes, SHA-256). Substituir exige `--confirm <state id>`;
+    não há opção genérica de sobrescrita.
+- Os VFX são clipes do mesmo manifesto (atlas `effects`, densidade 1, chave
+  `vfx_<vfx>` dos RON de habilidades), tocados por filhos `PlayerVfx` do jogador.
+  - Sinais usados: `SkillStarted`, `DamageDealt` com o jogador em guarda e de
+    frente (regra única `Facing::faces_hit`, também usada por `receive_damage`),
+    e a saída do estado `Dead`.
+  - Nenhum sistema de gameplay lê os efeitos.
+- `attack_basic_air` é escolhido pelo contato com o chão (`Grounded`, só leitura).
+
+**Consequências:**
+- Um script histórico (V1.3, V1.4) não consegue mais substituir os atlas atuais.
+- A ordem dos clipes nos atlas só cresce: clipes novos entram no fim.
+- Uma habilidade nova com `vfx` já existente ganha efeito sem código.
+- Sem dependência nova: o hash fica no teste Python do guarda; o teste Rust
+  confere clipes e arquivos do lock.
+- Detalhes em `docs/PLAYER_ART_POLISH_V1_5.md`.
+
+## D-018 — Grafo de mundo isolado do jogo principal (V1.6)
+
+**Decisão:**
+- O mundo de grande escala é um **grafo de salas** em `assets/world/`
+  (`world.ron` + uma região por arquivo), separado de `assets/maps/`.
+  - Por isso `GameData` e o jogo atual não mudam.
+  - O exemplo e os testes copiam as salas para o `GameData` em memória (`install_world`).
+- **Requisitos:** tipados (`Requirement::{Ability, Item, Flag, All, Any}`),
+  avaliados por casamento de padrões. Nada de expressões em runtime.
+- **Paredes:** o contorno de cada sala é gerado a partir das portas (aberturas
+  e soleiras padronizadas). Os arquivos descrevem só o interior.
+- **Validação:** uma simulação de progressão (com e sem segredos) classifica
+  cada sala; salas fechadas no início não são erro.
+- **Troca de sala:** anunciada por `RoomChanged`. Inimigos e magia limpam o que
+  é deles, seguindo a regra de comunicação.
+- **Exploração:** salva num arquivo próprio (versão 1) até o save v2.
+- **O que ficou de fora:** física, câmera, combate e save real não mudaram.
+  Transformações e economia foram especificadas, não implementadas.
+
+**Consequências:**
+- Integrar ao jogo principal (V1.7) pede o save v2 com migração e o load entre salas.
+- Única escrita do mundo num componente do jogador: a transição posiciona o
+  `Transform` na porta de chegada, como já fazem o `quick_load` (save) e o
+  `respawn`. Velocidade, estado e vida não são tocados.
+- O validador não simula o alcance físico; portas inalcançáveis precisam ser
+  `entry_only` ou exigir uma habilidade.
+- Detalhes: `WORLD_ARCHITECTURE.md`, `ROOM_SYSTEM.md`, `WORLD_PERSISTENCE.md`.
+
+## D-019 — Mundo no jogo principal, ciclo de vida de salas e save v2 (V1.7)
+
+**Decisão:**
+- **Início:** `app::run` carrega e valida `assets/world/`. Um mundo com erros
+  impede o início.
+- **Sala única:** `app::build` sem mundo continua sendo o jogo de sala única,
+  usado como fixture. `entry_hall` é mapeada em `legacy_rooms` para a porta
+  inicial.
+- **Troca de sala:** só `world::transitions::apply_room_requests` troca a sala,
+  com no máximo um `RoomRequest` por frame (um load vence portas, a primeira
+  porta vence as seguintes). Cada dono limpa suas entidades temporárias ao ler
+  `RoomChanged` em `RoomStep::React`: hitboxes, projéteis, números de dano e
+  respawns pendentes.
+- **Save v2:** acrescenta `exploration: ExplorationRecord`.
+  - **Migração v1:** lê `SaveFileV1` congelado com `deny_unknown_fields`.
+  - **Load:** nunca grava no arquivo.
+  - **Backup:** a primeira gravação sobre um v1 guarda `slotN.ron.v1.bak`
+    permanente.
+- **Relíquias:** relíquias de progressão vivem em `granted`, não no
+  inventário. Itens comuns coletados no mundo entram no inventário uma única
+  vez, por `PickupCollected`.
+- **Mapa:** a tecla `M`, que estava livre, abre e fecha o painel.
+
+**Consequências:**
+- O protótipo ganhou ajustes de geometria (poço e um obstáculo) para caber no
+  pulo real de 130 a 136 u. A física não mudou.
+- O arquivo de exploração próprio da V1.6 ficou só no exemplo
+  `world_vertical_slice`.
+- Detalhes: `WORLD_INTEGRATION_V1_7.md`.
+
+## D-020 — Objetos interativos sem schema novo, interação na tecla D (V1.8)
+
+**Decisão:**
+- **Contrato único:** paredes quebráveis, interruptores ocultos, baús e
+  alavancas usam um só contrato tipado (`graph::WorldObject` +
+  `ObjectKind`), lido de RON.
+- **Estado derivado:** o estado de cada objeto é derivado dos ids que o
+  save v2 já guarda.
+  - Paredes e interruptores usam `secrets`.
+  - Baús usam `pickups`.
+  - Alavancas usam a `Flag` em `granted`.
+  - Por isso não existe save v3.
+- **Uma chamada pura:** cada interação registra o estado e concede a
+  recompensa na mesma chamada (`ExplorationState::interact` e
+  `break_wall`). Recusas não registram nada.
+- **Paredes:** quebram com hitboxes reais do jogador. As magias contam por
+  meio da mensagem `ProjectileBlocked`, emitida pelo módulo de magia (dono
+  do projétil), que a remove ao tocar a geometria. O dano e a duração das
+  hitboxes não mudaram.
+- **Tecla de interação:** `D`, livre. A seta `↑` foi descartada porque o
+  comando `↓ ↑ + ATTACK` usaria objetos sem querer.
+- **Fade de entrada:** só de entrada (0,22 s, apresentação). O fade-out
+  antes da troca exigiria adiar o ciclo de vida da sala.
+- **Porcentagem:** a fórmula global não mudou. Cada região nova entra no
+  denominador, e `region_stats` dá os números por região.
+
+**Consequências:**
+- O validador ganhou `NoWayBack` e `ShortcutBypassesProgression` (erros),
+  além de `DuplicateId`, `ObjectOutOfRoom`,
+  `ImpossibleObjectRequirement` e `UnusedLever` (aviso).
+- O `goal_room` do mundo passou a ser `fg_return_bridge`.
+- Os testes da V1.6 que contavam o recorte da Vigília agora usam
+  `region_stats("vigil_gates")`, com os mesmos valores esperados.
+- Detalhes: `WORLD_EXPLORATION_V1_8.md`.
+
+## D-021 — Transformações por perfis opcionais e véus nas portas (V1.9)
+
+**Contexto:** o briefing da V1.9 pede a Forma Espectral, liberada pela
+Relíquia do Véu, que atravesse barreiras específicas sem alterar o
+movimento humano, o combate nem o save V2, e sem softlocks.
+
+**Decisão:**
+- **Forma humana = ausência de forma:** a forma aplica seu perfil por três
+  componentes opcionais e genéricos:
+  - `LocomotionProfile` (player);
+  - `GravityProfile` e `Phasing` (world/physics).
+  - Sem eles, o código executado é o da V1.8.
+  - Não foi preciso refatorar as constantes humanas em perfis de dados
+    (a decisão pendente da V1.6).
+- **Colisão por tipo de barreira:** `Solid::barrier: Option<BarrierKind>`.
+  - Um véu é sólido para todos, menos para quem tem `Phasing` daquele tipo.
+  - Paredes nunca têm tipo, então nenhuma forma as atravessa.
+- **Véus na abertura de portas, nunca no meio da sala:**
+  - o grafo sabe o que cada véu protege;
+  - o validador trata a porta com véu como exigência da passagem do tipo
+    (`world.ron` `passages`);
+  - `app::load_world` confere `passages` contra as definições e o custo
+    real de MP de cada travessia.
+- **Fim seguro em duas etapas:** o fim só acontece quando o corpo humano
+  cabe.
+  - Até lá, a forma continua (mesma física e aparência, sem custo).
+  - Na morte dentro de um véu, o corpo fica parado até o respawn.
+  - O sistema de forma nunca move o jogador.
+- **Bloqueio de ações por máscara de entrada:** `mask_form_input` zera as
+  entradas das ações bloqueadas antes dos sistemas de jogo. Combate,
+  habilidades e magia não foram alterados.
+- **Save:** o schema V2 não mudou. A forma não é salva (o load volta
+  humano) e F5 é recusado dentro de um véu.
+- **Relíquia:** `VeilStep` passou a liberar a forma e continua abrindo a
+  grade do Salão Selado. Não foi criada uma `Ability` nova, para não mudar
+  saves nem a rota principal aprovada.
+- **Tecla `T`:** estava livre.
+- **Visual sem asset:** o sprite humano recebe tom e transparência, com
+  halo de gradiente gerado em memória, contorno e partículas.
+
+**Consequências:**
+- **Mundo:** passou a 22 salas, com a região Claustro Velado (2 salas) e
+  3 véus. Os totais globais de três testes da V1.8 mudaram de 20 para 22.
+- **HUD:** a dica de controles foi para o painel de status.
+- **Pendências:** arte própria da forma, outras formas e a escolha de forma
+  quando houver mais de uma.
+- **Detalhes:** `TRANSFORMATIONS_V1_9.md`.
+
+## D-022 — Equipamento por dados, sem schema novo, aparência em camadas de runtime (V2.0)
+
+**Contexto:** a V2.0 pede armas com identidade, armaduras, acessórios,
+inventário jogável, comparação, aparência por equipamento e compatibilidade
+com a Forma Espectral, preservando o Save V2, os 8 slots e as animações
+aprovadas.
+
+**Decisão:**
+- **Classe por categoria + dados por item:** `WeaponClass` (forma e ritmo do
+  golpe) em `weapon_classes.ron`; o item só acrescenta elemento e alcance. O
+  dano continua no ATK do item. A classe Sword repete as constantes antigas.
+- **Sem instâncias de item:** itens iguais são intercambiáveis; o save
+  continua guardando IDs por slot e pilhas na bolsa.
+- **Equipado sai da bolsa:** contrato que o equipamento inicial já seguia.
+- **Slots preservados:** sem `Cloak`; capas são peças de `Body` com camada
+  visual. Rótulos de tela mudaram, nomes persistidos não.
+- **Único escritor:** `apply_equip_requests` a partir de `EquipRequest`;
+  recalcula o bônus dos slots (nunca soma ao anterior).
+- **Trava conservadora:** só em locomoção; nunca em ação, com golpe vivo,
+  transformado ou em transição.
+- **Técnicas declaram armas** (`weapons`), em vez de cada arma listar técnicas.
+- **Teto de resistência** (0,75) nas fórmulas do personagem.
+- **Aparência sem arte nova:** rastro (cor + forma da classe), capa
+  (textura gerada em memória) e tom do tronco. Arma na mão e elmos ficam
+  para quando o pipeline exportar sockets por quadro.
+- **Tecla `I`** (livre) e `Enter` dentro da tela; tela pausada como Status.
+- **Sem drops novos:** um drop a mais consome números aleatórios e mudaria o
+  combate determinístico das rotas aprovadas.
+
+**Consequências:**
+- 27 equipamentos; 3 baús novos nos Portões da Vigília.
+- `SkillDefinition` ganhou `weapons`; dois literais de teste ganharam o campo.
+- Raridade Epic; Legendary passou ao tier 4 (só ordenação).
+- **Pendências:** arma e elmo desenhados, slot de capa (exige Save V3),
+  regra de duas mãos, drops de equipamento.
+- **Detalhes:** `EQUIPMENT_EXPANSION_V2_0.md`.
+
+## D-023 — NPCs e lojas por dados; economia sem persistência até autorização (V2.1)
+
+**Contexto:** a V2.1 pede cidade, NPCs, diálogos, lojas e uma economia
+persistente, sem Save V3 não autorizado e sem improvisar persistência.
+
+**Decisão:**
+- **NPCs, nós de diálogo e lojas em RON** (`assets/data/{npcs,dialogues,shops}`),
+  validados uns contra os outros e contra o mundo.
+  - Condições formam um conjunto fechado e tipado; não existe linguagem de script.
+- **Objetos têm prioridade sobre NPCs no `D`:** a conversa é decidida antes do
+  sistema de objetos, olhando o mesmo `usable_object`.
+- **Diálogo e loja são `GameState`s pausados:** não há combate nem troca de
+  sala; um load fecha os dois.
+- **Moeda única `Purse(u32)`** com teto; `price > sell_value` obrigatório; o
+  único escritor é `apply_trades`.
+- **Persistência da economia adiada:** o Save V2 não tem campo para ela.
+  - A invariante "nenhum save contém uma troca" (F5 recusado após negociar;
+    load restaura moedas iniciais e estoque cheio) impede duplicação e
+    dinheiro infinito.
+  - A migração v3 proposta está em `NPC_COMMERCE_V2_1.md` §10 e aguarda o proprietário.
+- **Duas mãos por classe de arma** (`two_handed`), recusa nos dois sentidos,
+  sem schema novo.
+- **Vila opcional** ligada à porta direita do Watch Shaft (célula 1), com um degrau novo.
+- **Drops de equipamento adiados:** mudariam o consumo do RNG das rotas aprovadas.
+- **Tutoriais em `docs/tutorias/`:** `Md-usario/**` está em `deny` nas permissões
+  do projeto; o teste dos tutoriais procura primeiro em `Md-usario/tutorias/`.
+
+**Consequências:**
+- O mundo passou a 28 salas; três totais de `world_graph_tests` foram atualizados.
+- `quick_save` passou a consultar o `EconomyLedger`.
+- **Pendências:** Save v3, mover os tutoriais, âncoras de arte, drops, ícones
+  no mapa, arte de NPCs.
+- **Detalhes:** `NPC_COMMERCE_V2_1.md`.
+
+## D-024 — Save v3 com economia; exceção de `Md-usario/tutorias/` não aplicada (V2.1.1)
+
+**Contexto:** o proprietário autorizou (`DarkCastleR-V2-1-a.md`) o Save v3 só
+para moedas e estoque, e uma exceção restrita para `Md-usario/tutorias/*.md`
+que funcione nas duas camadas de proteção, sem enfraquecê-las.
+
+**Decisão:**
+- **Save v3:** campo `economy: Option<EconomyRecord>`; v1 e v2 migrados em
+  memória com `None` (moedas iniciais, estoque cheio); backups pela política
+  já existente. A trava provisória da V2.1 foi removida após os testes.
+- **Watch Buckler `Limited(1)`:** uma mercadoria limitada ao alcance das
+  moedas iniciais, para a rota real demonstrar o estoque persistido.
+- **Permissões não alteradas:** a documentação do Claude Code diz que `deny`
+  sempre vence `allow`, que a negação `!` não reabre arquivos sob uma pasta
+  bloqueada por `**` nem alcança regras ancoradas em `/`, e não documenta
+  classes de caractere. A exceção não pode ser expressa com segurança na
+  camada de permissões; pelo briefing, a negação foi preservada e o hook
+  também não foi alterado (uma exceção só no hook seria inútil e enfraqueceria
+  a defesa em profundidade).
+
+**Consequências:** economia persistente concluída; tutoriais continuam em
+`docs/tutorias/` até o proprietário escolher uma alternativa
+(`NPC_COMMERCE_V2_1.md` §25).

@@ -78,6 +78,18 @@ Dano recebido pelo jogador (`player::systems::receive_damage`):
 - Times: `Player` × `Enemy` — sem fogo amigo.
 - Dano por contato com inimigos: `enemies/behavior.rs::contact_damage`.
 
+## Ataque básico por arma (V2.0)
+
+O ataque básico usa o `StrikeProfile` da arma equipada
+(`inventory/weapons.rs`): tamanho e posição do golpe, tempo comprometido
+(golpe + recuperação, divididos pela velocidade de ataque), duração da
+hitbox (`HITBOX_ACTIVE_FRACTION` do golpe), multiplicador de ATK e elemento.
+Sem arma, vale `StrikeProfile::unarmed` (as constantes abaixo); a classe
+Sword tem os mesmos valores, então a Iron Sword não mudou. A fórmula de
+dano não mudou. O hitbox leva `WeaponStrike { category }`. Técnicas com
+`weapons` recusam outras armas (`CommandOutcome::WrongWeapon`). Detalhes:
+[`EQUIPMENT_EXPANSION_V2_0.md`](EQUIPMENT_EXPANSION_V2_0.md) §6–7, §21.
+
 ## Constantes de sensação
 
 `src/core/constants.rs`: gravidade, velocidades, pulo variável, *coyote time*,

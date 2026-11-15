@@ -63,6 +63,15 @@ Elementos: Physical, Fire, Ice, Lightning, Water, Wind, Earth, Light (sagrado),
 Dark (sombrio), Arcane. Efeitos: Poison, Curse, Petrify, Burn, Freeze, Stun
 (chance final = `base · (1 − resistência)`; aplicação dos efeitos: roadmap).
 
+**V2.0 — teto de resistência:** `StatFormulas.max_resistance` (0,75 em
+`character.ron`) limita cada resistência elemental somada dos
+equipamentos a `[MIN_RESISTANCE, max_resistance]` em `derive`
+(`ElementalResistances::capped`). Equipamento nunca dá imunidade; um golpe
+resistido ainda causa dano (sem cura involuntária). O piso continua −1.
+
+**V2.0 — HP/MP ao trocar equipamento:** o novo máximo recorta o valor atual
+(`ResourcePool::set_max`); um máximo maior não restaura nada.
+
 ## Tela de status
 
 `Tab` abre/fecha (`ui/status_screen.rs`). Mostra atributos (com bônus), HP/MP/Hearts,

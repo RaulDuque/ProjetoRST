@@ -36,6 +36,12 @@ Campos com valor padrão podem ser omitidos. Erros (comando inválido, id
 duplicado, campo errado) param o carregamento com o caminho do arquivo e são
 detectados por `tests/data_tests.rs`.
 
+**V2.0 — `weapons`:** lista de categorias de arma com que a técnica pode
+ser executada (vazia = qualquer uma ou nenhuma). `begin_skill` confere com
+`execution::check_weapon`; outra arma gera `CommandOutcome::WrongWeapon`
+sem gastar nada. Crescent Slash e Rising Edge: `[Sword]`. `GameData`
+rejeita categorias que não sejam de arma.
+
 ## Categorias
 
 `SwordTechnique`, `HeavyWeaponTechnique`, `DefensiveTechnique`, `MovementTechnique`,

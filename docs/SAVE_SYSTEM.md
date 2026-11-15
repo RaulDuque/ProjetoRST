@@ -13,6 +13,24 @@ Código: `src/save/serialization.rs` (formato), `save_manager.rs` (disco, std),
 
 Arquivo: `saves/slot1.ron` na raiz do projeto (ignorado pelo git).
 
+## Save v3 (V2.1.1)
+
+Formato atual: **v3** = v2 + `economy: Option<EconomyRecord>` (moedas e
+unidades vendidas pelas entradas limitadas das lojas, por id de loja e item).
+
+| Lido de | Conversão (em memória; o arquivo nunca é reescrito pelo load) |
+|---|---|
+| v1 | `SaveFileV1` → `upgrade_v1_to_v2` → `upgrade_v2` → `economy: None` |
+| v2 | `SaveFileV2` (struct congelado, campos desconhecidos recusados) → `upgrade_v2` → `economy: None` |
+| v3 | direto |
+
+`economy: None` = sem economia registrada: o jogo usa `start.coins` de
+`character.ron` (120) e estoque cheio, igual a cada load daquele arquivo
+(nada se acumula). O primeiro F5 grava v3 com `Some(...)`; antes, o arquivo
+antigo é copiado uma única vez para `slot<N>.ron.v<versão>.bak` (nunca
+sobrescrito) e para o `.bak` rotativo; a gravação usa `.tmp` + rename.
+Detalhes: `NPC_COMMERCE_V2_1.md` §10.
+
 ## Versionamento
 
 O documento começa com `version`. Ao carregar:

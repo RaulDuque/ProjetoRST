@@ -3,7 +3,7 @@
 ## Visão geral
 
 ```
-main.rs ──► app::run() ──► GameData::load(assets/) ──► app::build() ──► GamePlugin
+main.rs ──► app::run() ──► GameData::load(assets/) + load_world(assets/world/) ──► app::build_with_world() ──► GamePlugin
                                                                          ├─ CorePlugin     (mensagens, RNG)
                                                                          ├─ InputPlugin    (teclado → PlayerInput)
                                                                          ├─ WorldPlugin    (sala, física, câmera)
@@ -13,7 +13,11 @@ main.rs ──► app::run() ──► GameData::load(assets/) ──► app::bu
                                                                          ├─ MagicPlugin    (magias, projéteis)
                                                                          ├─ EnemiesPlugin  (spawn, IA, dano)
                                                                          ├─ UiPlugin       (HUD, status, números de dano)
-                                                                         └─ SavePlugin     (F5/F9)
+                                                                         ├─ SavePlugin     (F5/F9)
+                                                                         ├─ TransformPlugin (V1.9: Forma Espectral)
+                                                                         ├─ InventoryPlugin (V2.0: equipar/remover, aparência)
+                                                                         ├─ NpcPlugin      (V2.1: NPCs por sala, D para conversar, diálogo)
+                                                                         └─ EconomyPlugin  (V2.1: moedas, lojas, compra e venda)
 ```
 
 O `main.rs` só chama `dark_castle_rpg::app::run()`. Toda a lógica está na
@@ -25,15 +29,18 @@ biblioteca (`src/lib.rs`), o que permite testes de integração e o exemplo
 | Módulo | Regras puras (sem Bevy) | Camada Bevy |
 |---|---|---|
 | `core` | `rng.rs` | `constants.rs`, `events.rs`, `resources.rs` (carregador de dados), `time.rs` |
-| `player` | `attributes.rs`, `progression.rs`, `state.rs` | `components.rs`, `movement.rs`, `systems.rs`, `animation.rs` |
+| `player` | `attributes.rs`, `progression.rs`, `state.rs`, `visual/{manifest,playback,selection}.rs`, `visual/vfx/rules.rs` | `components.rs`, `movement.rs`, `systems.rs`, `animation.rs`, `visual/{mod,systems}.rs`, `visual/vfx/{mod,systems}.rs` |
 | `combat` | `damage.rs`, `command_buffer.rs`, `command_parser.rs` | `command_input.rs`, `hitboxes.rs`, `attacks.rs` |
 | `skills` | `definitions.rs`, `unlock.rs`, `cooldowns.rs`, `execution.rs` | `systems.rs` |
 | `magic` | `elements.rs` | `casting.rs`, `projectiles.rs` |
-| `inventory` | `items.rs`, `equipment.rs`, `inventory.rs` | — (ainda sem tela) |
+| `inventory` | `items.rs`, `equipment.rs`, `inventory.rs`, `weapons.rs`, `appearance.rs`, `loadout.rs`, `compare.rs` (V2.0) | `systems.rs`, `visual.rs` (V2.0) |
 | `enemies` | `ai.rs`, `definitions.rs` | `components.rs`, `spawning.rs`, `behavior.rs` |
-| `world` | `collision.rs`, `rooms.rs`, `progress.rs` | `physics.rs`, `maps.rs`, `camera.rs` |
+| `world` | `collision.rs`, `rooms.rs`, `progress.rs`, `graph.rs`, `validation.rs`, `exploration.rs`, `restore.rs` (V1.7) | `physics.rs`, `maps.rs`, `camera.rs`, `exploration_systems.rs`, `transitions.rs` (V1.7), `interactions.rs` (V1.8) |
 | `save` | `serialization.rs`, `save_manager.rs` (std) | `systems.rs` |
-| `ui` | — | `theme.rs`, `hud.rs`, `status_screen.rs`, `damage_numbers.rs` |
+| `ui` | — | `theme.rs`, `hud.rs`, `status_screen.rs`, `damage_numbers.rs`, `world_map.rs` (no `UiPlugin` desde a V1.7), `room_fade.rs` (V1.8), `inventory_screen.rs` (V2.0), `dialogue_box.rs`, `shop_screen.rs` (V2.1) |
+| `npc` (V2.1) | `definitions.rs`, `dialogue.rs` | `systems.rs`, `mod.rs` |
+| `economy` (V2.1) | `shop.rs` | `systems.rs` |
+| `transform` (V1.9) | `definitions.rs`, `state.rs`, `crossing.rs` | `systems.rs`, `visual.rs` |
 | `input` | — | `mod.rs` (mapeamento de teclas) |
 | `app` | — | `mod.rs`, `plugins.rs`, `states.rs` |
 
@@ -51,8 +58,8 @@ As regras puras são testadas sem inicializar a engine (`tests/*.rs`).
 | `Physics` | gravidade, `move_bodies` (colisão AABB), projéteis |
 | `Combat` | invulnerabilidade, hitboxes seguem o dono, `detect_hits` e dano por contato → `DamageDealt` |
 | `Resolution` | `receive_damage` do jogador (respeita a invulnerabilidade a cada mensagem) e dos inimigos; morte → `EnemyDefeated`; depois do dano no jogador, `cancel_interrupted_hitboxes` remove as hitboxes presas a um dono em `Hurt`/`Dead` |
-| `Progression` | EXP/level up/drops, sincronização de atributos derivados, desbloqueio automático de habilidades |
-| `Presentation` | visual temporário, câmera, HUD, tela de status, números de dano, salvar/carregar (sempre roda) |
+| `Progression` | EXP/level up/drops, sincronização de atributos derivados, desbloqueio automático de habilidades; reações a `RoomChanged` (`enemies::enter_new_room`, `magic::clear_on_room_change`), que só ocorre com o grafo de mundo da V1.6 |
+| `Presentation` | salvar/carregar, sprite do jogador (`player::visual`, depois de `quick_load`; lê `SkillStarted` para saber a habilidade; ver `PLAYER_VISUAL_ANIMATION_V1_3.md` e `PLAYER_ANIMATION_EXPANSION_V1_4.md`; desde a V1.5 também os VFX `player::visual::vfx`, que leem `SkillStarted` e `DamageDealt` sem alterar o gameplay, ver `PLAYER_ART_POLISH_V1_5.md`), visual temporário (depois do sprite), câmera, HUD, tela de status, números de dano, salvar/carregar (sempre roda) |
 
 ## Comunicação
 
@@ -66,6 +73,15 @@ e `enemies::behavior::receive_damage` aplicam o dano em seus próprios component
 - `GameState::Playing` — simulação ativa.
 - `GameState::StatusScreen` — tela de status aberta (Tab); simulação pausada
   porque todos os `GameSet` exceto `Presentation` exigem `Playing`.
+- `GameState::Inventory` (V2.0) — tela de equipamento aberta (I); pausa
+  como a de status. Equipar acontece em `Presentation`
+  (`inventory::systems::apply_equip_requests`, único escritor do
+  equipamento, a partir de `EquipRequest`). Como o `quick_load`, ele
+  atualiza `CharacterSheet`, `Vitals` e `CombatProfile` do jogador no mesmo
+  frame, para a tela pausada mostrar os números finais.
+- `GameState::Dialogue` e `GameState::Shop` (V2.1) — conversa e loja,
+  pausadas como as outras telas. `npc::systems::close_on_room_change` fecha
+  as duas se um load trocar a sala.
 - `PlayerState` (máquina de estados do personagem, `player/state.rs`) — ver `COMBAT_SYSTEM.md`.
 
 ## Dados
@@ -79,8 +95,35 @@ Raiz dos assets: `BEVY_ASSET_ROOT` → `CARGO_MANIFEST_DIR` → pasta do execut�
 
 Cada sala é um `RoomDefinition` independente (`assets/maps/*.ron`). Só a sala
 atual é instanciada (entidades com `RoomEntity`), e a geometria fica em
-`RoomGeometry`. Isso permite mapas grandes sem carregar tudo; as transições
-entre salas estão no roadmap (etapa 11).
+`RoomGeometry`. Isso permite mapas grandes sem carregar tudo.
+
+**V1.6 (protótipo):**
+- **Grafo de mundo:** `assets/world/` com regiões, salas, portas e requisitos tipados.
+- **Validador e estado de exploração.**
+- **Plugin de transições:** `WorldExplorationPlugin` reutiliza `spawn_room`,
+  `RoomEntity` e `RoomGeometry` e anuncia `RoomChanged`.
+- **Fora do jogo principal:** o plugin é usado pelo exemplo
+  `world_vertical_slice` e pelos testes, não pelo `GamePlugin`.
+- **Detalhes:** `WORLD_ARCHITECTURE.md`, `ROOM_SYSTEM.md` e `V1_6_VERTICAL_SLICE.md`.
+
+**V1.7 (integração):**
+- **Início no mundo:** `app::run` carrega o grafo, valida (erros impedem o
+  início) e começa em `vigil_gates_approach`.
+- **Plugins:** `WorldExplorationPlugin` e `WorldMapUiPlugin` são registrados
+  sempre e agem só com `WorldGraph`.
+- **Sala única:** `app::build` sem mundo continua sendo o jogo de sala única,
+  usado pelos testes antigos, pelo `autoplay` e pelo `visual_check`.
+- **Ciclo de vida:** `GameSet::Rooms` → `RoomStep::{Request, Apply, React}`.
+- **Save:** v2 com migração v1.
+- **Detalhes:** [`WORLD_INTEGRATION_V1_7.md`](WORLD_INTEGRATION_V1_7.md).
+
+**V1.8 (exploração avançada):**
+- **Objetos interativos:** `world::interactions`.
+- **Mensagem nova `ProjectileBlocked`:** a magia avisa onde um projétil
+  parou na geometria, e o mundo a usa para paredes quebráveis.
+- **Fade de transição:** `ui::room_fade`.
+- **Tecla de interação:** `D`.
+- **Detalhes:** [`WORLD_EXPLORATION_V1_8.md`](WORLD_EXPLORATION_V1_8.md).
 
 ## Ajustes em relação à estrutura sugerida no briefing
 

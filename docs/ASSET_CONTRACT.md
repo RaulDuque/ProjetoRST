@@ -38,7 +38,8 @@ art-src/                         # fontes de produção, nunca carregadas pelo j
 
 - **Regra geral:** ASCII, `snake_case`, sem espaços nem acentos.
 - **Atlas:** `player_<grupo>.png`, com os grupos `locomotion` e `combat`.
-  O grupo `effects` fica para os VFX (V1.9).
+  O grupo `effects` guarda os VFX desde a V1.5 (`player_effects.png`, densidade 1,
+  célula 128×96 u com o pivô do combate; clipes `vfx_<chave>`, ver `PLAYER_ART_POLISH_V1_5.md`).
 - **Identificadores de animação:** únicos no manifesto. Os que já aparecem nos
   RON do jogo têm de ser usados exatamente iguais.
 - **Variantes:** sufixo, por exemplo `attack_basic_air` e `slash_rising_air`.
@@ -173,7 +174,21 @@ câmera mudarem.
   (`RenderAssetUsages`), além da cópia na GPU. A estimativa da direção de arte
   (~3 MiB no A, ~12 MiB no B) conta só uma cópia.
 
-## 7. Manifesto RON (proposta, não integrada)
+## 7. Manifesto RON
+
+> **V1.3:** integrado para `idle`, `run`, `attack_basic` e `dodge`
+> (`assets/animations/player.ron`, gerado por
+> `art-src/player/scripts/post/game_sprites_v1_3.py`; carregado por
+> `src/player/visual/`). Duas extensões da proposta abaixo:
+> - `durations`, a duração de cada quadro (os clipes de ação terminam com um quadro mais curto);
+> - `speed_reference`, a velocidade para a qual um loop de locomoção foi feito.
+>
+> Arquivo ausente ou inválido mantém o visual provisório (D-015).
+> **V1.4:** mais 11 clipes (`hurt`, `death`, `jump_rise`, `fall`, `land`, `crouch`,
+> `guard_start`, `slash_crescent`, `slash_rising`, `cast_forward`, `cast_up`), com o
+> modo `Once(fps)` e sem mudança de contrato (D-016,
+> `docs/PLAYER_ANIMATION_EXPANSION_V1_4.md`). Ver
+> `docs/PLAYER_VISUAL_ANIMATION_V1_3.md`.
 
 **Arquivo:** `assets/animations/player.ron`. É dado de apresentação, fora de
 `assets/data/`, o que exige registrar a decisão em `DECISIONS.md` e atualizar
@@ -260,7 +275,22 @@ jogador sumiria por alguns quadros.
      com os mesmos nomes de master (`<modelo>_v003_{side,front,back}_master.png`),
      closes `_close_<parte>`, variantes `_side_master_toon` e
      `_side_master_readable`, e o relatório `build_report_v003.json`.
+   - v004 (V1.2-D): `build_swordsman_v004.py`, saídas em `renders/v004/` com os
+     mesmos nomes do v003, mais `_close_face_front`, `_close_face_profile`,
+     `_close_torso` e `_side_master_readable_toon`.
 2. **Animações (V1.4+):** `export_frames.export_animation(id, início, fim)` gera os quadros numerados.
+   - V1.2-E: rig experimental `swordsman_rig_v005.blend` (poses e testes de
+     movimento, sem spritesheets); célula de combate renderizada com
+     `contract.COMBAT_FRAME`/`COMBAT_PIVOT`. Ver `art-src/player/RIG_SPECIFICATION.md`.
+   - V1.2-F: rig experimental `swordsman_rig_v006.blend` (correções do v005, ainda sem
+     spritesheets); mesmo contrato de células e pivôs. Ver a seção 11 de
+     `art-src/player/RIG_SPECIFICATION.md`.
+   - V1.2-G: primeiro teste do caminho de exportação (sem integração): `walk` e `dodge`
+     na célula de movimento, `attack_basic` na de combate. Quadros `<animacao>_<NNN>.png`,
+     spritesheets na grade do contrato (8 ou 7 colunas, padding 2 entre células) com um
+     JSON de célula, pivô, densidade, instantes e durações; ver
+     `art-src/player/ANIMATION_VALIDATION_V1_2G.md`. Clipes de ação duram o tempo exato do
+     gameplay (0,28 s = 6 quadros de 1/24 s + 1 de 0,03 s), sem movimento de raiz.
 3. **Acabamento:** `post/pixelize.py` gera os dois:
    - A: cada pixel é encaixado na paleta, depois vale a cor dominante do bloco; alfa binário e contorno;
    - B: redução Lanczos para 2× densidade.
@@ -278,6 +308,10 @@ A versão do Blender e o motor usado ficam em `renders/blender_version_<vNNN>.tx
 - **Ignorados por `art-src/.gitignore`:** `renders/`, que é regenerável, e `__pycache__/`.
 - **Arquivos `.blend`:** ignorados até a decisão sobre Git LFS.
 - **Mudança de modelo:** incrementa `MODEL_VERSION`. O script recusa sobrescrever masters da mesma versão.
+- **Publicação (V1.5):** só `publish_guard.py` escreve os sprites e o manifesto
+  em `assets/`, a partir do staging de um script de pós-processamento, com
+  validação, versão mínima, clipes obrigatórios, backup e rollback. O lock
+  `assets/animations/player.publish.json` vai para o Git junto com os PNG.
 - **Referências:** registram origem e licença em `references/README.md`.
   Nenhuma imagem de terceiros vira textura final sem licença compatível.
 

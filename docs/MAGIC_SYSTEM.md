@@ -42,3 +42,24 @@ Resistências e fraquezas: ver `CHARACTER_ATTRIBUTES.md`.
 
 Implementados: projétil (`Projectile`), cura (`Heal`).
 Planejados: explosão/área, dano contínuo, controle (Freeze/Stun), proteção, invocação.
+
+## Expansão (V1.6, planejada)
+
+Nada mudou no sistema de magia; o reconhecedor de comandos e o formato único
+de técnicas e magias são preservados. Plano:
+
+| Família | Novo `SkillEffect` | Exemplos | Exploração |
+|---|---|---|---|
+| Fogo, gelo, raio, água, vento, terra | `Area { radius, duration }`, `Beam`, `Projectile` com `pierce`/`bounce` | Explosão de brasa, lança de gelo, corrente | Gelo cria plataforma temporária; vento move objetos leves |
+| Luz e trevas | `Projectile`, `Area` | Selo de luz, véu de sombra | Luz revela paredes falsas próximas (alternativa à parede ilusória) |
+| Arcano | `Projectile` com `homing` | Mísseis arcanos | Ativa selos arcanos (`requires: Flag`) |
+| Suporte | `Buff { stat, amount, duration }`, `Heal` | Égide, pressa | Égides de ambiente (fogo, veneno) |
+| Debuff | `inflicts` (já existe nos dados) aplicado de fato | Queimadura, lentidão | — |
+| Invocação | `Summon { entity, duration }` | Familiar de cinza | Familiar ativa interruptores distantes |
+
+- **Aprendizado:** livros, mestres (`command_revealed_on_learn` já existe) e relíquias.
+- **Evolução:** ranks por uso, já previstos na etapa 5 do roadmap.
+- **Equipamentos que modificam magias:** chaves em `special_effects`
+  (`"fire_cost_-20"`) lidas pelo `cast_spells`.
+- **Efeitos visuais:** pela camada de VFX da V1.5 (`vfx` nos dados).
+- **Resistências e fraquezas:** já existem por elemento (`ElementalResistances`).

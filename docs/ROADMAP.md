@@ -4,6 +4,10 @@
 Validação de referência: `cargo test` (unitários, integração e ECS headless) e
 `cargo run --example autoplay` (execução real com screenshots).
 
+A direção de longo prazo (V1.6 → V2.5) está em
+[`GAME_VISION_MASTER.md`](GAME_VISION_MASTER.md) §6. Esta lista registra o que
+já está feito, etapa por etapa.
+
 ## Etapa 1 — Infraestrutura
 - [x] Projeto Cargo `dark_castle_rpg`, Rust 2024, dependências fixadas e `Cargo.lock` versionado
 - [x] Perfis `dev` (deps otimizadas), `release`, `dist`; feature `dev` (linkagem dinâmica)
@@ -70,7 +74,21 @@ Validação de referência: `cargo test` (unitários, integração e ECS headles
 - [x] Itens, categorias, raridades configuráveis, pilhas, descarte protegido, ordenação
 - [x] 8 slots com validação de categoria e requisitos; bônus recalculam atributos
 - [x] Drops influenciados por LCK
-- [ ] Tela de inventário (equipar/desequipar/consumir/inspecionar/comparar)
+- [x] Tela de inventário: equipar, remover, inspecionar e comparar (V2.0, tecla I)
+- [x] Perfis de arma por categoria, compatibilidade de técnicas, teto de resistência, catálogo de 27 equipamentos (V2.0)
+- [x] Aparência por equipamento em camadas de runtime: rastro, capa, tom (V2.0, parcial: sem arma/elmo desenhados)
+- [ ] Consumir itens pela tela de inventário
+- [x] Regra de duas mãos: lança e arma pesada não usam escudo (V2.1)
+
+## Etapa 8b — Cidade, NPCs e comércio (V2.1)
+- [x] Vila das Cinzas (6 salas), ligada ao Watch Shaft, opcional
+- [x] NPCs por dados, `D` para conversar (objetos têm prioridade)
+- [x] Diálogos com escolhas e condições de progresso (sem scripts)
+- [x] Lojas: comprar, vender, estoque ilimitado/limitado, comparação, moeda "Marks"
+- [ ] Moedas e estoque no save (aguarda autorização do Save v3)
+- [ ] Drops de equipamento (gerador de loot isolado)
+- [ ] Ícones de loja/NPC no mapa; arte de NPCs
+- [x] Tutoriais do proprietário (24, em `docs/tutorias/` até liberar `Md-usario/tutorias/`)
 - [ ] Uso de consumíveis em jogo
 
 ## Etapa 9 — Inimigos
@@ -86,9 +104,13 @@ Validação de referência: `cargo test` (unitários, integração e ECS headles
 
 ## Etapa 11 — Mundo e mapas
 - [x] Sala definida em RON com plataformas e spawns
-- [ ] Transições entre salas e portas
-- [ ] Áreas secretas, baús, objetos interativos, pontos de save no mapa
-- [ ] Mapa do castelo (minimapa)
+- [x] Transições entre salas e portas no jogo principal (V1.7: `world::transitions`, save v2, rota real sem atalhos)
+- [x] Áreas secretas, baús e objetos interativos (V1.8: paredes quebráveis, interruptor oculto, baús, alavancas, atalho; região Galerias Esquecidas)
+- [x] Primeira transformação (V1.9: Forma Espectral com a Relíquia do Véu, véus espectrais, região Claustro Velado; `TRANSFORMATIONS_V1_9.md`)
+- [ ] Outras transformações (voadora, veloz, pequena, aquática, sombra) e arte própria da forma espectral
+- [ ] Pontos de save no mapa, placas de pressão, baús de chefe
+- [ ] Mapa do castelo (minimapa) (V1.7: painel no jogo com a tecla M; V1.8: baús, atalhos e % por região; tela cheia pendente)
+- [x] Grafo de mundo em RON com validador de conexões e alcance (V1.6, `world_report`)
 - [ ] Carregamento de assets por sala
 
 ## Etapa 12 — Interface completa

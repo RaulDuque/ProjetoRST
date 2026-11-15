@@ -50,3 +50,6 @@ painéis escuros e bordas douradas.
 `CHARACTER_ATTRIBUTES.md`, `PROGRESSION_SYSTEM.md`, `COMBAT_SYSTEM.md`,
 `INPUT_SYSTEM.md`, `SKILL_SYSTEM.md`, `MAGIC_SYSTEM.md`, `EQUIPMENT_SYSTEM.md`,
 `ENEMY_SYSTEM.md`, `SAVE_SYSTEM.md`, `ROADMAP.md`.
+
+Visão de grande escala (V1.6): `GAME_VISION_MASTER.md` e os documentos de
+mundo citados nele.
