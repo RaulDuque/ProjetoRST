@@ -63,6 +63,7 @@ fn skill(id: &str, notation: &str, mp: i32, hearts: i32, cooldown: f32) -> Skill
         usable_in: vec![ActionPhase::Grounded],
         acquisition: Default::default(),
         command_revealed_on_learn: true,
+        weapons: Vec::new(),
     }
 }
 

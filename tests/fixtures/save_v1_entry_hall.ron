@@ -1,0 +1,63 @@
+(
+    version: 1,
+    data: (
+        player: (
+            room: "entry_hall",
+            position: (512.0, 63.0),
+            attributes: (
+                strength: 7,
+                constitution: 6,
+                intelligence: 5,
+                luck: 4,
+            ),
+            progression: (
+                level: 2,
+                exp_into_level: 10,
+                total_exp: 110,
+                unspent_points: 1,
+            ),
+            hp: 90,
+            mp: 30,
+            hearts: 12,
+            learned_skills: (
+                skills: {
+                    "crescent_slash": (
+                        rank: 1,
+                        command_revealed: true,
+                    ),
+                    "ember_bolt": (
+                        rank: 1,
+                        command_revealed: true,
+                    ),
+                    "mending_light": (
+                        rank: 1,
+                        command_revealed: true,
+                    ),
+                },
+            ),
+            inventory: (
+                stacks: [
+                    (
+                        id: "minor_tonic",
+                        quantity: 3,
+                    ),
+                ],
+            ),
+            equipment: (
+                slots: {
+                    Weapon: "iron_sword",
+                    Body: "leather_jerkin",
+                },
+            ),
+        ),
+        world: (
+            unlocked_doors: [],
+            opened_chests: [],
+            discovered_save_points: [],
+            defeated_bosses: [],
+            flags: ["met_the_archivist"],
+            last_save_point: None,
+        ),
+        play_time: 42.5,
+    ),
+)

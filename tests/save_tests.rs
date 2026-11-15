@@ -32,7 +32,10 @@ fn sample(level: u32) -> SaveData {
             equipment: Equipment::default(),
         },
         world,
+        exploration: Default::default(),
         play_time: 321.0,
+        // V2.1.1 (save v3): the economy.
+        economy: Some(Default::default()),
     }
 }
 
@@ -107,4 +110,107 @@ fn corrupted_slot_is_not_overwritten_by_loading() {
     assert!(matches!(storage.load(1), Err(SaveError::Corrupted(_))));
     let still_there = std::fs::read_to_string(storage.slot_path(1)).unwrap_or_default();
     assert_eq!(still_there, "garbage");
+}
+
+// ------------------------------------------------------------- V1.7 (v2)
+
+fn v1_fixture() -> String {
+    std::fs::read_to_string(
+        std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("tests/fixtures/save_v1_entry_hall.ron"),
+    )
+    .unwrap_or_else(|e| panic!("{e}"))
+}
+
+#[test]
+fn v1_migrates_to_v2_keeping_every_field() {
+    use dark_castle_rpg::save::serialization::{SaveFileV1, decode_versioned, upgrade_v1};
+    let text = v1_fixture();
+    let v1: SaveFileV1 = ron::from_str(&text).unwrap_or_else(|e| panic!("{e}"));
+    let decoded = decode_versioned(&text).unwrap_or_else(|e| panic!("{e}"));
+    assert_eq!(decoded.source_version, 1);
+    let expected = upgrade_v1(v1.data.clone());
+    assert_eq!(decoded.data, expected);
+    assert_eq!(decoded.data.player, v1.data.player);
+    assert_eq!(decoded.data.world, v1.data.world);
+    assert_eq!(decoded.data.play_time, v1.data.play_time);
+    // Re-encoding writes the current version and reads back identically.
+    let v2 = encode(&decoded.data).unwrap_or_else(|e| panic!("{e}"));
+    assert!(v2.contains(&format!("version: {CURRENT_SAVE_VERSION}")));
+    assert_eq!(decode(&v2).unwrap_or_else(|e| panic!("{e}")), decoded.data);
+}
+
+#[test]
+fn v1_with_unknown_fields_is_refused_not_truncated() {
+    let text = v1_fixture().replacen("play_time: 42.5,", "play_time: 42.5,\n        gold: 99,", 1);
+    assert!(text.contains("gold"));
+    assert!(matches!(decode(&text), Err(SaveError::Corrupted(_))));
+}
+
+#[test]
+fn loading_never_writes_and_saving_keeps_the_old_format() {
+    let storage = SaveStorage::new(temp_dir("save_v1_keep"));
+    std::fs::create_dir_all(storage.dir()).unwrap_or_else(|e| panic!("{e}"));
+    let v1 = v1_fixture();
+    std::fs::write(storage.slot_path(1), &v1).unwrap_or_else(|e| panic!("{e}"));
+    let loaded = storage.load_versioned(1).unwrap_or_else(|e| panic!("{e}"));
+    assert!(loaded.migrated());
+    assert_eq!(
+        std::fs::read_to_string(storage.slot_path(1)).unwrap_or_default(),
+        v1
+    );
+    assert!(!storage.version_backup_path(1, 1).exists());
+    storage
+        .save(1, &loaded.data)
+        .unwrap_or_else(|e| panic!("{e}"));
+    storage
+        .save(1, &sample(5))
+        .unwrap_or_else(|e| panic!("{e}"));
+    let kept = std::fs::read_to_string(storage.version_backup_path(1, 1)).unwrap_or_default();
+    assert_eq!(kept, v1);
+    assert_eq!(
+        storage
+            .load(1)
+            .unwrap_or_else(|e| panic!("{e}"))
+            .player
+            .progression
+            .level(),
+        5
+    );
+}
+
+// ------------------------------------------------------------- V1.8
+
+#[test]
+fn a_v2_save_with_objects_reads_as_is_and_round_trips() {
+    use dark_castle_rpg::save::serialization::decode_versioned;
+    use dark_castle_rpg::world::graph::{Ability, Grant};
+    let text = std::fs::read_to_string(
+        std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("tests/fixtures/save_v2_galleries.ron"),
+    )
+    .unwrap_or_else(|e| panic!("{e}"));
+    let decoded = decode_versioned(&text).unwrap_or_else(|e| panic!("{e}"));
+    assert_eq!(decoded.source_version, 2);
+    // V2.1.1: v2 is now an older format, converted in memory to v3.
+    assert!(decoded.migrated());
+    assert_eq!(decoded.data.economy, None);
+    let data = decoded.data;
+    // Objects are stored in the v2 fields, no new schema (V1.8):
+    // broken wall → secrets, opened chest → pickups, pulled lever → granted.
+    assert!(data.exploration.secrets.contains("fg_cracked_wall"));
+    assert!(data.exploration.pickups.contains("fg_bridge_chest"));
+    assert!(
+        data.exploration
+            .granted
+            .contains(&Grant::Flag("fg_trapdoor_open".into()))
+    );
+    assert!(
+        data.exploration
+            .granted
+            .contains(&Grant::Ability(Ability::AstralKey))
+    );
+    assert_eq!(data.player.inventory.count("warden_greaves"), 1);
+    let again = encode(&data).unwrap_or_else(|e| panic!("{e}"));
+    assert_eq!(decode(&again).unwrap_or_else(|e| panic!("{e}")), data);
 }

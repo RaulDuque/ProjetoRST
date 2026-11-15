@@ -497,6 +497,7 @@ fn dual_cost_skill() -> SkillDefinition {
         usable_in: vec![ActionPhase::Grounded],
         acquisition: Acquisition::Discovery,
         command_revealed_on_learn: true,
+        weapons: Vec::new(),
     }
 }
 

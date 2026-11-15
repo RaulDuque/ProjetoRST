@@ -1,0 +1,91 @@
+(
+    version: 2,
+    data: (
+        player: (
+            room: "fg_return_bridge",
+            position: (268.0, 63.0),
+            attributes: (
+                strength: 7,
+                constitution: 6,
+                intelligence: 5,
+                luck: 4,
+            ),
+            progression: (
+                level: 2,
+                exp_into_level: 10,
+                total_exp: 110,
+                unspent_points: 1,
+            ),
+            hp: 90,
+            mp: 30,
+            hearts: 12,
+            learned_skills: (
+                skills: {
+                    "crescent_slash": (
+                        rank: 1,
+                        command_revealed: true,
+                    ),
+                    "ember_bolt": (
+                        rank: 1,
+                        command_revealed: true,
+                    ),
+                    "mending_light": (
+                        rank: 1,
+                        command_revealed: true,
+                    ),
+                },
+            ),
+            inventory: (
+                stacks: [
+                    (
+                        id: "minor_tonic",
+                        quantity: 3,
+                    ),
+                    (
+                        id: "warden_greaves",
+                        quantity: 1,
+                    ),
+                ],
+            ),
+            equipment: (
+                slots: {
+                    Weapon: "iron_sword",
+                    Body: "leather_jerkin",
+                },
+            ),
+        ),
+        world: (
+            unlocked_doors: [],
+            opened_chests: [],
+            discovered_save_points: [],
+            defeated_bosses: [],
+            flags: ["met_the_archivist", "vigil_gates_cleared", "fg_hall_gate_open", "fg_trapdoor_open"],
+            last_save_point: None,
+        ),
+        exploration: (
+            rooms: {
+                "vigil_gates_approach": Visited,
+                "vigil_gates_reliquary": Visited,
+                "fg_threshold": Visited,
+                "fg_long_gallery": Visited,
+                "fg_stair": Visited,
+                "fg_cracked_cache": Visited,
+                "fg_relic_chapel": Visited,
+                "fg_upper_gallery": Visited,
+                "fg_lever_hall": Visited,
+                "fg_astral_gate": Visited,
+                "fg_return_bridge": Visited,
+            },
+            secrets: ["fg_cracked_wall"],
+            pickups: ["gatekeeper_sigil", "astral_emblem", "fg_bridge_chest"],
+            granted: [
+                Flag("vigil_gates_cleared"),
+                Ability(AstralKey),
+                Flag("fg_hall_gate_open"),
+                Item("warden_greaves"),
+                Flag("fg_trapdoor_open"),
+            ],
+        ),
+        play_time: 42.5,
+    ),
+)
