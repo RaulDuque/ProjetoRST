@@ -54,6 +54,8 @@ MANIFEST = "animations/player.ron"
 LOCK = "animations/player.publish.json"
 JOURNAL = "animations/.player.publish.journal.json"
 STAGE_INFO = "publish.json"  # written by the post script next to the staged files
+# V2.2: per-frame equipment sockets, published with a weaponless manifest.
+SOCKETS = "animations/player_sockets.ron"
 LOCK_SCHEMA = 1
 MANIFEST_VERSION = 1
 MAX_SIDE = 2048
@@ -142,6 +144,9 @@ class Manifest:
     facing: str
     atlases: dict[str, Atlas] = field(default_factory=dict)
     clips: dict[str, Clip] = field(default_factory=dict)
+    # V2.2: False when the body frames have no weapon drawn in (then the
+    # sockets file is part of the publication). Absent line = True.
+    weapon_in_body: bool = True
 
 
 _NUM = r"-?\d+(?:\.\d+)?"
@@ -160,6 +165,9 @@ def parse_manifest(text: str) -> Manifest:
     (fail closed): the guard never guesses what a hand-edited file means."""
     lines = [ln.strip() for ln in text.splitlines()]
     lines = [ln for ln in lines if ln and not ln.startswith("//")]
+    weapon = re.fullmatch(r"weapon_in_body: (true|false),", lines[3]) if len(lines) > 3 else None
+    if weapon:  # V2.2 optional header line
+        lines = lines[:3] + lines[4:]
     expected_open = ["(", None, None, "atlases: {"]
     if len(lines) < 6 or lines[0] != expected_open[0] or lines[3] != expected_open[3]:
         raise PublishError("manifest: unexpected header")
@@ -167,7 +175,7 @@ def parse_manifest(text: str) -> Manifest:
     f = re.fullmatch(r"facing: (\w+),", lines[2])
     if not v or not f:
         raise PublishError("manifest: missing version or facing")
-    manifest = Manifest(int(v.group(1)), f.group(1))
+    manifest = Manifest(int(v.group(1)), f.group(1), weapon_in_body=not weapon or weapon.group(1) == "true")
     i = 4
     while i < len(lines) and lines[i] != "},":
         m = _ATLAS.match(lines[i])
@@ -305,7 +313,34 @@ def duration_failures(manifest: Manifest, seconds: dict[str, float]) -> list[str
 
 def manifest_files(manifest: Manifest) -> list[str]:
     """Paths (relative to assets/) of everything a manifest publishes."""
-    return [*(a.texture for a in manifest.atlases.values()), MANIFEST]
+    sockets = [] if manifest.weapon_in_body else [SOCKETS]
+    return [*(a.texture for a in manifest.atlases.values()), MANIFEST, *sockets]
+
+
+_SOCKET_CLIP = re.compile(r'^"(?P<id>[a-z][a-z0-9_]*)": \[(?P<frames>.*)\],$')
+
+
+def socket_failures(root: Path, manifest: Manifest) -> list[str]:
+    """V2.2: a weaponless manifest needs a socket entry for every frame of
+    every character clip (the effects have none). One clip per line."""
+    if manifest.weapon_in_body:
+        return []
+    path = root / SOCKETS
+    if not path.is_file():
+        return [f"{SOCKETS} missing (weapon_in_body: false)"]
+    counts = {}
+    for line in path.read_text(encoding="utf-8").splitlines():
+        m = _SOCKET_CLIP.match(line.strip())
+        if m:
+            counts[m["id"]] = m["frames"].count("(weapon:")
+    fails = []
+    for cid, clip in manifest.clips.items():
+        if clip.atlas not in GROUP_PIVOTS:
+            continue
+        if counts.get(cid) != clip.count:
+            fails.append(f"sockets: clip {cid} has {counts.get(cid, 0)} frames, expected {clip.count}")
+    fails += [f"sockets: clip {cid} not in the manifest" for cid in counts if cid not in manifest.clips]
+    return fails
 
 
 def image_failures(root: Path, manifest: Manifest) -> list[str]:
@@ -373,6 +408,7 @@ def validate_stage(staged: Staged, project: Path = PROJECT) -> list[str]:
     fails += [f"required clip {c!r} missing" for c in REQUIRED_CLIPS if c not in staged.manifest.clips]
     fails += duration_failures(staged.manifest, game_durations(project))
     fails += image_failures(staged.root, staged.manifest)
+    fails += socket_failures(staged.root, staged.manifest)
     return fails
 
 

@@ -277,6 +277,56 @@ class SafetyTests(GuardCase):
         self.assert_refused(bad, "attack_basic_air")
 
 
+class WeaponlessSocketTests(GuardCase):
+    """V2.2: a manifest with ``weapon_in_body: false`` publishes the socket
+    table with it, and refuses a missing or incomplete one."""
+
+    def weaponless(self, frames: dict[str, int] | None = None, sockets: bool = True) -> Path:
+        stage = self.stage(colour=70)
+        ron = stage / G.MANIFEST
+        ron.write_text(ron.read_text(encoding="utf-8").replace(
+            "    facing: Right,", "    facing: Right,\n    weapon_in_body: false,", 1), encoding="utf-8")
+        if sockets:
+            frame = ("(weapon: (x: 1.0, y: 2.0, angle: 3.0, front: true), hand_l: (x: 0.0, y: 1.0, front: false), "
+                     "head: (x: 0.0, y: 2.0), chest: (x: 0.0, y: 1.0), back: (x: 0.0, y: 1.0))")
+            counts = {key: count for key, _, count in V14_CLIPS}
+            counts.update(frames or {})
+            lines = ["(", "    version: 1,", "    clips: {"]
+            lines += [f'        "{k}": [' + ", ".join([frame] * n) + "]," for k, n in counts.items()]
+            lines += ["    },", ")", ""]
+            (stage / G.SOCKETS).write_text("\n".join(lines), encoding="utf-8")
+        return stage
+
+    def test_the_optional_header_line_parses_and_defaults_to_baked(self) -> None:
+        baked = G.parse_manifest((self.assets / G.MANIFEST).read_text(encoding="utf-8"))
+        self.assertTrue(baked.weapon_in_body)
+        self.assertNotIn(G.SOCKETS, G.manifest_files(baked))
+        stage = self.weaponless()
+        manifest = G.parse_manifest((stage / G.MANIFEST).read_text(encoding="utf-8"))
+        self.assertFalse(manifest.weapon_in_body)
+        self.assertIn(G.SOCKETS, G.manifest_files(manifest))
+
+    def test_sockets_are_published_with_the_weaponless_atlases(self) -> None:
+        result = self.publish(self.weaponless())
+        self.assertEqual(result.status, "published")
+        self.assertTrue((self.assets / G.SOCKETS).is_file())
+        lock = G.read_lock(self.assets) or {}
+        self.assertIn(G.SOCKETS, lock["files"])
+
+    def test_missing_or_incomplete_sockets_are_refused(self) -> None:
+        self.assert_refused(self.weaponless(sockets=False), "player_sockets.ron missing")
+        first = V14_CLIPS[0]
+        self.assert_refused(self.weaponless({first[0]: first[2] + 1}), f"clip {first[0]} has")
+
+    def test_a_rollback_removes_the_new_socket_file(self) -> None:
+        def crash(n: int, rel: str) -> None:
+            if rel == G.SOCKETS:
+                raise OSError("disk full (simulated)")
+
+        self.assert_refused(self.weaponless(), "rolled back", before_replace=crash)
+        self.assertFalse((self.assets / G.SOCKETS).exists())
+
+
 class RealAssetsTests(unittest.TestCase):
     def test_shipped_assets_match_their_lock(self) -> None:
         assets = PROJECT / "assets"
