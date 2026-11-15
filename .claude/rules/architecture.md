@@ -9,8 +9,8 @@ paths:
 
 | Tipo de arquivo | Pode importar Bevy? | Exemplos |
 |---|---|---|
-| Regra pura | **Não** (só std, serde, ron, thiserror, tracing) | `player/attributes.rs`, `player/progression.rs`, `player/state.rs`, `player/visual/{manifest,playback,selection}.rs`, `world/{graph,validation,exploration}.rs`, `combat/damage.rs`, `combat/command_buffer.rs`, `combat/command_parser.rs`, `skills/{definitions,unlock,cooldowns,execution}.rs`, `inventory/{items,equipment,inventory}.rs`, `magic/elements.rs`, `enemies/{ai,definitions}.rs`, `world/{collision,progress,rooms}.rs`, `save/{serialization,save_manager}.rs`, `core/rng.rs`, `transform/{definitions,state,crossing}.rs`, `inventory/{weapons,appearance,loadout,compare}.rs`, `npc/{definitions,dialogue}.rs`, `economy/shop.rs` |
-| Sistema/componente Bevy | Sim | `*/components.rs`, `*/systems.rs`, `player/movement.rs`, `player/visual/mod.rs`, `combat/{hitboxes,attacks,command_input}.rs`, `magic/{casting,projectiles}.rs`, `enemies/{behavior,spawning}.rs`, `world/{physics,maps,camera,exploration_systems,transitions,interactions}.rs`, `transform/{systems,visual}.rs`, `inventory/{systems,visual}.rs`, `npc/{mod,systems}.rs`, `economy/systems.rs`, `ui/*` |
+| Regra pura | **Não** (só std, serde, ron, thiserror, tracing) | `player/attributes.rs`, `player/progression.rs`, `player/state.rs`, `player/visual/{manifest,playback,selection}.rs`, `world/{graph,validation,exploration}.rs`, `combat/damage.rs`, `combat/command_buffer.rs`, `combat/command_parser.rs`, `skills/{definitions,unlock,cooldowns,execution}.rs`, `inventory/{items,equipment,inventory}.rs`, `magic/elements.rs`, `enemies/{ai,definitions}.rs`, `world/{collision,progress,rooms}.rs`, `save/{serialization,save_manager}.rs`, `core/rng.rs`, `transform/{definitions,state,crossing}.rs`, `inventory/{weapons,appearance,loadout,compare}.rs`, `npc/{definitions,dialogue}.rs`, `economy/shop.rs`, `core/pixel_art.rs`, `player/visual/sockets.rs`, `inventory/{held,held_art}.rs`, `npc/art.rs` (V2.2) |
+| Sistema/componente Bevy | Sim | `*/components.rs`, `*/systems.rs`, `player/movement.rs`, `player/visual/mod.rs`, `combat/{hitboxes,attacks,command_input}.rs`, `magic/{casting,projectiles}.rs`, `enemies/{behavior,spawning}.rs`, `world/{physics,maps,camera,exploration_systems,transitions,interactions}.rs`, `transform/{systems,visual}.rs`, `inventory/{systems,visual,held_visual}.rs`, `npc/{mod,systems}.rs`, `economy/systems.rs`, `core/pixel_image.rs`, `ui/*` |
 
 Antes de adicionar `use bevy` num arquivo puro, crie um arquivo Bevy separado.
 
@@ -45,6 +45,11 @@ Antes de adicionar `use bevy` num arquivo puro, crie um arquivo Bevy separado.
 `Input → Commands → Actions → Physics → Combat → Resolution → Progression`
 (só em `GameState::Playing`), depois `Presentation` (sempre).
 Todo sistema novo deve entrar em um `GameSet`.
+
+- Equipamento visível (V2.2): arma/escudo são camadas (`inventory::held_visual`)
+  posicionadas pelas âncoras do quadro (`player/visual/sockets.rs`); ficam
+  desligadas enquanto o manifesto tiver `weapon_in_body: true`. Nunca desenhe
+  uma arma sobre um corpo que já tem uma.
 
 ## Dados
 

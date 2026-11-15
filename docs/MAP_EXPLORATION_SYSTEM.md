@@ -2,7 +2,8 @@
 
 > - **[Protótipo]**: estados de descoberta, porcentagem e painel do mapa
 >   (`world/exploration.rs`, `ui/world_map.rs`).
-> - **[Planejado]**: mapa em tela cheia, marcadores, ícones de save e de teleporte, estado `Completed`.
+> - **[Implementado, V2.2]**: marcadores de NPCs (rosa) e lojas (violeta) em salas visitadas, com legenda (`docs/VISUAL_EQUIPMENT_V2_2.md` §10).
+> - **[Planejado]**: mapa em tela cheia, ícones de save e de teleporte, estado `Completed`.
 
 ## 1. Estados de descoberta
 

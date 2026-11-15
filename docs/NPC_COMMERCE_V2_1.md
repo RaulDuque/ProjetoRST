@@ -1,5 +1,9 @@
 # V2.1 — Cidade, NPCs, diálogos, comércio e tutoriais
 
+> **V2.2:** NPCs ganharam figuras por dados (`look`), o mapa marca NPCs e
+> lojas, e o HUD deixou de sobrepor notificações ao chão; ver
+> [`VISUAL_EQUIPMENT_V2_2.md`](VISUAL_EQUIPMENT_V2_2.md) §9–10.
+
 > Briefing: `Md-usario/Md-usario/DarkCastleR-V2-1.md` e a autorização
 > `DarkCastleR-V2-1-a.md` (V2.1.1: Save v3). Estado: **parcial** (economia
 > persistente concluída; tutoriais ainda fora de `Md-usario/tutorias/`).

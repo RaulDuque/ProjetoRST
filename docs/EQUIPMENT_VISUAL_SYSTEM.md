@@ -1,5 +1,10 @@
 # Equipamentos por parte do corpo e aparência dinâmica
 
+> **V2.2 [Implementado e publicado]:** arma e escudo viraram camadas
+> sobre um corpo renderizado **sem arma**, posicionadas por âncoras por quadro
+> medidas no Blender; capa pendurada na âncora "costas". Ver
+> [`VISUAL_EQUIPMENT_V2_2.md`](VISUAL_EQUIPMENT_V2_2.md).
+
 > **V2.0 [Parcial]:** a direção C (híbrida) foi adotada com **camadas de
 > runtime** (rastro de golpe por arma, capa atrás do corpo, tom discreto
 > do tronco), sem arte nova por item e sem tocar nos atlas publicados. Os

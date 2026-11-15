@@ -1,7 +1,8 @@
 # 18 — Criar NPCs
 
-> Situação: **funciona**. **Pendente:** NPCs ainda são retângulos coloridos
-> (sem arte nem animação) e não andam.
+> Situação: **funciona**. **V2.2:** com o campo opcional `look`, o NPC ganha
+> uma figura provisória (tutorial 26). **Pendente:** NPCs não têm animação e
+> não andam.
 
 ## 1. O que vamos fazer?
 
@@ -67,7 +68,7 @@ Guardião da Cripta**, que conversa e vende coisas.
 | `id` | Único no jogo |
 | `name` | Nome na conversa e sobre a cabeça |
 | `room`, `position` | Onde fica |
-| `size`, `color` | Tamanho e cor do retângulo |
+| `size`, `color` | Tamanho e cor do corpo (`look` opcional: tutorial 26) |
 | `greetings` | Fala inicial conforme o progresso (a primeira que valer) |
 | `shop` | Loja que ele administra |
 

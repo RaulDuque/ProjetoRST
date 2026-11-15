@@ -28,23 +28,34 @@ biblioteca (`src/lib.rs`), o que permite testes de integração e o exemplo
 
 | Módulo | Regras puras (sem Bevy) | Camada Bevy |
 |---|---|---|
-| `core` | `rng.rs` | `constants.rs`, `events.rs`, `resources.rs` (carregador de dados), `time.rs` |
-| `player` | `attributes.rs`, `progression.rs`, `state.rs`, `visual/{manifest,playback,selection}.rs`, `visual/vfx/rules.rs` | `components.rs`, `movement.rs`, `systems.rs`, `animation.rs`, `visual/{mod,systems}.rs`, `visual/vfx/{mod,systems}.rs` |
+| `core` | `rng.rs`, `pixel_art.rs` (V2.2: rasterizador da arte provisória) | `constants.rs`, `events.rs`, `resources.rs` (carregador de dados), `time.rs`, `pixel_image.rs` (V2.2) |
+| `player` | `attributes.rs`, `progression.rs`, `state.rs`, `visual/{manifest,playback,selection,sockets}.rs` (`sockets`: V2.2), `visual/vfx/rules.rs` | `components.rs`, `movement.rs`, `systems.rs`, `animation.rs`, `visual/{mod,systems}.rs`, `visual/vfx/{mod,systems}.rs` |
 | `combat` | `damage.rs`, `command_buffer.rs`, `command_parser.rs` | `command_input.rs`, `hitboxes.rs`, `attacks.rs` |
 | `skills` | `definitions.rs`, `unlock.rs`, `cooldowns.rs`, `execution.rs` | `systems.rs` |
 | `magic` | `elements.rs` | `casting.rs`, `projectiles.rs` |
-| `inventory` | `items.rs`, `equipment.rs`, `inventory.rs`, `weapons.rs`, `appearance.rs`, `loadout.rs`, `compare.rs` (V2.0) | `systems.rs`, `visual.rs` (V2.0) |
+| `inventory` | `items.rs`, `equipment.rs`, `inventory.rs`, `weapons.rs`, `appearance.rs`, `loadout.rs`, `compare.rs` (V2.0), `held.rs`, `held_art.rs` (V2.2) | `systems.rs`, `visual.rs` (V2.0), `held_visual.rs` (V2.2: arma e escudo como camadas) |
 | `enemies` | `ai.rs`, `definitions.rs` | `components.rs`, `spawning.rs`, `behavior.rs` |
 | `world` | `collision.rs`, `rooms.rs`, `progress.rs`, `graph.rs`, `validation.rs`, `exploration.rs`, `restore.rs` (V1.7) | `physics.rs`, `maps.rs`, `camera.rs`, `exploration_systems.rs`, `transitions.rs` (V1.7), `interactions.rs` (V1.8) |
 | `save` | `serialization.rs`, `save_manager.rs` (std) | `systems.rs` |
 | `ui` | — | `theme.rs`, `hud.rs`, `status_screen.rs`, `damage_numbers.rs`, `world_map.rs` (no `UiPlugin` desde a V1.7), `room_fade.rs` (V1.8), `inventory_screen.rs` (V2.0), `dialogue_box.rs`, `shop_screen.rs` (V2.1) |
-| `npc` (V2.1) | `definitions.rs`, `dialogue.rs` | `systems.rs`, `mod.rs` |
+| `npc` (V2.1) | `definitions.rs`, `dialogue.rs`, `art.rs` (V2.2: figuras) | `systems.rs`, `mod.rs` |
 | `economy` (V2.1) | `shop.rs` | `systems.rs` |
 | `transform` (V1.9) | `definitions.rs`, `state.rs`, `crossing.rs` | `systems.rs`, `visual.rs` |
 | `input` | — | `mod.rs` (mapeamento de teclas) |
 | `app` | — | `mod.rs`, `plugins.rs`, `states.rs` |
 
 As regras puras são testadas sem inicializar a engine (`tests/*.rs`).
+
+**V2.2 — equipamento visível e âncoras:** o corpo do protagonista pode vir sem
+arma (`weapon_in_body: false` no manifesto) com uma tabela de âncoras por
+quadro (`animations/player_sockets.ron`, medida no Blender). Então
+`inventory::held_visual` desenha a arma equipada e o escudo como filhos do
+jogador, na âncora do quadro mostrado; a capa pendura da âncora "costas".
+Com a arte antiga (sabre no corpo) as camadas ficam desligadas. A arte das
+camadas e dos NPCs é gerada em código por `core::pixel_art`. A arte do
+jogador pode vir de um staging (`PlayerArtSource` +
+`app::build_with_candidate_art`) sem tocar em `assets/`. Detalhes:
+[`VISUAL_EQUIPMENT_V2_2.md`](VISUAL_EQUIPMENT_V2_2.md).
 
 ## Ordem de um frame
 

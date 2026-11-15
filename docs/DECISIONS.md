@@ -509,3 +509,55 @@ que funcione nas duas camadas de proteção, sem enfraquecê-las.
 **Consequências:** economia persistente concluída; tutoriais continuam em
 `docs/tutorias/` até o proprietário escolher uma alternativa
 (`NPC_COMMERCE_V2_1.md` §25).
+
+## D-025 — Arma visível por camada sobre um corpo sem arma, com âncoras medidas no Blender (V2.2)
+
+**Contexto:** os atlas publicados (V1.3–V1.5) têm o sabre renderizado junto
+do corpo; qualquer arma equipada mostrava a espada inicial. O briefing
+`DarkCastleR-V2-2.md` proíbe esconder a espada com sobreposição e exige
+corrigir na origem, sem sobrescrever assets publicados sem autorização.
+
+**Decisão:**
+- **Origem:** `bpy/build_game_sprites_v2_2.py` renderiza de novo **as
+  mesmas poses** (módulos de clipes V1.3/V1.4/V1.5 sem mudança; hash dos
+  keyframes conferido contra cada build original) com os seis objetos do
+  sabre ocultos, e mede por quadro as âncoras (mão direita = empunhadura e
+  ângulo da lâmina; mão esquerda; cabeça; peito; costas) projetando os
+  pontos na câmera do contrato. Nenhum `.blend` é salvo.
+- **Staging:** `post/game_sprites_v2_2.py` monta atlas com o layout
+  publicado idêntico (índices, durações, pivôs), o manifesto com
+  `weapon_in_body: false` e `player_sockets.ron`. `publish_guard.py` passou a
+  aceitar a linha opcional e a publicar/validar a tabela junto (falha
+  fechada: tabela ausente ou com contagem errada é recusada).
+- **Runtime:** `weapon_in_body` (padrão `true` para manifestos antigos)
+  desliga as camadas enquanto a arte publicada tiver o sabre, evitando arma
+  duplicada. Arte das armas: uma silhueta por categoria, gerada em código
+  (provisória). Lança e arma pesada em repouso são desenhadas de ponta para
+  cima (não atravessam o chão); nos clipes de golpe seguem o sabre.
+- **Duas mãos:** a regra de equipar não mudou; se um save editado tiver
+  arma de duas mãos e escudo, o escudo é mostrado nas costas (não some).
+- **Sem save novo:** posições visuais são derivadas da arte.
+
+**Consequências:** publicada com autorização (`DarkCastleR-V2-2-a.md`,
+estado `1cd66a2977d0`, backup do anterior pelo guarda). Os testes que
+assumiam "publicado = sabre no corpo" passaram a usar um staging legado
+explícito para essa verificação. Nenhuma dependência nova.
+
+## D-026 — Figuras de NPC por dados, marcadores no mapa e HUD empilhado (V2.2)
+
+**Contexto:** NPCs eram retângulos; o mapa não indicava lojas; notificações
+no canto inferior esquerdo, sem fundo, passavam sobre o personagem e os avisos
+"D Talk".
+
+**Decisão:**
+- `look: Option<NpcLook>` opcional (serde default, compatível) gera uma
+  figura com o mesmo centro do retângulo antigo: alcance e avisos inalterados.
+- O mapa marca NPCs (rosa) e lojas (violeta, quem tem `shop`) só em salas
+  visitadas, como os baús. Sem marcador de ferreiro (não há serviço).
+- HUD: status, feedback de comando e notificações empilhados à esquerda, com
+  painel de fundo; com loja, inventário ou status abertos (jogo pausado), as
+  notificações vão para uma faixa inferior acima do overlay.
+- O teste de tutoriais passou a ler só `docs/tutorias/` (fonte oficial,
+  regra do proprietário); `Md-usario/tutorias/` é sincronizada à mão.
+
+**Consequências:** sem mudança de save, de diálogo ou de progresso.

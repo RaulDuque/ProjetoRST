@@ -144,9 +144,15 @@ Veja o tutorial **17 — Erros comuns**.
 | 15 | [Editar mapa e exploração](15_EDITAR_MAPA_E_EXPLORACAO.md) | Funciona |
 | 16 | [Testar conteúdo](16_TESTAR_CONTEUDO.md) | Funciona |
 | 17 | [Erros comuns](17_ERROS_COMUNS.md) | Referência |
-| 18 | [Criar NPCs](18_CRIAR_NPCS.md) | Funciona (arte de NPC: **pendente**) |
+| 18 | [Criar NPCs](18_CRIAR_NPCS.md) | Funciona (figura provisória com `look`: tutorial 26; animação: **pendente**) |
 | 19 | [Criar diálogos](19_CRIAR_DIALOGOS.md) | Funciona |
 | 20 | [Criar lojas](20_CRIAR_LOJAS.md) | Funciona (dinheiro e estoque são salvos) |
 | 21 | [Cadastrar mercadorias](21_CADASTRAR_MERCADORIAS.md) | Funciona |
 | 22 | [Configurar preços](22_CONFIGURAR_PRECOS.md) | Funciona |
 | 23 | [Criar cidade](23_CRIAR_CIDADE.md) | Funciona |
+| 24 | [Criar arma com aparência própria](24_CRIAR_ARMA_COM_APARENCIA.md) | Funciona (silhuetas provisórias por categoria) |
+| 25 | [Configurar a posição da arma](25_CONFIGURAR_POSICAO_DA_ARMA.md) | Funciona (âncoras geradas no Blender) |
+| 26 | [Criar a figura de um NPC](26_CRIAR_SPRITES_DE_NPCS.md) | Funciona (figuras provisórias geradas em código) |
+| 27 | [Associar a figura ao papel do NPC](27_ASSOCIAR_SPRITES_A_NPCS.md) | Funciona |
+| 28 | [Marcadores de NPCs e lojas no mapa](28_ADICIONAR_MARCADORES_NO_MAPA.md) | Funciona (automático) |
+| 29 | [Testar equipamentos visuais](29_TESTAR_EQUIPAMENTOS_VISUAIS.md) | Funciona |

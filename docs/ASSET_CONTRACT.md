@@ -34,6 +34,11 @@ art-src/                         # fontes de produção, nunca carregadas pelo j
 `assets/sprites/` e `assets/animations/` já estavam previstas em
 `assets/README.md`. Pastas só são criadas quando houver o primeiro arquivo real.
 
+**V2.2:** o manifesto pode ter `weapon_in_body: false` (corpo sem arma) e,
+então, publica junto `assets/animations/player_sockets.ron` (âncoras por
+quadro; formato e unidades em [`VISUAL_EQUIPMENT_V2_2.md`](VISUAL_EQUIPMENT_V2_2.md) §5).
+Ausente = `true` (sabre desenhado, como até a V1.5).
+
 ## 2. Nomes e lista de animações
 
 - **Regra geral:** ASCII, `snake_case`, sem espaços nem acentos.
