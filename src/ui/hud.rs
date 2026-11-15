@@ -12,6 +12,7 @@ use super::theme::{
     BAR_BG, EXP_COLOR, FONT_NORMAL, FONT_SMALL, HP_COLOR, MP_COLOR, PANEL_BG, PANEL_BORDER,
     TEXT_DIM, TEXT_GOLD, TEXT_MAIN, text,
 };
+use crate::app::states::GameState;
 use crate::core::constants::NOTIFICATION_TIME;
 use crate::core::events::{CommandResolved, Notification};
 use crate::core::resources::GameData;
@@ -106,14 +107,40 @@ fn bar(parent: &mut ChildSpawnerCommands, kind: BarKind, color: Color, label: &s
         });
 }
 
+/// The column of the left HUD (status, command feedback, notifications).
+#[derive(Component)]
+pub struct HudColumn;
+
+/// Background panel of a message text, hidden while the text is empty.
+#[derive(Component)]
+pub struct MessagePanel;
+
+/// V2.2: every HUD text lives in one top-left column: the status panel,
+/// then the command feedback, then the notifications, each message on a
+/// dark panel. Stacked by the layout, they can never overlap each other,
+/// the map (top right) or the character and the talk prompts (the
+/// notifications used to sit bottom-left, over the floor where the player
+/// and NPCs stand, without a background).
 pub fn spawn_hud(mut commands: Commands) {
-    // Top-left status panel.
-    commands
+    let column = commands
         .spawn((
+            HudColumn,
             Node {
                 position_type: PositionType::Absolute,
-                top: px(12),
+                top: px(COLUMN_TOP),
                 left: px(12),
+                flex_direction: FlexDirection::Column,
+                align_items: AlignItems::FlexStart,
+                row_gap: px(6),
+                ..default()
+            },
+        ))
+        .id();
+    // Status panel.
+    commands
+        .spawn((
+            ChildOf(column),
+            Node {
                 flex_direction: FlexDirection::Column,
                 row_gap: px(4),
                 padding: UiRect::all(px(10)),
@@ -136,29 +163,82 @@ pub fn spawn_hud(mut commands: Commands) {
             panel.spawn(text(CONTROLS_HINT, FONT_SMALL, TEXT_DIM));
         });
 
-    // Command feedback, top right.
-    commands.spawn((
-        CommandFeedbackText,
-        text("", FONT_NORMAL, TEXT_GOLD),
-        Node {
-            position_type: PositionType::Absolute,
-            top: px(16),
-            right: px(16),
-            ..default()
-        },
-    ));
+    // Command feedback and notifications, each on its own panel.
+    message_panel(
+        &mut commands,
+        column,
+        (CommandFeedbackText, text("", FONT_NORMAL, TEXT_GOLD)),
+    );
+    // The notifications are a root node: they sit right under the column
+    // while playing, or at the bottom edge over the paused screens (see
+    // `notification_placement`), always drawn above the overlays.
+    commands
+        .spawn((
+            MessagePanel,
+            NotificationPanel,
+            GlobalZIndex(NOTIFICATION_Z),
+            Node {
+                position_type: PositionType::Absolute,
+                left: px(12),
+                padding: UiRect::axes(px(10), px(6)),
+                border: UiRect::all(px(1)),
+                display: Display::None,
+                ..default()
+            },
+            BackgroundColor(PANEL_BG),
+            BorderColor::all(PANEL_BORDER),
+        ))
+        .with_child((NotificationText, text("", FONT_NORMAL, TEXT_MAIN)));
+}
 
-    // Notifications, bottom-left.
-    commands.spawn((
-        NotificationText,
-        text("", FONT_NORMAL, TEXT_MAIN),
-        Node {
-            position_type: PositionType::Absolute,
-            bottom: px(40),
-            left: px(16),
-            ..default()
-        },
-    ));
+fn message_panel(commands: &mut Commands, column: Entity, content: impl Bundle) {
+    commands
+        .spawn((
+            ChildOf(column),
+            MessagePanel,
+            Node {
+                padding: UiRect::axes(px(10), px(6)),
+                border: UiRect::all(px(1)),
+                display: Display::None,
+                ..default()
+            },
+            BackgroundColor(PANEL_BG),
+            BorderColor::all(PANEL_BORDER),
+        ))
+        .with_child(content);
+}
+
+/// The notifications panel (it moves with the screen state).
+#[derive(Component)]
+pub struct NotificationPanel;
+
+/// Draw order of the notifications panel: over the paused screens' overlay.
+const NOTIFICATION_Z: i32 = 10;
+/// Gap below the notifications when they sit at the bottom edge, and
+/// between the column and the notifications under it.
+const BOTTOM_STRIP_GAP: f32 = 8.0;
+const COLUMN_TOP: f32 = 12.0;
+const COLUMN_GAP: f32 = 6.0;
+
+/// Where the notifications go.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum NotificationPlacement {
+    /// In the top-left column, under the status panel (playing; dialogue,
+    /// whose box is at the bottom).
+    Column,
+    /// At the bottom-left edge, over the dimmed scene: the shop, inventory
+    /// and status screens fill the middle of the screen and would cover the
+    /// column, and the game is paused so no character is hidden.
+    BottomStrip,
+}
+
+pub fn notification_placement(state: GameState) -> NotificationPlacement {
+    match state {
+        GameState::Playing | GameState::Dialogue => NotificationPlacement::Column,
+        GameState::Shop | GameState::Inventory | GameState::StatusScreen => {
+            NotificationPlacement::BottomStrip
+        }
+    }
 }
 
 pub fn update_bars(
@@ -350,6 +430,47 @@ pub fn update_messages(
         .join("\n");
 }
 
+/// Shows a message panel only while its text has something to say, and
+/// places the notifications for the current screen.
+pub fn show_message_panels(
+    state: Option<Res<State<GameState>>>,
+    column: Query<&ComputedNode, With<HudColumn>>,
+    texts: Query<(&Text, &ChildOf), Or<(With<CommandFeedbackText>, With<NotificationText>)>>,
+    mut panels: Query<(&mut Node, Has<NotificationPanel>), With<MessagePanel>>,
+) {
+    let placement = notification_placement(state.map_or(GameState::Playing, |s| *s.get()));
+    // Logical height of the column as laid out last frame.
+    let column_height = column
+        .single()
+        .map_or(0.0, |c| c.size().y * c.inverse_scale_factor());
+    for (text, parent) in &texts {
+        let Ok((mut node, is_notification)) = panels.get_mut(parent.parent()) else {
+            continue;
+        };
+        let display = if text.0.is_empty() {
+            Display::None
+        } else {
+            Display::Flex
+        };
+        if node.display != display {
+            node.display = display;
+        }
+        if !is_notification {
+            continue;
+        }
+        let (top, bottom) = match placement {
+            NotificationPlacement::Column => {
+                (px(COLUMN_TOP + column_height + COLUMN_GAP), Val::Auto)
+            }
+            NotificationPlacement::BottomStrip => (Val::Auto, px(BOTTOM_STRIP_GAP)),
+        };
+        if node.top != top || node.bottom != bottom {
+            node.top = top;
+            node.bottom = bottom;
+        }
+    }
+}
+
 /// The form line (V1.9): `Form: Human` plus what `T` would do, or the
 /// active form with its upkeep, the MP it has used and how long it lasts.
 pub fn update_form_text(
@@ -415,4 +536,32 @@ pub fn update_form_text(
         current.0 = text;
     }
     current_color.0 = color;
+}
+
+#[cfg(test)]
+mod placement_tests {
+    use super::*;
+
+    #[test]
+    fn notifications_leave_the_column_only_over_the_paused_screens() {
+        assert_eq!(
+            notification_placement(GameState::Playing),
+            NotificationPlacement::Column
+        );
+        // The dialogue box is at the bottom edge: the column stays clear of it.
+        assert_eq!(
+            notification_placement(GameState::Dialogue),
+            NotificationPlacement::Column
+        );
+        for state in [
+            GameState::Shop,
+            GameState::Inventory,
+            GameState::StatusScreen,
+        ] {
+            assert_eq!(
+                notification_placement(state),
+                NotificationPlacement::BottomStrip
+            );
+        }
+    }
 }

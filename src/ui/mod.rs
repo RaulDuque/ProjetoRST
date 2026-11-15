@@ -51,7 +51,12 @@ impl Plugin for UiPlugin {
                     hud::update_level_and_hearts,
                     hud::update_cooldowns,
                     hud::update_form_text,
-                    (hud::collect_messages, hud::update_messages).chain(),
+                    (
+                        hud::collect_messages,
+                        hud::update_messages,
+                        hud::show_message_panels,
+                    )
+                        .chain(),
                     damage_numbers::spawn_damage_numbers,
                     damage_numbers::animate_damage_numbers,
                     status_screen::toggle_status_screen,
