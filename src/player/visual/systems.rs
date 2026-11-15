@@ -8,12 +8,15 @@ use bevy::sprite::Anchor;
 use super::manifest::{AnimationManifest, anchor_for};
 use super::playback::{action_frame, action_progress, locomotion_rate, loop_frame, once_frame};
 use super::selection::{self, SelectionContext, Timing, Tint, select};
-use super::{AtlasHandles, MANIFEST_PATH, PlayerSpriteSet, PlayerVisual, VisualPlayback};
+use super::sockets::{SOCKETS_PATH, SocketTable};
+use super::{
+    AtlasHandles, MANIFEST_PATH, PlayerArtSource, PlayerSpriteSet, PlayerVisual, VisualPlayback,
+};
 use crate::app::states::GameState;
 use crate::combat::hitboxes::Invulnerable;
 use crate::core::constants::PLAYER_SIZE;
 use crate::core::events::SkillStarted;
-use crate::core::resources::{GameData, project_root};
+use crate::core::resources::GameData;
 use crate::core::time::frame_delta;
 use crate::player::animation::{BLINK_ALPHA, BLINK_RATE};
 use crate::player::components::{ActionState, Player};
@@ -21,9 +24,9 @@ use crate::player::state::{Facing, PlayerState};
 use crate::world::physics::{FacingDirection, Grounded, Velocity};
 
 /// The sole line (sprite pivot) sits at the bottom of the collision body.
-pub(super) const VISUAL_OFFSET_Y: f32 = -PLAYER_SIZE.1 / 2.0;
+pub const VISUAL_OFFSET_Y: f32 = -PLAYER_SIZE.1 / 2.0;
 /// Slightly in front of the placeholder box and its children.
-pub(super) const VISUAL_Z: f32 = 0.05;
+pub const VISUAL_Z: f32 = 0.05;
 
 /// Reads the manifest and creates the image and layout handles once.
 ///
@@ -32,10 +35,12 @@ pub(super) const VISUAL_Z: f32 = 0.05;
 /// never stops the game. `data_tests` checks the shipped manifest.
 pub fn load_player_sprites(
     mut commands: Commands,
+    source: Option<Res<PlayerArtSource>>,
     asset_server: Option<Res<AssetServer>>,
     layouts: Option<ResMut<Assets<TextureAtlasLayout>>>,
 ) {
-    let path = project_root().join("assets").join(MANIFEST_PATH);
+    let source = source.map(|s| s.clone()).unwrap_or_default();
+    let path = source.root.join(MANIFEST_PATH);
     let text = match std::fs::read_to_string(&path) {
         Ok(text) => text,
         Err(error) => {
@@ -50,6 +55,7 @@ pub fn load_player_sprites(
             return;
         }
     };
+    let sockets = load_sockets(&source.root, &manifest);
     let (Some(server), Some(mut layouts)) = (asset_server, layouts) else {
         debug!("no asset server (headless app); placeholder visuals");
         return;
@@ -67,7 +73,7 @@ pub fn load_player_sprites(
             );
             let (w, h) = def.world_size();
             let handles = AtlasHandles {
-                image: server.load(def.texture.clone()),
+                image: server.load(format!("{}{}", source.texture_prefix, def.texture)),
                 layout: layouts.add(layout),
                 cell: def.cell,
                 world_size: Vec2::new(w, h),
@@ -75,7 +81,32 @@ pub fn load_player_sprites(
             (id.clone(), handles)
         })
         .collect();
-    commands.insert_resource(PlayerSpriteSet { manifest, atlases });
+    commands.insert_resource(PlayerSpriteSet {
+        manifest,
+        atlases,
+        sockets,
+    });
+}
+
+/// Reads the optional socket table next to the manifest (V2.2). Missing:
+/// no held layers (info). Invalid: reported, and no held layers either, so
+/// equipment never floats on wrong sockets.
+pub fn load_sockets(root: &std::path::Path, manifest: &AnimationManifest) -> Option<SocketTable> {
+    let path = root.join(SOCKETS_PATH);
+    let text = match std::fs::read_to_string(&path) {
+        Ok(text) => text,
+        Err(error) => {
+            info!(%error, path = %path.display(), "no player socket table; no held equipment layers");
+            return None;
+        }
+    };
+    match SocketTable::from_ron(&text, manifest) {
+        Ok(table) => Some(table),
+        Err(error) => {
+            error!(%error, "invalid player socket table; no held equipment layers");
+            None
+        }
+    }
 }
 
 /// Gives every player one sprite child (none in headless apps).

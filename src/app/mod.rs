@@ -137,7 +137,36 @@ pub fn check_transformations(world: &WorldDefinition, data: &GameData) -> Result
 /// Builds the full game application around already-loaded data (single
 /// room of `assets/maps/`, no world graph).
 pub fn build(data: GameData) -> App {
+    build_inner(App::new(), data)
+}
+
+/// Asset source id of a staged player-art candidate ([`build_with_candidate_art`]).
+pub const CANDIDATE_ART_SOURCE: &str = "candidate";
+
+/// The shipped game, but the player art (manifest, sockets and atlases) is
+/// read from a staging directory laid out like `assets/` (V2.2 review of
+/// art waiting for publication). Nothing in `assets/` is read for the
+/// player art or written. Used by the visual showcase only.
+pub fn build_with_candidate_art(data: GameData, world: WorldDefinition, stage: &Path) -> App {
+    use bevy::asset::AssetApp;
+    use bevy::asset::io::AssetSourceBuilder;
+
     let mut app = App::new();
+    // Asset sources must exist before the AssetPlugin (DefaultPlugins).
+    app.register_asset_source(
+        CANDIDATE_ART_SOURCE,
+        AssetSourceBuilder::platform_default(&stage.to_string_lossy(), None),
+    )
+    .insert_resource(crate::player::visual::PlayerArtSource {
+        root: stage.to_path_buf(),
+        texture_prefix: format!("{CANDIDATE_ART_SOURCE}://"),
+    });
+    let mut app = build_inner(app, data);
+    activate_world(&mut app, world);
+    app
+}
+
+fn build_inner(mut app: App, data: GameData) -> App {
     app.add_plugins(DefaultPlugins.set(WindowPlugin {
         primary_window: Some(Window {
             title: WINDOW_TITLE.into(),

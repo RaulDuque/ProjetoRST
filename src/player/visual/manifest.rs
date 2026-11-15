@@ -85,8 +85,18 @@ impl ClipDef {
 pub struct AnimationManifest {
     pub version: u32,
     pub facing: ArtFacing,
+    /// V2.2: whether the body frames have the starting sabre drawn in the
+    /// hand (every atlas up to V1.5). Absent in older manifests, which means
+    /// `true`: the held-weapon layer then stays off, so no second weapon is
+    /// drawn over the baked one. The weaponless atlases of V2.2 write `false`.
+    #[serde(default = "weapon_baked_by_default")]
+    pub weapon_in_body: bool,
     pub atlases: BTreeMap<String, AtlasDef>,
     pub clips: BTreeMap<String, ClipDef>,
+}
+
+fn weapon_baked_by_default() -> bool {
+    true
 }
 
 #[derive(Debug, Clone, PartialEq, Error)]
@@ -338,6 +348,26 @@ mod tests {
             m.clips.insert("Idle".into(), idle);
         }
         assert!(matches!(m.validate(), Err(ManifestError::Identifier(_))));
+    }
+
+    #[test]
+    fn weapon_in_body_defaults_to_the_baked_sabre() {
+        // Manifests up to V1.5 have no such line: the sabre is in the frames.
+        assert!(sample().weapon_in_body);
+        let text = r#"(
+                version: 1,
+                facing: Right,
+                weapon_in_body: false,
+                atlases: {
+                    "locomotion": (texture: "a.png", cell: (128, 128), columns: 8, rows: 2, padding: 2, density: 2),
+                },
+                clips: {
+                    "idle": (atlas: "locomotion", first: 0, count: 1, mode: Loop(fps: 12.0), pivot: (64.0, 126.0),
+                        fallback: None, durations: [0.1], speed_reference: None),
+                },
+            )"#;
+        let weaponless = AnimationManifest::from_ron(text).unwrap_or_else(|e| panic!("{e}"));
+        assert!(!weaponless.weapon_in_body);
     }
 
     #[test]

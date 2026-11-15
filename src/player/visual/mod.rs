@@ -4,6 +4,7 @@
 //! - [`manifest`] (pure): atlases and clips of `assets/animations/player.ron`;
 //! - [`playback`] (pure): frame timing (loops, actions, per-frame durations);
 //! - [`selection`] (pure): which clip shows a gameplay state, and fallbacks;
+//! - [`sockets`] (pure, V2.2): per-frame equipment sockets (hands, head, back);
 //! - [`systems`] (Bevy): loading, attaching the child, animating it;
 //! - [`vfx`] (V1.5): skill, guard and revive effects (presentation only).
 //!
@@ -16,6 +17,7 @@
 pub mod manifest;
 pub mod playback;
 pub mod selection;
+pub mod sockets;
 pub mod systems;
 pub mod vfx;
 
@@ -77,6 +79,37 @@ pub struct AtlasHandles {
 pub struct PlayerSpriteSet {
     pub manifest: AnimationManifest,
     pub atlases: HashMap<String, AtlasHandles>,
+    /// V2.2: per-frame equipment sockets (`None` without a valid table: the
+    /// held equipment layers stay off).
+    pub sockets: Option<sockets::SocketTable>,
+}
+
+impl PlayerSpriteSet {
+    /// Whether held equipment can be drawn as layers: the body frames have
+    /// no weapon baked in and the sockets are known.
+    pub fn held_layers_enabled(&self) -> bool {
+        !self.manifest.weapon_in_body && self.sockets.is_some()
+    }
+}
+
+/// Where the player art is read from. The default is the published art in
+/// `assets/`; a showcase can point it at a staged candidate (V2.2) that is
+/// registered as another asset source, without touching `assets/`.
+#[derive(Resource, Debug, Clone)]
+pub struct PlayerArtSource {
+    /// Directory holding `animations/player.ron` (and the sockets).
+    pub root: std::path::PathBuf,
+    /// Prefix of the texture asset paths (e.g. `"candidate://"`).
+    pub texture_prefix: String,
+}
+
+impl Default for PlayerArtSource {
+    fn default() -> Self {
+        Self {
+            root: crate::core::resources::project_root().join("assets"),
+            texture_prefix: String::new(),
+        }
+    }
 }
 
 impl PlayerSpriteSet {
