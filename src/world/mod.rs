@@ -7,6 +7,7 @@
 //! where a loaded save resumes. See docs/WORLD_INTEGRATION_V1_7.md.
 
 pub mod camera;
+pub mod camera_rules;
 pub mod collision;
 pub mod exploration;
 pub mod exploration_systems;
@@ -37,7 +38,13 @@ impl Plugin for WorldPlugin {
         app.init_resource::<physics::RoomGeometry>()
             .init_resource::<WorldState>()
             .add_plugins(exploration_systems::WorldExplorationPlugin)
-            .add_systems(Startup, (camera::spawn_camera, maps::spawn_start_room))
+            .add_systems(
+                Startup,
+                (
+                    (camera::load_camera_config, camera::spawn_camera).chain(),
+                    maps::spawn_start_room,
+                ),
+            )
             .add_systems(
                 Update,
                 (physics::apply_gravity, physics::move_bodies)
@@ -46,7 +53,11 @@ impl Plugin for WorldPlugin {
             )
             .add_systems(
                 Update,
-                (camera::snap_on_start, camera::follow_player)
+                (
+                    camera::apply_zoom,
+                    camera::snap_on_start,
+                    camera::follow_player,
+                )
                     .chain()
                     .in_set(GameSet::Presentation),
             );

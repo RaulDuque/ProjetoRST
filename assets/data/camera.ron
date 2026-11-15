@@ -1,0 +1,25 @@
+// V2.3 camera (format and ranges: src/world/camera_rules.rs; docs:
+// docs/WORLD_VISUAL_V2_3.md §2, tutorials 30 and 31). World units unless
+// noted. Every field may be omitted: the default is used.
+(
+    // Visible world height (the zoom). 720 = the V2.2 view (1:1 on a 720 px
+    // window); 405 = x1.78, chosen from the comparison captures.
+    view_height: 405.0,
+    // Follow speed (1/s): higher is snappier.
+    follow_rate_x: 7.0,
+    follow_rate_y: 5.0,
+    // Small moves inside these zones do not move the view.
+    dead_zone_x: 24.0,
+    dead_zone_up: 90.0,
+    dead_zone_down: 40.0,
+    // How far ahead of the facing the view looks, and how fast it turns.
+    look_ahead: 70.0,
+    look_ahead_rate: 2.5,
+    // The view centres this far above the player's centre when standing.
+    vertical_offset: 40.0,
+    // Falling faster than fall_speed: the view looks down by fall_look_down.
+    fall_look_down: 70.0,
+    fall_speed: 420.0,
+    // Decorative effects (switch off for tests and diagnostics).
+    effects: (parallax: true, decor: true, lights: true, fog: true),
+)

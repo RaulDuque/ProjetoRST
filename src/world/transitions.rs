@@ -31,10 +31,10 @@
 
 use bevy::prelude::*;
 
-use super::camera::{MainCamera, snap_to};
+use super::camera::{CameraConfig, CameraFollow, MainCamera, snap_to, view_size};
 use super::exploration_systems::WorldGraph;
 use super::maps::{CurrentRoom, RoomEntity, spawn_room};
-use super::physics::{RoomGeometry, Velocity};
+use super::physics::{FacingDirection, Velocity};
 use crate::app::states::GameSet;
 use crate::core::events::{Arrival, RoomChangeCause, RoomChanged, RoomRequest};
 use crate::core::resources::GameData;
@@ -103,8 +103,13 @@ pub fn apply_room_requests(
     world: Option<Res<WorldGraph>>,
     current: Option<Res<CurrentRoom>>,
     mut requests: MessageReader<RoomRequest>,
-    mut player: Query<(&mut Transform, &mut Velocity), (With<Player>, Without<MainCamera>)>,
-    mut camera: Query<&mut Transform, (With<MainCamera>, Without<Player>)>,
+    mut player: Query<
+        (&mut Transform, &mut Velocity, Option<&FacingDirection>),
+        (With<Player>, Without<MainCamera>),
+    >,
+    mut camera: Query<(&mut Transform, &mut CameraFollow), (With<MainCamera>, Without<Player>)>,
+    camera_config: Option<Res<CameraConfig>>,
+    window: Query<&Window, With<bevy::window::PrimaryWindow>>,
     room_entities: Query<Entity, With<RoomEntity>>,
     mut lock: ResMut<TransitionLock>,
     mut stats: ResMut<RoomChangeStats>,
@@ -139,7 +144,7 @@ pub fn apply_room_requests(
             )
         }
     };
-    let Ok((mut transform, mut velocity)) = player.single_mut() else {
+    let Ok((mut transform, mut velocity, facing)) = player.single_mut() else {
         return;
     };
 
@@ -152,12 +157,18 @@ pub fn apply_room_requests(
     if cause == RoomChangeCause::Load {
         velocity.0 = Vec2::ZERO;
     }
-    if let Ok(mut camera) = camera.single_mut() {
-        let geometry = RoomGeometry {
-            solids: Vec::new(),
-            size: Vec2::new(def.size.0, def.size.1),
-        };
-        snap_to(&mut camera, position, &geometry);
+    if let Ok((mut camera, mut follow)) = camera.single_mut() {
+        let settings = camera_config.map(|c| c.0).unwrap_or_default();
+        let view = view_size(&settings, window.single().ok());
+        snap_to(
+            &mut camera,
+            &mut follow,
+            &settings,
+            position,
+            facing.map_or(1.0, |f| f.sign()),
+            Vec2::new(def.size.0, def.size.1),
+            view,
+        );
     }
     lock.locked = true;
     stats.applied += 1;

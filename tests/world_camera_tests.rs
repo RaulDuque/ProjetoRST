@@ -1,4 +1,6 @@
 //! V1.8: the camera across room changes, in the headless main game.
+//! V2.3: the view is the zoomed one of `CameraConfig` (no window here: the
+//! reference 16:9 aspect), so every check uses that view size.
 //!
 //! After every change the view must lie inside the new room (nothing of an
 //! unloaded area or of the outside is shown), the player must be on screen,
@@ -12,10 +14,10 @@
 //! (`RoomRequest` to the postern's floor door), the same path a load takes.
 
 use bevy::prelude::*;
-use dark_castle_rpg::core::constants::{WINDOW_HEIGHT, WINDOW_WIDTH};
 use dark_castle_rpg::core::events::{Arrival, RoomRequest};
 use dark_castle_rpg::player::components::Player;
-use dark_castle_rpg::world::camera::MainCamera;
+use dark_castle_rpg::world::camera::{CameraConfig, MainCamera};
+use dark_castle_rpg::world::camera_rules::REFERENCE_ASPECT;
 use dark_castle_rpg::world::physics::RoomGeometry;
 
 #[path = "support/world_app.rs"]
@@ -23,7 +25,12 @@ mod world_app;
 
 use world_app::*;
 
-const VIEW: (f32, f32) = (WINDOW_WIDTH as f32, WINDOW_HEIGHT as f32);
+/// The view of the camera in use (headless: reference aspect).
+fn view(app: &App) -> (f32, f32) {
+    app.world()
+        .resource::<CameraConfig>()
+        .view_size(REFERENCE_ASPECT)
+}
 
 fn camera(app: &mut App) -> (Vec2, Vec3, String) {
     let world = app.world_mut();
@@ -39,7 +46,8 @@ fn camera(app: &mut App) -> (Vec2, Vec3, String) {
 fn assert_view_ok(app: &mut App, what: &str) {
     let (cam, _, _) = camera(app);
     let size = app.world().resource::<RoomGeometry>().size;
-    for (axis, c, room, view) in [("x", cam.x, size.x, VIEW.0), ("y", cam.y, size.y, VIEW.1)] {
+    let v = view(app);
+    for (axis, c, room, view) in [("x", cam.x, size.x, v.0), ("y", cam.y, size.y, v.1)] {
         if room <= view {
             assert!((c - room / 2.0).abs() < 0.5, "{what}: {axis} centred");
         } else {
@@ -51,7 +59,7 @@ fn assert_view_ok(app: &mut App, what: &str) {
     }
     let player = player_xy(app);
     assert!(
-        (player.x - cam.x).abs() <= VIEW.0 / 2.0 && (player.y - cam.y).abs() <= VIEW.1 / 2.0,
+        (player.x - cam.x).abs() <= v.0 / 2.0 && (player.y - cam.y).abs() <= v.1 / 2.0,
         "{what}: player {player} off screen (camera {cam})"
     );
 }
@@ -71,7 +79,12 @@ fn the_camera_starts_inside_the_start_room() {
     assert_eq!(current(&app), APPROACH);
     assert_view_ok(&mut app, "start");
     let (cam, _, _) = camera(&mut app);
-    assert_eq!(cam, Vec2::new(640.0, 360.0), "1x1 room: exactly centred");
+    // V2.3: the zoomed view is smaller than a 1x1 room (1280x720), so the
+    // camera frames the player inside the room instead of centring it.
+    let v = view(&app);
+    assert!(v.0 < 1280.0 && v.1 < 720.0, "zoomed view {v:?}");
+    let player = player_xy(&mut app);
+    assert!((cam.x - player.x).abs() < v.0 / 2.0, "{cam} {player}");
 }
 
 #[test]
@@ -81,7 +94,8 @@ fn entries_from_the_four_sides_keep_the_view_in_the_room() {
     // From the left side (approach → causeway, a 2x1 room).
     walk(&mut app, &[("to_causeway", CAUSEWAY)]);
     assert_view_ok(&mut app, "left entry");
-    assert_eq!(camera(&mut app).0.x, 640.0, "left end of a wide room");
+    let v = view(&app);
+    assert_eq!(camera(&mut app).0.x, v.0 / 2.0, "left end of a wide room");
     // From the right side (shaft → causeway).
     walk(
         &mut app,
@@ -90,7 +104,7 @@ fn entries_from_the_four_sides_keep_the_view_in_the_room() {
     assert_view_ok(&mut app, "right entry");
     assert_eq!(
         camera(&mut app).0.x,
-        2560.0 - 640.0,
+        2560.0 - v.0 / 2.0,
         "right end of a wide room"
     );
     // From the top (postern drop into the approach's ceiling door).
@@ -99,7 +113,7 @@ fn entries_from_the_four_sides_keep_the_view_in_the_room() {
     // From the bottom (the postern's floor door, a 1x2 room).
     request(&mut app, POSTERN, "to_approach");
     assert_view_ok(&mut app, "bottom entry");
-    assert_eq!(camera(&mut app).0.y, 360.0, "bottom of a tall room");
+    assert_eq!(camera(&mut app).0.y, v.1 / 2.0, "bottom of a tall room");
     let (_, after_scale, after_projection) = camera(&mut app);
     assert_eq!(scale, after_scale);
     assert_eq!(projection, after_projection, "zoom unchanged");
@@ -122,7 +136,7 @@ fn small_large_and_vertical_rooms() {
     // ...and at the bottom door.
     request(&mut app, "fg_stair", "to_long_gallery");
     assert_view_ok(&mut app, "vertical, bottom");
-    assert_eq!(camera(&mut app).0.y, 360.0);
+    assert_eq!(camera(&mut app).0.y, view(&app).1 / 2.0);
     // The follow keeps it inside while the player stands still for a while.
     run(&mut app, 120);
     assert_view_ok(&mut app, "vertical, settled");

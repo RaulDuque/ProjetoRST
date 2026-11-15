@@ -49,10 +49,8 @@ pub const ENEMY_HURT_FLASH: f32 = 0.15;
 
 // ---------------------------------------------------------------- camera
 
-/// Exponential smoothing rate of the follow camera (higher = snappier).
-pub const CAMERA_FOLLOW_RATE: f32 = 6.0;
-/// Camera looks this far ahead of the facing direction.
-pub const CAMERA_LOOK_AHEAD: f32 = 60.0;
+// V2.3: the camera feel (zoom, follow rates, dead zones, look-ahead) is
+// declarative data: assets/data/camera.ron (src/world/camera_rules.rs).
 
 // ---------------------------------------------------------------- z layers
 
