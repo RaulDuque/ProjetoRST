@@ -1,9 +1,8 @@
 # 06 — Criar armas
 
 > Situação: **funciona** para as 5 categorias existentes. **Pendente:** uma
-> categoria nova de arma (ex.: chicote) exige mudança no código; e o desenho
-> do personagem continua segurando a espada inicial com qualquer arma (só o
-> golpe muda de forma e cor).
+> categoria nova de arma (ex.: chicote) exige mudança no código. **V2.2:** a
+> arma na mão é a equipada (silhueta provisória por categoria, tutorial 24).
 
 ## 1. O que vamos fazer?
 
