@@ -1,0 +1,499 @@
+{
+  "cell": [
+    128,
+    160
+  ],
+  "pivot_sole": [
+    64,
+    156
+  ],
+  "lab_height_px": 110,
+  "game_height_px": 52,
+  "layers": [
+    {
+      "id": "body",
+      "size": [
+        128,
+        160
+      ],
+      "bbox": [
+        57,
+        75,
+        79,
+        108
+      ],
+      "pivot": [
+        64,
+        156
+      ],
+      "alpha": true,
+      "source": "d2_idle_f00_mask",
+      "chroma_stripped": true
+    },
+    {
+      "id": "hair_back",
+      "size": [
+        128,
+        160
+      ],
+      "bbox": null,
+      "pivot": [
+        64,
+        156
+      ],
+      "alpha": true,
+      "source": "d2_idle_f00_mask",
+      "chroma_stripped": true
+    },
+    {
+      "id": "hair_front",
+      "size": [
+        128,
+        160
+      ],
+      "bbox": [
+        53,
+        47,
+        78,
+        75
+      ],
+      "pivot": [
+        64,
+        156
+      ],
+      "alpha": true,
+      "source": "d2_idle_f00_mask",
+      "chroma_stripped": true
+    },
+    {
+      "id": "face",
+      "size": [
+        128,
+        160
+      ],
+      "bbox": [
+        64,
+        58,
+        74,
+        70
+      ],
+      "pivot": [
+        64,
+        156
+      ],
+      "alpha": true,
+      "source": "d2_idle_f00_mask",
+      "chroma_stripped": true
+    },
+    {
+      "id": "shirt",
+      "size": [
+        128,
+        160
+      ],
+      "bbox": [
+        57,
+        75,
+        79,
+        108
+      ],
+      "pivot": [
+        64,
+        156
+      ],
+      "alpha": true,
+      "source": "d2_idle_f00_mask",
+      "chroma_stripped": true
+    },
+    {
+      "id": "coat_back",
+      "size": [
+        128,
+        160
+      ],
+      "bbox": null,
+      "pivot": [
+        64,
+        156
+      ],
+      "alpha": true,
+      "source": "d2_idle_f00_mask",
+      "chroma_stripped": true
+    },
+    {
+      "id": "coat_front",
+      "size": [
+        128,
+        160
+      ],
+      "bbox": [
+        67,
+        75,
+        78,
+        97
+      ],
+      "pivot": [
+        64,
+        156
+      ],
+      "alpha": true,
+      "source": "d2_idle_f00_mask",
+      "chroma_stripped": true
+    },
+    {
+      "id": "pants",
+      "size": [
+        128,
+        160
+      ],
+      "bbox": [
+        57,
+        108,
+        91,
+        140
+      ],
+      "pivot": [
+        64,
+        156
+      ],
+      "alpha": true,
+      "source": "d2_idle_f00_mask",
+      "chroma_stripped": true
+    },
+    {
+      "id": "gloves",
+      "size": [
+        128,
+        160
+      ],
+      "bbox": [
+        71,
+        86,
+        78,
+        97
+      ],
+      "pivot": [
+        64,
+        156
+      ],
+      "alpha": true,
+      "source": "d2_idle_f00_mask",
+      "chroma_stripped": true
+    },
+    {
+      "id": "boots",
+      "size": [
+        128,
+        160
+      ],
+      "bbox": [
+        39,
+        140,
+        91,
+        157
+      ],
+      "pivot": [
+        64,
+        156
+      ],
+      "alpha": true,
+      "source": "d2_idle_f00_mask",
+      "chroma_stripped": true
+    },
+    {
+      "id": "cape_back",
+      "size": [
+        128,
+        160
+      ],
+      "bbox": [
+        37,
+        67,
+        91,
+        157
+      ],
+      "pivot": [
+        64,
+        156
+      ],
+      "alpha": true,
+      "source": "d2_idle_f00_mask",
+      "chroma_stripped": true
+    },
+    {
+      "id": "cape_front",
+      "size": [
+        128,
+        160
+      ],
+      "bbox": null,
+      "pivot": [
+        64,
+        156
+      ],
+      "alpha": true,
+      "source": "d2_idle_f00_mask",
+      "chroma_stripped": true
+    },
+    {
+      "id": "weapon",
+      "size": [
+        128,
+        160
+      ],
+      "bbox": [
+        64,
+        86,
+        91,
+        138
+      ],
+      "pivot": [
+        64,
+        156
+      ],
+      "alpha": true,
+      "source": "d2_idle_f00_mask",
+      "chroma_stripped": true
+    },
+    {
+      "id": "scabbard",
+      "size": [
+        128,
+        160
+      ],
+      "bbox": [
+        58,
+        98,
+        60,
+        100
+      ],
+      "pivot": [
+        64,
+        156
+      ],
+      "alpha": true,
+      "source": "d2_idle_f00_mask",
+      "chroma_stripped": true
+    },
+    {
+      "id": "cape_d4",
+      "size": [
+        128,
+        160
+      ],
+      "bbox": [
+        35,
+        38,
+        95,
+        157
+      ],
+      "pivot": [
+        64,
+        156
+      ],
+      "alpha": true,
+      "source": "d4_camada",
+      "chroma_stripped": true
+    },
+    {
+      "id": "coat_d4",
+      "size": [
+        128,
+        160
+      ],
+      "bbox": [
+        40,
+        48,
+        90,
+        157
+      ],
+      "pivot": [
+        64,
+        156
+      ],
+      "alpha": true,
+      "source": "d4_camada",
+      "chroma_stripped": true
+    },
+    {
+      "id": "armor",
+      "size": [
+        128,
+        160
+      ],
+      "bbox": [
+        35,
+        58,
+        94,
+        157
+      ],
+      "pivot": [
+        64,
+        156
+      ],
+      "alpha": true,
+      "source": "d4_camada",
+      "chroma_stripped": true
+    },
+    {
+      "id": "hat",
+      "size": [
+        128,
+        160
+      ],
+      "bbox": [
+        40,
+        24,
+        90,
+        59
+      ],
+      "pivot": [
+        64,
+        156
+      ],
+      "alpha": true,
+      "source": "d4_camada",
+      "chroma_stripped": true
+    },
+    {
+      "id": "helm",
+      "size": [
+        128,
+        160
+      ],
+      "bbox": [
+        47,
+        24,
+        82,
+        63
+      ],
+      "pivot": [
+        64,
+        156
+      ],
+      "alpha": true,
+      "source": "d4_camada",
+      "chroma_stripped": true
+    },
+    {
+      "id": "glasses",
+      "size": [
+        128,
+        160
+      ],
+      "bbox": [
+        48,
+        25,
+        81,
+        42
+      ],
+      "pivot": [
+        64,
+        156
+      ],
+      "alpha": true,
+      "source": "d4_camada",
+      "chroma_stripped": true
+    },
+    {
+      "id": "weapon_d4",
+      "size": [
+        128,
+        160
+      ],
+      "bbox": [
+        72,
+        67,
+        108,
+        136
+      ],
+      "pivot": [
+        64,
+        156
+      ],
+      "alpha": true,
+      "source": "d4_camada",
+      "chroma_stripped": true
+    },
+    {
+      "id": "shield",
+      "size": [
+        128,
+        160
+      ],
+      "bbox": [
+        25,
+        72,
+        68,
+        119
+      ],
+      "pivot": [
+        64,
+        156
+      ],
+      "alpha": true,
+      "source": "d4_camada",
+      "chroma_stripped": true
+    },
+    {
+      "id": "body_d4",
+      "size": [
+        128,
+        160
+      ],
+      "bbox": [
+        55,
+        48,
+        75,
+        157
+      ],
+      "pivot": [
+        64,
+        156
+      ],
+      "alpha": true,
+      "source": "d4_camada",
+      "chroma_stripped": true
+    },
+    {
+      "id": "pauldrons",
+      "size": [
+        128,
+        160
+      ],
+      "bbox": [
+        40,
+        58,
+        93,
+        86
+      ],
+      "pivot": [
+        64,
+        156
+      ],
+      "alpha": true,
+      "source": "d4_camada",
+      "chroma_stripped": true
+    },
+    {
+      "id": "bracers",
+      "size": [
+        128,
+        160
+      ],
+      "bbox": [
+        35,
+        86,
+        94,
+        116
+      ],
+      "pivot": [
+        64,
+        156
+      ],
+      "alpha": true,
+      "source": "d4_camada",
+      "chroma_stripped": true
+    }
+  ]
+}
