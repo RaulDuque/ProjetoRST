@@ -1,0 +1,33 @@
+{
+  "frames": 10,
+  "fps": 24,
+  "heavy_pieces": [
+    "d6_bracer_L",
+    "d6_bracer_R",
+    "d6_cuirass",
+    "d6_cuisse_L",
+    "d6_cuisse_R",
+    "d6_fauld",
+    "d6_gauntlet_L",
+    "d6_gauntlet_R",
+    "d6_greave_L",
+    "d6_greave_R",
+    "d6_helm",
+    "d6_pauldron_L",
+    "d6_pauldron_R",
+    "d6_sabaton_L",
+    "d6_sabaton_R",
+    "d6_shield"
+  ],
+  "layers": [
+    "body",
+    "coat",
+    "cape",
+    "sword",
+    "heavy",
+    "helm",
+    "shield",
+    "boots",
+    "gloves"
+  ]
+}

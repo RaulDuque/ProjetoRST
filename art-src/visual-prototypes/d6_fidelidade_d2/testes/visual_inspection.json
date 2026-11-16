@@ -1,0 +1,370 @@
+{
+  "note": "Lab plate proxies follow bones; expect blocky silhouette vs D2.",
+  "heavy_run": [
+    {
+      "frame": 0,
+      "opaque": 3555,
+      "bbox": [
+        90,
+        82,
+        198,
+        254
+      ]
+    },
+    {
+      "frame": 1,
+      "opaque": 3379,
+      "bbox": [
+        111,
+        86,
+        186,
+        256
+      ]
+    },
+    {
+      "frame": 2,
+      "opaque": 3099,
+      "bbox": [
+        104,
+        85,
+        182,
+        256
+      ]
+    },
+    {
+      "frame": 3,
+      "opaque": 3309,
+      "bbox": [
+        80,
+        79,
+        182,
+        243
+      ]
+    },
+    {
+      "frame": 4,
+      "opaque": 3444,
+      "bbox": [
+        86,
+        83,
+        191,
+        240
+      ]
+    },
+    {
+      "frame": 5,
+      "opaque": 3236,
+      "bbox": [
+        95,
+        81,
+        194,
+        254
+      ]
+    },
+    {
+      "frame": 6,
+      "opaque": 3464,
+      "bbox": [
+        98,
+        85,
+        191,
+        256
+      ]
+    },
+    {
+      "frame": 7,
+      "opaque": 3251,
+      "bbox": [
+        97,
+        84,
+        188,
+        256
+      ]
+    },
+    {
+      "frame": 8,
+      "opaque": 3165,
+      "bbox": [
+        74,
+        79,
+        189,
+        243
+      ]
+    },
+    {
+      "frame": 9,
+      "opaque": 3435,
+      "bbox": [
+        80,
+        83,
+        194,
+        240
+      ]
+    }
+  ],
+  "tests": {
+    "ok": true,
+    "checks": [
+      {
+        "name": "body_count",
+        "ok": true,
+        "detail": "10"
+      },
+      {
+        "name": "run_f00.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "run_f01.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "run_f02.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "run_f03.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "run_f04.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "run_f05.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "run_f06.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "run_f07.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "run_f08.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "run_f09.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "heavy_count",
+        "ok": true,
+        "detail": "10"
+      },
+      {
+        "name": "run_f00.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "run_f01.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "run_f02.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "run_f03.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "run_f04.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "run_f05.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "run_f06.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "run_f07.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "run_f08.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "run_f09.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "helm_count",
+        "ok": true,
+        "detail": "10"
+      },
+      {
+        "name": "run_f00.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "run_f01.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "run_f02.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "run_f03.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "run_f04.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "run_f05.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "run_f06.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "run_f07.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "run_f08.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "run_f09.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "shield_count",
+        "ok": true,
+        "detail": "10"
+      },
+      {
+        "name": "run_f00.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "run_f01.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "run_f02.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "run_f03.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "run_f04.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "run_f05.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "run_f06.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "run_f07.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "run_f08.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "run_f09.png_rgba",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "piece_cuirass",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "piece_pauldron_R",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "piece_pauldron_L",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "piece_fauld",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "piece_helm",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "A_ne_B",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "deterministic",
+        "ok": true,
+        "detail": ""
+      },
+      {
+        "name": "repro",
+        "ok": true,
+        "detail": ""
+      }
+    ]
+  }
+}

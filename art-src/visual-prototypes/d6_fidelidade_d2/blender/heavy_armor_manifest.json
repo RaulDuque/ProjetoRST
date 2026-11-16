@@ -1,0 +1,140 @@
+{
+  "pieces": [
+    {
+      "name": "d6_cuirass",
+      "bone": "chest",
+      "size": [
+        0.28,
+        0.18,
+        0.34
+      ]
+    },
+    {
+      "name": "d6_pauldron_R",
+      "bone": "upper_arm.R",
+      "size": [
+        0.14,
+        0.12,
+        0.12
+      ]
+    },
+    {
+      "name": "d6_pauldron_L",
+      "bone": "upper_arm.L",
+      "size": [
+        0.14,
+        0.12,
+        0.12
+      ]
+    },
+    {
+      "name": "d6_bracer_R",
+      "bone": "forearm.R",
+      "size": [
+        0.16,
+        0.07,
+        0.07
+      ]
+    },
+    {
+      "name": "d6_bracer_L",
+      "bone": "forearm.L",
+      "size": [
+        0.16,
+        0.07,
+        0.07
+      ]
+    },
+    {
+      "name": "d6_gauntlet_R",
+      "bone": "hand.R",
+      "size": [
+        0.1,
+        0.08,
+        0.05
+      ]
+    },
+    {
+      "name": "d6_gauntlet_L",
+      "bone": "hand.L",
+      "size": [
+        0.1,
+        0.08,
+        0.05
+      ]
+    },
+    {
+      "name": "d6_fauld",
+      "bone": "pelvis",
+      "size": [
+        0.26,
+        0.16,
+        0.12
+      ]
+    },
+    {
+      "name": "d6_cuisse_R",
+      "bone": "thigh.R",
+      "size": [
+        0.18,
+        0.1,
+        0.1
+      ]
+    },
+    {
+      "name": "d6_cuisse_L",
+      "bone": "thigh.L",
+      "size": [
+        0.18,
+        0.1,
+        0.1
+      ]
+    },
+    {
+      "name": "d6_greave_R",
+      "bone": "shin.R",
+      "size": [
+        0.18,
+        0.08,
+        0.08
+      ]
+    },
+    {
+      "name": "d6_greave_L",
+      "bone": "shin.L",
+      "size": [
+        0.18,
+        0.08,
+        0.08
+      ]
+    },
+    {
+      "name": "d6_sabaton_R",
+      "bone": "foot.R",
+      "size": [
+        0.14,
+        0.08,
+        0.06
+      ]
+    },
+    {
+      "name": "d6_sabaton_L",
+      "bone": "foot.L",
+      "size": [
+        0.14,
+        0.08,
+        0.06
+      ]
+    },
+    {
+      "name": "d6_helm",
+      "bone": "head",
+      "size": [
+        0.16,
+        0.18,
+        0.2
+      ]
+    }
+  ],
+  "collection": "D6_heavy_armor"
+}
