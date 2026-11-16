@@ -55,8 +55,8 @@ Ex.: base 15%, LCK 4 → 16,2%; LCK 50 → 30%.
 - **Armas:** `WeaponClass` por categoria (`weapon_classes.ron`) e
   `weapon: (element, reach_bonus)` por item; o ataque básico usa o perfil.
   V2.4: campos opcionais `startup`, `active_fraction`, `cancel_after`,
-  `air_control`, `turn_window` e `rehit_interval` na classe (omitidos =
-  como antes); ver [`COMBAT_FEEL_V2_4.md`](COMBAT_FEEL_V2_4.md).
+  `air_control`, `turn_window`, `rehit_interval` e `knockback` na classe
+  (omitidos = como antes); ver [`COMBAT_FEEL_V2_4.md`](COMBAT_FEEL_V2_4.md).
 - **Aparência:** `visual: Trail | Cape | Tint` (`inventory/appearance.rs`).
 - **Raridade Epic** (tier 3); Legendary passou a tier 4.
 - **Catálogo:** `equipment_v2.ron` (22 itens novos).

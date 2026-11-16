@@ -65,6 +65,15 @@ Dano recebido pelo jogador (`player::systems::receive_damage`):
 - com o jogador morto, as mensagens restantes são descartadas (não ficam para
   o frame seguinte nem atingem o jogador depois do respawn).
 
+Inimigos (`enemies::behavior::receive_damage`) não têm invulnerabilidade:
+todos os acertos de um frame somam; cada um pisca, cancela o *wind-up* e
+empurra. V2.4: o recurso `SimultaneousHitPolicy` (`Legacy` por padrão, as
+regras acima) pode trocar ambos por "só o maior dano efetivo do frame"
+(`HighestDamagePerFrame`); a intensidade do recuo viaja em
+`DamageDealt::knockback` (`Medium` = constantes de sempre) e o jogador tem um
+limiar de *stagger* (`PlayerStagger`, 0 = todo dano derruba). Ver
+[`COMBAT_FEEL_V2_4.md`](COMBAT_FEEL_V2_4.md) §12.
+
 ## Hitboxes (`src/combat/hitboxes.rs`)
 
 - `Hitbox { owner, team, size, attack, hit, lifetime, pierce, already_hit }`.
@@ -106,8 +115,9 @@ puras: `combat/strike_timeline.rs` (fases `Startup`/`Active`/`Recovery`) e
 cancelando o ataque básico a qualquer momento; o que acontece com a
 hitbox do golpe nesse caso é o recurso global `StrikeCancelPolicy`
 (`Preserve` por padrão). Também opcionais: `air_control`, `turn_window`
-(hitboxes armadas mantêm o lado, `SideLock`) e `rehit_interval`
-(`RehitTimers`). Detalhes, garantias e limitações:
+(hitboxes armadas mantêm o lado, `SideLock`), `rehit_interval`
+(`RehitTimers`) e `knockback` (`Light`/`Medium`/`Heavy`, componente
+`HitKnockback`). Detalhes, garantias e limitações:
 [`COMBAT_FEEL_V2_4.md`](COMBAT_FEEL_V2_4.md).
 
 ## Constantes de sensação

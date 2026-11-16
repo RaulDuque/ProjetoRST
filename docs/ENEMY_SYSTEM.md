@@ -27,7 +27,9 @@ A IA nunca lê entrada do jogador nem estados de controle; só a posição e se 
 
 ## Ciclo de vida
 
-Spawn a partir da sala → recebe `DamageDealt` (pisca, recuo, cancela o ataque) →
+Spawn a partir da sala → recebe `DamageDealt` (pisca, recuo pela intensidade do
+acerto — V2.4, `Medium` = 160 —, cancela o ataque; sem invulnerabilidade, todos
+os acertos do frame somam salvo `SimultaneousHitPolicy::HighestDamagePerFrame`) →
 HP 0 → `EnemyDefeated` (EXP + drops) → respawn após `respawn_time` no ponto de origem.
 
 ## Protótipo

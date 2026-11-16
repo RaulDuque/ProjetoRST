@@ -1,4 +1,4 @@
-# V2.4 — Combat Feel: linha do tempo, cancelamento, controle e reacerto
+# V2.4 — Combat Feel: linha do tempo, cancelamento, controle, reacerto, dano simultâneo e recuo
 
 Plano: [`PLANO_V2_4_COMBAT_FEEL.md`](PLANO_V2_4_COMBAT_FEEL.md).
 
@@ -6,7 +6,8 @@ Plano: [`PLANO_V2_4_COMBAT_FEEL.md`](PLANO_V2_4_COMBAT_FEEL.md).
 |---|---|---|
 | A | 0 caracterização, 1 linha do tempo, 2 ações por fase, 3 cancelamento | concluído |
 | B1 | política de hitbox no cancelamento, 4 controle aéreo e orientação, 5 reacerto | concluído |
-| — | 6 a 10 | não iniciadas |
+| B2 | caracterização do dano, 6 dano simultâneo, 7 recuo por intensidade e limiar (§12) | implementado, aguardando revisão |
+| — | 8 a 10 | não iniciadas |
 
 **Nenhum valor de dados mudou.** Com os campos novos omitidos (como estão
 em todos os RON), o jogo se comporta exatamente como antes da V2.4. Os
@@ -22,6 +23,7 @@ WeaponClass (RON, campos opcionais)          StrikeProfile (resolvido, puro)
   air_control: f32          = 0.0              air_control
   turn_window: f32          = 0.0              turn_window / attack_speed
   rehit_interval: Option<f32> = None           rehit_interval (segundos, não escala)
+  knockback: KnockbackIntensity = Medium       knockback (B2)
 
 StrikeTimeline (combat/strike_timeline.rs, puro)
   startup, active, total, cancel_at, turn_window
@@ -38,6 +40,15 @@ Componentes (combat/attacks.rs, combat/hitboxes.rs)
   SideLock { sign }                         lado travado do golpe básico
   RehitTimers { interval, recent }          reacerto opcional
 Recurso: StrikeCancelPolicy { Preserve (padrão), RemoveOnCancel }
+
+B2 (§12)
+  combat/reaction.rs (puro)      KnockbackIntensity { Light, Medium (padrão), Heavy }
+                                 StaggerThreshold (fração do HP máximo, padrão 0)
+  combat/simultaneous.rs (puro)  HitRank, strongest_per_target
+  DamageDealt                    + knockback: KnockbackIntensity
+  HitKnockback(intensidade)      na hitbox do golpe básico (só se ≠ Medium)
+  Recursos: SimultaneousHitPolicy { Legacy (padrão), HighestDamagePerFrame }
+            PlayerStagger(StaggerThreshold::ALWAYS)
 ```
 
 `StrikePhase` é uma subfase de `PlayerState::Attacking`, não um estado
@@ -61,6 +72,7 @@ novo. A máquina de estados ganhou só `cancel_attack()`.
 | `air_control` | `0.0` | fração do controle normal no ar | `[0, 1]` |
 | `turn_window` | `0.0` | s com velocidade 1, desde o início do golpe | `[0, attack_time]` |
 | `rehit_interval` | `None` | s entre dois acertos no mesmo alvo | `[MIN_REHIT_INTERVAL = 0,1; 1,5]` |
+| `knockback` (B2) | `Medium` | `Light`, `Medium` ou `Heavy` | enum (valor desconhecido recusa o RON) |
 
 Valores fora da faixa recusam o catálogo (`WeaponError::OutOfRange` com o
 nome do campo). Os valores por classe continuam os mesmos de antes.
@@ -213,8 +225,10 @@ atualizada, como ao andar.
 
 ## 9. Compatibilidade
 
-- Save V3: nada novo é salvo (`ActiveStrike`, `PendingStrike`, `SideLock` e
-  `RehitTimers` são transitórios); nenhum arquivo de `src/save/` mudou.
+- Save V3: nada novo é salvo (`ActiveStrike`, `PendingStrike`, `SideLock`,
+  `RehitTimers` e, no B2, `HitKnockback`, `SimultaneousHitPolicy` e
+  `PlayerStagger` são transitórios ou de configuração); nenhum arquivo de
+  `src/save/` mudou.
 - RON: nenhum arquivo usa os campos; `deny_unknown_fields` continua.
 - Iron Sword (classe `Sword`): `action_time 0,28`, `active_time 0,168`,
   hitbox no primeiro quadro, sem cancelamento, sem virar, sem controle
@@ -235,6 +249,7 @@ atualizada, como ao andar.
 | `src/combat/hitboxes.rs` | `RehitTimers` por alvo e limpeza; `PendingStrike` |
 | `src/player/action_rules.rs` | tabela ≡ `allows()` sem ponto; o que o ponto libera; `steer_in_air` |
 | `src/player/state.rs` | `cancel_attack` só encerra `Attacking` |
+| B2: ver §12.7 | caracterização do dano, dano simultâneo, recuo e limiar |
 
 Já cobertos antes e mantidos: comandos e prioridade
 (`command_parser_tests.rs`), custos, cooldowns, dano recebido,
@@ -268,3 +283,188 @@ acertos e gastos de antes da V2.4, saves reais intactos.
 8. Reacerto e política de cancelamento não são configuráveis por
    habilidade (§6, §8).
 9. Plataformas de mão única não têm teste dedicado; a física não foi tocada.
+
+## 12. Bloco B2 — dano simultâneo e recuo por intensidade (etapas 6 e 7)
+
+Tudo é opcional e desligado: com `SimultaneousHitPolicy::Legacy`,
+`KnockbackIntensity::Medium` e `StaggerThreshold::ALWAYS` (os padrões), o
+jogo é o de antes. Nenhum RON mudou, nem a fórmula de dano, nem a
+invulnerabilidade, nem a física.
+
+### 12.1 Caracterização do dano atual (etapa 0 do B2)
+
+Onde o dano nasce, muda e é consumido:
+
+```text
+GameSet::Combat      detect_hits ──┐ (fórmula pura combat::damage, no produtor)
+                     contact_damage ┴─► DamageDealt { attacker, target, outcome, direction, knockback }
+GameSet::Resolution  player::systems::receive_damage    (guarda, invulnerabilidade, hurt, recuo)
+                     enemies::behavior::receive_damage  (soma, flash, wind-up, recuo, morte)
+GameSet::Presentation  números de dano, faísca da guarda (só leitura)
+```
+
+| Aspecto | Jogador | Inimigo |
+|---|---|---|
+| Vários acertos no mesmo quadro | só o **primeiro** que causa dano (a invulnerabilidade que ele inicia descarta os demais) | **todos somam** |
+| Invulnerabilidade | 0,9 s após dano (também em guarda); `detect_hits` e o contato nem geram acertos com ela ativa | não tem |
+| Guarda | −70 % de frente, sem `Hurt` | não tem |
+| Reação | `Hurt` 0,35 s + recuo (±220, 260) para **qualquer** dano | flash 0,15 s (IA pausada, desliza), *wind-up* cancelado, recuo ±160 para qualquer dano; o último acerto do quadro decide a direção |
+| Morte | `Dead`, velocidade x zerada, mensagens restantes descartadas | `EnemyDefeated` uma vez, despawn, respawn agendado uma vez |
+| Contato | um acerto por quadro (o primeiro inimigo encostado) | — |
+| Projéteis | `pierce: false`: param no primeiro alvo e somem | idem |
+
+`Miss` e dano 0 não têm efeito nos dois lados. Fórmula (defesa física e
+mágica, resistências, crítico, erro, dano mínimo): `tests/combat_tests.rs`.
+
+### 12.2 Política de dano simultâneo (etapa 6)
+
+Recurso global `combat::hitboxes::SimultaneousHitPolicy`, iniciado com
+`Legacy` pelo `CombatPlugin` (mesma escolha de camada do §6).
+
+| Política | Jogador | Inimigo | Contato |
+|---|---|---|---|
+| `Legacy` (padrão) | primeiro acerto com dano | soma | um por quadro |
+| `HighestDamagePerFrame` | só o mais forte do quadro | só o mais forte do quadro | um candidato por inimigo encostado |
+
+**Onde agrega:** no consumidor de cada alvo (`receive_damage`), porque só
+ele conhece o dano **efetivo** (a guarda do jogador é aplicada ali). Os
+produtores mantêm a fórmula; o único descarte anterior ao consumidor, o
+`break` do contato, só vale em `Legacy`. A mesma função
+(`SimultaneousHitPolicy::select`) serve aos dois consumidores; a regra
+pura é `combat::simultaneous::strongest_per_target`.
+
+**Regras de agregação**
+
+1. Grupo = um alvo (`DamageDealt::target`) num quadro (as mensagens lidas
+   por aquele `receive_damage` naquele `Update`). Alvos e quadros nunca se
+   misturam.
+2. Só competem acertos com dano efetivo > 0 (`Miss` e 0 nunca vencem).
+3. Comparação pelo **dano efetivo**: o `amount` já calculado (defesa,
+   resistência, crítico e variação incluídos) e, no jogador, depois da
+   guarda. Um crítico só vence se causar mais.
+4. Desempate determinístico: intensidade de recuo maior → `attacker` com
+   menor `Entity::to_bits()` → mensagem anterior.
+5. O vencedor é aplicado **uma vez** pelo caminho normal: dano, invulnerabilidade
+   (iniciada uma vez), morte ou `Hurt` + recuo **do próprio vencedor**. A
+   comparação acontece antes de aplicar, então a invulnerabilidade iniciada no
+   quadro não impede a comparação; uma invulnerabilidade já ativa no início do
+   quadro descarta todos.
+6. Ordem dos `GameSet`s inalterada; nenhum sistema novo.
+
+### 12.3 Recuo por intensidade e limiar (etapa 7)
+
+**Modelagem escolhida: campo novo em `DamageDealt`.** Comparação:
+
+| Opção | Por que não / por que sim |
+|---|---|
+| Componente auxiliar no alvo ou na hitbox | o consumidor só vê a mensagem; projéteis e golpes sem `pierce` já sumiram |
+| Recurso de contexto | não liga a intensidade a um acerto específico (quebraria a etapa 6) |
+| Mensagem paralela (`HitFeel`) | exigiria casar duas mensagens por acerto |
+| **Campo `knockback` em `DamageDealt`** | menor complexidade: viaja com o acerto; os construtores literais (6, em testes e no exemplo) ganharam `knockback: Default::default()`, edição mecânica |
+
+Na hitbox, a intensidade é o componente opcional `HitKnockback`, inserido
+pelo golpe básico só quando a classe da arma pede algo diferente de
+`Medium`; `detect_hits` copia para a mensagem (sem ele, `Medium`). Contato,
+golpes de inimigos, técnicas e projéteis usam `Medium`.
+
+| Intensidade | Jogador (x, y) | Inimigo (x) |
+|---|---|---|
+| `Light` | × `KNOCKBACK_LIGHT_SCALE` (0,5): (110, 130) | 80 |
+| `Medium` (padrão) | (220, 260), como antes | 160, como antes |
+| `Heavy` | × `KNOCKBACK_HEAVY_SCALE` (1,5): (330, 390) | 240 |
+
+**A intensidade é declarada pela fonte do golpe** (classe da arma); a
+fórmula de dano não foi alterada nem consultada para decidir a intensidade.
+
+**Limiar (`stagger_threshold`)**: `PlayerStagger(StaggerThreshold)`, fração
+do HP máximo do jogador, padrão 0. Um acerto com dano aplicado
+`≥ limiar × HP máximo` entra em `Hurt` com recuo (igual ao limiar também
+derruba); abaixo dele o dano e a invulnerabilidade continuam, mas não há
+`Hurt` nem recuo, e a ação em curso (golpe, magia) continua. Golpe fatal
+mata sempre. Valores fora de `[0, 1]` são recusados por `StaggerThreshold::new`.
+Inimigos não têm limiar no B2: a reação deles (flash, *wind-up*) é a etapa 8.
+
+Garantias da reação: duração de `Hurt` e invulnerabilidade inalteradas;
+morte zera a velocidade x; esquiva (sem `Hurt`), guarda (sem `Hurt`) e
+morte respeitadas por `PlayerStateMachine::hurt`; ataque e magia são
+interrompidos como antes; a transformação recebe o mesmo recuo e continua
+ativa; o recuo é velocidade e passa pela física normal (paredes param o
+corpo, testado com `Heavy` contra a parede oeste).
+
+### 12.4 Interação entre as etapas 6 e 7
+
+O acerto escolhido traz **o seu** dano e **o seu** recuo; nada é somado nem
+emprestado de outro acerto. Com limiar, quem decide o *stagger* é só o
+acerto escolhido (um acerto fraco com `Heavy` não empresta o recuo ao
+escolhido). Na política `Legacy`, a combinação é a de sempre: o primeiro
+acerto com dano, com o recuo dele.
+
+### 12.5 Novos campos, recursos e padrões
+
+| Item | Onde | Padrão (= antes) |
+|---|---|---|
+| `WeaponClass::knockback`, `StrikeProfile::knockback` | `inventory/weapons.rs` | `Medium` |
+| `DamageDealt::knockback` | `core/events.rs` | `Medium` em todos os emissores |
+| `HitKnockback` (componente) | `combat/hitboxes.rs` | ausente |
+| `SimultaneousHitPolicy` (recurso) | `combat/hitboxes.rs`, `CombatPlugin` | `Legacy` |
+| `PlayerStagger` (recurso) | `player/systems.rs`, `PlayerPlugin` | `StaggerThreshold::ALWAYS` (0) |
+| `KNOCKBACK_LIGHT_SCALE`, `KNOCKBACK_HEAVY_SCALE` | `core/constants.rs` | 0,5 e 1,5 (só usados fora do padrão) |
+
+Para ligar: insira o recurso no app (como os testes fazem) ou troque o
+padrão do enum; para uma arma, `knockback: Heavy` na classe do RON (não
+feito: decisão de balanceamento do proprietário).
+
+### 12.6 Casos de borda e limitações
+
+1. Com `HighestDamagePerFrame`, as hitboxes dos acertos descartados contam o
+   alvo como atingido (`already_hit`/`RehitTimers`) e projéteis descartados
+   somem: o acerto foi "gasto", só não aplicado.
+2. A apresentação lê as mensagens brutas: com `HighestDamagePerFrame`, os
+   números de dano mostram também os candidatos descartados (a faísca da
+   guarda já é uma por quadro). Inofensivo enquanto a política estiver
+   desligada; filtrar a UI é recomendado antes de ligá-la.
+3. A comparação do jogador usa o estado do início do quadro (guarda); como só
+   um acerto é aplicado, não há diferença com o estado durante a aplicação.
+4. O desempate por `Entity::to_bits()` é estável numa partida, mas não tem
+   significado de jogo (dano e recuo iguais tornam a escolha irrelevante para
+   o resultado, exceto a direção do recuo).
+5. Sem limiar para inimigos (etapa 8) e sem intensidade em técnicas,
+   projéteis e golpes de inimigos (exigiria campos em `SkillDefinition` e
+   `EnemyDefinition`; mesma razão do §6).
+6. A intensidade só muda a velocidade do recuo; a duração de `Hurt` é a mesma
+   para as três.
+
+**Pré-requisitos para ligar `HighestDamagePerFrame`** (não ligada: o padrão
+continua `Legacy`). Os itens 1 e 2 estão travados por testes
+(`limitation_*` em `tests/damage_reaction_tests.rs`). Se um desses testes
+falhar, a limitação foi resolvida e o teste deve ser atualizado.
+
+- **Números de dano:** a UI (`ui::damage_numbers`) lê as mensagens brutas e
+  mostra também os acertos descartados. Antes de ligar a política, a
+  apresentação precisa ler só os acertos aplicados, por exemplo com uma
+  mensagem de "acerto aplicado" emitida pelo `receive_damage`.
+- **Hitboxes e projéteis gastos:** `detect_hits` registra o alvo
+  (`already_hit`/`RehitTimers`) e remove a hitbox sem `pierce` no momento do
+  acerto, antes da seleção. Um projétil ou golpe descartado some sem efeito.
+  Antes de ligar, decida se esse gasto é aceitável ou mova o consumo para
+  depois da seleção.
+- **Comportamento atual:** com `Legacy`, nenhum inimigo descarta acertos (um
+  número por acerto aplicado), e o jogador descarta pela invulnerabilidade
+  como antes da V2.4. Nada muda enquanto a política estiver desligada.
+
+### 12.7 Testes do B2
+
+| Arquivo | O que trava |
+|---|---|
+| `tests/damage_characterization_tests.rs` (12, passam também no código anterior) | inimigo soma, sem invulnerabilidade, recuo fixo e pela última direção, flash e *wind-up*; `Miss`/0 sem efeito; morte uma vez; hitbox de golpe = dano relatado, um acerto; duas hitboxes inimigas no jogador = só a primeira; contato um por quadro e nada com invulnerabilidade; recuo do jogador fixo; guarda −70 % sem `Hurt` com invulnerabilidade; golpe fatal sem recuo; projétil para no primeiro alvo |
+| `tests/damage_reaction_tests.rs` (27) | padrões; jogador e inimigo `Legacy` × `HighestDamagePerFrame`; alvos e quadros separados; desempate; crítico × normal; físico × fogo por hitboxes reais (resistência); guarda na comparação; invulnerabilidade prévia; quadro letal; contato com dois inimigos; recuo leve/médio/forte no jogador e no inimigo; abaixo, no e acima do limiar; fatal abaixo do limiar; durante ataque e magia; parede; `Hurt` termina como antes; combinação dano + recuo do mesmo acerto; limiar com a política nova; limitações de §12.6 (números de descartados, hitbox gasta, `Legacy` sem descarte) |
+| `tests/combat_feel_tests.rs` (+2) | Iron Sword = `Medium` sem `HitKnockback`; `knockback` da classe chega aos acertos |
+| `tests/world_transform_tests.rs` (+1) | forma espectral recebe o recuo `Heavy` e continua ativa |
+| `src/combat/reaction.rs` (5), `src/combat/simultaneous.rs` (3) | escalas, ordem, limiar nas bordas e validação; escolha por alvo, misses, desempates |
+
+Resultados ao fim do B2: `cargo fmt --all -- --check` ok;
+`cargo check -j 2` ok; `cargo clippy --all-targets -j 2 -- -D warnings` ok;
+`cargo test -j 2`: **534 testes, 0 falhas** (484 antes + 50: 130 de
+unidade, 46 em `combat_feel_tests`, 12 de caracterização, 27 de reação, 27 em
+`world_transform_tests`); `cargo run --example autoplay`: PASS 23/23, saves
+reais intactos.

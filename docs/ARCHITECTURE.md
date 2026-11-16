@@ -30,7 +30,7 @@ biblioteca (`src/lib.rs`), o que permite testes de integração e o exemplo
 |---|---|---|
 | `core` | `rng.rs`, `pixel_art.rs` (V2.2: rasterizador da arte provisória) | `constants.rs`, `events.rs`, `resources.rs` (carregador de dados), `time.rs`, `pixel_image.rs` (V2.2) |
 | `player` | `attributes.rs`, `progression.rs`, `state.rs`, `action_rules.rs` (V2.4), `visual/{manifest,playback,selection,sockets}.rs` (`sockets`: V2.2), `visual/vfx/rules.rs` | `components.rs`, `movement.rs`, `systems.rs`, `animation.rs`, `visual/{mod,systems}.rs`, `visual/vfx/{mod,systems}.rs` |
-| `combat` | `damage.rs`, `command_buffer.rs`, `command_parser.rs`, `strike_timeline.rs` (V2.4) | `command_input.rs`, `hitboxes.rs`, `attacks.rs` |
+| `combat` | `damage.rs`, `command_buffer.rs`, `command_parser.rs`, `strike_timeline.rs`, `reaction.rs`, `simultaneous.rs` (V2.4) | `command_input.rs`, `hitboxes.rs`, `attacks.rs` |
 | `skills` | `definitions.rs`, `unlock.rs`, `cooldowns.rs`, `execution.rs` | `systems.rs` |
 | `magic` | `elements.rs` | `casting.rs`, `projectiles.rs` |
 | `inventory` | `items.rs`, `equipment.rs`, `inventory.rs`, `weapons.rs`, `appearance.rs`, `loadout.rs`, `compare.rs` (V2.0), `held.rs`, `held_art.rs` (V2.2) | `systems.rs`, `visual.rs` (V2.0), `held_visual.rs` (V2.2: arma e escudo como camadas) |
@@ -74,7 +74,7 @@ jogador pode vir de um staging (`PlayerArtSource` +
 | `Actions` | timers de estado, respawn, guarda/esquiva, locomoção, regeneração; `begin_skill` revalida o pedido com o estado **atual** e confirma (custos, cooldown, `Casting`, `SkillStarted` + `CommandResolved`) ou rejeita (só `CommandResolved` com o motivo); efeitos: `basic_attack`, `melee_techniques` e `cast_spells` (estes dois só para `SkillStarted`); depois de `begin_skill`, `apply_strike_cancel_policy` (V2.4, recurso `StrikeCancelPolicy`); IA dos inimigos |
 | `Physics` | gravidade, `move_bodies` (colisão AABB), projéteis |
 | `Combat` | invulnerabilidade, golpes em antecipação armados (`arm_pending_strikes`, V2.4), hitboxes seguem o dono, `detect_hits` e dano por contato → `DamageDealt` |
-| `Resolution` | `receive_damage` do jogador (respeita a invulnerabilidade a cada mensagem) e dos inimigos; morte → `EnemyDefeated`; depois do dano no jogador, `cancel_interrupted_hitboxes` remove as hitboxes presas a um dono em `Hurt`/`Dead` |
+| `Resolution` | `receive_damage` do jogador (respeita a invulnerabilidade a cada mensagem) e dos inimigos, ambos filtrando o frame pelo recurso `SimultaneousHitPolicy` (V2.4, `Legacy` = sem filtro) e aplicando o recuo de `DamageDealt::knockback`; morte → `EnemyDefeated`; depois do dano no jogador, `cancel_interrupted_hitboxes` remove as hitboxes presas a um dono em `Hurt`/`Dead` |
 | `Progression` | EXP/level up/drops, sincronização de atributos derivados, desbloqueio automático de habilidades; reações a `RoomChanged` (`enemies::enter_new_room`, `magic::clear_on_room_change`), que só ocorre com o grafo de mundo da V1.6 |
 | `Presentation` | salvar/carregar, sprite do jogador (`player::visual`, depois de `quick_load`; lê `SkillStarted` para saber a habilidade; ver `PLAYER_VISUAL_ANIMATION_V1_3.md` e `PLAYER_ANIMATION_EXPANSION_V1_4.md`; desde a V1.5 também os VFX `player::visual::vfx`, que leem `SkillStarted` e `DamageDealt` sem alterar o gameplay, ver `PLAYER_ART_POLISH_V1_5.md`), visual temporário (depois do sprite), câmera, HUD, tela de status, números de dano, salvar/carregar (sempre roda) |
 
