@@ -1,0 +1,110 @@
+[
+  {
+    "label": "idle_B1",
+    "count": 12,
+    "ok": true,
+    "issues": [],
+    "height_range": [
+      50,
+      51
+    ],
+    "cell": [
+      64,
+      80
+    ],
+    "pivot": [
+      32,
+      78
+    ]
+  },
+  {
+    "label": "run_B1",
+    "count": 10,
+    "ok": true,
+    "issues": [],
+    "height_range": [
+      51,
+      51
+    ],
+    "cell": [
+      64,
+      80
+    ],
+    "pivot": [
+      32,
+      78
+    ]
+  },
+  {
+    "label": "attack_B1",
+    "count": 7,
+    "ok": true,
+    "issues": [],
+    "height_range": [
+      51,
+      51
+    ],
+    "cell": [
+      64,
+      80
+    ],
+    "pivot": [
+      32,
+      78
+    ]
+  },
+  {
+    "label": "idle_B2",
+    "count": 12,
+    "ok": true,
+    "issues": [],
+    "height_range": [
+      50,
+      51
+    ],
+    "cell": [
+      64,
+      80
+    ],
+    "pivot": [
+      32,
+      78
+    ]
+  },
+  {
+    "label": "run_B2",
+    "count": 10,
+    "ok": true,
+    "issues": [],
+    "height_range": [
+      51,
+      51
+    ],
+    "cell": [
+      64,
+      80
+    ],
+    "pivot": [
+      32,
+      78
+    ]
+  },
+  {
+    "label": "attack_B2",
+    "count": 7,
+    "ok": true,
+    "issues": [],
+    "height_range": [
+      51,
+      51
+    ],
+    "cell": [
+      64,
+      80
+    ],
+    "pivot": [
+      32,
+      78
+    ]
+  }
+]
