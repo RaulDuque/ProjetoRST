@@ -14,6 +14,7 @@
 use bevy::prelude::*;
 use dark_castle_rpg::combat::damage::DamageOutcome;
 use dark_castle_rpg::combat::hitboxes::Hitbox;
+use dark_castle_rpg::combat::reaction::KnockbackIntensity;
 use dark_castle_rpg::core::events::{Arrival, DamageDealt, Notification, RoomRequest};
 use dark_castle_rpg::magic::elements::Element;
 use dark_castle_rpg::magic::projectiles::Projectile;
@@ -201,6 +202,7 @@ fn hit_player(app: &mut App, amount: i32) {
             element: Element::Physical,
         },
         direction: 1.0,
+        knockback: Default::default(),
     });
 }
 
@@ -617,6 +619,36 @@ fn the_form_blocks_attacks_spells_guard_dodge_and_objects() {
     assert!(exploration(&app).pickups.contains("vc_shrine_chest"));
     tap(&mut app, KeyCode::KeyX);
     assert_eq!(state(&mut app), PlayerState::Attacking);
+}
+
+#[test]
+fn the_form_takes_knockback_intensity_like_the_human() {
+    let mut app = spectral_in_the_well("v24_knockback");
+    run(&mut app, 30);
+    let world = app.world_mut();
+    let player = world
+        .query_filtered::<Entity, With<Player>>()
+        .single(world)
+        .unwrap_or_else(|e| panic!("{e}"));
+    world.write_message(DamageDealt {
+        attacker: player,
+        target: player,
+        outcome: DamageOutcome::Hit {
+            amount: 3,
+            critical: false,
+            element: Element::Physical,
+        },
+        direction: -1.0,
+        knockback: KnockbackIntensity::Heavy,
+    });
+    run(&mut app, 1);
+    assert_eq!(state(&mut app), PlayerState::Hurt);
+    let (x, y) = KnockbackIntensity::Heavy.player_push(-1.0);
+    assert_eq!(velocity(&mut app), Vec2::new(x, y));
+    assert!(
+        form(&mut app).is_active(),
+        "knockback does not end the form"
+    );
 }
 
 #[test]

@@ -217,6 +217,7 @@ fn shortcuts(
                         element: Element::Physical,
                     },
                     direction: -1.0,
+                    knockback: Default::default(),
                 });
             }
         }

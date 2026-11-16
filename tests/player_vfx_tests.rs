@@ -81,6 +81,7 @@ fn emit_pending(
                 element: Element::Physical,
             },
             direction,
+            knockback: Default::default(),
         });
     }
 }

@@ -8,6 +8,8 @@ use bevy::prelude::*;
 use super::damage::{
     AttackProfile, DamageKind, DamageRolls, DefenseProfile, HitSpec, calculate_damage,
 };
+use super::reaction::KnockbackIntensity;
+use super::simultaneous::{HitRank, strongest_per_target};
 use crate::core::events::{DamageDealt, RoomChanged};
 use crate::core::resources::GameRandom;
 use crate::core::time::frame_delta;
@@ -161,6 +163,58 @@ impl RehitTimers {
     /// Targets still waiting.
     pub fn tracked(&self) -> usize {
         self.recent.len()
+    }
+}
+
+/// V2.4: knockback intensity of the hits of this hitbox. Without it a
+/// hitbox hits with `KnockbackIntensity::Medium` (pre-V2.4).
+#[derive(Component, Debug, Clone, Copy, PartialEq, Eq)]
+pub struct HitKnockback(pub KnockbackIntensity);
+
+/// V2.4: which of the damaging hits that reach one target in the same
+/// frame count. One rule for the whole game, applied by each target's
+/// `receive_damage` (`GameSet::Resolution`), where the damage the target
+/// really takes is known.
+#[derive(Resource, Debug, Clone, Copy, PartialEq, Eq, Default)]
+pub enum SimultaneousHitPolicy {
+    /// Pre-V2.4: the player takes the first damaging hit (the invulnerability
+    /// it starts discards the rest); an enemy takes all of them.
+    #[default]
+    Legacy,
+    /// Player and enemies take only the strongest damaging hit of the frame
+    /// ([`strongest_per_target`]): its damage, knockback and death, once.
+    /// Enemy contact produces one candidate per touching enemy.
+    HighestDamagePerFrame,
+}
+
+impl SimultaneousHitPolicy {
+    /// The hits of one frame that are applied, in message order.
+    /// `effective` is the damage the target would take from a hit.
+    pub fn select(
+        self,
+        hits: Vec<DamageDealt>,
+        effective: impl Fn(&DamageDealt) -> i32,
+    ) -> Vec<DamageDealt> {
+        match self {
+            SimultaneousHitPolicy::Legacy => hits,
+            SimultaneousHitPolicy::HighestDamagePerFrame => {
+                let candidates: Vec<(Entity, HitRank)> = hits
+                    .iter()
+                    .map(|hit| {
+                        let rank = HitRank {
+                            damage: effective(hit),
+                            knockback: hit.knockback,
+                            source: hit.attacker.to_bits(),
+                        };
+                        (hit.target, rank)
+                    })
+                    .collect();
+                strongest_per_target(&candidates)
+                    .into_iter()
+                    .map(|index| hits[index])
+                    .collect()
+            }
+        }
     }
 }
 
@@ -318,6 +372,7 @@ pub fn detect_hits(
         &mut Hitbox,
         Option<&PendingStrike>,
         Option<&mut RehitTimers>,
+        Option<&HitKnockback>,
     )>,
     hurtboxes: Query<(
         Entity,
@@ -329,7 +384,9 @@ pub fn detect_hits(
     mut damage: MessageWriter<DamageDealt>,
 ) {
     let dt = frame_delta(&time);
-    for (hitbox_entity, hitbox_transform, mut hitbox, pending, mut rehit) in &mut hitboxes {
+    for (hitbox_entity, hitbox_transform, mut hitbox, pending, mut rehit, knockback) in
+        &mut hitboxes
+    {
         if !is_armed(pending) {
             continue;
         }
@@ -377,6 +434,7 @@ pub fn detect_hits(
                 target,
                 outcome,
                 direction: if direction == 0.0 { 1.0 } else { direction },
+                knockback: knockback.map_or_else(KnockbackIntensity::default, |k| k.0),
             });
             match rehit.as_mut() {
                 Some(rehit) => rehit.record(target),

@@ -7,9 +7,11 @@ use super::ai::{EnemyBehavior, Perception, decide};
 use super::components::{Enemy, EnemyBrain, EnemyHealth, PendingRespawns, SpawnOrigin};
 use crate::combat::damage::{DamageKind, HitSpec, calculate_damage};
 use crate::combat::hitboxes::{
-    AttachedToOwner, CombatProfile, Hitbox, Hurtbox, Invulnerable, Team, roll_damage,
+    AttachedToOwner, CombatProfile, Hitbox, Hurtbox, Invulnerable, SimultaneousHitPolicy, Team,
+    roll_damage,
 };
-use crate::core::constants::{ENEMY_HURT_FLASH, ENEMY_KNOCKBACK, Z_EFFECTS};
+use crate::combat::reaction::KnockbackIntensity;
+use crate::core::constants::{ENEMY_HURT_FLASH, Z_EFFECTS};
 use crate::core::events::{DamageDealt, EnemyDefeated};
 use crate::core::resources::{GameData, GameRandom};
 use crate::core::time::frame_delta;
@@ -160,9 +162,13 @@ pub fn think_and_move(
     }
 }
 
-/// Touching an enemy hurts the player.
+/// Touching an enemy hurts the player. Under the legacy simultaneous-hit
+/// policy only the first touching enemy produces a hit each frame; under
+/// `HighestDamagePerFrame` every touching enemy is a candidate, so the
+/// player's `receive_damage` can pick the strongest.
 pub fn contact_damage(
     data: Res<GameData>,
+    policy: Res<SimultaneousHitPolicy>,
     mut rng: ResMut<GameRandom>,
     player: Query<(Entity, &Transform, &Hurtbox, &CombatProfile, &Invulnerable), With<Player>>,
     enemies: Query<(Entity, &Enemy, &Transform, &Body, &CombatProfile)>,
@@ -211,15 +217,23 @@ pub fn contact_damage(
             target,
             outcome,
             direction: if direction == 0.0 { 1.0 } else { direction },
+            knockback: KnockbackIntensity::default(),
         });
-        // One contact hit per frame is enough; invulnerability follows.
-        break;
+        if *policy == SimultaneousHitPolicy::Legacy {
+            // One contact hit per frame is enough; invulnerability follows.
+            break;
+        }
     }
 }
 
+/// Applies the frame's hits to enemies, as chosen by
+/// [`SimultaneousHitPolicy`] (by default all of them, added up). Every
+/// damaging hit flashes the enemy, cancels its wind-up and pushes it by the
+/// hit's knockback intensity.
 pub fn receive_damage(
     mut commands: Commands,
     data: Res<GameData>,
+    policy: Res<SimultaneousHitPolicy>,
     mut hits: MessageReader<DamageDealt>,
     mut enemies: Query<(
         &Enemy,
@@ -231,7 +245,8 @@ pub fn receive_damage(
     mut pending: ResMut<PendingRespawns>,
     mut defeated: MessageWriter<EnemyDefeated>,
 ) {
-    for hit in hits.read() {
+    let frame = policy.select(hits.read().copied().collect(), |hit| hit.outcome.amount());
+    for hit in frame {
         let Ok((enemy, mut health, mut brain, mut velocity, origin)) = enemies.get_mut(hit.target)
         else {
             continue;
@@ -246,7 +261,7 @@ pub fn receive_damage(
         health.deplete(amount);
         brain.flash = ENEMY_HURT_FLASH;
         brain.windup = None;
-        velocity.x = hit.direction * ENEMY_KNOCKBACK;
+        velocity.x = hit.knockback.enemy_push(hit.direction);
 
         if health.is_empty() {
             let Some(def) = data.enemies.get(&enemy.definition) else {

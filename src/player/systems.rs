@@ -7,11 +7,11 @@ use super::components::{
     ActionState, Belongings, CharacterSheet, CommandInput, JumpControl, Player, SkillBook, Vitals,
 };
 use super::progression::Progression;
-use super::state::PlayerState;
-use crate::combat::hitboxes::{CombatProfile, Hurtbox, Invulnerable, Team};
+use super::state::{Facing, PlayerState};
+use crate::combat::hitboxes::{CombatProfile, Hurtbox, Invulnerable, SimultaneousHitPolicy, Team};
+use crate::combat::reaction::StaggerThreshold;
 use crate::core::constants::{
-    GUARD_DAMAGE_REDUCTION, PLAYER_HURT_KNOCKBACK, PLAYER_HURT_TIME, PLAYER_INVULNERABILITY,
-    PLAYER_SIZE, Z_PLAYER,
+    GUARD_DAMAGE_REDUCTION, PLAYER_HURT_TIME, PLAYER_INVULNERABILITY, PLAYER_SIZE, Z_PLAYER,
 };
 use crate::core::events::{DamageDealt, EnemyDefeated, Notification, PickupCollected};
 use crate::core::resources::{GameData, GameRandom};
@@ -123,7 +123,29 @@ pub fn regenerate(time: Res<Time>, player: Single<(&mut Vitals, &CharacterSheet,
     vitals.mp.restore(mp);
 }
 
+/// V2.4: the player's stagger threshold (`StaggerThreshold::ALWAYS`, the
+/// pre-V2.4 rule, unless a test or a future setting replaces it).
+#[derive(Resource, Debug, Clone, Copy, PartialEq, Default)]
+pub struct PlayerStagger(pub StaggerThreshold);
+
+/// Damage the player takes from `hit` in `state`: the guard blocks part
+/// of the hits coming from the front.
+fn received_amount(state: PlayerState, facing: Facing, hit: &DamageDealt) -> i32 {
+    let amount = hit.outcome.amount();
+    if state == PlayerState::Guarding && facing.faces_hit(hit.direction) {
+        (amount as f32 * (1.0 - GUARD_DAMAGE_REDUCTION)).round() as i32
+    } else {
+        amount
+    }
+}
+
+/// Applies the frame's hits on the player, as chosen by
+/// `SimultaneousHitPolicy` (compared by the damage taken, guard included).
+/// A damaging hit costs HP and starts the invulnerability; it staggers
+/// (hurt state + the hit's knockback) when it reaches [`PlayerStagger`].
 pub fn receive_damage(
+    policy: Res<SimultaneousHitPolicy>,
+    stagger: Res<PlayerStagger>,
     mut hits: MessageReader<DamageDealt>,
     player: Single<
         (
@@ -140,9 +162,16 @@ pub fn receive_damage(
 ) {
     let (entity, mut vitals, mut state, mut velocity, mut invulnerable, facing) =
         player.into_inner();
-    for hit in hits.read().filter(|h| h.target == entity) {
-        // Keep reading instead of `break`, so no hit stays queued for the
-        // next frame (defence in depth: do not rely on the respawn i-frames).
+    // Every message is read (filtered or not), so no hit stays queued for
+    // the next frame (defence in depth: do not rely on the respawn i-frames).
+    let frame: Vec<DamageDealt> = hits
+        .read()
+        .filter(|h| h.target == entity)
+        .copied()
+        .collect();
+    let before = state.state();
+    let frame = policy.select(frame, |hit| received_amount(before, facing.0, hit));
+    for hit in frame {
         if state.state() == PlayerState::Dead {
             continue;
         }
@@ -152,12 +181,7 @@ pub fn receive_damage(
         if invulnerable.remaining > 0.0 {
             continue;
         }
-        let mut amount = hit.outcome.amount();
-        // Guard blocks hits coming from the front.
-        let from_front = facing.0.faces_hit(hit.direction);
-        if state.state() == PlayerState::Guarding && from_front {
-            amount = (amount as f32 * (1.0 - GUARD_DAMAGE_REDUCTION)).round() as i32;
-        }
+        let amount = received_amount(state.state(), facing.0, &hit);
         if amount <= 0 {
             continue;
         }
@@ -167,9 +191,10 @@ pub fn receive_damage(
             state.die();
             velocity.x = 0.0;
             notifications.write(Notification("You have fallen. Press R to rise.".into()));
-        } else if state.hurt(PLAYER_HURT_TIME) {
-            velocity.x = hit.direction * PLAYER_HURT_KNOCKBACK.0;
-            velocity.y = PLAYER_HURT_KNOCKBACK.1;
+        } else if stagger.0.staggers(amount, vitals.hp.max()) && state.hurt(PLAYER_HURT_TIME) {
+            let (x, y) = hit.knockback.player_push(hit.direction);
+            velocity.x = x;
+            velocity.y = y;
         }
     }
 }

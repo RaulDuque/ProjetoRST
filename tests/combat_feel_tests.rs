@@ -25,8 +25,10 @@ use dark_castle_rpg::combat::attacks::{ActiveStrike, StrikeCancelPolicy, WeaponS
 use dark_castle_rpg::combat::command_parser::CommandTiming;
 use dark_castle_rpg::combat::damage::{DamageKind, DamageOutcome, HitSpec};
 use dark_castle_rpg::combat::hitboxes::{
-    AttachedToOwner, CombatProfile, Hitbox, Hurtbox, Invulnerable, PendingStrike, RehitTimers, Team,
+    AttachedToOwner, CombatProfile, HitKnockback, Hitbox, Hurtbox, Invulnerable, PendingStrike,
+    RehitTimers, Team,
 };
+use dark_castle_rpg::combat::reaction::KnockbackIntensity;
 use dark_castle_rpg::core::constants::{
     BASIC_ATTACK_HITBOX, BASIC_ATTACK_TIME, HITBOX_ACTIVE_FRACTION, PLAYER_HURT_KNOCKBACK,
     PLAYER_INVULNERABILITY,
@@ -102,6 +104,7 @@ fn emit_pending_damage(
             target: player,
             outcome,
             direction: 1.0,
+            knockback: Default::default(),
         });
     }
 }
@@ -1639,4 +1642,53 @@ fn a_new_strike_from_idle_removes_a_lingering_strike_of_the_same_attacker() {
         .filter(|(_, h, _)| h.owner == owner)
         .collect();
     assert_eq!(mine.len(), 1, "exactly the new strike");
+}
+
+// ---------------------------------------------------------------- B2: weapon knockback
+
+#[derive(Resource, Default)]
+struct KnockbackSeen(Vec<(Entity, KnockbackIntensity)>);
+
+fn record_knockback(mut seen: ResMut<KnockbackSeen>, mut damage: MessageReader<DamageDealt>) {
+    seen.0
+        .extend(damage.read().map(|d| (d.target, d.knockback)));
+}
+
+/// Strikes a dummy once with the sword patched by `patch`; returns the
+/// knockback of its hit and whether the strike hitbox carried `HitKnockback`.
+fn strike_knockback(patch: impl Fn(&mut WeaponClass)) -> (KnockbackIntensity, bool) {
+    let mut app = sword_app(patch);
+    app.init_resource::<KnockbackSeen>()
+        .add_systems(Update, record_knockback.after(GameSet::Combat));
+    let target = spawn_dummy_target(&mut app);
+    attack(&mut app);
+    let world = app.world_mut();
+    let tagged = world
+        .query_filtered::<&HitKnockback, With<WeaponStrike>>()
+        .iter(world)
+        .count()
+        > 0;
+    let seen = &app.world().resource::<KnockbackSeen>().0;
+    let hits: Vec<_> = seen.iter().filter(|(t, _)| *t == target).collect();
+    assert_eq!(hits.len(), 1, "one hit on the dummy: {seen:?}");
+    (hits[0].1, tagged)
+}
+
+#[test]
+fn the_iron_sword_hits_with_the_legacy_knockback() {
+    assert_eq!(
+        strike_knockback(|_| {}),
+        (KnockbackIntensity::Medium, false),
+        "default class: Medium and no extra component"
+    );
+}
+
+#[test]
+fn a_weapon_class_knockback_reaches_its_hits() {
+    for intensity in [KnockbackIntensity::Light, KnockbackIntensity::Heavy] {
+        assert_eq!(
+            strike_knockback(move |c| c.knockback = intensity),
+            (intensity, true)
+        );
+    }
 }

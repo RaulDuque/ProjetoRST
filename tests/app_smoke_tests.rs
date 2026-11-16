@@ -294,6 +294,7 @@ fn emit_pending_damage(
             target: player,
             outcome,
             direction: 1.0,
+            knockback: Default::default(),
         });
     }
 }

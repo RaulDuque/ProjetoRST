@@ -6,6 +6,7 @@
 use bevy::prelude::*;
 
 use crate::combat::damage::DamageOutcome;
+use crate::combat::reaction::KnockbackIntensity;
 use crate::enemies::definitions::DropEntry;
 use crate::skills::execution::CommandOutcome;
 
@@ -59,6 +60,8 @@ pub struct DamageDealt {
     pub outcome: DamageOutcome,
     /// Horizontal direction of the hit (+1 right, -1 left), for knockback.
     pub direction: f32,
+    /// V2.4: how hard the hit pushes (`Medium` = pre-V2.4 knockback).
+    pub knockback: KnockbackIntensity,
 }
 
 /// An enemy died; carries the reward.

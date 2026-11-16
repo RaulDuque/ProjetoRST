@@ -4,8 +4,10 @@ use bevy::prelude::*;
 
 use super::damage::{DamageKind, HitSpec};
 use super::hitboxes::{
-    AttachedToOwner, CombatProfile, Hitbox, PendingStrike, RehitTimers, SideLock, Team,
+    AttachedToOwner, CombatProfile, HitKnockback, Hitbox, PendingStrike, RehitTimers, SideLock,
+    Team,
 };
+use super::reaction::KnockbackIntensity;
 use super::strike_timeline::{StrikePhase, StrikeTimeline};
 use crate::core::constants::{HITBOX_ACTIVE_FRACTION, Z_EFFECTS};
 use crate::core::events::{BasicAttackRequested, SkillStarted};
@@ -216,6 +218,9 @@ pub fn basic_attack(
         }
         if let Some(interval) = strike.rehit_interval {
             hitbox.insert(RehitTimers::new(interval));
+        }
+        if strike.knockback != KnockbackIntensity::default() {
+            hitbox.insert(HitKnockback(strike.knockback));
         }
         commands
             .entity(request.attacker)

@@ -13,13 +13,14 @@
 //! Balance: docs/EQUIPMENT_EXPANSION_V2_0.md §21.
 //!
 //! V2.4: optional fields (`startup`, `active_fraction`, `cancel_after`,
-//! `air_control`, `turn_window`, `rehit_interval`); omitted, they
-//! reproduce the pre-V2.4 strike (docs/COMBAT_FEEL_V2_4.md).
+//! `air_control`, `turn_window`, `rehit_interval`, `knockback`); omitted,
+//! they reproduce the pre-V2.4 strike (docs/COMBAT_FEEL_V2_4.md).
 
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
 use super::items::ItemCategory;
+use crate::combat::reaction::KnockbackIntensity;
 use crate::core::constants::{BASIC_ATTACK_HITBOX, BASIC_ATTACK_TIME, HITBOX_ACTIVE_FRACTION};
 use crate::magic::elements::Element;
 
@@ -91,6 +92,10 @@ pub struct WeaponClass {
     /// `None` = each target once per strike (as before V2.4).
     #[serde(default)]
     pub rehit_interval: Option<f32>,
+    /// V2.4: how hard the basic attack pushes what it hits. `Medium` = the
+    /// pre-V2.4 knockback.
+    #[serde(default)]
+    pub knockback: KnockbackIntensity,
 }
 
 fn default_active_fraction() -> f32 {
@@ -234,6 +239,8 @@ pub struct StrikeProfile {
     /// V2.4: seconds before the same target can be hit again (`None` =
     /// once). Not scaled by attack speed.
     pub rehit_interval: Option<f32>,
+    /// V2.4: knockback intensity of the strike's hits.
+    pub knockback: KnockbackIntensity,
     /// Multiplier on ATK.
     pub multiplier: f32,
     pub element: Element,
@@ -256,6 +263,7 @@ impl StrikeProfile {
             air_control: 0.0,
             turn_window: 0.0,
             rehit_interval: None,
+            knockback: KnockbackIntensity::Medium,
             multiplier: 1.0,
             element: Element::Physical,
         }
@@ -279,6 +287,7 @@ impl StrikeProfile {
             air_control: class.air_control,
             turn_window: class.turn_window / speed,
             rehit_interval: class.rehit_interval,
+            knockback: class.knockback,
             multiplier: class.power,
             element: stats.element,
         }
@@ -332,6 +341,7 @@ mod tests {
             air_control: 0.0,
             turn_window: 0.0,
             rehit_interval: None,
+            knockback: KnockbackIntensity::Medium,
         }
     }
 
@@ -441,6 +451,7 @@ mod tests {
     #[test]
     fn control_turn_and_rehit_default_to_the_pre_v2_4_strike() {
         let profile = StrikeProfile::resolve(&sword(), &WeaponStats::default(), 1.0);
+        assert_eq!(profile.knockback, KnockbackIntensity::Medium);
         assert_eq!(profile.air_control, 0.0);
         assert_eq!(profile.turn_window, 0.0);
         assert_eq!(profile.rehit_interval, None);

@@ -20,6 +20,7 @@ pub struct PlayerPlugin;
 impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut App) {
         app.add_plugins(visual::PlayerVisualPlugin)
+            .init_resource::<systems::PlayerStagger>()
             .add_systems(Startup, systems::spawn_player)
             .add_systems(Update, movement::update_facing.in_set(GameSet::Commands))
             .add_systems(

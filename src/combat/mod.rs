@@ -7,6 +7,8 @@ pub mod command_input;
 pub mod command_parser;
 pub mod damage;
 pub mod hitboxes;
+pub mod reaction;
+pub mod simultaneous;
 pub mod strike_timeline;
 
 use bevy::prelude::*;
@@ -19,6 +21,7 @@ pub struct CombatPlugin;
 impl Plugin for CombatPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<attacks::StrikeCancelPolicy>()
+            .init_resource::<hitboxes::SimultaneousHitPolicy>()
             .add_systems(
                 Update,
                 attacks::apply_strike_cancel_policy

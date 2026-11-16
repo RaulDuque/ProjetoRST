@@ -50,6 +50,11 @@ pub const AIR_CONTROL_REFERENCE_FRAME: f32 = 1.0 / 60.0;
 pub const ENEMY_KNOCKBACK: f32 = 160.0;
 pub const ENEMY_HURT_FLASH: f32 = 0.15;
 
+/// V2.4: knockback of a `Light` / `Heavy` hit as a share of the `Medium`
+/// one (`PLAYER_HURT_KNOCKBACK`, `ENEMY_KNOCKBACK`).
+pub const KNOCKBACK_LIGHT_SCALE: f32 = 0.5;
+pub const KNOCKBACK_HEAVY_SCALE: f32 = 1.5;
+
 // ---------------------------------------------------------------- camera
 
 // V2.3: the camera feel (zoom, follow rates, dead zones, look-ahead) is
