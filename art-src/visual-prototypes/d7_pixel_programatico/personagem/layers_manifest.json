@@ -1,0 +1,225 @@
+{
+  "cell": [
+    128,
+    160
+  ],
+  "pivot_sole": [
+    64,
+    156
+  ],
+  "game_height_px": 52,
+  "draw_order": [
+    "cape_back",
+    "body",
+    "pants_boots",
+    "coat_or_armor",
+    "gloves",
+    "cape_front",
+    "head",
+    "helm_or_hat",
+    "sword",
+    "shield"
+  ],
+  "layers": [
+    {
+      "id": "body_base",
+      "file": "personagem/body_base.png",
+      "size": [
+        128,
+        160
+      ],
+      "bbox": [
+        37,
+        47,
+        91,
+        157
+      ],
+      "pivot": [
+        64,
+        156
+      ],
+      "palette": "d2_inspired",
+      "visibility": true
+    },
+    {
+      "id": "body_d4",
+      "file": "equipamentos/body_d4.png",
+      "size": [
+        128,
+        160
+      ],
+      "bbox": [
+        55,
+        48,
+        75,
+        157
+      ],
+      "pivot": [
+        64,
+        156
+      ],
+      "palette": "d2_inspired",
+      "visibility": true
+    },
+    {
+      "id": "cape_back",
+      "file": "equipamentos/cape_back.png",
+      "size": [
+        128,
+        160
+      ],
+      "bbox": [
+        35,
+        38,
+        95,
+        157
+      ],
+      "pivot": [
+        64,
+        156
+      ],
+      "palette": "d2_inspired",
+      "visibility": true
+    },
+    {
+      "id": "coat_light",
+      "file": "equipamentos/coat_light.png",
+      "size": [
+        128,
+        160
+      ],
+      "bbox": [
+        40,
+        48,
+        90,
+        157
+      ],
+      "pivot": [
+        64,
+        156
+      ],
+      "palette": "d2_inspired",
+      "visibility": true
+    },
+    {
+      "id": "armor_heavy",
+      "file": "equipamentos/armor_heavy.png",
+      "size": [
+        128,
+        160
+      ],
+      "bbox": [
+        35,
+        58,
+        94,
+        157
+      ],
+      "pivot": [
+        64,
+        156
+      ],
+      "palette": "d2_inspired",
+      "visibility": true
+    },
+    {
+      "id": "hat",
+      "file": "equipamentos/hat.png",
+      "size": [
+        128,
+        160
+      ],
+      "bbox": [
+        40,
+        24,
+        90,
+        59
+      ],
+      "pivot": [
+        64,
+        156
+      ],
+      "palette": "d2_inspired",
+      "visibility": true
+    },
+    {
+      "id": "helm",
+      "file": "equipamentos/helm.png",
+      "size": [
+        128,
+        160
+      ],
+      "bbox": [
+        47,
+        24,
+        82,
+        63
+      ],
+      "pivot": [
+        64,
+        156
+      ],
+      "palette": "d2_inspired",
+      "visibility": true
+    },
+    {
+      "id": "glasses",
+      "file": "equipamentos/glasses.png",
+      "size": [
+        128,
+        160
+      ],
+      "bbox": [
+        48,
+        25,
+        81,
+        42
+      ],
+      "pivot": [
+        64,
+        156
+      ],
+      "palette": "d2_inspired",
+      "visibility": true
+    },
+    {
+      "id": "sword",
+      "file": "equipamentos/sword.png",
+      "size": [
+        128,
+        160
+      ],
+      "bbox": [
+        72,
+        67,
+        108,
+        136
+      ],
+      "pivot": [
+        64,
+        156
+      ],
+      "palette": "d2_inspired",
+      "visibility": true
+    },
+    {
+      "id": "shield",
+      "file": "equipamentos/shield.png",
+      "size": [
+        128,
+        160
+      ],
+      "bbox": [
+        25,
+        72,
+        68,
+        119
+      ],
+      "pivot": [
+        64,
+        156
+      ],
+      "palette": "d2_inspired",
+      "visibility": true
+    }
+  ]
+}
