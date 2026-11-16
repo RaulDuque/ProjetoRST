@@ -1,0 +1,29 @@
+{
+  "failures": [],
+  "same_layout_as_published": true,
+  "effects_identical_to_published": true,
+  "sheet": "/home/raul/\u00c1rea de trabalho/Andvarion/ProjetoRST/art-src/player/comparisons/v2_2_weaponless/published_vs_weaponless.png",
+  "atlases": {
+    "locomotion": {
+      "size": [
+        1038,
+        1038
+      ],
+      "frames": 64
+    },
+    "combat": {
+      "size": [
+        1804,
+        1744
+      ],
+      "frames": 58
+    }
+  },
+  "staged": {
+    "player.ron": "7491f714364997b6278b7821438f3a101f039fcc3423790523116cc0f40c0c3a",
+    "player_sockets.ron": "f4c8f93812af85a545fe9aa5aed82bb742d736e6ed8fe8de5f05b5c28d26d68a",
+    "locomotion": "6373c896d2fcde5e192728574e7a787adb859da4d63edd76df8b0aca6e648580",
+    "combat": "286735f6a500a0f8b10870a1f24bdfd503ec0140a03c0a4a247ea2eb56139637",
+    "effects": "9e08d365a01c07da3e10aa3c72383851b6b456c07edb325dd13af7a68dc58996"
+  }
+}
