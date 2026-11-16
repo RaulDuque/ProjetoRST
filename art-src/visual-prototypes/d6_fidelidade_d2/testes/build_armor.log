@@ -1,0 +1,23 @@
+00:01.571  blend            | Read blend: "/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/blender/swordsman_rig_v007_d6_lab.blend"
+/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/scripts/build_heavy_armor.py:57: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  mat.use_nodes = True
+[d6] plate d6_cuirass -> chest
+[d6] plate d6_pauldron_R -> upper_arm.R
+[d6] plate d6_pauldron_L -> upper_arm.L
+[d6] plate d6_bracer_R -> forearm.R
+[d6] plate d6_bracer_L -> forearm.L
+[d6] plate d6_gauntlet_R -> hand.R
+[d6] plate d6_gauntlet_L -> hand.L
+[d6] plate d6_fauld -> pelvis
+[d6] plate d6_cuisse_R -> thigh.R
+[d6] plate d6_cuisse_L -> thigh.L
+[d6] plate d6_greave_R -> shin.R
+[d6] plate d6_greave_L -> shin.L
+[d6] plate d6_sabaton_R -> foot.R
+[d6] plate d6_sabaton_L -> foot.L
+[d6] plate d6_helm -> head
+Info: Saved as "swordsman_rig_v007_d6_lab.blend"
+[d6] saved /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/blender/swordsman_rig_v007_d6_lab.blend
+Blender 5.2.4 LTS (hash cd5dc428cce1 built 2026-11-10 01:31:47)
+
+Blender quit

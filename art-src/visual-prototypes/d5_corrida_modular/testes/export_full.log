@@ -1,0 +1,95 @@
+00:01.647  blend            | Read blend: "/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/blender/swordsman_rig_v007_d5_lab.blend"
+00:09.096  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/acabamento/blender_full_A_f00.png'
+00:16.626  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/acabamento/blender_full_B_f00.png'
+00:23.126  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/acabamento/blender_raw_shaded_f00.png'
+00:30.296  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/body/run_f02.png'
+00:36.065  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/light/run_f02.png'
+00:41.736  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/cape/run_f02.png'
+00:47.432  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/heavy/run_f02.png'
+00:53.048  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/weapon/run_f02.png'
+01:00.378  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/acabamento/blender_full_A_f02.png'
+01:07.925  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/acabamento/blender_full_B_f02.png'
+01:15.112  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/body/run_f03.png'
+01:20.856  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/light/run_f03.png'
+01:26.472  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/cape/run_f03.png'
+01:32.143  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/heavy/run_f03.png'
+01:37.743  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/weapon/run_f03.png'
+01:44.948  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/body/run_f04.png'
+01:50.674  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/light/run_f04.png'
+01:56.291  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/cape/run_f04.png'
+02:01.949  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/heavy/run_f04.png'
+02:07.546  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/weapon/run_f04.png'
+02:14.757  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/body/run_f05.png'
+02:20.484  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/light/run_f05.png'
+02:26.122  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/cape/run_f05.png'
+02:31.723  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/heavy/run_f05.png'
+02:37.301  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/weapon/run_f05.png'
+02:44.581  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/body/run_f06.png'
+02:50.324  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/light/run_f06.png'
+02:55.957  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/cape/run_f06.png'
+03:01.676  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/heavy/run_f06.png'
+03:07.284  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/weapon/run_f06.png'
+03:14.522  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/body/run_f07.png'
+03:20.236  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/light/run_f07.png'
+03:25.940  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/cape/run_f07.png'
+03:31.620  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/heavy/run_f07.png'
+03:37.201  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/weapon/run_f07.png'
+03:44.498  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/body/run_f08.png'
+03:50.290  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/light/run_f08.png'
+03:55.948  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/cape/run_f08.png'
+04:01.559  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/heavy/run_f08.png'
+04:07.125  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/weapon/run_f08.png'
+04:14.365  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/body/run_f09.png'
+04:20.107  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/light/run_f09.png'
+04:25.714  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/cape/run_f09.png'
+04:31.388  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/heavy/run_f09.png'
+04:36.983  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/weapon/run_f09.png'
+[d5] full A frame=0
+[d5] full B frame=0
+[d5] raw shaded -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/acabamento/blender_raw_shaded_f00.png
+[d5] layer=body frame=2 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/body/run_f02.png
+[d5] layer=light frame=2 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/light/run_f02.png
+[d5] layer=cape frame=2 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/cape/run_f02.png
+[d5] layer=heavy frame=2 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/heavy/run_f02.png
+[d5] layer=weapon frame=2 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/weapon/run_f02.png
+[d5] full A frame=2
+[d5] full B frame=2
+[d5] layer=body frame=3 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/body/run_f03.png
+[d5] layer=light frame=3 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/light/run_f03.png
+[d5] layer=cape frame=3 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/cape/run_f03.png
+[d5] layer=heavy frame=3 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/heavy/run_f03.png
+[d5] layer=weapon frame=3 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/weapon/run_f03.png
+[d5] layer=body frame=4 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/body/run_f04.png
+[d5] layer=light frame=4 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/light/run_f04.png
+[d5] layer=cape frame=4 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/cape/run_f04.png
+[d5] layer=heavy frame=4 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/heavy/run_f04.png
+[d5] layer=weapon frame=4 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/weapon/run_f04.png
+[d5] layer=body frame=5 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/body/run_f05.png
+[d5] layer=light frame=5 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/light/run_f05.png
+[d5] layer=cape frame=5 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/cape/run_f05.png
+[d5] layer=heavy frame=5 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/heavy/run_f05.png
+[d5] layer=weapon frame=5 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/weapon/run_f05.png
+[d5] layer=body frame=6 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/body/run_f06.png
+[d5] layer=light frame=6 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/light/run_f06.png
+[d5] layer=cape frame=6 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/cape/run_f06.png
+[d5] layer=heavy frame=6 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/heavy/run_f06.png
+[d5] layer=weapon frame=6 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/weapon/run_f06.png
+[d5] layer=body frame=7 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/body/run_f07.png
+[d5] layer=light frame=7 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/light/run_f07.png
+[d5] layer=cape frame=7 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/cape/run_f07.png
+[d5] layer=heavy frame=7 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/heavy/run_f07.png
+[d5] layer=weapon frame=7 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/weapon/run_f07.png
+[d5] layer=body frame=8 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/body/run_f08.png
+[d5] layer=light frame=8 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/light/run_f08.png
+[d5] layer=cape frame=8 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/cape/run_f08.png
+[d5] layer=heavy frame=8 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/heavy/run_f08.png
+[d5] layer=weapon frame=8 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/weapon/run_f08.png
+[d5] layer=body frame=9 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/body/run_f09.png
+[d5] layer=light frame=9 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/light/run_f09.png
+[d5] layer=cape frame=9 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/cape/run_f09.png
+[d5] layer=heavy frame=9 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/heavy/run_f09.png
+[d5] layer=weapon frame=9 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/weapon/run_f09.png
+[d5] wrote /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/rig/export_manifest.json
+Blender 5.2.4 LTS (hash cd5dc428cce1 built 2026-11-10 01:31:47)
+
+Blender quit

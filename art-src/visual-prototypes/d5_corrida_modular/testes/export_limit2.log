@@ -1,0 +1,35 @@
+00:01.465  blend            | Read blend: "/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/blender/swordsman_rig_v007_d5_lab.blend"
+00:09.446  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/body/run_f00.png'
+00:15.230  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/light/run_f00.png'
+00:20.838  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/cape/run_f00.png'
+00:26.446  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/heavy/run_f00.png'
+00:32.063  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/weapon/run_f00.png'
+00:39.447  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/acabamento/blender_full_A_f00.png'
+00:47.021  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/acabamento/blender_full_B_f00.png'
+00:53.537  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/acabamento/blender_raw_shaded_f00.png'
+01:00.661  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/body/run_f01.png'
+01:06.368  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/light/run_f01.png'
+01:11.945  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/cape/run_f01.png'
+01:17.565  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/heavy/run_f01.png'
+01:23.131  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/weapon/run_f01.png'
+01:30.483  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/acabamento/blender_full_A_f01.png'
+01:37.997  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/acabamento/blender_full_B_f01.png'
+[d5] layer=body frame=0 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/body/run_f00.png
+[d5] layer=light frame=0 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/light/run_f00.png
+[d5] layer=cape frame=0 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/cape/run_f00.png
+[d5] layer=heavy frame=0 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/heavy/run_f00.png
+[d5] layer=weapon frame=0 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/weapon/run_f00.png
+[d5] full A frame=0
+[d5] full B frame=0
+[d5] raw shaded -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/acabamento/blender_raw_shaded_f00.png
+[d5] layer=body frame=1 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/body/run_f01.png
+[d5] layer=light frame=1 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/light/run_f01.png
+[d5] layer=cape frame=1 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/cape/run_f01.png
+[d5] layer=heavy frame=1 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/heavy/run_f01.png
+[d5] layer=weapon frame=1 -> /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/camadas/weapon/run_f01.png
+[d5] full A frame=1
+[d5] full B frame=1
+[d5] wrote /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d5_corrida_modular/rig/export_manifest.json
+Blender 5.2.4 LTS (hash cd5dc428cce1 built 2026-11-10 01:31:47)
+
+Blender quit

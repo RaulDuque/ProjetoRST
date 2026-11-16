@@ -1,0 +1,53 @@
+00:01.355  blend            | Read blend: "/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/blender/swordsman_rig_v007_d6_lab.blend"
+00:06.715  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/pesados/cuirass.png'
+00:12.340  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/pesados/pauldron_R.png'
+00:17.963  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/pesados/pauldron_L.png'
+00:23.586  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/pesados/bracer_R.png'
+00:29.232  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/pesados/bracer_L.png'
+00:34.933  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/pesados/gauntlet_R.png'
+00:40.485  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/pesados/gauntlet_L.png'
+00:46.070  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/pesados/fauld.png'
+00:51.656  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/pesados/cuisse_R.png'
+00:57.261  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/pesados/cuisse_L.png'
+01:02.849  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/pesados/greave_R.png'
+01:08.466  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/pesados/greave_L.png'
+01:14.084  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/pesados/sabaton_R.png'
+01:19.691  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/pesados/sabaton_L.png'
+01:25.295  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/cabeca/helm.png'
+01:30.832  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/armas/shield.png'
+01:35.569  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/armas/sword.png'
+01:41.215  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/capas/cape.png'
+01:46.905  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/leves/coat.png'
+01:52.749  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/leves/shirt.png'
+01:58.639  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/pernas/pants.png'
+02:04.268  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/maos/gloves.png'
+02:09.935  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/botas/boots.png'
+02:17.321  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/personagem/D6_A/idle_side_toon.png'
+02:24.570  render           | Saved: '/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/personagem/D6_A/idle_side_heavy.png'
+[d6] static /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/pesados/cuirass.png
+[d6] static /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/pesados/pauldron_R.png
+[d6] static /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/pesados/pauldron_L.png
+[d6] static /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/pesados/bracer_R.png
+[d6] static /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/pesados/bracer_L.png
+[d6] static /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/pesados/gauntlet_R.png
+[d6] static /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/pesados/gauntlet_L.png
+[d6] static /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/pesados/fauld.png
+[d6] static /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/pesados/cuisse_R.png
+[d6] static /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/pesados/cuisse_L.png
+[d6] static /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/pesados/greave_R.png
+[d6] static /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/pesados/greave_L.png
+[d6] static /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/pesados/sabaton_R.png
+[d6] static /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/pesados/sabaton_L.png
+[d6] static /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/cabeca/helm.png
+[d6] static /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/armas/shield.png
+[d6] static /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/armas/sword.png
+[d6] static /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/capas/cape.png
+[d6] static /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/leves/coat.png
+[d6] static /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/leves/shirt.png
+[d6] static /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/pernas/pants.png
+[d6] static /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/maos/gloves.png
+[d6] static /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/visual-prototypes/d6_fidelidade_d2/equipamentos/botas/boots.png
+[d6] static masters
+Blender 5.2.4 LTS (hash cd5dc428cce1 built 2026-11-10 01:31:47)
+
+Blender quit
