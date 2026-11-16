@@ -1,0 +1,1577 @@
+{
+  "objects": [
+    {
+      "name": "belt",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "belt_buckle_bar_0",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "belt_buckle_bar_1",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "belt_buckle_bar_2",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "belt_buckle_bar_3",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "belt_hole_0",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "belt_hole_1",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "belt_keeper",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "belt_prong",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "belt_tongue",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "blade",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "blade_readable",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": true
+    },
+    {
+      "name": "boot_foot_far",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "boot_foot_near",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "boot_heel_far",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "boot_heel_near",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "boot_seam_far",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "boot_seam_near",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "boot_shaft_far",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "boot_shaft_near",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "boot_sole_far",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "boot_sole_near",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "boot_toe_seam_far",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "boot_toe_seam_near",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "boot_welt_far",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "boot_welt_near",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "brow_far",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "brow_near",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "cam_back",
+      "type": "CAMERA",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "cam_close_boots",
+      "type": "CAMERA",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "cam_close_cape",
+      "type": "CAMERA",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "cam_close_coat",
+      "type": "CAMERA",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "cam_close_face",
+      "type": "CAMERA",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "cam_close_face_front",
+      "type": "CAMERA",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "cam_close_face_profile",
+      "type": "CAMERA",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "cam_close_hair",
+      "type": "CAMERA",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "cam_close_sword",
+      "type": "CAMERA",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "cam_close_torso",
+      "type": "CAMERA",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "cam_combat_side",
+      "type": "CAMERA",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "cam_front",
+      "type": "CAMERA",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "cam_side",
+      "type": "CAMERA",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "cam_three_quarter",
+      "type": "CAMERA",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "cape_clasp",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "cape_cord",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "cape_stud",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "coat",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "collar",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "cuff_band_far",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "cuff_band_near",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "cuff_far",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "cuff_near",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "ear_far",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "ear_near",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "eye_iris_far",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "eye_iris_near",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "eye_ring_far",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "eye_ring_near",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "eye_sclera_far",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "eye_sclera_near",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "glove_far_finger_0",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "glove_far_finger_1",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "glove_far_finger_2",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "glove_far_finger_3",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "glove_far_palm",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "glove_far_thumb",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "glove_near_finger_0",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "glove_near_finger_1",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "glove_near_finger_2",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "glove_near_finger_3",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "glove_near_palm",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "glove_near_thumb",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_back_0",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_back_1",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_back_2",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_back_3",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_back_4",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_back_5",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_back_6",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_back_7",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_back_8",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_back_9",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_back_over_0",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_back_over_1",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_back_over_2",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_back_over_3",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_fringe_0",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_fringe_1",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_fringe_10",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_fringe_2",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_fringe_3",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_fringe_4",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_fringe_5",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_fringe_6",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_fringe_7",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_fringe_8",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_fringe_9",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_fringe_over_0",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_fringe_over_1",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_fringe_over_2",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_fringe_over_3",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_scalp",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_side_far_0",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_side_far_1",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_side_far_2",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_side_far_3",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_side_far_4",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_side_near_0",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_side_near_1",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_side_near_2",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_side_near_3",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_side_near_4",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_top_0",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_top_1",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_top_2",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_top_3",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_top_4",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "hair_top_5",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "half_cape",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "head",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "leg_far",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "leg_near",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "lid_crease_far",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "lid_crease_near",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "lid_lower_far",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "lid_lower_near",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "lid_upper_far",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "lid_upper_near",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "light_rig",
+      "type": "EMPTY",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "mouth",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "neck",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "pauldron",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "pauldron_lame",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "rig_v007",
+      "type": "ARMATURE",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "sleeve_far",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "sleeve_near",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "sword_collar",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "sword_grip",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "sword_guard",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "sword_pommel",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "torso_trousers",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "torso_vest",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "trouser_fly",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "v3_light_fill",
+      "type": "LIGHT",
+      "parent": "light_rig",
+      "collections": [
+        "Scene Collection"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "v3_light_key",
+      "type": "LIGHT",
+      "parent": "light_rig",
+      "collections": [
+        "Scene Collection"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "v3_light_rim_back",
+      "type": "LIGHT",
+      "parent": "light_rig",
+      "collections": [
+        "Scene Collection"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "v3_light_rim_front",
+      "type": "LIGHT",
+      "parent": "light_rig",
+      "collections": [
+        "Scene Collection"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "vest_button_0",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "vest_button_1",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "vest_button_2",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "vest_button_3",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "vest_hem_trim",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    },
+    {
+      "name": "vest_placket",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "swordsman_v004"
+      ],
+      "hidden": false
+    }
+  ],
+  "armatures": [
+    {
+      "name": "rig_v007",
+      "bones": [
+        {
+          "name": "root",
+          "parent": null
+        },
+        {
+          "name": "pelvis",
+          "parent": "root"
+        },
+        {
+          "name": "spine_01",
+          "parent": "pelvis"
+        },
+        {
+          "name": "spine_02",
+          "parent": "spine_01"
+        },
+        {
+          "name": "chest",
+          "parent": "spine_02"
+        },
+        {
+          "name": "neck",
+          "parent": "chest"
+        },
+        {
+          "name": "head",
+          "parent": "neck"
+        },
+        {
+          "name": "clavicle.R",
+          "parent": "chest"
+        },
+        {
+          "name": "upper_arm.R",
+          "parent": "clavicle.R"
+        },
+        {
+          "name": "forearm.R",
+          "parent": "upper_arm.R"
+        },
+        {
+          "name": "hand.R",
+          "parent": "forearm.R"
+        },
+        {
+          "name": "sword",
+          "parent": "hand.R"
+        },
+        {
+          "name": "clavicle.L",
+          "parent": "chest"
+        },
+        {
+          "name": "upper_arm.L",
+          "parent": "clavicle.L"
+        },
+        {
+          "name": "forearm.L",
+          "parent": "upper_arm.L"
+        },
+        {
+          "name": "hand.L",
+          "parent": "forearm.L"
+        },
+        {
+          "name": "cape_arm.L_01",
+          "parent": "clavicle.L"
+        },
+        {
+          "name": "cape_arm.L_02",
+          "parent": "cape_arm.L_01"
+        },
+        {
+          "name": "collar_back",
+          "parent": "chest"
+        },
+        {
+          "name": "cape_back_01",
+          "parent": "spine_02"
+        },
+        {
+          "name": "cape_back_02",
+          "parent": "cape_back_01"
+        },
+        {
+          "name": "thigh.R",
+          "parent": "pelvis"
+        },
+        {
+          "name": "shin.R",
+          "parent": "thigh.R"
+        },
+        {
+          "name": "foot.R",
+          "parent": "shin.R"
+        },
+        {
+          "name": "toe.R",
+          "parent": "foot.R"
+        },
+        {
+          "name": "thigh.L",
+          "parent": "pelvis"
+        },
+        {
+          "name": "shin.L",
+          "parent": "thigh.L"
+        },
+        {
+          "name": "foot.L",
+          "parent": "shin.L"
+        },
+        {
+          "name": "toe.L",
+          "parent": "foot.L"
+        },
+        {
+          "name": "coat_front.R_01",
+          "parent": "pelvis"
+        },
+        {
+          "name": "coat_front.R_02",
+          "parent": "coat_front.R_01"
+        },
+        {
+          "name": "coat_back.R_01",
+          "parent": "pelvis"
+        },
+        {
+          "name": "coat_back.R_02",
+          "parent": "coat_back.R_01"
+        },
+        {
+          "name": "coat_front.L_01",
+          "parent": "pelvis"
+        },
+        {
+          "name": "coat_front.L_02",
+          "parent": "coat_front.L_01"
+        },
+        {
+          "name": "coat_back.L_01",
+          "parent": "pelvis"
+        },
+        {
+          "name": "coat_back.L_02",
+          "parent": "coat_back.L_01"
+        },
+        {
+          "name": "CTRL_foot_ik.R",
+          "parent": "root"
+        },
+        {
+          "name": "CTRL_knee_pole.R",
+          "parent": "root"
+        },
+        {
+          "name": "CTRL_foot_ik.L",
+          "parent": "root"
+        },
+        {
+          "name": "CTRL_knee_pole.L",
+          "parent": "root"
+        },
+        {
+          "name": "CTRL_hand_ik.R",
+          "parent": "root"
+        },
+        {
+          "name": "CTRL_elbow_pole.R",
+          "parent": "root"
+        }
+      ],
+      "bone_count": 43
+    }
+  ],
+  "actions": [
+    "GAME_V15_attack_basic_air",
+    "GAME_V15_death_lying",
+    "GAME_V15_fall_v15",
+    "GAME_V15_hurt_a",
+    "GAME_V15_hurt_b",
+    "POSE_P01_neutral",
+    "POSE_P02_walk_contact",
+    "POSE_P03_run_extreme",
+    "POSE_P04_jump_rise",
+    "POSE_P05_jump_fall",
+    "POSE_P06_basic_attack",
+    "POSE_P07_crescent_slash",
+    "POSE_P08_rising_edge",
+    "POSE_P09_dodge",
+    "POSE_P10_guard",
+    "POSE_P11_hurt",
+    "POSE_P12_magic_cast",
+    "POSE_P13_death"
+  ],
+  "collections": [
+    "Collection",
+    "swordsman_v004"
+  ],
+  "object_count": 152
+}

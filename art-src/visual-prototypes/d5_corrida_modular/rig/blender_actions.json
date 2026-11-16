@@ -1,0 +1,160 @@
+{
+  "actions": [
+    {
+      "name": "GAME_V15_attack_basic_air",
+      "frame_range": [
+        1.0,
+        7.0
+      ]
+    },
+    {
+      "name": "GAME_V15_death_lying",
+      "frame_range": [
+        1.0,
+        12.0
+      ]
+    },
+    {
+      "name": "GAME_V15_fall_v15",
+      "frame_range": [
+        1.0,
+        4.0
+      ]
+    },
+    {
+      "name": "GAME_V15_hurt_a",
+      "frame_range": [
+        1.0,
+        9.0
+      ]
+    },
+    {
+      "name": "GAME_V15_hurt_b",
+      "frame_range": [
+        1.0,
+        9.0
+      ]
+    },
+    {
+      "name": "POSE_P01_neutral",
+      "frame_range": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "POSE_P02_walk_contact",
+      "frame_range": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "POSE_P03_run_extreme",
+      "frame_range": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "POSE_P04_jump_rise",
+      "frame_range": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "POSE_P05_jump_fall",
+      "frame_range": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "POSE_P06_basic_attack",
+      "frame_range": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "POSE_P07_crescent_slash",
+      "frame_range": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "POSE_P08_rising_edge",
+      "frame_range": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "POSE_P09_dodge",
+      "frame_range": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "POSE_P10_guard",
+      "frame_range": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "POSE_P11_hurt",
+      "frame_range": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "POSE_P12_magic_cast",
+      "frame_range": [
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "POSE_P13_death",
+      "frame_range": [
+        1.0,
+        1.0
+      ]
+    }
+  ],
+  "armature": "rig_v007",
+  "active_action": null,
+  "nla": [],
+  "cameras": [
+    "cam_back",
+    "cam_close_boots",
+    "cam_close_cape",
+    "cam_close_coat",
+    "cam_close_face",
+    "cam_close_face_front",
+    "cam_close_face_profile",
+    "cam_close_hair",
+    "cam_close_sword",
+    "cam_close_torso",
+    "cam_combat_side",
+    "cam_front",
+    "cam_side",
+    "cam_three_quarter"
+  ],
+  "lights": [
+    "v3_light_fill",
+    "v3_light_key",
+    "v3_light_rim_back",
+    "v3_light_rim_front"
+  ],
+  "engine": "BLENDER_EEVEE",
+  "resolution": [
+    1024,
+    1024
+  ]
+}
