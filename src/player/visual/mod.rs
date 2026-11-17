@@ -15,6 +15,7 @@
 //! `player::animation` stays visible. Details: docs/PLAYER_VISUAL_ANIMATION_V1_3.md.
 
 pub mod manifest;
+pub mod modular_lab;
 pub mod playback;
 pub mod selection;
 pub mod sockets;
