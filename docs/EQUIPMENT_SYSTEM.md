@@ -33,8 +33,15 @@ são rejeitados no carregamento. Protótipo: common, uncommon, rare, legendary.
 ## Inventário
 
 `add` (empilha até `max_stack`), `remove`, `discard` (itens de missão não podem
-ser descartados), `count`, `sort` (categoria → raridade → nome). Consumir e
-inspecionar dependem da tela de inventário (roadmap, etapa 8).
+ser descartados), `count`, `sort` (categoria → raridade → nome).
+
+## Consumíveis (D18)
+
+Efeito em dados: `consumable: Some(RestoreHp(n) | RestoreMp(n) | RestoreHearts(n))`.
+Uso: tela `I` → Enter na linha `[use]` → `UseItemRequest` →
+`inventory::consume::use_consumable` (atômico) → `ItemUsed` + notificação.
+Recusa se morto, ocupado (fora do inventário), sem efeito (recurso cheio) ou
+sem estoque. Catálogo piloto: `minor_tonic`, `minor_ether`.
 
 ## Drops
 
@@ -43,7 +50,8 @@ Ex.: base 15%, LCK 4 → 16,2%; LCK 50 → 30%.
 
 ## Equipamento inicial
 
-`assets/data/character.ron`: Iron Sword (+8 ATK), Leather Jerkin (+4 DEF), 3× Minor Tonic.
+`assets/data/character.ron`: Iron Sword (+8 ATK), Leather Jerkin (+4 DEF),
+3× Minor Tonic, 1× Minor Ether.
 
 ## V2.0
 

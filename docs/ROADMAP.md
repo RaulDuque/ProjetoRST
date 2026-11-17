@@ -84,7 +84,7 @@ já está feito, etapa por etapa.
 - [x] Tela de inventário: equipar, remover, inspecionar e comparar (V2.0, tecla I)
 - [x] Perfis de arma por categoria, compatibilidade de técnicas, teto de resistência, catálogo de 27 equipamentos (V2.0)
 - [x] Aparência por equipamento em camadas de runtime: rastro, capa, tom (V2.0, parcial: sem arma/elmo desenhados)
-- [ ] Consumir itens pela tela de inventário
+- [x] Consumir itens pela tela de inventário (D18: `use_consumable`, Enter na tela `I`, HP/MP)
 - [x] Regra de duas mãos: lança e arma pesada não usam escudo (V2.1)
 
 ## Etapa 8b — Cidade, NPCs e comércio (V2.1)
@@ -96,7 +96,7 @@ já está feito, etapa por etapa.
 - [ ] Drops de equipamento (gerador de loot isolado)
 - [ ] Ícones de loja/NPC no mapa; arte de NPCs
 - [x] Tutoriais do proprietário (24, em `docs/tutorias/` até liberar `Md-usario/tutorias/`)
-- [ ] Uso de consumíveis em jogo
+- [x] Uso de consumíveis em jogo (D18; hotbar / uso sem abrir inventário ainda pendente)
 
 ## Etapa 9 — Inimigos
 - [x] Arquitetura genérica orientada a dados; IA pura testada

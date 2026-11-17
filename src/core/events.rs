@@ -193,3 +193,20 @@ pub struct TradeRequest {
 pub struct EquipmentChanged {
     pub change: crate::inventory::loadout::LoadoutChange,
 }
+
+/// Request to use one consumable from the bag (D18). Written by the
+/// inventory screen; only `inventory::systems::apply_use_item_requests`
+/// reads it.
+#[derive(Message, Debug, Clone, PartialEq, Eq)]
+pub struct UseItemRequest {
+    pub item: String,
+}
+
+/// A consumable was used successfully (D18), for tests and optional UI.
+#[derive(Message, Debug, Clone, PartialEq, Eq)]
+pub struct ItemUsed {
+    pub item: String,
+    pub hp_restored: i32,
+    pub mp_restored: i32,
+    pub hearts_restored: i32,
+}

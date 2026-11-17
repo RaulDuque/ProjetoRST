@@ -6,7 +6,8 @@ não altera automaticamente `docs/ROADMAP.md` além do item entregue na D17.
 | Etapa | Foco sugerido |
 |---|---|
 | **D17** | Auditoria + pontos de save no mapa (**feito**) |
-| **D18** | Consumíveis em jogo **ou** segundo altar + viagem rápida entre saves descobertos |
+| **D18** | Consumíveis em jogo (**feito** — ver `docs/development/d18/`) |
+| **D19** | Viagem rápida entre saves descobertos (preferência) |
 | **D19** | Gerador de drops de equipamento / recompensas de rota |
 | **D20** | Combat Feel V2.4 (só com autorização) **ou** variedade de inimigos |
 | **D21** | Chefes (fases + arena) |

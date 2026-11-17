@@ -105,8 +105,8 @@ pub fn town_route() -> Vec<Step> {
         Check(Expect::StockLeft(SHOP, BUCKLER, 1)),
         Mark("t10_shop_buy_tab"),
     ]);
-    // Row 3: the Watch Buckler (one unit).
-    for _ in 0..3 {
+    // Row 4: the Watch Buckler (D18: minor_ether inserted above it).
+    for _ in 0..4 {
         route.extend(tap(DOWN));
     }
     route.push(Mark("t11_buckler_compared"));
@@ -166,7 +166,7 @@ pub fn town_route() -> Vec<Step> {
     route.extend(tap(TALK));
     route.extend(tap(ENTER));
     route.push(Check(Expect::ShopOpen(true)));
-    for _ in 0..3 {
+    for _ in 0..4 {
         route.extend(tap(DOWN));
     }
     route.extend(tap(ENTER));

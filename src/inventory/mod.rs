@@ -9,6 +9,7 @@
 
 pub mod appearance;
 pub mod compare;
+pub mod consume;
 pub mod equipment;
 pub mod held;
 pub mod held_art;

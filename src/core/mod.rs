@@ -40,6 +40,8 @@ impl Plugin for CorePlugin {
             .add_message::<FormChanged>()
             .add_message::<events::EquipRequest>()
             .add_message::<events::EquipmentChanged>()
+            .add_message::<events::UseItemRequest>()
+            .add_message::<events::ItemUsed>()
             .add_message::<events::TradeRequest>();
     }
 }

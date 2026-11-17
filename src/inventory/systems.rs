@@ -1,8 +1,9 @@
-//! Bevy side of the equipment (V2.0).
+//! Bevy side of the equipment (V2.0) and consumable use (D18).
 //!
 //! | System | Set | Does |
 //! |---|---|---|
 //! | [`apply_equip_requests`] | Presentation (also paused) | the only writer of equipment changes |
+//! | [`apply_use_item_requests`] | Presentation (also paused) | the only writer of consumable use |
 //! | [`sync_appearance`] | Presentation | keeps [`EquipmentAppearance`] in step with the slots |
 //!
 //! Equipment changes come only from [`EquipRequest`] messages (the inventory
@@ -16,10 +17,13 @@ use std::collections::BTreeSet;
 use bevy::prelude::*;
 
 use super::appearance::Appearance;
+use super::consume::{UseItemError, use_consumable};
 use super::loadout::{EquipGate, LoadoutError, equip_from_bag, unequip_to_bag};
-use crate::app::states::GameSet;
+use crate::app::states::{GameSet, GameState};
 use crate::combat::hitboxes::{AttachedToOwner, CombatProfile, Hitbox};
-use crate::core::events::{EquipOp, EquipRequest, EquipmentChanged, Notification};
+use crate::core::events::{
+    EquipOp, EquipRequest, EquipmentChanged, ItemUsed, Notification, UseItemRequest,
+};
 use crate::core::resources::GameData;
 use crate::player::components::{ActionState, Belongings, CharacterSheet, Player, Vitals};
 use crate::skills::unlock::RequirementContext;
@@ -154,6 +158,85 @@ pub fn apply_equip_requests(
     }
 }
 
+fn use_refusal_text(error: &UseItemError, data: &GameData) -> String {
+    let name = |id: &str| data.items.get(id).map_or(id.to_owned(), |d| d.name.clone());
+    match error {
+        UseItemError::UnknownItem(id) => format!("Unknown item {id}"),
+        UseItemError::NotConsumable(id) => format!("{} cannot be used", name(id)),
+        UseItemError::NotOwned(id) => format!("No {} left", name(id)),
+        UseItemError::Dead => "Cannot use items while fallen".to_owned(),
+        UseItemError::Busy => "Cannot use items right now".to_owned(),
+        UseItemError::NoEffect => "Already at full".to_owned(),
+        UseItemError::Inventory(error) => error.to_string(),
+    }
+}
+
+fn use_success_text(item_name: &str, used: &crate::inventory::consume::UseItemResult) -> String {
+    let mut parts = Vec::new();
+    if used.hp_restored > 0 {
+        parts.push(format!("+{} HP", used.hp_restored));
+    }
+    if used.mp_restored > 0 {
+        parts.push(format!("+{} MP", used.mp_restored));
+    }
+    if used.hearts_restored > 0 {
+        parts.push(format!("+{} Hearts", used.hearts_restored));
+    }
+    if parts.is_empty() {
+        format!("Used {item_name}")
+    } else {
+        format!("Used {item_name} ({})", parts.join(", "))
+    }
+}
+
+/// Applies consumable use requests (D18). Runs while the inventory is open
+/// (simulation paused) and also if a request arrives during play.
+pub fn apply_use_item_requests(
+    data: Res<GameData>,
+    state: Res<State<GameState>>,
+    mut requests: MessageReader<UseItemRequest>,
+    mut player: Query<(&mut Belongings, &mut Vitals, &ActionState), With<Player>>,
+    mut used: MessageWriter<ItemUsed>,
+    mut notifications: MessageWriter<Notification>,
+) {
+    if requests.is_empty() {
+        return;
+    }
+    let Ok((mut belongings, mut vitals, action)) = player.single_mut() else {
+        requests.clear();
+        return;
+    };
+    let inventory_open = *state.get() == GameState::Inventory;
+    for request in requests.read() {
+        let result = use_consumable(
+            &mut belongings.inventory,
+            &data.items,
+            &request.item,
+            action.state(),
+            inventory_open,
+            &mut vitals,
+        );
+        match result {
+            Ok(outcome) => {
+                let name = data
+                    .items
+                    .get(&request.item)
+                    .map_or(request.item.clone(), |d| d.name.clone());
+                notifications.write(Notification(use_success_text(&name, &outcome)));
+                used.write(ItemUsed {
+                    item: request.item.clone(),
+                    hp_restored: outcome.hp_restored,
+                    mp_restored: outcome.mp_restored,
+                    hearts_restored: outcome.hearts_restored,
+                });
+            }
+            Err(error) => {
+                notifications.write(Notification(use_refusal_text(&error, &data)));
+            }
+        }
+    }
+}
+
 /// Resolves the look whenever the belongings change (equip, pickup, load).
 pub fn sync_appearance(
     mut commands: Commands,
@@ -179,6 +262,7 @@ impl Plugin for InventoryPlugin {
             Update,
             (
                 apply_equip_requests,
+                apply_use_item_requests,
                 sync_appearance,
                 super::held_visual::sync_held_look,
             )

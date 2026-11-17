@@ -632,3 +632,20 @@ do briefing D17. O ciclo Metroidvania ainda pedia um altar no mundo.
 **Consequências:** um altar em `vigil_gates_approach`; mapa mostra altares
 descobertos; testes headless cobrem cura/persistência. Viagem rápida entre
 altares fica para etapa posterior.
+
+## D-030 — Uso de consumíveis pela tela de inventário (D18)
+
+**Contexto:** efeitos `ConsumableEffect` e obtenção (start/baús/loja) já
+existiam; a tela `I` só equipava. O loop de combate pedia cura de HP/MP
+sem altar.
+
+**Decisão:**
+- Regras puras em `inventory/consume.rs`; único escritor Bevy
+  `apply_use_item_requests`.
+- Uso permitido com inventário aberto (exceto morto) ou em locomoção.
+- Recusar e não consumir se o recurso alvo já está no máximo.
+- Bolsa listada: equipamentos primeiro, depois consumíveis.
+- Sem bump de Save V3; sem hotbar nesta entrega.
+
+**Consequências:** `minor_ether` (RestoreMp) no catálogo/start/loja;
+testes `consumable_app_tests`. Viagem rápida permanece para D19.

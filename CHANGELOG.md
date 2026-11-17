@@ -4,6 +4,12 @@ Formato: [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/). Versioname
 
 ## [Unreleased]
 
+### D18 — Consumíveis utilizáveis
+- Uso atômico pela tela `I` (`UseItemRequest` → `use_consumable`):
+  `minor_tonic` (HP) e `minor_ether` (MP); recusa se o recurso já está cheio.
+- Start e loja de Hessa incluem Minor Ether; Save V3 inalterado.
+- Docs: `docs/development/d18/`.
+
 ### D17 — Pontos de salvamento no mundo
 - `ObjectKind::SavePoint`: altar reutilizável (`D`) cura HP/MP, marca
   `discovered_save_points` / `last_save_point` e grava o slot.

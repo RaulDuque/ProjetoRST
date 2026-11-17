@@ -41,7 +41,7 @@
         room: "entry_hall",
         attributes: (strength: 6, constitution: 6, intelligence: 6, luck: 4),
         hearts: 20,
-        items: [("minor_tonic", 3)],
+        items: [("minor_tonic", 3), ("minor_ether", 1)],
         equipped: [(Weapon, "iron_sword"), (Body, "leather_jerkin")],
         // V2.1: coins ("marks") at the start.
         coins: 120,

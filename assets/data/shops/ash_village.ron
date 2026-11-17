@@ -11,6 +11,7 @@
         buys: true,
         entries: [
             (item: "minor_tonic", price: 25, stock: Unlimited),
+            (item: "minor_ether", price: 28, stock: Unlimited),
             (item: "gutter_knife", price: 80, stock: Unlimited),
             (item: "sentry_coif", price: 60, stock: Unlimited),
             // V2.1.1: one unit (the limited stock the save keeps).

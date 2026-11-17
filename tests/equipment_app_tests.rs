@@ -15,6 +15,7 @@ use dark_castle_rpg::combat::hitboxes::{CombatProfile, Hitbox};
 use dark_castle_rpg::core::events::{
     Arrival, CommandResolved, EquipOp, EquipRequest, Notification, RoomRequest, SkillActivated,
 };
+use dark_castle_rpg::core::resources::GameData;
 use dark_castle_rpg::inventory::equipment::EquipmentSlot;
 use dark_castle_rpg::inventory::items::ItemCategory;
 use dark_castle_rpg::inventory::systems::EquipmentAppearance;
@@ -23,7 +24,7 @@ use dark_castle_rpg::player::components::{Belongings, CharacterSheet, Player, Vi
 use dark_castle_rpg::player::state::PlayerState;
 use dark_castle_rpg::skills::execution::CommandOutcome;
 use dark_castle_rpg::transform::systems::Transformation;
-use dark_castle_rpg::ui::inventory_screen::InventoryCursor;
+use dark_castle_rpg::ui::inventory_screen::{self, InventoryCursor, Row};
 use dark_castle_rpg::world::exploration_systems::Exploration;
 use dark_castle_rpg::world::graph::{Ability, Grant};
 use dark_castle_rpg::world::physics::Phasing;
@@ -192,11 +193,27 @@ fn a_chest_weapon_is_equipped_through_the_inventory_screen_keys() {
     tap(&mut app, I);
     run(&mut app, 1);
     assert_eq!(state(&app), GameState::Inventory);
-    // Eight slot rows, then the bag: the pike is the first bag row.
-    for _ in 0..EquipmentSlot::ALL.len() {
+    // Slots first, then bag rows (D18: consumables are selectable too).
+    for _ in 0..32 {
+        let cursor = app.world().resource::<InventoryCursor>().0;
+        let b = belongings(&mut app);
+        let catalog = &app.world().resource::<GameData>().items;
+        let rows = inventory_screen::rows(&b, catalog);
+        if let Some(Row::Bag(id)) = rows.get(cursor)
+            && id == "watch_pike"
+        {
+            break;
+        }
         tap(&mut app, DOWN);
+        run(&mut app, 1);
     }
-    assert_eq!(app.world().resource::<InventoryCursor>().0, 8);
+    {
+        let cursor = app.world().resource::<InventoryCursor>().0;
+        let b = belongings(&mut app);
+        let catalog = &app.world().resource::<GameData>().items;
+        let rows = inventory_screen::rows(&b, catalog);
+        assert_eq!(rows.get(cursor), Some(&Row::Bag("watch_pike".into())));
+    }
     tap(&mut app, ENTER);
     run(&mut app, 1);
     let b = belongings(&mut app);

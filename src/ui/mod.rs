@@ -79,7 +79,8 @@ impl Plugin for UiPlugin {
                 Update,
                 (
                     inventory_screen::navigate_inventory
-                        .before(crate::inventory::systems::apply_equip_requests),
+                        .before(crate::inventory::systems::apply_equip_requests)
+                        .before(crate::inventory::systems::apply_use_item_requests),
                     inventory_screen::update_inventory_screen
                         .after(crate::inventory::systems::sync_appearance),
                 )

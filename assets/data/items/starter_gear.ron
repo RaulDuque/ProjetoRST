@@ -68,5 +68,16 @@
             max_stack: 9,
             sell_value: 10,
         ),
+        // D18: MP consumable (also sold in Ash Village).
+        (
+            id: "minor_ether",
+            name: "Minor Ether",
+            description: "Restores 30 MP.",
+            category: Consumable,
+            rarity: "common",
+            consumable: Some(RestoreMp(30)),
+            max_stack: 9,
+            sell_value: 12,
+        ),
     ],
 )

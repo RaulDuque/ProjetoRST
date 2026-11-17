@@ -20,7 +20,7 @@ use super::theme::{
 };
 use crate::app::states::GameState;
 use crate::combat::hitboxes::{AttachedToOwner, Hitbox};
-use crate::core::events::{EquipOp, EquipRequest};
+use crate::core::events::{EquipOp, EquipRequest, UseItemRequest};
 use crate::core::resources::GameData;
 use crate::input::InputBindings;
 use crate::inventory::compare::{Snapshot, StatLine, ValueFormat, compare};
@@ -62,19 +62,29 @@ pub enum InventoryPanel {
     Other,
 }
 
-/// The selectable rows: the eight slots, then each equipment item of the
-/// bag once, in bag order.
+/// The selectable rows: the eight slots, then bag equipment, then
+/// consumables (D18). Equipment stays above potions so gear UX is unchanged.
 pub fn rows(belongings: &Belongings, catalog: &ItemCatalog) -> Vec<Row> {
     let mut rows: Vec<Row> = EquipmentSlot::ALL.into_iter().map(Row::Slot).collect();
-    for stack in belongings.inventory.stacks() {
-        let equipment = catalog
-            .get(&stack.id)
-            .is_some_and(|d| d.category.is_equipment());
-        let listed = rows.iter().any(|r| *r == Row::Bag(stack.id.clone()));
-        if equipment && !listed {
-            rows.push(Row::Bag(stack.id.clone()));
+    let push_bag = |rows: &mut Vec<Row>, want_consumable: bool| {
+        for stack in belongings.inventory.stacks() {
+            let Some(def) = catalog.get(&stack.id) else {
+                continue;
+            };
+            let is_consumable = def.consumable.is_some();
+            let selectable = if want_consumable {
+                is_consumable
+            } else {
+                def.category.is_equipment()
+            };
+            let listed = rows.iter().any(|r| *r == Row::Bag(stack.id.clone()));
+            if selectable && !listed {
+                rows.push(Row::Bag(stack.id.clone()));
+            }
         }
-    }
+    };
+    push_bag(&mut rows, false);
+    push_bag(&mut rows, true);
     rows
 }
 
@@ -175,7 +185,8 @@ pub fn spawn_inventory_screen(mut commands: Commands) {
         });
 }
 
-/// Moves the cursor and turns `Enter` into an [`EquipRequest`].
+/// Moves the cursor and turns `Enter` into an [`EquipRequest`] or
+/// [`UseItemRequest`] (D18 consumables).
 pub fn navigate_inventory(
     keys: Res<ButtonInput<KeyCode>>,
     bindings: Res<InputBindings>,
@@ -183,6 +194,7 @@ pub fn navigate_inventory(
     mut cursor: ResMut<InventoryCursor>,
     player: Single<&Belongings, With<Player>>,
     mut requests: MessageWriter<EquipRequest>,
+    mut use_requests: MessageWriter<UseItemRequest>,
 ) {
     let rows = rows(&player, &data.items);
     let last = rows.len().saturating_sub(1);
@@ -204,7 +216,9 @@ pub fn navigate_inventory(
             });
         }
         Some(Row::Bag(id)) => {
-            if let Some(slot) = target_slot(id, &player.equipment, &data.items) {
+            if data.items.get(id).is_some_and(|d| d.consumable.is_some()) {
+                use_requests.write(UseItemRequest { item: id.clone() });
+            } else if let Some(slot) = target_slot(id, &player.equipment, &data.items) {
                 requests.write(EquipRequest {
                     slot,
                     op: EquipOp::Equip(id.clone()),
@@ -360,22 +374,26 @@ pub fn update_inventory_screen(
                 let Some(def) = catalog.get(id) else {
                     continue;
                 };
-                let usable = def.requirements.check(&ctx).is_ok();
                 let count = belongings.inventory.count(id);
-                let qty = if count > 1 {
+                let qty = if count > 1 || def.consumable.is_some() {
                     format!(" x{count}")
                 } else {
                     String::new()
                 };
-                let flag = if usable { "" } else { "  (cannot equip)" };
-                (
-                    format!("{marker}  {}{qty}{flag}", def.name),
-                    if usable {
-                        rarity_color(def, catalog)
-                    } else {
-                        BLOCKED
-                    },
-                )
+                let (flag, tint) = if def.consumable.is_some() {
+                    ("  [use]", rarity_color(def, catalog))
+                } else {
+                    let usable = def.requirements.check(&ctx).is_ok();
+                    (
+                        if usable { "" } else { "  (cannot equip)" },
+                        if usable {
+                            rarity_color(def, catalog)
+                        } else {
+                            BLOCKED
+                        },
+                    )
+                };
+                (format!("{marker}  {}{qty}{flag}", def.name), tint)
             }
         };
         if index == EquipmentSlot::ALL.len() && rows.len() > index {
@@ -397,6 +415,11 @@ pub fn update_inventory_screen(
             None => (format!("{}: empty", slot.display_name()), None),
         },
         Some(Row::Bag(id)) => match catalog.get(id) {
+            Some(def) if def.consumable.is_some() => {
+                let mut out = describe(def, &data, None);
+                out += "\nEnter: use one";
+                (out, None)
+            }
             Some(def) => {
                 let slot = target_slot(id, equipment, catalog);
                 let mut out = describe(def, &data, None);
