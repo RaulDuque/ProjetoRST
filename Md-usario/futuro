@@ -1,0 +1,54 @@
+# ETAPA FUTURA — PRODUÇÃO VISUAL DEFINITIVA DO DARK CASTLE RPG
+
+## Objetivo
+
+Após a implementação e validação dos principais sistemas de gameplay, iniciar a produção visual definitiva do jogo.
+
+Esta etapa deve permanecer **ADIADA** até autorização expressa do proprietário.
+
+## Pipeline de produção visual
+
+Para cada personagem, inimigo comum, chefe, NPC ou equipamento:
+
+1. **Definir o conceito:** documentar identidade, função, proporções, estilo gótico e requisitos de animação.
+2. **Gerar a referência visual no ChatGPT:** produzir imagens individuais e, quando necessário, vistas frontal, lateral e traseira.
+3. **Aprovar a imagem:** o proprietário analisa e solicita alterações antes de avançar.
+4. **Salvar no projeto:** armazenar as imagens aprovadas em `Md-usario/assets-user/`, organizadas por categoria e personagem.
+5. **Preparar a imagem:** separar manualmente personagens e equipamentos, remover fundos e corrigir enquadramento quando necessário.
+6. **Gerar o modelo 3D:** utilizar o Hunyuan3D local, respeitando os limites da RTX 4050 de 6 GB.
+7. **Preservar o original:** guardar o GLB bruto, sem sobrescrever arquivos anteriores.
+8. **Importar no Blender:** utilizar Blender e Blender MCP para inspecionar, corrigir escala, geometria, materiais e proporções.
+9. **Preparar animações:** criar ou adaptar rigging, skinning, sockets e movimentos necessários.
+10. **Renderizar sprites 2D:** produzir frames e atlas compatíveis com o estilo visual do Dark Castle RPG.
+11. **Validar no jogo:** testar escala, colisões, animações, legibilidade e desempenho.
+12. **Aprovar a integração:** substituir placeholders somente após validação visual e funcional.
+
+## Categorias futuras
+
+- Protagonista e suas transformações.
+- Equipamentos, armas, armaduras, botas e capas.
+- Inimigos comuns e suas variantes.
+- Chefes e suas diferentes fases.
+- NPCs, comerciantes e personagens de missões.
+- Criaturas invocadas e entidades especiais.
+
+## Regras obrigatórias
+
+- Não reativar o Hunyuan automaticamente.
+- Não gerar modelos ou imagens definitivas sem autorização.
+- Não substituir arte aprovada silenciosamente.
+- Não modificar o GLB original do protagonista.
+- Não misturar referências de produção com assets publicados.
+- Não considerar malhas geradas por IA automaticamente prontas para rigging.
+- Preservar versões e documentação de cada asset.
+- Priorizar a implementação funcional antes do acabamento visual.
+
+## Referência existente
+
+O primeiro protótipo do protagonista de cabelo branco-prateado está localizado em:
+
+`Md-usario/assets-user/prota/base/white_mesh.glb`
+
+Esse arquivo deve ser preservado como referência experimental para a futura fase visual.
+
+**Estado desta etapa: PLANEJADA — NÃO EXECUTAR AGORA.**
