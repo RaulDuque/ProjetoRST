@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "id": "d12_refined_experimental",
+  "cell_px": [
+    128,
+    160
+  ],
+  "pivot_sole_px": [
+    64,
+    156
+  ],
+  "world_height": 64.0,
+  "world_width": 51.2,
+  "filter": "nearest",
+  "anchor": "sole_pivot",
+  "contrast_variant_default": "B",
+  "d11_world_height_was": 52.0,
+  "notes": [
+    "World height raised 52\u219264 to match published locomotion height.",
+    "Bevy lab must use Anchor from pivot; nearest sampler per image.",
+    "Pipeline A (D10 refine B) recommended pending owner choice."
+  ]
+}
