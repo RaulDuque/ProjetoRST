@@ -1,0 +1,16 @@
+{
+  "head": null,
+  "hair": "hair_front",
+  "hair_back": "hair_back",
+  "face": "face",
+  "body": "body_base",
+  "coat": "coat_front",
+  "coat_under": null,
+  "armor": null,
+  "hands": "gloves",
+  "feet": "boots_classic",
+  "back": "cape_back",
+  "weapon": "weapon_classic",
+  "offhand": null,
+  "scabbard": "scabbard"
+}

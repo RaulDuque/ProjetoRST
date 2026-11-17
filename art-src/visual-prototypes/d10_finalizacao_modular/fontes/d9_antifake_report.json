@@ -1,0 +1,44 @@
+{
+  "cape": {
+    "status": "partial",
+    "residual_piece_pixels": 114,
+    "outside_delta": 0,
+    "body_opaque": 2500,
+    "limit": 40
+  },
+  "coat": {
+    "status": "pass",
+    "residual_piece_pixels": 0,
+    "outside_delta": 0,
+    "body_opaque": 2899,
+    "limit": 40
+  },
+  "weapon": {
+    "status": "pass",
+    "residual_piece_pixels": 0,
+    "outside_delta": 0,
+    "body_opaque": 3593,
+    "limit": 40
+  },
+  "boots": {
+    "status": "pass",
+    "residual_piece_pixels": 0,
+    "outside_delta": 0,
+    "body_opaque": 3252,
+    "limit": 40
+  },
+  "gloves": {
+    "status": "partial",
+    "residual_piece_pixels": 110,
+    "outside_delta": 0,
+    "body_opaque": 3623,
+    "limit": 40
+  },
+  "scabbard": {
+    "status": "pass",
+    "residual_piece_pixels": 4,
+    "outside_delta": 0,
+    "body_opaque": 3631,
+    "limit": 40
+  }
+}

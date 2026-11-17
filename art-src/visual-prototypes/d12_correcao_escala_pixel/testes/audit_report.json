@@ -1,0 +1,127 @@
+{
+  "scale": {
+    "cell_px": [
+      128,
+      160
+    ],
+    "pivot_sole_px": [
+      64,
+      156
+    ],
+    "world_size_d11_wrong": [
+      41.6,
+      52.0
+    ],
+    "world_size_d12": [
+      51.2,
+      64.0
+    ],
+    "published_locomotion_world": [
+      64.0,
+      64.0
+    ],
+    "view_height": 405.0,
+    "window_h": 720.0,
+    "px_per_world_unit": 1.7778,
+    "sprite_screen_h_d11": 92.44,
+    "sprite_screen_h_d12": 113.78,
+    "sprite_screen_h_published": 113.78,
+    "d11_missing_anchor": true,
+    "anchor_formula": "ax = px/cw - 0.5; ay = 0.5 - py/ch",
+    "anchor_d12": [
+      0.0,
+      -0.475
+    ]
+  },
+  "sources": {
+    "d10_classico": {
+      "file": "art-src/visual-prototypes/d10_finalizacao_modular/loadouts/classico/pose.png",
+      "cell": [
+        128,
+        160
+      ],
+      "bbox": [
+        37,
+        47,
+        91,
+        157
+      ],
+      "bbox_h": 110,
+      "sole_y": 156,
+      "sole_delta_vs_156": 0,
+      "opaque": 3631,
+      "semi_alpha": 0,
+      "rgb_in_clear": 0,
+      "lum_p50": 21.0,
+      "lum_p90": 52.5,
+      "fill_h": 0.688
+    },
+    "d10_pesado": {
+      "file": "art-src/visual-prototypes/d10_finalizacao_modular/loadouts/pesado/pose.png",
+      "cell": [
+        128,
+        160
+      ],
+      "bbox": [
+        25,
+        24,
+        108,
+        157
+      ],
+      "bbox_h": 133,
+      "sole_y": 156,
+      "sole_delta_vs_156": 0,
+      "opaque": 6800,
+      "semi_alpha": 0,
+      "rgb_in_clear": 0,
+      "lum_p50": 21.9,
+      "lum_p90": 40.5,
+      "fill_h": 0.831
+    },
+    "d7b_leve": {
+      "file": "art-src/visual-prototypes/d7_pixel_programatico/loadouts/leve/pose.png",
+      "cell": [
+        128,
+        160
+      ],
+      "bbox": [
+        35,
+        38,
+        108,
+        157
+      ],
+      "bbox_h": 119,
+      "sole_y": 156,
+      "sole_delta_vs_156": 0,
+      "opaque": 5432,
+      "semi_alpha": 0,
+      "rgb_in_clear": 0,
+      "lum_p50": 22.0,
+      "lum_p90": 52.9,
+      "fill_h": 0.744
+    },
+    "d11_classico": {
+      "file": "assets/experimental/d11/poses/classico.png",
+      "cell": [
+        128,
+        160
+      ],
+      "bbox": [
+        37,
+        47,
+        91,
+        157
+      ],
+      "bbox_h": 110,
+      "sole_y": 156,
+      "sole_delta_vs_156": 0,
+      "opaque": 3631,
+      "semi_alpha": 0,
+      "rgb_in_clear": 0,
+      "lum_p50": 21.0,
+      "lum_p90": 52.5,
+      "fill_h": 0.688
+    }
+  },
+  "pipelines": {}
+}

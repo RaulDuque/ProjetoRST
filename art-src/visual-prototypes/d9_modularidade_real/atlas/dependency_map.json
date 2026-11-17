@@ -1,0 +1,284 @@
+{
+  "pieces": [
+    {
+      "piece": "armor_chest",
+      "opaque_px": 3703,
+      "bbox": [
+        35,
+        58,
+        94,
+        157
+      ],
+      "removable": true,
+      "replaceable": true,
+      "source": "d4_quantized",
+      "independence": "real"
+    },
+    {
+      "piece": "armor_forearm_front",
+      "opaque_px": 1597,
+      "bbox": [
+        35,
+        84,
+        94,
+        114
+      ],
+      "removable": true,
+      "replaceable": true,
+      "source": "d4_quantized",
+      "independence": "real"
+    },
+    {
+      "piece": "armor_legs",
+      "opaque_px": 1188,
+      "bbox": [
+        35,
+        114,
+        94,
+        157
+      ],
+      "removable": true,
+      "replaceable": true,
+      "source": "d4_quantized",
+      "independence": "real"
+    },
+    {
+      "piece": "armor_shoulder_front",
+      "opaque_px": 918,
+      "bbox": [
+        41,
+        58,
+        93,
+        84
+      ],
+      "removable": true,
+      "replaceable": true,
+      "source": "d4_quantized",
+      "independence": "real"
+    },
+    {
+      "piece": "body_base",
+      "opaque_px": 718,
+      "bbox": [
+        51,
+        84,
+        78,
+        136
+      ],
+      "removable": false,
+      "replaceable": true,
+      "source": "d2_cut+d4_fill",
+      "independence": "base"
+    },
+    {
+      "piece": "body_d4",
+      "opaque_px": 1396,
+      "bbox": [
+        55,
+        48,
+        75,
+        157
+      ],
+      "removable": true,
+      "replaceable": true,
+      "source": "d2_cut+d4_fill",
+      "independence": "real"
+    },
+    {
+      "piece": "boots_classic",
+      "opaque_px": 379,
+      "bbox": [
+        39,
+        140,
+        91,
+        157
+      ],
+      "removable": true,
+      "replaceable": true,
+      "source": "d2_cut+d4_fill",
+      "independence": "real"
+    },
+    {
+      "piece": "cape_back",
+      "opaque_px": 1245,
+      "bbox": [
+        37,
+        75,
+        90,
+        140
+      ],
+      "removable": true,
+      "replaceable": true,
+      "source": "d2_cut+d4_fill",
+      "independence": "real"
+    },
+    {
+      "piece": "cape_d4",
+      "opaque_px": 4649,
+      "bbox": [
+        35,
+        38,
+        95,
+        157
+      ],
+      "removable": true,
+      "replaceable": true,
+      "source": "d2_cut+d4_fill",
+      "independence": "real"
+    },
+    {
+      "piece": "coat_d4",
+      "opaque_px": 3657,
+      "bbox": [
+        40,
+        48,
+        90,
+        157
+      ],
+      "removable": true,
+      "replaceable": true,
+      "source": "d2_cut+d4_fill",
+      "independence": "real"
+    },
+    {
+      "piece": "coat_front",
+      "opaque_px": 732,
+      "bbox": [
+        46,
+        75,
+        91,
+        143
+      ],
+      "removable": true,
+      "replaceable": true,
+      "source": "d2_cut+d4_fill",
+      "independence": "real"
+    },
+    {
+      "piece": "face",
+      "opaque_px": 23,
+      "bbox": [
+        64,
+        58,
+        74,
+        70
+      ],
+      "removable": true,
+      "replaceable": true,
+      "source": "d2_cut+d4_fill",
+      "independence": "real"
+    },
+    {
+      "piece": "gloves",
+      "opaque_px": 279,
+      "bbox": [
+        68,
+        85,
+        81,
+        110
+      ],
+      "removable": true,
+      "replaceable": true,
+      "source": "d2_cut+d4_fill",
+      "independence": "real"
+    },
+    {
+      "piece": "hair_back",
+      "opaque_px": 115,
+      "bbox": [
+        53,
+        51,
+        62,
+        75
+      ],
+      "removable": true,
+      "replaceable": true,
+      "source": "d2_cut+d4_fill",
+      "independence": "real"
+    },
+    {
+      "piece": "hair_front",
+      "opaque_px": 373,
+      "bbox": [
+        62,
+        47,
+        78,
+        75
+      ],
+      "removable": true,
+      "replaceable": true,
+      "source": "d2_cut+d4_fill",
+      "independence": "real"
+    },
+    {
+      "piece": "helmet",
+      "opaque_px": 958,
+      "bbox": [
+        47,
+        24,
+        82,
+        63
+      ],
+      "removable": true,
+      "replaceable": true,
+      "source": "d4_quantized",
+      "independence": "real"
+    },
+    {
+      "piece": "scabbard",
+      "opaque_px": 8,
+      "bbox": [
+        58,
+        98,
+        62,
+        102
+      ],
+      "removable": true,
+      "replaceable": true,
+      "source": "d2_cut+d4_fill",
+      "independence": "weak"
+    },
+    {
+      "piece": "shield",
+      "opaque_px": 1666,
+      "bbox": [
+        25,
+        72,
+        68,
+        119
+      ],
+      "removable": true,
+      "replaceable": true,
+      "source": "d2_cut+d4_fill",
+      "independence": "real"
+    },
+    {
+      "piece": "weapon_classic",
+      "opaque_px": 38,
+      "bbox": [
+        64,
+        86,
+        91,
+        138
+      ],
+      "removable": true,
+      "replaceable": true,
+      "source": "d2_cut+d4_fill",
+      "independence": "real"
+    },
+    {
+      "piece": "weapon_heavy",
+      "opaque_px": 333,
+      "bbox": [
+        72,
+        67,
+        108,
+        136
+      ],
+      "removable": true,
+      "replaceable": true,
+      "source": "d2_cut+d4_fill",
+      "independence": "real"
+    }
+  ]
+}

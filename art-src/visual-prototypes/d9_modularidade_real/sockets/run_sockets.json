@@ -1,0 +1,1445 @@
+{
+  "clip": "run",
+  "frames": [
+    {
+      "frame": 0,
+      "sockets": {
+        "head": {
+          "name": "head",
+          "x": 66,
+          "y": 55,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "helm",
+            "hat",
+            "hair_front"
+          ]
+        },
+        "neck": {
+          "name": "neck",
+          "x": 72,
+          "y": 80,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "cape_back"
+          ]
+        },
+        "shoulder_back": {
+          "name": "shoulder_back",
+          "x": 63,
+          "y": 88,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "pauldrons"
+          ]
+        },
+        "shoulder_front": {
+          "name": "shoulder_front",
+          "x": 76,
+          "y": 88,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "pauldrons"
+          ]
+        },
+        "elbow_back": {
+          "name": "elbow_back",
+          "x": 65,
+          "y": 102,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "bracers"
+          ]
+        },
+        "elbow_front": {
+          "name": "elbow_front",
+          "x": 78,
+          "y": 104,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "bracers"
+          ]
+        },
+        "hand_back": {
+          "name": "hand_back",
+          "x": 87,
+          "y": 99,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "gloves",
+            "shield"
+          ]
+        },
+        "hand_front": {
+          "name": "hand_front",
+          "x": 73,
+          "y": 110,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "gloves",
+            "weapon"
+          ]
+        },
+        "hip": {
+          "name": "hip",
+          "x": 64,
+          "y": 112,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "scabbard",
+            "pants"
+          ]
+        },
+        "knee_back": {
+          "name": "knee_back",
+          "x": 60,
+          "y": 129,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": []
+        },
+        "knee_front": {
+          "name": "knee_front",
+          "x": 68,
+          "y": 131,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": []
+        },
+        "foot_back": {
+          "name": "foot_back",
+          "x": 59,
+          "y": 155,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "boots"
+          ]
+        },
+        "foot_front": {
+          "name": "foot_front",
+          "x": 69,
+          "y": 155,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "boots"
+          ]
+        },
+        "back": {
+          "name": "back",
+          "x": 69,
+          "y": 85,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "cape_back",
+            "shield"
+          ]
+        },
+        "scabbard": {
+          "name": "scabbard",
+          "x": 56,
+          "y": 108,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "scabbard"
+          ]
+        },
+        "body_center": {
+          "name": "body_center",
+          "x": 64,
+          "y": 90,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "armor",
+            "coat_front",
+            "shirt"
+          ]
+        },
+        "weapon": {
+          "name": "weapon",
+          "x": 73,
+          "y": 110,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "weapon"
+          ],
+          "angle_deg": -108.31
+        }
+      }
+    },
+    {
+      "frame": 1,
+      "sockets": {
+        "head": {
+          "name": "head",
+          "x": 66,
+          "y": 55,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "helm",
+            "hat",
+            "hair_front"
+          ]
+        },
+        "neck": {
+          "name": "neck",
+          "x": 72,
+          "y": 82,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "cape_back"
+          ]
+        },
+        "shoulder_back": {
+          "name": "shoulder_back",
+          "x": 63,
+          "y": 90,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "pauldrons"
+          ]
+        },
+        "shoulder_front": {
+          "name": "shoulder_front",
+          "x": 76,
+          "y": 90,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "pauldrons"
+          ]
+        },
+        "elbow_back": {
+          "name": "elbow_back",
+          "x": 65,
+          "y": 104,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "bracers"
+          ]
+        },
+        "elbow_front": {
+          "name": "elbow_front",
+          "x": 78,
+          "y": 106,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "bracers"
+          ]
+        },
+        "hand_back": {
+          "name": "hand_back",
+          "x": 86,
+          "y": 103,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "gloves",
+            "shield"
+          ]
+        },
+        "hand_front": {
+          "name": "hand_front",
+          "x": 74,
+          "y": 111,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "gloves",
+            "weapon"
+          ]
+        },
+        "hip": {
+          "name": "hip",
+          "x": 64,
+          "y": 114,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "scabbard",
+            "pants"
+          ]
+        },
+        "knee_back": {
+          "name": "knee_back",
+          "x": 60,
+          "y": 129,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": []
+        },
+        "knee_front": {
+          "name": "knee_front",
+          "x": 68,
+          "y": 131,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": []
+        },
+        "foot_back": {
+          "name": "foot_back",
+          "x": 59,
+          "y": 155,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "boots"
+          ]
+        },
+        "foot_front": {
+          "name": "foot_front",
+          "x": 69,
+          "y": 155,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "boots"
+          ]
+        },
+        "back": {
+          "name": "back",
+          "x": 69,
+          "y": 87,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "cape_back",
+            "shield"
+          ]
+        },
+        "scabbard": {
+          "name": "scabbard",
+          "x": 56,
+          "y": 110,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "scabbard"
+          ]
+        },
+        "body_center": {
+          "name": "body_center",
+          "x": 64,
+          "y": 92,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "armor",
+            "coat_front",
+            "shirt"
+          ]
+        },
+        "weapon": {
+          "name": "weapon",
+          "x": 74,
+          "y": 111,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "weapon"
+          ],
+          "angle_deg": -104.09
+        }
+      }
+    },
+    {
+      "frame": 2,
+      "sockets": {
+        "head": {
+          "name": "head",
+          "x": 66,
+          "y": 55,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "helm",
+            "hat",
+            "hair_front"
+          ]
+        },
+        "neck": {
+          "name": "neck",
+          "x": 72,
+          "y": 81,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "cape_back"
+          ]
+        },
+        "shoulder_back": {
+          "name": "shoulder_back",
+          "x": 63,
+          "y": 89,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "pauldrons"
+          ]
+        },
+        "shoulder_front": {
+          "name": "shoulder_front",
+          "x": 76,
+          "y": 89,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "pauldrons"
+          ]
+        },
+        "elbow_back": {
+          "name": "elbow_back",
+          "x": 65,
+          "y": 103,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "bracers"
+          ]
+        },
+        "elbow_front": {
+          "name": "elbow_front",
+          "x": 78,
+          "y": 105,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "bracers"
+          ]
+        },
+        "hand_back": {
+          "name": "hand_back",
+          "x": 80,
+          "y": 105,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "gloves",
+            "shield"
+          ]
+        },
+        "hand_front": {
+          "name": "hand_front",
+          "x": 79,
+          "y": 109,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "gloves",
+            "weapon"
+          ]
+        },
+        "hip": {
+          "name": "hip",
+          "x": 64,
+          "y": 113,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "scabbard",
+            "pants"
+          ]
+        },
+        "knee_back": {
+          "name": "knee_back",
+          "x": 60,
+          "y": 129,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": []
+        },
+        "knee_front": {
+          "name": "knee_front",
+          "x": 68,
+          "y": 131,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": []
+        },
+        "foot_back": {
+          "name": "foot_back",
+          "x": 59,
+          "y": 155,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "boots"
+          ]
+        },
+        "foot_front": {
+          "name": "foot_front",
+          "x": 69,
+          "y": 155,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "boots"
+          ]
+        },
+        "back": {
+          "name": "back",
+          "x": 69,
+          "y": 86,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "cape_back",
+            "shield"
+          ]
+        },
+        "scabbard": {
+          "name": "scabbard",
+          "x": 56,
+          "y": 109,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "scabbard"
+          ]
+        },
+        "body_center": {
+          "name": "body_center",
+          "x": 64,
+          "y": 91,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "armor",
+            "coat_front",
+            "shirt"
+          ]
+        },
+        "weapon": {
+          "name": "weapon",
+          "x": 79,
+          "y": 109,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "weapon"
+          ],
+          "angle_deg": -93.03
+        }
+      }
+    },
+    {
+      "frame": 3,
+      "sockets": {
+        "head": {
+          "name": "head",
+          "x": 66,
+          "y": 55,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "helm",
+            "hat",
+            "hair_front"
+          ]
+        },
+        "neck": {
+          "name": "neck",
+          "x": 72,
+          "y": 79,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "cape_back"
+          ]
+        },
+        "shoulder_back": {
+          "name": "shoulder_back",
+          "x": 63,
+          "y": 86,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "pauldrons"
+          ]
+        },
+        "shoulder_front": {
+          "name": "shoulder_front",
+          "x": 76,
+          "y": 86,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "pauldrons"
+          ]
+        },
+        "elbow_back": {
+          "name": "elbow_back",
+          "x": 65,
+          "y": 100,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "bracers"
+          ]
+        },
+        "elbow_front": {
+          "name": "elbow_front",
+          "x": 78,
+          "y": 102,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "bracers"
+          ]
+        },
+        "hand_back": {
+          "name": "hand_back",
+          "x": 73,
+          "y": 104,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "gloves",
+            "shield"
+          ]
+        },
+        "hand_front": {
+          "name": "hand_front",
+          "x": 84,
+          "y": 104,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "gloves",
+            "weapon"
+          ]
+        },
+        "hip": {
+          "name": "hip",
+          "x": 64,
+          "y": 110,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "scabbard",
+            "pants"
+          ]
+        },
+        "knee_back": {
+          "name": "knee_back",
+          "x": 60,
+          "y": 129,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": []
+        },
+        "knee_front": {
+          "name": "knee_front",
+          "x": 68,
+          "y": 131,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": []
+        },
+        "foot_back": {
+          "name": "foot_back",
+          "x": 59,
+          "y": 155,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "boots"
+          ]
+        },
+        "foot_front": {
+          "name": "foot_front",
+          "x": 69,
+          "y": 155,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "boots"
+          ]
+        },
+        "back": {
+          "name": "back",
+          "x": 69,
+          "y": 84,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "cape_back",
+            "shield"
+          ]
+        },
+        "scabbard": {
+          "name": "scabbard",
+          "x": 56,
+          "y": 106,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "scabbard"
+          ]
+        },
+        "body_center": {
+          "name": "body_center",
+          "x": 64,
+          "y": 88,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "armor",
+            "coat_front",
+            "shirt"
+          ]
+        },
+        "weapon": {
+          "name": "weapon",
+          "x": 84,
+          "y": 104,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "weapon"
+          ],
+          "angle_deg": -79.34
+        }
+      }
+    },
+    {
+      "frame": 4,
+      "sockets": {
+        "head": {
+          "name": "head",
+          "x": 66,
+          "y": 55,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "helm",
+            "hat",
+            "hair_front"
+          ]
+        },
+        "neck": {
+          "name": "neck",
+          "x": 72,
+          "y": 81,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "cape_back"
+          ]
+        },
+        "shoulder_back": {
+          "name": "shoulder_back",
+          "x": 63,
+          "y": 88,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "pauldrons"
+          ]
+        },
+        "shoulder_front": {
+          "name": "shoulder_front",
+          "x": 76,
+          "y": 88,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "pauldrons"
+          ]
+        },
+        "elbow_back": {
+          "name": "elbow_back",
+          "x": 65,
+          "y": 102,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "bracers"
+          ]
+        },
+        "elbow_front": {
+          "name": "elbow_front",
+          "x": 78,
+          "y": 104,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "bracers"
+          ]
+        },
+        "hand_back": {
+          "name": "hand_back",
+          "x": 67,
+          "y": 105,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "gloves",
+            "shield"
+          ]
+        },
+        "hand_front": {
+          "name": "hand_front",
+          "x": 88,
+          "y": 103,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "gloves",
+            "weapon"
+          ]
+        },
+        "hip": {
+          "name": "hip",
+          "x": 64,
+          "y": 112,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "scabbard",
+            "pants"
+          ]
+        },
+        "knee_back": {
+          "name": "knee_back",
+          "x": 60,
+          "y": 129,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": []
+        },
+        "knee_front": {
+          "name": "knee_front",
+          "x": 68,
+          "y": 131,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": []
+        },
+        "foot_back": {
+          "name": "foot_back",
+          "x": 59,
+          "y": 155,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "boots"
+          ]
+        },
+        "foot_front": {
+          "name": "foot_front",
+          "x": 69,
+          "y": 155,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "boots"
+          ]
+        },
+        "back": {
+          "name": "back",
+          "x": 69,
+          "y": 85,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "cape_back",
+            "shield"
+          ]
+        },
+        "scabbard": {
+          "name": "scabbard",
+          "x": 56,
+          "y": 108,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "scabbard"
+          ]
+        },
+        "body_center": {
+          "name": "body_center",
+          "x": 64,
+          "y": 90,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "armor",
+            "coat_front",
+            "shirt"
+          ]
+        },
+        "weapon": {
+          "name": "weapon",
+          "x": 88,
+          "y": 103,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "weapon"
+          ],
+          "angle_deg": -68.27
+        }
+      }
+    },
+    {
+      "frame": 5,
+      "sockets": {
+        "head": {
+          "name": "head",
+          "x": 66,
+          "y": 55,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "helm",
+            "hat",
+            "hair_front"
+          ]
+        },
+        "neck": {
+          "name": "neck",
+          "x": 72,
+          "y": 80,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "cape_back"
+          ]
+        },
+        "shoulder_back": {
+          "name": "shoulder_back",
+          "x": 63,
+          "y": 88,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "pauldrons"
+          ]
+        },
+        "shoulder_front": {
+          "name": "shoulder_front",
+          "x": 76,
+          "y": 88,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "pauldrons"
+          ]
+        },
+        "elbow_back": {
+          "name": "elbow_back",
+          "x": 65,
+          "y": 102,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "bracers"
+          ]
+        },
+        "elbow_front": {
+          "name": "elbow_front",
+          "x": 78,
+          "y": 104,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "bracers"
+          ]
+        },
+        "hand_back": {
+          "name": "hand_back",
+          "x": 65,
+          "y": 104,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "gloves",
+            "shield"
+          ]
+        },
+        "hand_front": {
+          "name": "hand_front",
+          "x": 89,
+          "y": 101,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "gloves",
+            "weapon"
+          ]
+        },
+        "hip": {
+          "name": "hip",
+          "x": 64,
+          "y": 112,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "scabbard",
+            "pants"
+          ]
+        },
+        "knee_back": {
+          "name": "knee_back",
+          "x": 60,
+          "y": 129,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": []
+        },
+        "knee_front": {
+          "name": "knee_front",
+          "x": 68,
+          "y": 131,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": []
+        },
+        "foot_back": {
+          "name": "foot_back",
+          "x": 59,
+          "y": 155,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "boots"
+          ]
+        },
+        "foot_front": {
+          "name": "foot_front",
+          "x": 69,
+          "y": 155,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "boots"
+          ]
+        },
+        "back": {
+          "name": "back",
+          "x": 69,
+          "y": 85,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "cape_back",
+            "shield"
+          ]
+        },
+        "scabbard": {
+          "name": "scabbard",
+          "x": 56,
+          "y": 108,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "scabbard"
+          ]
+        },
+        "body_center": {
+          "name": "body_center",
+          "x": 64,
+          "y": 90,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "armor",
+            "coat_front",
+            "shirt"
+          ]
+        },
+        "weapon": {
+          "name": "weapon",
+          "x": 89,
+          "y": 101,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "weapon"
+          ],
+          "angle_deg": -64.03
+        }
+      }
+    },
+    {
+      "frame": 6,
+      "sockets": {
+        "head": {
+          "name": "head",
+          "x": 66,
+          "y": 55,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "helm",
+            "hat",
+            "hair_front"
+          ]
+        },
+        "neck": {
+          "name": "neck",
+          "x": 72,
+          "y": 82,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "cape_back"
+          ]
+        },
+        "shoulder_back": {
+          "name": "shoulder_back",
+          "x": 63,
+          "y": 90,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "pauldrons"
+          ]
+        },
+        "shoulder_front": {
+          "name": "shoulder_front",
+          "x": 76,
+          "y": 90,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "pauldrons"
+          ]
+        },
+        "elbow_back": {
+          "name": "elbow_back",
+          "x": 65,
+          "y": 104,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "bracers"
+          ]
+        },
+        "elbow_front": {
+          "name": "elbow_front",
+          "x": 78,
+          "y": 106,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "bracers"
+          ]
+        },
+        "hand_back": {
+          "name": "hand_back",
+          "x": 67,
+          "y": 107,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "gloves",
+            "shield"
+          ]
+        },
+        "hand_front": {
+          "name": "hand_front",
+          "x": 88,
+          "y": 104,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "gloves",
+            "weapon"
+          ]
+        },
+        "hip": {
+          "name": "hip",
+          "x": 64,
+          "y": 114,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "scabbard",
+            "pants"
+          ]
+        },
+        "knee_back": {
+          "name": "knee_back",
+          "x": 60,
+          "y": 129,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": []
+        },
+        "knee_front": {
+          "name": "knee_front",
+          "x": 68,
+          "y": 131,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": []
+        },
+        "foot_back": {
+          "name": "foot_back",
+          "x": 59,
+          "y": 155,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "boots"
+          ]
+        },
+        "foot_front": {
+          "name": "foot_front",
+          "x": 69,
+          "y": 155,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "boots"
+          ]
+        },
+        "back": {
+          "name": "back",
+          "x": 69,
+          "y": 87,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "cape_back",
+            "shield"
+          ]
+        },
+        "scabbard": {
+          "name": "scabbard",
+          "x": 56,
+          "y": 110,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "scabbard"
+          ]
+        },
+        "body_center": {
+          "name": "body_center",
+          "x": 64,
+          "y": 92,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "armor",
+            "coat_front",
+            "shirt"
+          ]
+        },
+        "weapon": {
+          "name": "weapon",
+          "x": 88,
+          "y": 104,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "weapon"
+          ],
+          "angle_deg": -68.27
+        }
+      }
+    },
+    {
+      "frame": 7,
+      "sockets": {
+        "head": {
+          "name": "head",
+          "x": 66,
+          "y": 55,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "helm",
+            "hat",
+            "hair_front"
+          ]
+        },
+        "neck": {
+          "name": "neck",
+          "x": 72,
+          "y": 81,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "cape_back"
+          ]
+        },
+        "shoulder_back": {
+          "name": "shoulder_back",
+          "x": 63,
+          "y": 89,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "pauldrons"
+          ]
+        },
+        "shoulder_front": {
+          "name": "shoulder_front",
+          "x": 76,
+          "y": 89,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "pauldrons"
+          ]
+        },
+        "elbow_back": {
+          "name": "elbow_back",
+          "x": 65,
+          "y": 103,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "bracers"
+          ]
+        },
+        "elbow_front": {
+          "name": "elbow_front",
+          "x": 78,
+          "y": 105,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "bracers"
+          ]
+        },
+        "hand_back": {
+          "name": "hand_back",
+          "x": 73,
+          "y": 107,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "gloves",
+            "shield"
+          ]
+        },
+        "hand_front": {
+          "name": "hand_front",
+          "x": 84,
+          "y": 107,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "gloves",
+            "weapon"
+          ]
+        },
+        "hip": {
+          "name": "hip",
+          "x": 64,
+          "y": 113,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "scabbard",
+            "pants"
+          ]
+        },
+        "knee_back": {
+          "name": "knee_back",
+          "x": 60,
+          "y": 129,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": []
+        },
+        "knee_front": {
+          "name": "knee_front",
+          "x": 68,
+          "y": 131,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": []
+        },
+        "foot_back": {
+          "name": "foot_back",
+          "x": 59,
+          "y": 155,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "boots"
+          ]
+        },
+        "foot_front": {
+          "name": "foot_front",
+          "x": 69,
+          "y": 155,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "boots"
+          ]
+        },
+        "back": {
+          "name": "back",
+          "x": 69,
+          "y": 86,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "cape_back",
+            "shield"
+          ]
+        },
+        "scabbard": {
+          "name": "scabbard",
+          "x": 56,
+          "y": 109,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "scabbard"
+          ]
+        },
+        "body_center": {
+          "name": "body_center",
+          "x": 64,
+          "y": 91,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "armor",
+            "coat_front",
+            "shirt"
+          ]
+        },
+        "weapon": {
+          "name": "weapon",
+          "x": 84,
+          "y": 107,
+          "space": "cell_px_topleft",
+          "mirror": false,
+          "attaches": [
+            "weapon"
+          ],
+          "angle_deg": -79.34
+        }
+      }
+    }
+  ]
+}

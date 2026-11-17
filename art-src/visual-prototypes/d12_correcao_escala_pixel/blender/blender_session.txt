@@ -1,0 +1,6 @@
+D12 Blender rim study
+blender=5.2.4 LTS
+file=/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/player/blender/swordsman_rig_v007_game_v1_5.blend
+engines_tried=['BLENDER_EEVEE', 'BLENDER_EEVEE_NEXT', 'CYCLES', 'BLENDER_WORKBENCH']
+NOTE: EEVEE stills are comparison only; not Bevy evidence.
+D3–D6 already showed EEVEE/toon does not auto-recover D2 quality.
