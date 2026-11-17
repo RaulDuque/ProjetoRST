@@ -1,0 +1,46 @@
+{
+  "id": "equip.arma.espada_inicial",
+  "name": "Espada Inicial",
+  "category": "arma",
+  "description": "Sabre longo e fino com curvatura leve, guarda curta âmbar e cabo escuro. Peça canônica do protagonista (conceito B / v007).",
+  "version": "0.1.0-d15",
+  "reference_image": "referencia/detail_sword_v002.png",
+  "glb_canonical": "modelo/espada_inicial_canonical_v007.glb",
+  "glb_hunyuan_experimental": "modelo/espada_inicial_hunyuan_mini.glb",
+  "blender_hunyuan": "blender/espada_inicial_hunyuan_mini.blend",
+  "scale": {
+    "canonical_bbox_m": [0.465, 0.038, 0.910],
+    "unit": "meters_blender_v007",
+    "notes": "Escala do export v007. Hunyuan exige reescala manual antes do encaixe."
+  },
+  "orientation": {
+    "blade_axis": "approx +X/+Z diagonal in rest pose",
+    "grip_toward": "hand.R",
+    "y_up_export": true
+  },
+  "attach_point": {
+    "socket": "weapon",
+    "bone": "sword",
+    "parent_bone_fallback": "hand.R",
+    "side": "R"
+  },
+  "required_bones": ["hand.R", "sword"],
+  "deform_type": "rigid",
+  "material": {
+    "blade": "silver",
+    "edge": "silver_light",
+    "guard_pommel": "amber/brass",
+    "grip": "glove/leather"
+  },
+  "validation_status": "pilot_partial",
+  "known_issues": [
+    "Malha Hunyuan NÃO é a identidade oficial — só prova de pipeline; topologia densa (~AI), sem skinning.",
+    "GLB canônico (v007) é a referência de forma/escala para o jogo.",
+    "Encaixe animado ainda não validado em ciclo run/attack — só pose de repouso no piloto D15.",
+    "Referência detail_sword_v002 inclui contexto de mão; silhueta isolada preferível para Hunyuan."
+  ],
+  "sources": {
+    "blend_origin": "art-src/player/blender/swordsman_rig_v007.blend (read-only)",
+    "mesh_objects": ["blade", "blade variants", "sword_guard", "sword_collar", "sword_grip", "sword_pommel"]
+  }
+}

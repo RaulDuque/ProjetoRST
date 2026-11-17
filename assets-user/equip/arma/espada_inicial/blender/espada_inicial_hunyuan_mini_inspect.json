@@ -1,0 +1,25 @@
+{
+  "glb": "/home/raul/\u00c1rea de trabalho/Andvarion/ProjetoRST/assets-user/equip/arma/espada_inicial/modelo/espada_inicial_hunyuan_mini.glb",
+  "mesh_count": 1,
+  "objects": [
+    {
+      "name": "geometry_0",
+      "vertices": 200330,
+      "faces": 400680,
+      "dimensions": [
+        1.276080846786499,
+        0.9082890748977661,
+        1.9940571784973145
+      ],
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "materials": []
+    }
+  ],
+  "total_vertices": 200330,
+  "total_faces": 400680,
+  "blend": "/home/raul/AI-3D/outputs/blender/20261117T022025Z_espada_inicial_hunyuan_mini.blend"
+}

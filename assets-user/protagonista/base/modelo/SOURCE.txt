@@ -1,0 +1,2 @@
+Interim base (NOT a new identity): art-src/player/blender/swordsman_rig_v007.blend
+Do not modify the original. Pilot scene is under art-src/visual-prototypes/d15_equip_modular/pilot/
