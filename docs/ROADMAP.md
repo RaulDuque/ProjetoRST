@@ -32,7 +32,7 @@ já está feito, etapa por etapa.
 - [x] Máquina de estados que impede ações incompatíveis
 - [x] Câmera suave limitada à sala
 - [x] Visual temporário por estado (cor, achatamento, viseira de orientação)
-- [ ] Interação (alavancas, NPCs, baús)
+- [x] Interação (alavancas, NPCs, baús) — V1.8/V2.1; checkbox histórico corrigido na D17
 - [ ] Sprites e animações reais
 - [ ] Suporte a gamepad e remapeamento em jogo
 
@@ -115,7 +115,8 @@ já está feito, etapa por etapa.
 - [x] Áreas secretas, baús e objetos interativos (V1.8: paredes quebráveis, interruptor oculto, baús, alavancas, atalho; região Galerias Esquecidas)
 - [x] Primeira transformação (V1.9: Forma Espectral com a Relíquia do Véu, véus espectrais, região Claustro Velado; `TRANSFORMATIONS_V1_9.md`)
 - [ ] Outras transformações (voadora, veloz, pequena, aquática, sombra) e arte própria da forma espectral
-- [ ] Pontos de save no mapa, placas de pressão, baús de chefe
+- [x] Pontos de save no mapa (D17: `ObjectKind::SavePoint`, cura HP/MP, descoberta, mapa; F5 livre permanece)
+- [ ] Placas de pressão, baús de chefe
 - [ ] Mapa do castelo (minimapa) (V1.7: painel no jogo com a tecla M; V1.8: baús, atalhos e % por região; tela cheia pendente)
 - [x] Grafo de mundo em RON com validador de conexões e alcance (V1.6, `world_report`)
 - [ ] Carregamento de assets por sala

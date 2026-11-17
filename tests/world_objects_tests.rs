@@ -15,7 +15,7 @@ use dark_castle_rpg::core::constants::{DEFAULT_SAVE_SLOT, ROOM_FADE_TIME};
 use dark_castle_rpg::core::events::{Arrival, Notification, RoomRequest};
 use dark_castle_rpg::magic::elements::Element;
 use dark_castle_rpg::magic::projectiles::Projectile;
-use dark_castle_rpg::player::components::{Belongings, Player};
+use dark_castle_rpg::player::components::{Belongings, Player, Vitals};
 use dark_castle_rpg::ui::room_fade::RoomFadeState;
 use dark_castle_rpg::world::exploration::{DoorState, ObjectState};
 use dark_castle_rpg::world::exploration_systems::{DoorBarrier, Exploration};
@@ -827,4 +827,100 @@ fn performance_of_rooms_objects_and_saves() {
     let path = std::path::PathBuf::from(env!("CARGO_TARGET_TMPDIR")).join("world_v18_perf.txt");
     let _ = std::fs::write(&path, &out);
     print!("{out}");
+}
+
+/// D17: save altar near the Gate Approach start — heal, discover, write slot,
+/// reusable, and still present after F9.
+#[test]
+fn save_point_rests_discovers_and_persists() {
+    use dark_castle_rpg::world::WorldState;
+    use world_app::APPROACH;
+
+    const SAVE: &str = "vg_approach_save";
+    const AT_SAVE: (f32, f32) = (360.0, 63.0);
+
+    let saves = storage("d17_save_point");
+    let mut app = objects_game(&saves);
+    assert_eq!(current(&app), APPROACH);
+    place(&mut app, AT_SAVE);
+    run(&mut app, 3);
+
+    // Wound the player so rest must refill.
+    {
+        let mut q = app
+            .world_mut()
+            .query_filtered::<&mut Vitals, With<Player>>();
+        let mut vitals = q
+            .single_mut(app.world_mut())
+            .unwrap_or_else(|e| panic!("{e}"));
+        let hp_drop = vitals.hp.current().saturating_sub(1);
+        let mp_drop = vitals.mp.current().saturating_sub(1);
+        vitals.hp.deplete(hp_drop);
+        vitals.mp.deplete(mp_drop);
+        assert!(vitals.hp.current() < vitals.hp.max());
+        assert!(vitals.mp.current() < vitals.mp.max());
+    }
+
+    tap(&mut app, KeyCode::KeyD);
+    run(&mut app, 3);
+
+    {
+        let progress = &app.world().resource::<WorldState>().0;
+        assert!(progress.discovered_save_points.contains(SAVE));
+        assert_eq!(progress.last_save_point.as_deref(), Some(SAVE));
+    }
+    {
+        let mut q = app.world_mut().query_filtered::<&Vitals, With<Player>>();
+        let vitals = q.single(app.world()).unwrap_or_else(|e| panic!("{e}"));
+        assert_eq!(vitals.hp.current(), vitals.hp.max());
+        assert_eq!(vitals.mp.current(), vitals.mp.max());
+    }
+    assert!(
+        notes_with(&app, "Save point discovered").saturating_add(notes_with(&app, "Rested")) >= 1
+    );
+    assert!(
+        saves
+            .load(DEFAULT_SAVE_SLOT)
+            .unwrap_or_else(|e| panic!("{e}"))
+            .world
+            .discovered_save_points
+            .contains(SAVE)
+    );
+
+    // Wound again and rest a second time: still heals, still one discovery.
+    {
+        let mut q = app
+            .world_mut()
+            .query_filtered::<&mut Vitals, With<Player>>();
+        let mut vitals = q
+            .single_mut(app.world_mut())
+            .unwrap_or_else(|e| panic!("{e}"));
+        vitals.hp.deplete(5);
+    }
+    tap(&mut app, KeyCode::KeyD);
+    run(&mut app, 3);
+    {
+        let mut q = app.world_mut().query_filtered::<&Vitals, With<Player>>();
+        let vitals = q.single(app.world()).unwrap_or_else(|e| panic!("{e}"));
+        assert_eq!(vitals.hp.current(), vitals.hp.max());
+    }
+    assert_eq!(
+        app.world()
+            .resource::<WorldState>()
+            .0
+            .discovered_save_points
+            .len(),
+        1
+    );
+    assert_eq!(notes_with(&app, "Rested and saved"), 1);
+
+    tap(&mut app, KeyCode::F9);
+    run(&mut app, 5);
+    assert!(
+        app.world()
+            .resource::<WorldState>()
+            .0
+            .discovered_save_points
+            .contains(SAVE)
+    );
 }

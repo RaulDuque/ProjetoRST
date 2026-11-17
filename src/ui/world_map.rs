@@ -16,6 +16,8 @@
 //! breakable walls and hidden switches, and the label adds the percentage
 //! of the current region. Nothing of an unvisited room is drawn but its
 //! outline, so chests and secrets are never revealed early.
+//!
+//! D17: discovered save points are marked in cyan on visited rooms.
 
 use bevy::prelude::*;
 
@@ -24,6 +26,7 @@ use crate::app::states::GameSet;
 use crate::core::resources::GameData;
 use crate::input::InputBindings;
 use crate::npc::definitions::NpcMapMarker;
+use crate::world::WorldState;
 use crate::world::exploration::{Discovery, DoorState, ObjectState};
 use crate::world::exploration_systems::{Exploration, WorldGraph};
 use crate::world::graph::{ObjectKind, Side};
@@ -42,6 +45,7 @@ const SHORTCUT_COLOR: Color = Color::srgb(0.4, 0.9, 0.5);
 const VEIL_DOOR_COLOR: Color = Color::srgb(0.6, 0.88, 1.0);
 const CHEST_CLOSED_COLOR: Color = Color::srgb(0.98, 0.62, 0.22);
 const CHEST_OPENED_COLOR: Color = Color::srgb(0.38, 0.33, 0.3);
+const SAVE_POINT_MARK_COLOR: Color = Color::srgb(0.35, 0.9, 0.85);
 /// Size of a door mark and of the secret mark, in pixels.
 const MARK_PX: f32 = 4.0;
 /// V2.2: NPC markers (only in visited rooms, like the chests).
@@ -197,6 +201,7 @@ pub fn redraw_map(
     world: Option<Res<WorldGraph>>,
     exploration: Option<Res<Exploration>>,
     current: Option<Res<CurrentRoom>>,
+    world_state: Option<Res<WorldState>>,
     data: Option<Res<GameData>>,
     cells: Query<(Entity, Option<&Children>), With<WorldMapCells>>,
     mut label: Query<&mut Text, With<WorldMapLabel>>,
@@ -204,7 +209,11 @@ pub fn redraw_map(
     let (Some(world), Some(exploration), Some(current)) = (world, exploration, current) else {
         return;
     };
-    if !exploration.is_changed() && !current.is_changed() && !world.is_changed() {
+    if !exploration.is_changed()
+        && !current.is_changed()
+        && !world.is_changed()
+        && !world_state.as_ref().is_some_and(|w| w.is_changed())
+    {
         return;
     }
     let Ok((container, children)) = cells.single() else {
@@ -293,6 +302,22 @@ pub fn redraw_map(
             let top = px_h - (a.min.1 + a.size.1 / 2.0) / h * px_h - MARK_PX;
             let chest_mark = commands.spawn(mark(left, top, color)).id();
             commands.entity(node).add_child(chest_mark);
+        }
+        if let Some(progress) = world_state.as_ref() {
+            for altar in room
+                .objects
+                .iter()
+                .filter(|o| matches!(o.kind, ObjectKind::SavePoint))
+            {
+                if !progress.0.discovered_save_points.contains(&altar.id) {
+                    continue;
+                }
+                let a = altar.area;
+                let left = (a.min.0 + a.size.0 / 2.0) / w * px_w - MARK_PX / 2.0;
+                let top = px_h - (a.min.1 + a.size.1 / 2.0) / h * px_h - MARK_PX;
+                let save_mark = commands.spawn(mark(left, top, SAVE_POINT_MARK_COLOR)).id();
+                commands.entity(node).add_child(save_mark);
+            }
         }
         // V2.2: shops and NPCs of the room (one marker each, inside the box).
         for npc in data.iter().flat_map(|d| d.npcs.in_room(&room.id)) {

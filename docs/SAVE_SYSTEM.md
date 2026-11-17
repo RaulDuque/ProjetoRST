@@ -54,3 +54,19 @@ com `#[serde(default)]` não exigem nova versão.
 
 F5 salva (não permitido enquanto caído). F9 carrega o slot 1 e retoma o jogo
 (funciona também na tela de status e após a morte).
+
+## Pontos de save no mapa (D17)
+
+Objetos `ObjectKind::SavePoint` no grafo de mundo (ex.: `vg_approach_save`
+em Gate Approach). Com `D` no alcance:
+
+1. Cura HP e MP (Hearts inalterados).
+2. Insere o id em `world.discovered_save_points` (primeira vez).
+3. Define `world.last_save_point`.
+4. Grava o slot 1 (mesmo escritor do F5).
+
+Mensagem `SavePointActivated` → `save::systems::rest_at_save_point`.
+Altares descobertos aparecem no painel do mapa (`M`) em ciano.
+
+O F5 livre permanece para desenvolvimento; “salvar apenas em pontos de
+save” continua pendente no roadmap.

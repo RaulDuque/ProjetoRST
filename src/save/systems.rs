@@ -14,7 +14,7 @@ use super::serialization::{PlayerSave, SaveData};
 use crate::app::states::GameState;
 use crate::combat::hitboxes::Invulnerable;
 use crate::core::constants::{DEFAULT_SAVE_SLOT, PLAYER_INVULNERABILITY, SAVE_DIR};
-use crate::core::events::{Arrival, Notification, RoomRequest};
+use crate::core::events::{Arrival, Notification, RoomRequest, SavePointActivated};
 use crate::core::resources::{GameData, project_root};
 use crate::input::InputBindings;
 use crate::player::attributes::{RegenAccumulator, ResourcePool};
@@ -27,6 +27,7 @@ use crate::world::exploration::ExplorationState;
 use crate::world::exploration_systems::{Exploration, WorldGraph};
 use crate::world::maps::CurrentRoom;
 use crate::world::physics::{Body, Phasing, RoomGeometry, Velocity};
+use crate::world::progress::WorldProgress;
 use crate::world::restore::resolve_placement;
 
 #[derive(Resource, Debug, Clone)]
@@ -58,6 +59,62 @@ type PlayerSaveQuery<'a> = (
     Option<&'a crate::economy::systems::PlayerPurse>,
 );
 
+fn snapshot_save(
+    room: &CurrentRoom,
+    world: &WorldProgress,
+    exploration: Option<&Exploration>,
+    play_time: f64,
+    transform: &Transform,
+    sheet: &CharacterSheet,
+    vitals: &Vitals,
+    book: &SkillBook,
+    belongings: &Belongings,
+    purse: Option<&crate::economy::systems::PlayerPurse>,
+    stock: Option<&crate::economy::systems::ShopStockState>,
+) -> SaveData {
+    SaveData {
+        player: PlayerSave {
+            room: room.0.clone(),
+            position: (transform.translation.x, transform.translation.y),
+            attributes: *sheet.base(),
+            progression: sheet.progression().clone(),
+            hp: vitals.hp.current(),
+            mp: vitals.mp.current(),
+            hearts: vitals.hearts.current(),
+            learned_skills: book.learned.clone(),
+            inventory: belongings.inventory.clone(),
+            equipment: belongings.equipment.clone(),
+        },
+        world: world.clone(),
+        exploration: exploration.map(|e| e.record()).unwrap_or_default(),
+        play_time,
+        // V2.1.1 (save v3): coins and shop stock, saved with the bag in the
+        // same file, so a purchase and its payment are always saved together.
+        economy: Some(crate::economy::shop::EconomyRecord {
+            coins: purse.map_or(0, |p| p.coins()),
+            stock: stock.map(|s| s.0.clone()).unwrap_or_default(),
+        }),
+    }
+}
+
+fn write_slot(
+    slots: &SaveSlots,
+    data: &SaveData,
+    notifications: &mut MessageWriter<Notification>,
+    ok_message: &str,
+) {
+    match slots.0.save(DEFAULT_SAVE_SLOT, data) {
+        Ok(path) => {
+            info!(path = %path.display(), "saved");
+            notifications.write(Notification(ok_message.into()));
+        }
+        Err(error) => {
+            error!(%error, "save failed");
+            notifications.write(Notification(format!("Save failed: {error}")));
+        }
+    }
+}
+
 pub fn quick_save(
     keys: Res<ButtonInput<KeyCode>>,
     bindings: Res<InputBindings>,
@@ -87,38 +144,85 @@ pub fn quick_save(
         notifications.write(Notification("Cannot save inside a veil".into()));
         return;
     }
-    let data = SaveData {
-        player: PlayerSave {
-            room: room.0.clone(),
-            position: (transform.translation.x, transform.translation.y),
-            attributes: *sheet.base(),
-            progression: sheet.progression().clone(),
-            hp: vitals.hp.current(),
-            mp: vitals.mp.current(),
-            hearts: vitals.hearts.current(),
-            learned_skills: book.learned.clone(),
-            inventory: belongings.inventory.clone(),
-            equipment: belongings.equipment.clone(),
-        },
-        world: world.0.clone(),
-        exploration: exploration.map(|e| e.record()).unwrap_or_default(),
-        play_time: play_time.0,
-        // V2.1.1 (save v3): coins and shop stock, saved with the bag in the
-        // same file, so a purchase and its payment are always saved together.
-        economy: Some(crate::economy::shop::EconomyRecord {
-            coins: purse.map_or(0, |p| p.coins()),
-            stock: stock.map(|s| s.0.clone()).unwrap_or_default(),
-        }),
+    let data = snapshot_save(
+        &room,
+        &world.0,
+        exploration.as_deref(),
+        play_time.0,
+        transform,
+        sheet,
+        vitals,
+        book,
+        belongings,
+        purse,
+        stock.as_deref(),
+    );
+    write_slot(&slots, &data, &mut notifications, "Game saved");
+}
+
+type PlayerRestQuery<'a> = (
+    &'a Transform,
+    &'a CharacterSheet,
+    &'a mut Vitals,
+    &'a SkillBook,
+    &'a Belongings,
+    &'a ActionState,
+    &'a Body,
+    Option<&'a Phasing>,
+    Option<&'a crate::economy::systems::PlayerPurse>,
+);
+
+/// D17: rest at a world save point — heal HP/MP, discover the altar, write
+/// the slot. F5 quick-save remains available for development.
+pub fn rest_at_save_point(
+    mut activated: MessageReader<SavePointActivated>,
+    slots: Res<SaveSlots>,
+    room: Res<CurrentRoom>,
+    mut world: ResMut<WorldState>,
+    exploration: Option<Res<Exploration>>,
+    play_time: Res<PlayTime>,
+    geometry: Res<RoomGeometry>,
+    mut player: Query<PlayerRestQuery, With<Player>>,
+    stock: Option<Res<crate::economy::systems::ShopStockState>>,
+    mut notifications: MessageWriter<Notification>,
+) {
+    let Ok((transform, sheet, mut vitals, book, belongings, state, body, phasing, purse)) =
+        player.single_mut()
+    else {
+        return;
     };
-    match slots.0.save(DEFAULT_SAVE_SLOT, &data) {
-        Ok(path) => {
-            info!(path = %path.display(), "saved");
-            notifications.write(Notification("Game saved".into()));
+    for event in activated.read() {
+        if state.state() == PlayerState::Dead {
+            notifications.write(Notification("Cannot rest while fallen".into()));
+            continue;
         }
-        Err(error) => {
-            error!(%error, "save failed");
-            notifications.write(Notification(format!("Save failed: {error}")));
+        if phasing.is_some() && geometry.blocks(&body.aabb_at(transform.translation.truncate())) {
+            notifications.write(Notification("Cannot rest inside a veil".into()));
+            continue;
         }
+        vitals.hp.refill();
+        vitals.mp.refill();
+        let first = world.0.discover_save_point(&event.id);
+        world.0.set_last_save_point(&event.id);
+        let data = snapshot_save(
+            &room,
+            &world.0,
+            exploration.as_deref(),
+            play_time.0,
+            transform,
+            sheet,
+            &vitals,
+            book,
+            belongings,
+            purse,
+            stock.as_deref(),
+        );
+        let message = if first {
+            "Save point discovered — rested and saved"
+        } else {
+            "Rested and saved"
+        };
+        write_slot(&slots, &data, &mut notifications, message);
     }
 }
 

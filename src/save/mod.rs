@@ -19,7 +19,12 @@ impl Plugin for SavePlugin {
                 Update,
                 systems::track_play_time.run_if(in_state(GameState::Playing)),
             )
-            .add_systems(Update, systems::quick_save.in_set(GameSet::Presentation))
+            .add_systems(
+                Update,
+                (systems::rest_at_save_point, systems::quick_save)
+                    .chain()
+                    .in_set(GameSet::Presentation),
+            )
             .add_systems(
                 Update,
                 systems::quick_load.in_set(crate::world::transitions::RoomStep::Request),

@@ -116,6 +116,8 @@ pub enum ObjectState {
     Opened,
     Off,
     On,
+    /// Save altar: always usable (discovery lives in WorldProgress).
+    SaveReady,
 }
 
 /// What breaking or using an object did (V1.8).
@@ -125,6 +127,8 @@ pub enum Interaction {
     SecretFound(String),
     /// A chest opened or a lever was pulled: what it granted (recorded).
     Granted(Grant),
+    /// A save point was used (reusable; WorldProgress records discovery).
+    SavePoint(String),
 }
 
 /// Why an object could not be broken or used. Nothing was recorded.
@@ -253,12 +257,16 @@ impl ExplorationState {
 
     /// State of an object of the world (V1.8), from the ids alone.
     pub fn object_state(&self, object: &WorldObject) -> ObjectState {
+        if matches!(object.kind, ObjectKind::SavePoint) {
+            return ObjectState::SaveReady;
+        }
         let done = match &object.kind {
             ObjectKind::BreakableWall { .. } | ObjectKind::HiddenSwitch => {
                 self.secrets.contains(&object.id)
             }
             ObjectKind::Chest { .. } => self.pickups.contains(&object.id),
             ObjectKind::Lever { sets } => self.capabilities().flags.contains(sets),
+            ObjectKind::SavePoint => false,
         };
         match (&object.kind, done) {
             (ObjectKind::BreakableWall { .. }, false) => ObjectState::Intact,
@@ -269,6 +277,7 @@ impl ExplorationState {
             (ObjectKind::Chest { .. }, true) => ObjectState::Opened,
             (ObjectKind::Lever { .. }, false) => ObjectState::Off,
             (ObjectKind::Lever { .. }, true) => ObjectState::On,
+            (ObjectKind::SavePoint, _) => ObjectState::SaveReady,
         }
     }
 
@@ -337,6 +346,7 @@ impl ExplorationState {
                 self.granted.push(grant.clone());
                 Ok(Interaction::Granted(grant))
             }
+            ObjectKind::SavePoint => Ok(Interaction::SavePoint(id.to_owned())),
         }
     }
 

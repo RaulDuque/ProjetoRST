@@ -30,7 +30,7 @@ use super::maps::{CurrentRoom, PLATFORM_COLOR, RoomEntity};
 use super::physics::RoomGeometry;
 use crate::combat::hitboxes::{Hitbox, PendingStrike, Team, is_armed};
 use crate::core::constants::{PLAYER_SIZE, Z_PLATFORMS};
-use crate::core::events::{Notification, PickupCollected, ProjectileBlocked};
+use crate::core::events::{Notification, PickupCollected, ProjectileBlocked, SavePointActivated};
 use crate::core::resources::GameData;
 use crate::input::PlayerInput;
 use crate::player::components::{ActionState, Player};
@@ -54,6 +54,7 @@ const SWITCH_FOUND_COLOR: Color = Color::srgb(0.75, 0.66, 0.32);
 const LEVER_OFF_COLOR: Color = Color::srgb(0.62, 0.62, 0.68);
 const LEVER_ON_COLOR: Color = Color::srgb(0.35, 0.85, 0.45);
 const CHEST_OPENED_COLOR: Color = Color::srgb(0.24, 0.2, 0.16);
+const SAVE_POINT_COLOR: Color = Color::srgb(0.35, 0.78, 0.72);
 
 fn chest_color(tier: ChestTier) -> Color {
     match tier {
@@ -77,6 +78,7 @@ pub fn object_color(object: &WorldObject, state: ObjectState) -> Color {
         (ObjectKind::Chest { tier, .. }, _) => chest_color(*tier),
         (ObjectKind::Lever { .. }, ObjectState::On) => LEVER_ON_COLOR,
         (ObjectKind::Lever { .. }, _) => LEVER_OFF_COLOR,
+        (ObjectKind::SavePoint, _) => SAVE_POINT_COLOR,
     }
 }
 
@@ -234,6 +236,7 @@ pub fn interact_with_objects(
     current: Option<Res<CurrentRoom>>,
     player: Query<(&Transform, &ActionState), With<Player>>,
     mut collected: MessageWriter<PickupCollected>,
+    mut save_points: MessageWriter<SavePointActivated>,
     mut notifications: MessageWriter<Notification>,
 ) {
     if !input.interact_pressed {
@@ -269,6 +272,9 @@ pub fn interact_with_objects(
                 pickup: object.id.clone(),
                 grant,
             });
+        }
+        Ok(Interaction::SavePoint(id)) => {
+            save_points.write(SavePointActivated { id });
         }
         Err(InteractError::Sealed) => {
             notifications.write(Notification("It is sealed.".into()));

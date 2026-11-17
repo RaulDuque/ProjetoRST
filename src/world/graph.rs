@@ -306,6 +306,10 @@ pub enum ObjectKind {
     Chest { tier: ChestTier, reward: Grant },
     /// Interacting pulls it once and sets the world flag `sets`.
     Lever { sets: String },
+    /// Reusable rest altar (D17): discover, heal HP/MP and write a save.
+    /// Progress lives in [`crate::world::progress::WorldProgress`], not in
+    /// exploration pickups (so it can be used again).
+    SavePoint,
 }
 
 /// An interactive object of a room. Its id is unique in the world: walls and
@@ -342,7 +346,9 @@ impl WorldObject {
         match &self.kind {
             ObjectKind::Chest { reward, .. } => Some(reward.clone()),
             ObjectKind::Lever { sets } => Some(Grant::Flag(sets.clone())),
-            ObjectKind::BreakableWall { .. } | ObjectKind::HiddenSwitch => None,
+            ObjectKind::BreakableWall { .. } | ObjectKind::HiddenSwitch | ObjectKind::SavePoint => {
+                None
+            }
         }
     }
 }

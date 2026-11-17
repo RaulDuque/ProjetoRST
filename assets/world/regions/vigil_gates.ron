@@ -38,6 +38,11 @@
                 // V2.0: the first weapon found, next to the start.
                 (id: "vg_approach_chest", kind: Chest(tier: Common, reward: Item("watch_pike")),
                     area: (min: (240.0, 40.0), size: (48.0, 36.0))),
+                // D17: reusable save altar past the starter chest, before the
+                // first block. Kept clear of town NPC fixtures (~x 110–120)
+                // and of the chest interact zone (~x 240–288).
+                (id: "vg_approach_save", kind: SavePoint,
+                    area: (min: (340.0, 40.0), size: (40.0, 48.0))),
             ],
             doors: [
                 (id: "to_causeway", side: Right, to: (room: "vigil_gates_causeway", door: "from_approach")),

@@ -614,3 +614,21 @@ consolidação da pesquisa.
 o item futuro. Os documentos da Fase 1 receberam notas de correção (respawn
 na reentrada já existente no DCR) sem perder o texto original. Sem mudança
 de código, dados ou save.
+
+## D-029 — Pontos de save jogáveis sem restringir F5 (D17)
+
+**Contexto:** `discovered_save_points` e `last_save_point` existiam no save
+sem escritor de gameplay. Portas/interações já cobriam a preferência inicial
+do briefing D17. O ciclo Metroidvania ainda pedia um altar no mundo.
+
+**Decisão:**
+- Novo `ObjectKind::SavePoint` reutilizável; progresso só em `WorldProgress`
+  (não em pickups de exploração).
+- Interação `D` cura HP/MP, descobre, grava o slot via a mesma rota do F5.
+- F5 permanece livre (dev + acessibilidade); “salvar só no altar” fica
+  pendente e explícito no roadmap.
+- Sem bump de versão de save.
+
+**Consequências:** um altar em `vigil_gates_approach`; mapa mostra altares
+descobertos; testes headless cobrem cura/persistência. Viagem rápida entre
+altares fica para etapa posterior.

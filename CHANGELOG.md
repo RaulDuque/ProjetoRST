@@ -4,6 +4,13 @@ Formato: [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/). Versioname
 
 ## [Unreleased]
 
+### D17 — Pontos de salvamento no mundo
+- `ObjectKind::SavePoint`: altar reutilizável (`D`) cura HP/MP, marca
+  `discovered_save_points` / `last_save_point` e grava o slot.
+- Marcador ciano no mapa após descoberta; altar piloto em Gate Approach
+  (`vg_approach_save`). F5 livre permanece.
+- Docs: `docs/development/d17/`.
+
 ### V2.3 — Câmera, cenários góticos, parallax e atmosfera
 - Câmera configurável (`assets/data/camera.ron`): zoom ×1,78 (altura de mundo
   405), zonas mortas, olhar à frente suave, enquadramento de pulo e queda,

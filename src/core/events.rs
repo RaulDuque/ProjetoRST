@@ -127,6 +127,14 @@ pub struct PickupCollected {
     pub grant: crate::world::graph::Grant,
 }
 
+/// The player rested at a world save point (D17). The save module heals
+/// HP/MP, records discovery on [`crate::world::WorldState`] and writes the
+/// slot. Reusable: sent every time the altar is used.
+#[derive(Message, Debug, Clone)]
+pub struct SavePointActivated {
+    pub id: String,
+}
+
 /// What happened to the player's transformation (V1.9). Written by the
 /// transformation module; the HUD and the form visuals read it.
 #[derive(Message, Debug, Clone, Copy, PartialEq)]
