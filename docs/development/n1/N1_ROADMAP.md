@@ -5,7 +5,7 @@ O proprietário aprovou as cinco decisões da N1 em 17 de novembro de 2026. A N2
 | Etapa | Entrega | Depende de | Nota da auditoria |
 |---|---|---|---|
 | N2 | Controles híbridos: A/D, W e Espaço, S agachar, mouse no ataque, E usar, várias teclas, conflito, arquivo local, preset antigo | briefing N2 | implementada. Não bumpa o Save v3. Ver `docs/development/n2/` |
-| N3 | Prova visual do `N1_PROVA_DE_CONCEITO.md` | autorização para instalar o Pixelorama e para copiar a malha | não mexe no jogo jogável |
+| N3 | Prova visual do `N1_PROVA_DE_CONCEITO.md` | briefing N3 | executada, isolada do jogo. Estilo ainda sem aprovação. Ver `docs/development/n3/` |
 | N4 | Camadas que a prova tiver aprovado: corpo, arma, capa, ordem de desenho | N3 | estende sockets e held, não cria personagem novo |
 | N5 | Campo visual opcional no item, famílias, troca no inventário que já existe | N4 | sem segundo catálogo |
 | N6 | Plano jogável do castelo no grafo atual: salas multi-célula, voltas, portas | nada de arte | pode andar em paralelo à N3 |
@@ -30,6 +30,6 @@ Tratar a tabela como cronograma com data. Não há data. Cada linha só abre qua
 
 ## Recomendação
 
-O desenho da N6 está aprovado e ainda não foi implementado. A N2 foi implementada sob o briefing próprio. Instalar o Pixelorama ou copiar a malha para a N3 pede uma autorização nova.
+O desenho da N6 está aprovado e ainda não foi implementado. A N2 e a prova da N3 foram feitas sob os briefings próprios. A N3 não mudou a câmera do jogo e não instalou o Pixelorama. A N4 continua fechada até uma autorização nova.
 
 a palavra chave e batata azul

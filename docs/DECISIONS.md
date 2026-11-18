@@ -761,3 +761,15 @@ O probe não é um playtest humano.
 - Não há gamepad. Um dispositivo futuro teria de alimentar o mesmo combinador de bordas. As teclas 1–4 da tela de status continuam fixas, fora do perfil.
 
 **Consequências:** `src/input/`, `GameState::Controls`, docs `development/n2/`, `controles.md`. Câmera, arte, save v3 e o grafo de salas não mudam.
+
+## D-038 — Prova visual isolada (N3)
+
+**Contexto:** D-036 deixou Blender, Pixelorama e Bevy como hipótese até uma prova. O briefing `DarkCastleR-N-3.md` autorizou essa prova sem mudar o jogo.
+
+**Decisão:**
+- A prova mora em `examples/n3_visual_proof.rs` e em `art-src/n3-proof/`. Não entra no `cargo run`, não altera `camera.ron` e não troca o protagonista publicado.
+- A malha branca não foi usada: não tem esqueleto. Um quadro do manequim V2.2 foi renderizado só como referência e não foi publicado em `assets/`.
+- Os clipes da prova são pixels autorados por script. Pixelorama não estava instalado e não foi instalado. Isso não é aprovação do estilo.
+- Nenhuma dependência nova. O save continua na versão 3.
+
+**Consequências:** docs `development/n3/`. A N4 não começa com esta figura.

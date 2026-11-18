@@ -4,6 +4,11 @@ Formato: [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/). Versioname
 
 ## [Unreleased]
 
+### N3 — Prova visual isolada
+- Exemplo `n3_visual_proof`: corpo, duas armaduras, espada, lança e capa, fora do jogo.
+- Vista 640×360 em escala inteira 2× na janela 1280×720. A câmera do `cargo run` não muda.
+- Pixelorama não entrou. A figura é de script e não está aprovada como estilo.
+
 ### D23 — Pronto para playtest humano do Ashen Sentinel
 - Plataforma de chegada sobre o vão da porta do chão da Ashen Court; a escada do Reliquary sobe só com o pulo.
 - O telégrafo do chefe (cor e contagem) prevalece sobre o flash branco de dano. Inimigos comuns continuam piscando branco.
