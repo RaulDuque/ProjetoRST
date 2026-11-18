@@ -8,5 +8,11 @@
         (id: "C", name: "slower travel", rate: 1.000, speed: 157.0),
         (id: "D", name: "moderate", rate: 1.500, speed: 235.5),
     ],
+    game_speed_steps: [
+        (id: "12fps", name: "at game speed", rate: 1.000, speed: 310.0),
+        (id: "15fps", name: "at game speed", rate: 1.250, speed: 310.0),
+        (id: "18fps", name: "at game speed", rate: 1.500, speed: 310.0),
+        (id: "23.7fps", name: "at game speed", rate: 1.975, speed: 310.0),
+    ],
     run6_phase: ["stance", "push_off", "air", "stance", "push_off", "heel_strike"],
 )

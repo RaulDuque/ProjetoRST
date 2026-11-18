@@ -15,9 +15,13 @@ Scenarios (all on run6, the same six frames):
 - D moderate: rate 1.5 (18 fps), 1.5 * reference u/s (experimental speed);
 - E longer stride: documented cost only, no frame is generated.
 
+Owner's extra test: run6 at the game's 310 u/s with 12, 15, 18 and 23.7
+fps (`game_speed_steps`), so only the cadence changes.
+
 Writes `generated/sync.ron` (read by the isolated Bevy example) and the
 evidence `run_baseline.png`, `run_12fps.gif`, `run_speed_variant.gif`,
-`run_speed_comparison.png`.
+`run_speed_comparison.png`, and for the fps test `run_fps_comparison.gif`,
+`run_fps_comparison.png`, `run_15fps.gif` and `run_15fps_in_place.gif`.
 
     python3 -B art-src/n3-7-run-sync/scripts/sync_study.py
 """
@@ -46,6 +50,9 @@ RUN6 = [48, 50, 52, 54, 56, 58]
 BASE_FPS = 12.0
 GAME_SPEED = 310.0
 MODERATE_RATE = 1.5
+# Owner's extra test: playback rates at the game's speed (12 / 15 / 18 fps,
+# and the no-slide rate of scenario B).
+FPS_TEST = [12.0, 15.0, 18.0]
 NEUTRAL = (150, 150, 156, 255)
 LIGHT = (226, 224, 228, 255)
 LANE_BG = (58, 52, 62, 255)
@@ -89,6 +96,15 @@ def scenarios(reference: float) -> list[dict]:
         {"id": "D", "name": "moderate", "rate": MODERATE_RATE, "speed": round(MODERATE_RATE * reference, 1),
          "note": "clipe 1,5x e deslocamento experimental"},
     ]
+
+
+def game_speed_steps(reference: float) -> list[dict]:
+    steps = [{"id": f"{fps:.0f}fps", "name": "at game speed", "rate": fps / BASE_FPS,
+              "speed": GAME_SPEED, "note": "na velocidade do jogo (310 u/s)"} for fps in FPS_TEST]
+    rate = round(GAME_SPEED / reference, 3)
+    steps.append({"id": f"{BASE_FPS * rate:.1f}fps", "name": "at game speed", "rate": rate,
+                  "speed": GAME_SPEED, "note": "na velocidade do jogo (310 u/s), = cenario B"})
+    return steps
 
 
 def lane(images, patches, scenario, reference, t_end, strobe=False) -> Image.Image:
@@ -159,12 +175,17 @@ def main() -> None:
     patches = [contact_patch(image) if metrics["run6_phase"][str(f)] != "air" else None
                for image, f in zip(images, RUN6, strict=True)]
     plan = scenarios(reference)
+    fps_steps = game_speed_steps(reference)
 
     # --- data for the isolated Bevy example -----------------------------
     phase_keys = [metrics["run6_phase"][str(f)] for f in RUN6]
     lines = ["(\n", f"    reference_speed: {reference:.1f},\n", f"    game_speed: {GAME_SPEED:.1f},\n",
              f"    base_fps: {BASE_FPS:.1f},\n", "    scenarios: [\n"]
     for s in plan:
+        lines.append(f'        (id: "{s["id"]}", name: "{s["name"]}", rate: {s["rate"]:.3f}, '
+                     f"speed: {s['speed']:.1f}),\n")
+    lines.append("    ],\n    game_speed_steps: [\n")
+    for s in fps_steps:
         lines.append(f'        (id: "{s["id"]}", name: "{s["name"]}", rate: {s["rate"]:.3f}, '
                      f"speed: {s['speed']:.1f}),\n")
     lines.append("    ],\n    run6_phase: [" + ", ".join(f'"{p}"' for p in phase_keys) + "],\n)\n")
@@ -232,6 +253,49 @@ def main() -> None:
     for i, text in enumerate(notes):
         draw.text((6, y + 4 + 16 * i), text, fill=INK)
     out.save(EVIDENCE / "run_speed_comparison.png")
+    # --- owner's fps test: the same frames at 310 u/s, only the cadence ---
+    def lanes_gif(items, seconds, path) -> None:
+        shown = []
+        for n in range(round(seconds / GIF_STEP)):
+            t = n * GIF_STEP
+            rows = [lane(images, patches, s, reference, t) for s in items]
+            canvas = Image.new("RGBA", (rows[0].width, sum(r.height + 4 for r in rows)), LIGHT)
+            y = 0
+            for r in rows:
+                canvas.alpha_composite(r, (0, y))
+                y += r.height + 4
+            shown.append(canvas.convert("P", palette=Image.Palette.ADAPTIVE))
+        shown[0].save(path, save_all=True, append_images=shown[1:], loop=0,
+                      duration=round(GIF_STEP * 1000), disposal=2)
+
+    lanes_gif(fps_steps, GIF_SECONDS, EVIDENCE / "run_fps_comparison.gif")
+    fifteen = [s for s in fps_steps if s["id"] == "15fps"]
+    lanes_gif(fifteen, 4.0, EVIDENCE / "run_15fps.gif")
+    strobes = [lane(images, patches, s, reference, len(images) / (BASE_FPS * s["rate"]) - 1e-6, strobe=True)
+               for s in fps_steps]
+    notes = ["Mesmos 6 quadros aprovados, mesma velocidade (310 u/s), mesma camera e escala: so muda a cadencia.",
+             "Exposicao multipla de um ciclo; pegadas verdes espalhadas = pe deslizando.",
+             "Nenhuma velocidade foi escolhida: avaliacao do proprietario."]
+    out = Image.new("RGBA", (strobes[0].width, sum(r.height + 6 for r in strobes) + 16 * len(notes) + 10), LIGHT)
+    y = 0
+    for r in strobes:
+        out.alpha_composite(r, (0, y))
+        y += r.height + 6
+    draw = ImageDraw.Draw(out)
+    for i, text in enumerate(notes):
+        draw.text((6, y + 4 + 16 * i), text, fill=INK)
+    out.save(EVIDENCE / "run_fps_comparison.png")
+    # In place at exactly 15 fps: GIF delays are whole centiseconds, so the
+    # six frames alternate 70/70/60 ms (400 ms per cycle = 15 fps on average).
+    in_place = [on(zoom(img, 3), NEUTRAL).convert("P", palette=Image.Palette.ADAPTIVE) for img in images]
+    in_place[0].save(EVIDENCE / "run_15fps_in_place.gif", save_all=True, append_images=in_place[1:], loop=0,
+                     duration=[70, 70, 60, 70, 70, 60], disposal=2)
+
+    print(json.dumps({"steps": [{**s, "fps": round(BASE_FPS * s["rate"], 2),
+                                 "slip": round(abs(s["speed"] - s["rate"] * reference), 1),
+                                 "slip_pct": round(abs(s["speed"] - s["rate"] * reference) / s["speed"] * 100, 1),
+                                 "cycle_s": round(len(images) / (BASE_FPS * s["rate"]), 3)}
+                                for s in fps_steps]}, indent=1))
     print(json.dumps({"reference": reference, "patches": patches,
                       "scenarios": [{**s, "fps": BASE_FPS * s["rate"],
                                      "slip": round(abs(s["speed"] - s["rate"] * reference), 1)}

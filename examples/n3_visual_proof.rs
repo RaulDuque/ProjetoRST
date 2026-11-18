@@ -23,6 +23,7 @@
 //! | O | N3.6 and N3.7 proofs: pivot and bounding-box overlay on / off |
 //! | T | N3.6 and N3.7 proofs: in place / moving across the view |
 //! | G | N3.7 sync proof: scenario A original / B faster clip / C slower travel / D moderate |
+//! | J | N3.7 sync proof: run6 at 310 u/s (the game's speed) at 12 / 15 / 18 / 23.7 fps |
 //! | H | N3.7 sync proof: speed mode / idle -> start -> run -> idle transition |
 //! | L | N3.7 sync proof: original / rim-light / lighter-boots frames |
 //! | K | N3.7 sync proof: backdrop default / light / grey / near black / near black + back-light |
@@ -167,6 +168,11 @@ struct Proof {
     travel: f32,
     /// N3.7 sync proof: index into `sync.ron` scenarios.
     sync_scenario: usize,
+    /// N3.7 sync proof: the J set (fps steps at the game's speed) is shown
+    /// instead of the G scenarios.
+    sync_fps_mode: bool,
+    /// N3.7 sync proof: index into `sync.ron` `game_speed_steps`.
+    sync_fps_step: usize,
     /// N3.7 sync proof: index into `SYNC_VARIANTS`.
     sync_variant: usize,
     /// N3.7 sync proof: index into `SYNC_BACKDROPS`.
@@ -284,6 +290,8 @@ struct SyncShot {
     backdrop: usize,
     /// `Some` captures the transition loop at that stage.
     stage: Option<Stage>,
+    /// `Some` captures that fps step at the game's speed.
+    fps_step: Option<usize>,
 }
 
 #[derive(Resource)]
@@ -335,6 +343,8 @@ fn main() {
             moving: false,
             travel: 0.0,
             sync_scenario: 0,
+            sync_fps_mode: false,
+            sync_fps_step: 0,
             sync_variant: 0,
             sync_backdrop: 0,
             sync_transition: false,
@@ -584,6 +594,7 @@ fn shots() -> Vec<Shot> {
             variant: 0,
             backdrop: 0,
             stage: None,
+            fps_step: None,
         };
         // Scenario D (moderate), stride frame, overlay on.
         list.push(sync_shot(
@@ -621,6 +632,16 @@ fn shots() -> Vec<Shot> {
             "bevy_n37_transition.png",
             SyncShot {
                 stage: Some(Stage::Start),
+                ..base
+            },
+            2,
+        ));
+        // 15 fps at the game's speed (owner's extra test), integer view.
+        list.push(sync_shot(
+            View::GameInteger,
+            "bevy_n37_15fps.png",
+            SyncShot {
+                fps_step: Some(1),
                 ..base
             },
             2,
@@ -1143,6 +1164,8 @@ struct SyncPlan {
     game_speed: f32,
     base_fps: f32,
     scenarios: Vec<SyncScenario>,
+    /// run6 at the game's speed with different playback rates (J key).
+    game_speed_steps: Vec<SyncScenario>,
     run6_phase: Vec<String>,
 }
 
@@ -1545,8 +1568,11 @@ fn apply_shot(proof: &mut Proof, shot: &Shot) {
         variant: 0,
         backdrop: 0,
         stage: None,
+        fps_step: None,
     });
     proof.sync_scenario = sync.scenario;
+    proof.sync_fps_mode = sync.fps_step.is_some();
+    proof.sync_fps_step = sync.fps_step.unwrap_or(0);
     proof.sync_variant = sync.variant;
     proof.sync_backdrop = sync.backdrop;
     proof.sync_transition = sync.stage.is_some();
@@ -1666,7 +1692,18 @@ fn read_keys(
     }
     if proof.source == SYNC_SOURCE {
         if keys.just_pressed(KeyCode::KeyG) {
-            proof.sync_scenario = proof.sync_scenario.saturating_add(1);
+            // From the J set, G first returns to the current scenario.
+            if !proof.sync_fps_mode {
+                proof.sync_scenario = proof.sync_scenario.saturating_add(1);
+            }
+            proof.sync_fps_mode = false;
+            proof.elapsed = 0.0;
+        }
+        if keys.just_pressed(KeyCode::KeyJ) {
+            if proof.sync_fps_mode {
+                proof.sync_fps_step = proof.sync_fps_step.saturating_add(1);
+            }
+            proof.sync_fps_mode = true;
             proof.elapsed = 0.0;
         }
         if keys.just_pressed(KeyCode::KeyH) {
@@ -2243,9 +2280,14 @@ fn sync_n37(
         proof.source = 0;
         return;
     };
-    let scenario_count = bank.plan.scenarios.len().max(1);
-    proof.sync_scenario %= scenario_count;
-    let Some(scenario) = bank.plan.scenarios.get(proof.sync_scenario) else {
+    let scenario = if proof.sync_fps_mode {
+        proof.sync_fps_step %= bank.plan.game_speed_steps.len().max(1);
+        bank.plan.game_speed_steps.get(proof.sync_fps_step)
+    } else {
+        proof.sync_scenario %= bank.plan.scenarios.len().max(1);
+        bank.plan.scenarios.get(proof.sync_scenario)
+    };
+    let Some(scenario) = scenario else {
         return;
     };
     let rate = scenario.rate.max(0.01);

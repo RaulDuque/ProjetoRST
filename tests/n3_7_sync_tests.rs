@@ -347,3 +347,40 @@ fn the_game_camera_and_run_speed_are_untouched() {
     assert!(camera.contains("view_height: 405.0"));
     assert!((PLAYER_RUN_SPEED - 310.0).abs() < f32::EPSILON);
 }
+
+#[derive(Deserialize)]
+struct FpsTest {
+    reference_speed: f32,
+    game_speed_steps: Vec<Scenario>,
+}
+
+#[test]
+fn the_fps_test_keeps_the_game_speed_and_only_changes_the_cadence() {
+    let plan: FpsTest = ron::from_str(&read(&here().join("generated/sync.ron")))
+        .unwrap_or_else(|err| panic!("sync.ron: {err}"));
+    let fps: Vec<f32> = plan
+        .game_speed_steps
+        .iter()
+        .map(|step| 12.0 * step.rate)
+        .collect();
+    assert_eq!(fps.len(), 4);
+    for (got, want) in fps.iter().zip([12.0, 15.0, 18.0, 23.7]) {
+        assert!((got - want).abs() < 0.05, "{got} fps, expected {want}");
+    }
+    let slides: Vec<f32> = plan
+        .game_speed_steps
+        .iter()
+        .map(|step| {
+            assert!(
+                (step.speed - PLAYER_RUN_SPEED).abs() < f32::EPSILON,
+                "{}",
+                step.id
+            );
+            (step.speed - step.rate * plan.reference_speed).abs()
+        })
+        .collect();
+    // 15 fps: 310 - 1.25 * 157 = 113.75 u/s; the slide falls as the fps rise.
+    assert!((slides[1] - 113.75).abs() < 0.5, "{}", slides[1]);
+    assert!(slides.windows(2).all(|pair| pair[1] < pair[0]));
+    assert!(slides[3] < 1.0);
+}
