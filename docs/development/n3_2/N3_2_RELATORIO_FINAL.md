@@ -52,4 +52,6 @@ A parcial. B não passou. C não passou.
 
 ## Publicação
 
-Os hashes entram depois do push.
+- `7a1dad6` feat(visual): add generated concept references beside the isolated proof
+- `f6e3df6` docs(n3): record the generated concepts without approving them
+- O commit que grava este parágrafo é o registro da publicação. O hash remoto é o HEAD depois do push.
