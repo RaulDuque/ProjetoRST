@@ -44,3 +44,11 @@ O HUD mostra o fps efetivo, o fator, a velocidade e o deslizamento.
 ## Leitura (sem decisão)
 
 15 fps fica no meio do caminho: a cadência de 5 passos por segundo ainda parece corrida, mas o pé escorrega 37 %, menos que os 49 % dos 12 fps e mais que os 24 % dos 18 fps. A escolha entre naturalidade da cadência e pé parado fica com o proprietário, depois de ver `run_15fps.gif` e `run_fps_comparison.gif`, ou o Bevy com a tecla J.
+
+## Publicação
+
+Push em `origin/art/v1.2-protagonist`, sem force, merge ou rebase:
+
+- `f033c015ce440092cda9208ba1cd4632505df34e` feat(visual): add n3.7 15 fps run test at game speed
+- `f94b14f586103981e32361a32c2fe806f5cf83bf` docs(n3): record the n3.7 15 fps run test and evidence
+- O commit que grava esta seção é o registro da publicação. O hash remoto final é o HEAD depois do push dele.
