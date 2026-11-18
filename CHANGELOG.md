@@ -4,6 +4,10 @@ Formato: [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/). Versioname
 
 ## [Unreleased]
 
+### N3.4 — Protagonista-base a partir da ficha original, ainda isolado
+- Um quadro lateral de 106 px do protagonista sem equipamentos (cabelo prateado, camisa, calça, botas), corrigido pixel a pixel sobre a redução da ficha modular.
+- Fonte editável em texto, exemplo isolado com a fonte `n3.4-base`. Sem pintura em programa gráfico, sem ataque. O estilo aguarda o proprietário.
+
 ### N3.3 — Gabarito de pixel nativo, ainda isolado
 - Um quadro de 106 px, com capa e espada em imagens separadas, no exemplo da prova visual.
 - Não há clipe de ataque. O Pixelorama não pintou. O estilo não está aprovado.

@@ -809,3 +809,16 @@ O probe não é um playtest humano.
 - Nenhuma dependência nova. A câmera do jogo e o save v3 ficam como estão. A N4 não começa.
 
 **Consequências:** docs `development/n3_3/`. O estilo continua sem aprovação.
+
+## D-042 — Base fiel à ficha, corrigida à mão (N3.4)
+
+**Contexto:** A N3.3 ficou num manequim de blocos sem rosto. O briefing `DarkCastleR-N-3-4.md` fez de `image.png` e da ficha modular a fonte da verdade e pediu um único quadro lateral do personagem-base antes de qualquer animação.
+
+**Decisão:**
+- A base fica em `art-src/n3-4-original-protagonist/`. Não substitui o protagonista publicado.
+- Os pixels partem da redução da vista lateral da ficha e foram corrigidos à mão como grade de texto (`source/base_idle.txt`). Não houve sessão em programa gráfico.
+- Camisa, cinto, calça, botas e braceletes ficam no corpo, como em `image.png`. Casaca, armadura, capa, elmo, espada e escudo ficam de fora.
+- O contrato N3.3 (80×128, pivô `(40, 118)`) é mantido. A câmera 405 reduz o sprite na tela; a troca para 360 é só proposta.
+- Nenhuma dependência nova. A câmera, o save v3 e os controles ficam como estão. A N4 e a N5 não começam.
+
+**Consequências:** docs `development/n3_4/`. O estilo continua sem aprovação.

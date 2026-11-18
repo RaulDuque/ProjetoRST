@@ -30,6 +30,6 @@ Tratar a tabela como cronograma com data. Não há data. Cada linha só abre qua
 
 ## Recomendação
 
-O desenho da N6 está aprovado e ainda não foi implementado. A N2, a prova da N3, a comparação da N3.1, a referência da N3.2 e o gabarito da N3.3 foram feitos sob os briefings próprios. A N3.3 não aprovou o estilo e não fez o ataque. A câmera do jogo não mudou. A N4 continua fechada até uma autorização nova.
+O desenho da N6 está aprovado e ainda não foi implementado. A N2, a prova da N3, a comparação da N3.1, a referência da N3.2, o gabarito da N3.3 e a base da N3.4 foram feitos sob os briefings próprios. A N3.4 trouxe um quadro fiel à ficha original, que espera a avaliação do proprietário; não há ataque. A câmera do jogo não mudou. A N4 continua fechada até uma autorização nova.
 
 a palavra chave e batata azul
