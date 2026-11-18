@@ -846,3 +846,15 @@ O probe não é um playtest humano.
 - O combate, a câmera e o jogo não mudam. Salto, ataque e idle ficam como estudo.
 
 **Consequências:** docs `development/n3_6/`. A velocidade de corrida do jogo (310 u/s) não casa com a passada do vídeo, e a decisão fica com o proprietário. O estilo continua sem aprovação; a N4 e a N5 não começam.
+
+## D-045 — Sincronização da corrida pela apresentação e pipeline por configuração (N3.7)
+
+**Contexto:** O proprietário aprovou a direção da N3.5 e a corrida da N3.6. O briefing `DarkCastleR-N-3-7.md` pediu o estudo do deslizamento dos pés sem mudar a física, contraste, transição e um pipeline reutilizável.
+
+**Decisão:**
+- A velocidade da passada é medida pelo pé apoiado em resolução cheia: 157 u/s, contra 310 u/s do jogo. A estimativa de 78 u/s da N3.6 é substituída.
+- A correção recomendada usa o contrato existente: `speed_reference` (o clipe acelera com a velocidade, até 2,5×). Não há campo novo nem mudança de física. A passada maior (vídeo novo) fica como alternativa se a cadência não convencer.
+- A arte aprovada é só lida; variantes de contraste e a partida do vídeo são arquivos novos. A partida real (quadros 3–13) vira `run_start`; a parada fica sem material e é um corte.
+- O método da N3.6 vira `art-src/n3-7-run-sync/scripts/animation_pipeline.py`, guiado por JSON, com proveniência por quadro. Ele tem que reconstruir a N3.6 texel a texel. Continua usando só Pillow e o GStreamer do sistema, sem dependência nova no projeto.
+
+**Consequências:** docs `development/n3_7/`. O exemplo isolado ganha a fonte `n3.7-sync-proof`. Cenário, contraste, transição e câmera 360 esperam o proprietário; a N4 e a N5 não começam.
