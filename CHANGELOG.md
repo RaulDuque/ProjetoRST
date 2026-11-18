@@ -4,6 +4,10 @@ Formato: [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/). Versioname
 
 ## [Unreleased]
 
+### N3.3 — Gabarito de pixel nativo, ainda isolado
+- Um quadro de 106 px, com capa e espada em imagens separadas, no exemplo da prova visual.
+- Não há clipe de ataque. O Pixelorama não pintou. O estilo não está aprovado.
+
 ### N3.2 — Referência gerada, ainda isolada
 - Três conceitos laterais e um quadro reduzido a 100 px no exemplo da prova visual.
 - As poses geradas não formam um clipe. O estilo não está aprovado. A câmera do jogo não muda.

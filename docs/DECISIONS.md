@@ -797,3 +797,15 @@ O probe não é um playtest humano.
 - Nenhuma dependência nova. A câmera do jogo e o save v3 ficam como estão. A N4 não começa com este resultado.
 
 **Consequências:** docs `development/n3_2/`. O estilo continua sem aprovação.
+
+## D-041 — Gabarito nativo, sem pintura (N3.3)
+
+**Contexto:** A N3.2 mostrou que reduzir a ilustração não produz o sprite. O briefing `DarkCastleR-N-3-3.md` pediu pixel desenhado para cerca de 100 px e mandou parar se o primeiro quadro ainda parecesse um manequim.
+
+**Decisão:**
+- O gabarito fica em `art-src/n3-3-native-pixel/`. Não substitui o protagonista publicado.
+- Os pixels vêm de tabelas, não de uma sessão do Pixelorama e não de uma redução. O primeiro quadro não passou do manequim de blocos, então não há clipe de ataque.
+- A capa e a espada são imagens separadas. O exemplo isolado pode mostrar esse quadro, rotulado como construção.
+- Nenhuma dependência nova. A câmera do jogo e o save v3 ficam como estão. A N4 não começa.
+
+**Consequências:** docs `development/n3_3/`. O estilo continua sem aprovação.
