@@ -6,6 +6,7 @@ Formato: [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/). Versioname
 
 ### N3.7 — Sincronização da corrida e pipeline de animação, ainda isolados
 - Pés medidos quadro a quadro: o pé apoiado recua 157 u/s no vídeo (a N3.6 estimava 78). A 12 fps e 310 u/s ele desliza 49 %. Quatro cenários comparados com os mesmos seis quadros; recomendação: `speed_reference`, sem mexer na física.
+- Teste adicional a 15 fps a pedido do proprietário: os mesmos quadros a 310 u/s em 12/15/18/23,7 fps (tecla J), GIFs comparativos e deslizamento de 37 % a 15 fps; sem escolha de velocidade.
 - Estudo de contraste (borda de luz, botas, contraluz) em arquivos novos, partida real do vídeo como clipe `run_start`, pipeline reutilizável que reconstrói a N3.6 texel a texel e briefings de vídeo de salto, ataque e idle. Fonte `n3.7-sync-proof` no exemplo isolado. Arte aprovada, jogo, câmera e física inalterados.
 
 ### N3.6 — Primeira prova de corrida, ainda isolada

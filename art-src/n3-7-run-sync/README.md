@@ -9,7 +9,7 @@ Experimento isolado. Não é carregado pelo jogo e não está aprovado. A arte a
 | `configs/run_start.json` | partida real do vídeo (quadros 0–13), clipe `run_start` = 3, 5, 7, 9, 11, 13 |
 | `pipeline/<nome>/` | `source/` (grades), `generated/` (atlas, `<nome>.ron`, `boxes.ron`, `provenance.json`), `preview/` |
 | `scripts/foot_analysis.py` | contato dos pés quadro a quadro → `analysis/foot_metrics.json` |
-| `scripts/sync_study.py` | cenários A–E → `generated/sync.ron` e evidências de velocidade |
+| `scripts/sync_study.py` | cenários A–E e o teste de fps a 310 u/s (12/15/18/23,7) → `generated/sync.ron` e evidências de velocidade |
 | `scripts/contrast_study.py` | variantes B/C/D → `generated/run6_rim.png`, `run6_boots.png`, `backlight.png` |
 | `scripts/transition_study.py` | parado → partida → corrida → parado → `generated/transition.ron` |
 | `scripts/pipeline_evidence.py` | folha `pipeline_output.png` |
@@ -25,7 +25,7 @@ python3 -B art-src/n3-7-run-sync/scripts/sync_study.py
 python3 -B art-src/n3-7-run-sync/scripts/contrast_study.py
 python3 -B art-src/n3-7-run-sync/scripts/transition_study.py
 python3 -B art-src/n3-7-run-sync/scripts/pipeline_evidence.py
-N3_INTERACTIVE=1 cargo run --example n3_visual_proof   # B até "n3.7-sync-proof"; G, H, L, K, O, T, V, Espaço, "."
+N3_INTERACTIVE=1 cargo run --example n3_visual_proof   # B até "n3.7-sync-proof"; G, J, H, L, K, O, T, V, Espaço, "."
 ```
 
 Depende só do Python com Pillow e do GStreamer do sistema (`gst-launch-1.0`, `gst-discoverer-1.0`), como na N3.6. Detalhes em `docs/development/n3_7/`.

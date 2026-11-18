@@ -7,9 +7,9 @@ Executados na árvore de trabalho, um comando por vez, com `-j 2`. Memória disp
 | `cargo fmt --check` | sem diferenças |
 | `cargo check -j 2` | sem erros |
 | `cargo clippy --all-targets -j 2 -- -D warnings` | sem avisos |
-| `cargo test -j 2` | 51 suítes, **623 passaram, 0 falharam** |
-| `cargo test -j 2 --test n3_7_sync_tests` | 7 passaram |
-| `cargo run --example n3_visual_proof` | 47 capturas, saída 0; as 41 antigas saíram com bytes idênticos |
+| `cargo test -j 2` | 51 suítes, **623 passaram, 0 falharam** (com o teste a 15 fps: **624**) |
+| `cargo test -j 2 --test n3_7_sync_tests` | 7 passaram (com o teste a 15 fps: 8) |
+| `cargo run --example n3_visual_proof` | 47 capturas, saída 0; as 41 antigas saíram com bytes idênticos (com o teste a 15 fps: 48, e as 47 anteriores idênticas) |
 | `animation_pipeline.py configs/run_n36.json configs/run_start.json` | 189 quadros decodificados; 13 e 14 quadros reduzidos; 13/13 grades N3.6 idênticas |
 | `foot_analysis.py` | referência 157 u/s (passos de 150 e 164) |
 | `sync_study.py` | 4 cenários, `sync.ron`, 2 GIFs e 2 folhas |
@@ -33,6 +33,7 @@ Antes desta etapa: 50 suítes e 616 testes.
   - 6 fases, com uma de voo.
 - `the_transition_and_contrast_data_fit_the_approved_run`: plano de transição coerente, variantes do tamanho do `run6`, contraluz de 112×128.
 - `the_game_camera_and_run_speed_are_untouched`: `camera.ron` continua com 405 e `PLAYER_RUN_SPEED` com 310.
+- `the_fps_test_keeps_the_game_speed_and_only_changes_the_cadence` (teste adicional): `game_speed_steps` tem 12, 15, 18 e 23,7 fps, todos a `PLAYER_RUN_SPEED`. A 15 fps o deslizamento é de 113,75 u/s, e ele cai à medida que o fps sobe até zerar em 23,7.
 
 Nenhum teste antigo foi alterado. Os testes da N3.6 (`n3_6_run_proof_tests.rs`) continuam passando, então a compatibilidade com a N3.5 e a N3.6 se mantém.
 

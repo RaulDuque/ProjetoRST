@@ -14,6 +14,7 @@ Só `examples/n3_visual_proof.rs`, sem uma segunda arquitetura:
 - **Sistema próprio, `sync_n37`.** Fica na cadeia logo depois de `sync`, que não faz nada quando a fonte é a 8. As outras fontes continuam desenhadas pelo mesmo código de antes.
 - **Teclas novas** (só valem na fonte 8):
   - G troca o cenário: A original, B clipe acelerado, C deslocamento reduzido, D moderado;
+  - J (teste adicional) troca o fps na velocidade do jogo: 12, 15, 18 e 23,7, sempre a 310 u/s (`N3_7_TESTE_15FPS.md`);
   - H alterna entre o modo velocidade e o modo transição (parado N3.5 → partida do vídeo → corrida → corte para o parado, em loop);
   - L troca os quadros: original, borda de luz ou botas +1 tom;
   - K troca o fundo: padrão, claro, cinza, quase preto, ou quase preto com contraluz.
@@ -39,10 +40,11 @@ Só `examples/n3_visual_proof.rs`, sem uma segunda arquitetura:
   | `bevy_n37_rim.png` | borda de luz no quase preto, 360 |
   | `bevy_n37_backlight.png` | contraluz no quase preto, 360 |
   | `bevy_n37_transition.png` | modo transição, partida #2 |
+  | `bevy_n37_15fps.png` | teste adicional: 15 fps a 310 u/s, 360 |
 
 ## Verificação
 
-- O roteiro padrão gerou 47 capturas (41 antigas + 6 novas), com saída 0.
+- O roteiro padrão gerou 48 capturas (41 da N3 à N3.6, 6 da N3.7 e 1 do teste a 15 fps), com saída 0.
 - As capturas da N3 à N3.6 saíram com bytes idênticos: `git status` não mostra nenhuma evidência antiga modificada.
 - **Câmera 360:** a captura do `run6` #2 é idêntica ao sprite (0 diferenças em 2458 texels).
 - `cargo clippy --all-targets -- -D warnings` limpo.

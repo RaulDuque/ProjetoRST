@@ -42,4 +42,6 @@ O pé apoiado fica parado no mundo quando `velocidade = fator × 157`, onde o fa
 1. **Curto prazo: B, com o contrato existente.** Na integração futura, o clipe de corrida leva `speed_reference: Some(157.0)`. Na velocidade máxima o pé fica parado, e na aceleração (abaixo de 310) a cadência cai junto com a velocidade. Não muda física, arte nem quadros.
 2. **Se o proprietário achar a cadência de B frenética**, o caminho é E (um vídeo com passada maior, reproduzido perto de 12–16 fps). D só funciona se a velocidade do jogo mudar, e isso precisa de autorização.
 
+**Teste adicional a 15 fps** (pedido do proprietário): os mesmos quadros a 310 u/s em 12, 15, 18 e 23,7 fps. A 15 fps o deslizamento é de 114 u/s (37 %). Ver `N3_7_TESTE_15FPS.md`. Sem decisão.
+
 A prova interativa (`N3_7_BEVY.md`, tecla G) mostra A, B, C e D em movimento, na mesma câmera, para o proprietário decidir. Nada foi aplicado ao jogo.
