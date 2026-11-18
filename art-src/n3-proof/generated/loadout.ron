@@ -1,0 +1,23 @@
+(
+    body_light: "body_light.png",
+    body_heavy: "body_heavy.png",
+    cape: "cape.png",
+    sword: "sword.png",
+    spear: "spear.png",
+    cell: (96, 128),
+    columns: 6,
+    rows: 4,
+    pivot: (48.0, 120.0),
+    cape_cell: (88, 100),
+    cape_pivot: (44.0, 14.0),
+    sword_grip: (12.0, 12.0),
+    spear_grip: (26.0, 9.0),
+    sword_size: (64, 24),
+    spear_size: (88, 18),
+    clips: [
+        (name: "idle", count: 4),
+        (name: "walk", count: 6),
+        (name: "jump", count: 6),
+        (name: "attack", count: 6),
+    ],
+)

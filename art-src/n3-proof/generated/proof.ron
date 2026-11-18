@@ -1,0 +1,14 @@
+(
+    version: 1,
+    facing: Right,
+    weapon_in_body: false,
+    atlases: {
+        "body": (texture: "body_light.png", cell: (96, 128), columns: 6, rows: 4, padding: 0, density: 1),
+    },
+    clips: {
+        "idle": (atlas: "body", first: 0, count: 4, mode: Loop(fps: 6.0), pivot: (48.0, 120.0), fallback: None, durations: [0.1667, 0.1667, 0.1667, 0.1667], speed_reference: None),
+        "walk": (atlas: "body", first: 4, count: 6, mode: Loop(fps: 10.0), pivot: (48.0, 120.0), fallback: Some("idle"), durations: [0.1000, 0.1000, 0.1000, 0.1000, 0.1000, 0.1000], speed_reference: Some(90.0)),
+        "jump": (atlas: "body", first: 10, count: 6, mode: Once(fps: 12.0), pivot: (48.0, 120.0), fallback: Some("idle"), durations: [0.0833, 0.0833, 0.0833, 0.0833, 0.0833, 0.0833], speed_reference: None),
+        "attack": (atlas: "body", first: 16, count: 6, mode: Once(fps: 14.0), pivot: (48.0, 120.0), fallback: Some("idle"), durations: [0.0714, 0.0714, 0.0714, 0.0714, 0.0714, 0.0714], speed_reference: None),
+    },
+)

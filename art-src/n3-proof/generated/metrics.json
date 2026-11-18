@@ -1,0 +1,28 @@
+{
+  "generator_seconds": 1.2451,
+  "pixelorama_on_path": false,
+  "blender_on_path": true,
+  "white_mesh_bytes": 3387148,
+  "white_mesh_mtime_ns": 1794883351885919072,
+  "body_light_bytes": 14528,
+  "body_heavy_bytes": 13957,
+  "cape_bytes": 6538,
+  "sword_bytes": 308,
+  "spear_bytes": 257,
+  "gold_in_body_light": 0,
+  "gold_in_body_heavy": 0,
+  "gold_in_sword": 24,
+  "gold_in_spear": 6,
+  "frames": 22,
+  "cell": [
+    96,
+    128
+  ],
+  "pivot": [
+    48,
+    120
+  ],
+  "idle_opaque_texels_tall": 97,
+  "strike_frame": 18,
+  "note": "Authored pixels. The filter image is not a manual finish and not a Blender render."
+}
