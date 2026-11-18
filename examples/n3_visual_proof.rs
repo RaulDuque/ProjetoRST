@@ -17,7 +17,11 @@
 //! | X | light armor / heavy armor |
 //! | C | cape on / off |
 //! | M | mirror |
-//! | B | N3 baseline / automatic pixel / raw render / N3.2 concept / N3.3 construction / N3.4 base / N3.5 fidelity |
+//! | B | N3 baseline / automatic pixel / raw render / N3.2 concept / N3.3 construction / N3.4 base / N3.5 fidelity / N3.6 run proof |
+//! | R | N3.6 run proof: run6 / run10 / stand |
+//! | F | N3.6 run proof: manifest timing / 8 / 10 / 12 fps |
+//! | O | N3.6 run proof: pivot and bounding-box overlay on / off |
+//! | T | N3.6 run proof: in place / moving across the view |
 //! | V | close view (360, integer 2×) / game framing (405) / integer game framing (360, 1 texel = 1 px) |
 //! | Space | pause |
 //! | . | one frame while paused |
@@ -146,9 +150,30 @@ struct Proof {
     paused: bool,
     /// 0 = N3 baseline, 1 = automatic pixel of the V2.2 attack, 2 = the raw
     /// render, 3 = N3.2 concept, 4 = N3.3 construction, 5 = N3.4 base body,
-    /// 6 = N3.5 fidelity candidate.
+    /// 6 = N3.5 fidelity candidate, 7 = N3.6 run proof.
     source: u8,
+    /// N3.6 run proof: index into `RUN_FPS_STEPS`.
+    run_fps: usize,
+    /// N3.6 run proof: pivot and bounding-box overlay.
+    overlay: bool,
+    /// N3.6 run proof: the body travels across the view instead of in place.
+    moving: bool,
+    /// N3.6 run proof: horizontal world offset while moving.
+    travel: f32,
 }
+
+/// Source index of the N3.6 run proof (no cape, no weapon).
+const RUN_SOURCE: u8 = 7;
+const RUN_DIR: &str = "art-src/n3-6-animation-proof/generated";
+/// Frame-rate overrides the run proof cycles through (`None` = manifest).
+const RUN_FPS_STEPS: [Option<f32>; 4] = [None, Some(8.0), Some(10.0), Some(12.0)];
+/// Run clips the R key cycles through.
+const RUN_CLIPS: [&str; 3] = ["run6", "run10", "idle"];
+/// World units per second at which the planted sole slides back in the
+/// video cycle (estimate from `metrics.json`); used by the moving mode.
+const RUN_TRAVEL_SPEED: f32 = 78.0;
+/// The moving mode wraps around inside this half-width (world units).
+const RUN_TRAVEL_HALF_WIDTH: f32 = 260.0;
 
 /// Source index of the N3.4 base body (no cape, no weapon).
 const BASE_SOURCE: u8 = 5;
@@ -162,6 +187,11 @@ const BODY_FIGURE_TEXELS: u32 = 106;
 /// The single-frame bodies without equipment (N3.4 and N3.5).
 fn is_base(source: u8) -> bool {
     source == BASE_SOURCE || source == FIDELITY_SOURCE
+}
+
+/// Sources drawn without cape or weapon.
+fn without_equipment(source: u8) -> bool {
+    is_base(source) || source == RUN_SOURCE
 }
 
 #[derive(Component)]
@@ -233,6 +263,10 @@ fn main() {
             view: View::Close,
             paused: true,
             source: 0,
+            run_fps: 0,
+            overlay: true,
+            moving: false,
+            travel: 0.0,
         })
         .insert_resource(Script {
             interactive,
@@ -244,7 +278,15 @@ fn main() {
         .add_systems(Startup, setup)
         .add_systems(
             Update,
-            (wait_or_drive, read_keys, sync, capture, finish).chain(),
+            (
+                wait_or_drive,
+                read_keys,
+                sync,
+                draw_run_overlay,
+                capture,
+                finish,
+            )
+                .chain(),
         )
         .run();
 }
@@ -445,7 +487,46 @@ fn shots() -> Vec<Shot> {
             "bevy_n34_360.png",
         ));
     }
+    if project_root().join(RUN_DIR).join("run.ron").is_file() {
+        list.push(run_shot(View::Close, "bevy_n36.png"));
+        list.push(run_shot(View::Game, "bevy_n36_405.png"));
+        list.push(run_shot(View::GameInteger, "bevy_n36_360.png"));
+        // Every run6 frame on the integer view, for the frame-by-frame sheet
+        // (not committed; `build_run.py` cuts them into one evidence image).
+        for (frame, file) in RUN_FRAME_SHOTS.iter().enumerate() {
+            list.push(Shot {
+                frame,
+                folder: "target/n3_6_bevy_frames",
+                ..run_shot(View::GameInteger, file)
+            });
+        }
+    }
     list
+}
+
+const RUN_FRAME_SHOTS: [&str; 6] = [
+    "run6_0.png",
+    "run6_1.png",
+    "run6_2.png",
+    "run6_3.png",
+    "run6_4.png",
+    "run6_5.png",
+];
+
+/// N3.6 captures: run6 frame 2 (stride), paused, under each view.
+fn run_shot(view: View, file: &'static str) -> Shot {
+    Shot {
+        clip: "run6",
+        frame: 2,
+        heavy: false,
+        spear: false,
+        cape: false,
+        mirror: false,
+        view,
+        file,
+        source: RUN_SOURCE,
+        folder: "docs/development/n3_6/evidence",
+    }
 }
 
 /// N3.5 captures: the candidate and the N3.4 body under the same views.
@@ -591,6 +672,7 @@ fn setup(
     load_concept(&mut commands, &assets);
     load_native(&mut commands, &assets);
     load_base(&mut commands, &assets);
+    load_run(&mut commands, &assets, &mut layouts);
 
     commands.spawn((
         Camera2d,
@@ -836,6 +918,169 @@ fn load_base(commands: &mut Commands, assets: &AssetServer) {
     }
 }
 
+/// The N3.6 run proof: one manifest, one texture and grid layout per atlas,
+/// and the opaque box of every frame for the overlay.
+#[derive(Resource)]
+struct RunBank {
+    manifest: AnimationManifest,
+    boxes: std::collections::BTreeMap<String, Vec<(u32, u32, u32, u32)>>,
+    images: std::collections::BTreeMap<String, Handle<Image>>,
+    layouts: std::collections::BTreeMap<String, Handle<TextureAtlasLayout>>,
+}
+
+fn load_run(
+    commands: &mut Commands,
+    assets: &AssetServer,
+    layouts: &mut Assets<TextureAtlasLayout>,
+) {
+    let dir = project_root().join(RUN_DIR);
+    let path = dir.join("run.ron");
+    if !path.is_file() {
+        return;
+    }
+    let manifest = AnimationManifest::from_ron(
+        &std::fs::read_to_string(&path).unwrap_or_else(|err| panic!("n3.6 manifest: {err}")),
+    )
+    .unwrap_or_else(|err| panic!("n3.6 manifest: {err}"));
+    let boxes = ron::from_str(
+        &std::fs::read_to_string(dir.join("boxes.ron"))
+            .unwrap_or_else(|err| panic!("n3.6 boxes: {err}")),
+    )
+    .unwrap_or_else(|err| panic!("n3.6 boxes: {err}"));
+    let mut images = std::collections::BTreeMap::new();
+    let mut grids = std::collections::BTreeMap::new();
+    for (name, atlas) in &manifest.atlases {
+        images.insert(
+            name.clone(),
+            assets.load(format!("{RUN_DIR}/{}", atlas.texture)),
+        );
+        grids.insert(
+            name.clone(),
+            layouts.add(TextureAtlasLayout::from_grid(
+                UVec2::new(atlas.cell.0, atlas.cell.1),
+                atlas.columns,
+                atlas.rows,
+                Some(UVec2::splat(atlas.padding)),
+                None,
+            )),
+        );
+    }
+    spawn_overlay(commands);
+    commands.insert_resource(RunBank {
+        manifest,
+        boxes,
+        images,
+        layouts: grids,
+    });
+}
+
+/// One bar of the run-proof overlay. The project builds Bevy without the
+/// gizmo renderer, so the overlay is drawn with thin plain sprites.
+#[derive(Component, Clone, Copy)]
+enum OverlayBar {
+    BoxTop,
+    BoxBottom,
+    BoxLeft,
+    BoxRight,
+    PivotHorizontal,
+    PivotVertical,
+    Ground,
+}
+
+const OVERLAY_BARS: [OverlayBar; 7] = [
+    OverlayBar::BoxTop,
+    OverlayBar::BoxBottom,
+    OverlayBar::BoxLeft,
+    OverlayBar::BoxRight,
+    OverlayBar::PivotHorizontal,
+    OverlayBar::PivotVertical,
+    OverlayBar::Ground,
+];
+
+fn spawn_overlay(commands: &mut Commands) {
+    for bar in OVERLAY_BARS {
+        let color = match bar {
+            OverlayBar::PivotHorizontal | OverlayBar::PivotVertical => Color::srgb(1.0, 0.2, 0.25),
+            OverlayBar::Ground => Color::srgba(1.0, 0.2, 0.25, 0.45),
+            _ => Color::srgb(0.3, 0.55, 1.0),
+        };
+        commands.spawn((
+            bar,
+            Sprite {
+                color,
+                custom_size: Some(Vec2::ONE),
+                ..default()
+            },
+            Transform::from_xyz(0.0, 0.0, 5.0),
+            Visibility::Hidden,
+        ));
+    }
+}
+
+/// Pivot cross, ground line and opaque box of the shown run frame.
+fn draw_run_overlay(
+    proof: Res<Proof>,
+    run: Option<Res<RunBank>>,
+    body: Query<&Transform, (With<BodyLayer>, Without<OverlayBar>)>,
+    mut bars: Query<(&OverlayBar, &mut Transform, &mut Sprite, &mut Visibility)>,
+) {
+    let shown = (proof.source == RUN_SOURCE && proof.overlay)
+        .then_some(())
+        .and(run.as_ref())
+        .and_then(|run| {
+            let clip = run.manifest.clips.get(&proof.clip)?;
+            let frame_box = *run.boxes.get(&proof.clip)?.get(proof.frame)?;
+            Some((clip.pivot, frame_box))
+        });
+    let (Some((pivot, (x0, y0, x1, y1))), Ok(body)) = (shown, body.single()) else {
+        for (_, _, _, mut visibility) in &mut bars {
+            *visibility = Visibility::Hidden;
+        }
+        return;
+    };
+    let scale = proof.view.scale();
+    let sign = if proof.mirror { -1.0 } else { 1.0 };
+    let origin = body.translation.truncate();
+    let to_world =
+        |x: f32, y: f32| origin + Vec2::new(sign * (x - pivot.0) * scale, (pivot.1 - y) * scale);
+    let a = to_world(x0 as f32, y0 as f32);
+    let b = to_world(x1 as f32 + 1.0, y1 as f32 + 1.0);
+    let (left, right) = (a.x.min(b.x), a.x.max(b.x));
+    let (bottom, top) = (a.y.min(b.y), a.y.max(b.y));
+    let ground = to_world(pivot.0, pivot.1 + 1.0);
+    let thin = scale;
+    let arm = 6.0 * scale;
+    for (bar, mut transform, mut sprite, mut visibility) in &mut bars {
+        let (centre, size) = match bar {
+            OverlayBar::BoxTop => (
+                Vec2::new((left + right) / 2.0, top),
+                Vec2::new(right - left, thin),
+            ),
+            OverlayBar::BoxBottom => (
+                Vec2::new((left + right) / 2.0, bottom),
+                Vec2::new(right - left, thin),
+            ),
+            OverlayBar::BoxLeft => (
+                Vec2::new(left, (top + bottom) / 2.0),
+                Vec2::new(thin, top - bottom),
+            ),
+            OverlayBar::BoxRight => (
+                Vec2::new(right, (top + bottom) / 2.0),
+                Vec2::new(thin, top - bottom),
+            ),
+            OverlayBar::PivotHorizontal => (ground, Vec2::new(2.0 * arm, thin)),
+            OverlayBar::PivotVertical => (ground, Vec2::new(thin, 2.0 * arm)),
+            OverlayBar::Ground => (
+                Vec2::new(0.0, ground.y),
+                Vec2::new(2.0 * (RUN_TRAVEL_HALF_WIDTH + 60.0), thin),
+            ),
+        };
+        transform.translation = centre.extend(5.0);
+        sprite.custom_size = Some(size);
+        *visibility = Visibility::Inherited;
+    }
+}
+
 fn wait_or_drive(
     assets: Res<AssetServer>,
     bank: Option<Res<ProofAssets>>,
@@ -843,6 +1088,7 @@ fn wait_or_drive(
     concept: Option<Res<ConceptView>>,
     native: Option<Res<NativeBank>>,
     base: Option<Res<BaseBank>>,
+    run: Option<Res<RunBank>>,
     mut proof: ResMut<Proof>,
     mut script: ResMut<Script>,
     mut exit: MessageWriter<AppExit>,
@@ -935,6 +1181,21 @@ fn wait_or_drive(
             }
         }
     }
+    if let Some(run) = run.as_ref() {
+        for handle in run.images.values() {
+            if assets
+                .get_load_state(handle)
+                .is_some_and(|state| state.is_failed())
+            {
+                eprintln!("[n3_visual_proof] an n3.6 run texture failed to load");
+                exit.write(AppExit::error());
+                return;
+            }
+            if !assets.is_loaded(handle) {
+                return;
+            }
+        }
+    }
     script.ready_frames = script.ready_frames.saturating_add(1);
     if script.ready_frames < 12 {
         return;
@@ -955,6 +1216,11 @@ fn apply_shot(proof: &mut Proof, shot: &Shot) {
     proof.view = shot.view;
     proof.paused = true;
     proof.source = shot.source;
+    // Scripted run captures: overlay only in the close view, never moving.
+    proof.overlay = shot.view == View::Close;
+    proof.moving = false;
+    proof.travel = 0.0;
+    proof.run_fps = 0;
 }
 
 fn read_keys(
@@ -1003,7 +1269,9 @@ fn read_keys(
         proof.view = proof.view.next();
     }
     if keys.just_pressed(KeyCode::KeyB) {
-        let span = if project_root().join(FIDELITY_SPRITE).is_file() {
+        let span = if project_root().join(RUN_DIR).join("run.ron").is_file() {
+            8
+        } else if project_root().join(FIDELITY_SPRITE).is_file() {
             7
         } else if project_root().join(BASE_SPRITE).is_file() {
             6
@@ -1023,9 +1291,34 @@ fn read_keys(
         proof.source = (proof.source + 1) % span;
         if proof.source == 1 || proof.source == 2 {
             proof.clip = "attack".into();
+        } else if proof.source == RUN_SOURCE {
+            proof.clip = RUN_CLIPS[0].into();
+        } else if proof.source == 0 {
+            proof.clip = "idle".into();
         }
         proof.frame = 0;
         proof.elapsed = 0.0;
+    }
+    if proof.source == RUN_SOURCE {
+        if keys.just_pressed(KeyCode::KeyR) {
+            let next = RUN_CLIPS
+                .iter()
+                .position(|clip| *clip == proof.clip)
+                .map_or(0, |i| (i + 1) % RUN_CLIPS.len());
+            proof.clip = RUN_CLIPS[next].into();
+            proof.frame = 0;
+            proof.elapsed = 0.0;
+        }
+        if keys.just_pressed(KeyCode::KeyF) {
+            proof.run_fps = (proof.run_fps + 1) % RUN_FPS_STEPS.len();
+        }
+        if keys.just_pressed(KeyCode::KeyO) {
+            proof.overlay = !proof.overlay;
+        }
+        if keys.just_pressed(KeyCode::KeyT) {
+            proof.moving = !proof.moving;
+            proof.travel = 0.0;
+        }
     }
     if keys.just_pressed(KeyCode::Space) {
         proof.paused = !proof.paused;
@@ -1069,6 +1362,7 @@ fn sync(
     concept: Option<Res<ConceptView>>,
     native: Option<Res<NativeBank>>,
     base: Option<Res<BaseBank>>,
+    run: Option<Res<RunBank>>,
 ) {
     let Some(bank) = bank else {
         return;
@@ -1086,7 +1380,24 @@ fn sync(
     if is_base(proof.source) && entry.is_none() {
         proof.source = 0;
     }
-    let shown = if is_base(proof.source) {
+    if proof.source == RUN_SOURCE && run.is_none() {
+        proof.source = 0;
+    }
+    let run_clip = run
+        .as_ref()
+        .filter(|_| proof.source == RUN_SOURCE)
+        .and_then(|run| run.manifest.clips.get(&proof.clip));
+    if proof.source == RUN_SOURCE && run_clip.is_none() {
+        proof.clip = RUN_CLIPS[0].into();
+        return;
+    }
+    let shown = if let Some(clip) = run_clip {
+        // Per-frame timing from the manifest, unless an fps override is set.
+        let count = clip.count.max(1) as usize;
+        let step = RUN_FPS_STEPS[proof.run_fps]
+            .map_or_else(|| clip.durations[proof.frame % count], |fps| 1.0 / fps);
+        (count, clip.first as usize, clip.pivot, step, true)
+    } else if is_base(proof.source) {
         let Some(entry) = entry else {
             return;
         };
@@ -1180,8 +1491,26 @@ fn sync(
     }
     let sign = if proof.mirror { -1.0 } else { 1.0 };
     let index = first + proof.frame;
-    if let Ok((mut sprite, mut anchor, _transform)) = body.single_mut() {
-        let cell = if proof.source == 0 {
+    if proof.source == RUN_SOURCE && proof.moving && !proof.paused {
+        proof.travel += RUN_TRAVEL_SPEED * time.delta_secs();
+        if proof.travel > RUN_TRAVEL_HALF_WIDTH {
+            proof.travel -= 2.0 * RUN_TRAVEL_HALF_WIDTH;
+        }
+    }
+    let travel = if proof.source == RUN_SOURCE && proof.moving {
+        proof.travel * sign
+    } else {
+        0.0
+    };
+    let run_atlas = run_clip.map(|clip| clip.atlas.clone());
+    if let Ok((mut sprite, mut anchor, mut transform)) = body.single_mut() {
+        transform.translation.x = travel;
+        let cell = if let Some(atlas) = run_atlas
+            .as_ref()
+            .and_then(|name| run.as_ref()?.manifest.atlases.get(name))
+        {
+            atlas.cell
+        } else if proof.source == 0 {
             bank.loadout.cell
         } else if proof.source == 3 {
             concept
@@ -1203,7 +1532,16 @@ fn sync(
         } else {
             (256, 192)
         };
-        if proof.source == 3 {
+        if let Some((image, layout)) = run_atlas.as_ref().and_then(|name| {
+            let run = run.as_ref()?;
+            Some((
+                run.images.get(name)?.clone(),
+                run.layouts.get(name)?.clone(),
+            ))
+        }) {
+            sprite.image = image;
+            sprite.texture_atlas = Some(TextureAtlas { layout, index });
+        } else if proof.source == 3 {
             if let Some(concept) = concept.as_ref() {
                 sprite.texture_atlas = None;
                 sprite.image = concept.image.clone();
@@ -1315,7 +1653,7 @@ fn sync(
         sprite.image = image;
         sprite.flip_x = proof.mirror;
         // The N3.2 concept and the N3.4/N3.5 base bodies carry no weapon.
-        sprite.custom_size = if proof.source == 3 || is_base(proof.source) {
+        sprite.custom_size = if proof.source == 3 || without_equipment(proof.source) {
             Some(Vec2::ZERO)
         } else {
             Some(Vec2::new(size.0 as f32 * scale, size.1 as f32 * scale))
@@ -1352,10 +1690,10 @@ fn sync(
             (0, false) => "sword",
             (3, _) => "not a separate layer",
             (4, _) => "separate sword",
-            (source, _) if is_base(source) => "none (base body)",
+            (source, _) if without_equipment(source) => "none (base body)",
             _ => "N3 sword sprite on the measured socket",
         };
-        let cape = if is_base(proof.source) {
+        let cape = if without_equipment(proof.source) {
             "none (base body)"
         } else if proof.source == 4 {
             if proof.cape { "separate layer" } else { "off" }
@@ -1377,6 +1715,7 @@ fn sync(
             3 => "n3.2-concept-b",
             4 => "n3.3-construction",
             other if is_base(other) => entry.map_or("base", |entry| entry.name),
+            RUN_SOURCE => "n3.6-run-proof",
             _ => "n3-baseline",
         };
         text.0 = format!(
@@ -1402,6 +1741,27 @@ fn sync(
                 proof.view.screen_px_per_texel(),
             ));
         }
+        if let Some(clip) = run_clip {
+            let cell = run_atlas
+                .as_ref()
+                .and_then(|name| run.as_ref()?.manifest.atlases.get(name))
+                .map_or((0, 0), |atlas| atlas.cell);
+            let timing = RUN_FPS_STEPS[proof.run_fps].map_or_else(
+                || format!("manifest ({:.3} s cycle)", clip.total_duration()),
+                |fps| format!("{fps:.0} fps"),
+            );
+            text.0.push_str(&format!(
+                "\nart {}x{}  figure {} texels  {:.0} texels/unit  camera {:.0}  {:.3} screen px/texel  timing {timing}  {}  overlay {}  NOT APPROVED",
+                cell.0,
+                cell.1,
+                BODY_FIGURE_TEXELS,
+                1.0 / scale,
+                height,
+                proof.view.screen_px_per_texel(),
+                if proof.moving { "moving" } else { "in place" },
+                if proof.overlay { "on" } else { "off" },
+            ));
+        }
     }
 }
 
@@ -1419,6 +1779,14 @@ fn capture(mut script: ResMut<Script>, mut proof: ResMut<Proof>, mut commands: C
     }
     let shot = &script.shots[script.index];
     let path = project_root().join(shot.folder).join(shot.file);
+    if let Some(folder) = path.parent()
+        && let Err(err) = std::fs::create_dir_all(folder)
+    {
+        eprintln!(
+            "[n3_visual_proof] cannot create {}: {err}",
+            folder.display()
+        );
+    }
     println!("[n3_visual_proof] {}", shot.file);
     commands
         .spawn(Screenshot::primary_window())
