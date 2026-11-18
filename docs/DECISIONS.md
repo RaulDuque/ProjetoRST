@@ -834,3 +834,15 @@ O probe não é um playtest humano.
 - O exemplo isolado ganha o enquadramento `game-360-1x`. Nenhuma dependência nova.
 
 **Consequências:** docs `development/n3_5/`. O estilo continua sem aprovação; a N4 e a N5 não começam.
+
+## D-044 — Corrida a partir do vídeo, folhas só como estudo (N3.6)
+
+**Contexto:** O proprietário publicou folhas de movimento geradas e um vídeo de corrida em fundo verde. O briefing `DarkCastleR-N-3-6.md` pediu uma primeira prova de corrida sem inventar quadros.
+
+**Decisão:**
+- As poses das folhas são independentes: não têm ordem, escala nem cabelo comuns. A corrida vem só do vídeo, que tem um ciclo medido de 12 quadros.
+- Os quadros passam pela redução da N3.5 numa escala única (quadro de pé = 106 texels), num canvas de 112×128 com pivô (56, 118) e densidade 2. Os quadros com fantasma de interpolação são descartados.
+- O exemplo isolado ganha a fonte `n3.6-run-proof`, com sobreposição feita por sprites, sem adicionar features do Bevy. O GStreamer do sistema decodifica o vídeo só no pipeline de arte, e não entra como dependência do projeto.
+- O combate, a câmera e o jogo não mudam. Salto, ataque e idle ficam como estudo.
+
+**Consequências:** docs `development/n3_6/`. A velocidade de corrida do jogo (310 u/s) não casa com a passada do vídeo, e a decisão fica com o proprietário. O estilo continua sem aprovação; a N4 e a N5 não começam.
