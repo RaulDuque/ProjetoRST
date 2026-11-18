@@ -127,7 +127,11 @@ Os SHA-256 dos 11 arquivos de `Md-usario/assets-user/prota/base/` são iguais ao
 
 ## X. GitHub
 
-Push em `origin/art/v1.2-protagonist`, sem force, merge ou rebase. Os SHAs estão no commit de registro que segue este relatório.
+Push em `origin/art/v1.2-protagonist`, sem force, merge ou rebase:
+
+- `41f2ad40e219b7f56f19306341c948e052a833ee` feat(visual): add n3.7 run synchronization experiments
+- `62aeb2b7a8b82e7359141687ab9078e939f418da` docs(n3): record n3.7 animation pipeline and evidence
+- O commit que grava este parágrafo é o registro da publicação. O hash remoto final é o HEAD depois do push dele.
 
 ## Y. Limitações
 
