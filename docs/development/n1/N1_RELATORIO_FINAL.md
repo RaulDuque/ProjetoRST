@@ -1,13 +1,13 @@
 # N1 — Relatório final
 
-A fundação está documentada. Nenhum sistema de jogo foi alterado. A N2 não começou.
+A fundação está documentada. Este arquivo registra a aprovação. Nenhum sistema mudou por causa dela.
 
-O relatório A–T está na resposta ao proprietário. Os dezesseis arquivos irmãos desta pasta são o corpo. Sem commit e sem push.
+O proprietário aprovou, em 17 de novembro de 2026, e pediu para não implementar nada disso sem uma autorização nova:
 
-Decisões que esperam o proprietário:
+1. Controles híbridos: A/D andam, W e Espaço pulam, S agacha, o botão esquerdo do mouse ataca, E usa. O preset antigo (setas, Z, X, C) permanece.
+2. 640×360 só num protótipo isolado. A câmera do jogo não muda.
+3. Blender, Pixelorama e Bevy seguem como hipótese, até a prova.
+4. The Ashen Sentinel é minichefe na documentação. O dado e o save só mudam na N10.
+5. A primeira região nova usa só habilidades que já funcionam e tem volta, não um corredor único.
 
-1. Esquema híbrido, com usar em E e o preset antigo conservado.
-2. Prova na opção de tela 640×360, sem mudar a câmera do jogo.
-3. Pipeline Blender + Pixelorama + Bevy, como hipótese, até a prova.
-4. Ashen Sentinel tratado como minichefe no texto, e só na N10 no dado.
-5. Primeira região nova usa só habilidades que já funcionam.
+Esta aprovação não autorizava código. A implementação dos controles veio depois, no briefing N2.
