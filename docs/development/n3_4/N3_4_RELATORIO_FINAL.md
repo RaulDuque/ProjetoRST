@@ -64,7 +64,11 @@ SHA-256 dos originais registrados em `N3_4_AUDITORIA.md`. `git diff HEAD -- Md-u
 
 ## P. GitHub
 
-Preenchido depois do push.
+Push em `origin/art/v1.2-protagonist`, sem force, merge ou rebase:
+
+- `383117e40a7b2b9a6cfb40936fe028dfbe74116e` feat(visual): add the n3.4 base protagonist frame from the original sheet
+- `8d5fe05f4da907dc2b91160372fa04624ff9864f` docs(n3): record the n3.4 base protagonist without approving it
+- O commit que grava este parágrafo é o registro da publicação. O hash remoto final é o HEAD depois do push dele.
 
 ## Q. Limitações
 
