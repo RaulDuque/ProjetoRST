@@ -64,7 +64,11 @@ Os SHA-256 dos originais são iguais aos da N3.4. Nada de `Md-usario/` foi alter
 
 ## P. GitHub
 
-Preenchido depois do push.
+Push em `origin/art/v1.2-protagonist`, sem force, merge ou rebase:
+
+- `f323c102af8af000f83c125e490acf664c0409b6` feat(visual): add the n3.5 fidelity candidate and an integer 360 framing
+- `3afb9960979d54e25cb94e38afaa9c4569beaa56` docs(n3): record the n3.5 fidelity and resolution proof without approving it
+- O commit que grava este parágrafo é o registro da publicação. O hash remoto final é o HEAD depois do push dele.
 
 ## Q. Limitações
 
