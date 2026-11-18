@@ -17,7 +17,7 @@
 //! | X | light armor / heavy armor |
 //! | C | cape on / off |
 //! | M | mirror |
-//! | B | N3 baseline / automatic pixel / raw render / N3.2 concept / N3.3 construction |
+//! | B | N3 baseline / automatic pixel / raw render / N3.2 concept / N3.3 construction / N3.4 base |
 //! | V | close view (360, integer 2×) / game framing (405) |
 //! | Space | pause |
 //! | . | one frame while paused |
@@ -92,9 +92,14 @@ struct Proof {
     /// Close view is 640×360 world units on a 1280×720 window: exactly 2×.
     close: bool,
     paused: bool,
-    /// 0 = N3 baseline, 1 = automatic pixel of the V2.2 attack, 2 = the raw render.
+    /// 0 = N3 baseline, 1 = automatic pixel of the V2.2 attack, 2 = the raw
+    /// render, 3 = N3.2 concept, 4 = N3.3 construction, 5 = N3.4 base body.
     source: u8,
 }
+
+/// Source index of the N3.4 base body (no cape, no weapon).
+const BASE_SOURCE: u8 = 5;
+const BASE_SPRITE: &str = "art-src/n3-4-original-protagonist/generated/base_idle.png";
 
 #[derive(Component)]
 struct BodyLayer;
@@ -354,7 +359,26 @@ fn shots() -> Vec<Shot> {
     {
         list.push(native_shot());
     }
+    if project_root().join(BASE_SPRITE).is_file() {
+        list.push(base_shot(true, "bevy_n34.png"));
+        list.push(base_shot(false, "bevy_n34_game.png"));
+    }
     list
+}
+
+fn base_shot(close: bool, file: &'static str) -> Shot {
+    Shot {
+        clip: "idle",
+        frame: 0,
+        heavy: false,
+        spear: false,
+        cape: false,
+        mirror: false,
+        close,
+        file,
+        source: BASE_SOURCE,
+        folder: "docs/development/n3_4/evidence",
+    }
 }
 
 fn native_shot() -> Shot {
@@ -468,6 +492,7 @@ fn setup(
     load_render(&mut commands, &assets, &mut layouts);
     load_concept(&mut commands, &assets);
     load_native(&mut commands, &assets);
+    load_base(&mut commands, &assets);
 
     commands.spawn((
         Camera2d,
@@ -657,12 +682,34 @@ fn load_native(commands: &mut Commands, assets: &AssetServer) {
     });
 }
 
+#[derive(Resource)]
+struct BaseBank {
+    manifest: AnimationManifest,
+    body: Handle<Image>,
+}
+
+fn load_base(commands: &mut Commands, assets: &AssetServer) {
+    let path = project_root().join("art-src/n3-4-original-protagonist/generated/base.ron");
+    if !path.is_file() {
+        return;
+    }
+    let manifest = AnimationManifest::from_ron(
+        &std::fs::read_to_string(&path).unwrap_or_else(|err| panic!("n3.4 manifest: {err}")),
+    )
+    .unwrap_or_else(|err| panic!("n3.4 manifest: {err}"));
+    commands.insert_resource(BaseBank {
+        manifest,
+        body: assets.load(BASE_SPRITE),
+    });
+}
+
 fn wait_or_drive(
     assets: Res<AssetServer>,
     bank: Option<Res<ProofAssets>>,
     render: Option<Res<RenderBank>>,
     concept: Option<Res<ConceptView>>,
     native: Option<Res<NativeBank>>,
+    base: Option<Res<BaseBank>>,
     mut proof: ResMut<Proof>,
     mut script: ResMut<Script>,
     mut exit: MessageWriter<AppExit>,
@@ -740,6 +787,19 @@ fn wait_or_drive(
             return;
         }
     }
+    if let Some(base) = base.as_ref() {
+        if assets
+            .get_load_state(&base.body)
+            .is_some_and(|state| state.is_failed())
+        {
+            eprintln!("[n3_visual_proof] the n3.4 base body failed to load");
+            exit.write(AppExit::error());
+            return;
+        }
+        if !assets.is_loaded(&base.body) {
+            return;
+        }
+    }
     script.ready_frames = script.ready_frames.saturating_add(1);
     if script.ready_frames < 12 {
         return;
@@ -808,7 +868,9 @@ fn read_keys(
         proof.close = !proof.close;
     }
     if keys.just_pressed(KeyCode::KeyB) {
-        let span = if project_root()
+        let span = if project_root().join(BASE_SPRITE).is_file() {
+            6
+        } else if project_root()
             .join("art-src/n3-3-native-pixel/generated/body_idle.png")
             .is_file()
         {
@@ -869,6 +931,7 @@ fn sync(
     render: Option<Res<RenderBank>>,
     concept: Option<Res<ConceptView>>,
     native: Option<Res<NativeBank>>,
+    base: Option<Res<BaseBank>>,
 ) {
     let Some(bank) = bank else {
         return;
@@ -882,7 +945,24 @@ fn sync(
     if proof.source == 4 && native.is_none() {
         proof.source = 0;
     }
-    let shown = if proof.source == 4 {
+    if proof.source == BASE_SOURCE && base.is_none() {
+        proof.source = 0;
+    }
+    let shown = if proof.source == BASE_SOURCE {
+        let Some(base) = base.as_ref() else {
+            return;
+        };
+        let Some(clip) = base.manifest.clips.get("idle") else {
+            return;
+        };
+        (
+            clip.count as usize,
+            clip.first as usize,
+            clip.pivot,
+            1.0,
+            true,
+        )
+    } else if proof.source == 4 {
         let Some(native) = native.as_ref() else {
             return;
         };
@@ -977,6 +1057,11 @@ fn sync(
                 .and_then(|native| native.manifest.atlases.get("body"))
                 .map(|atlas| atlas.cell)
                 .unwrap_or((80, 128))
+        } else if proof.source == BASE_SOURCE {
+            base.as_ref()
+                .and_then(|base| base.manifest.atlases.get("body"))
+                .map(|atlas| atlas.cell)
+                .unwrap_or((80, 128))
         } else {
             (256, 192)
         };
@@ -989,6 +1074,11 @@ fn sync(
             if let Some(native) = native.as_ref() {
                 sprite.texture_atlas = None;
                 sprite.image = native.body.clone();
+            }
+        } else if proof.source == BASE_SOURCE {
+            if let Some(base) = base.as_ref() {
+                sprite.texture_atlas = None;
+                sprite.image = base.body.clone();
             }
         } else if proof.source == 0 {
             sprite.image = if proof.armor_heavy {
@@ -1086,7 +1176,8 @@ fn sync(
         };
         sprite.image = image;
         sprite.flip_x = proof.mirror;
-        sprite.custom_size = if proof.source == 3 {
+        // The N3.2 concept and the N3.4 base body carry no weapon.
+        sprite.custom_size = if proof.source == 3 || proof.source == BASE_SOURCE {
             Some(Vec2::ZERO)
         } else {
             Some(Vec2::new(size.0 as f32 * scale, size.1 as f32 * scale))
@@ -1123,9 +1214,12 @@ fn sync(
             (0, false) => "sword",
             (3, _) => "not a separate layer",
             (4, _) => "separate sword",
+            (BASE_SOURCE, _) => "none (base body)",
             _ => "N3 sword sprite on the measured socket",
         };
-        let cape = if proof.source == 4 {
+        let cape = if proof.source == BASE_SOURCE {
+            "none (base body)"
+        } else if proof.source == 4 {
             if proof.cape { "separate layer" } else { "off" }
         } else if proof.source == 3 {
             "not a separate layer"
@@ -1148,6 +1242,7 @@ fn sync(
             2 => "raw-render",
             3 => "n3.2-concept-b",
             4 => "n3.3-construction",
+            BASE_SOURCE => "n3.4-base",
             _ => "n3-baseline",
         };
         text.0 = format!(

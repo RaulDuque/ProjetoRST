@@ -1,0 +1,28 @@
+{
+  "canvas": [
+    80,
+    128
+  ],
+  "opaque_box": [
+    25,
+    13,
+    48,
+    118
+  ],
+  "opaque_width": 24,
+  "opaque_height": 106,
+  "sole_y": 118,
+  "sole_span": [
+    31,
+    47
+  ],
+  "pivot": [
+    40,
+    118
+  ],
+  "colours_used": 19,
+  "source": "source/base_idle.txt",
+  "reduced_from_illustration": true,
+  "hand_edited_pixels": 1248,
+  "gui_paint": false
+}
