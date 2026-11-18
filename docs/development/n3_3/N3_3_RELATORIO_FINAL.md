@@ -82,7 +82,9 @@ Blend, malha branca, câmera, save e protagonista publicado intactos.
 
 ## T. GitHub
 
-Os hashes entram depois do push.
+- `07a5f23811c235eab33271c80f1204182c7fadd3` feat(visual): add an isolated native-pixel construction frame
+- `92254dbfeda2e44851f5c1ca7d7bd868f0cf5e34` docs(n3): record the native-pixel construction without approving it
+- O commit que grava este parágrafo é o registro da publicação. O hash remoto é o HEAD depois do push.
 
 ## U. Recomendação
 
