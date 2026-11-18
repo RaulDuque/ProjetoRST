@@ -1,0 +1,21 @@
+(
+    version: 1,
+    facing: Right,
+    weapon_in_body: false,
+    atlases: {
+        "idle": (texture: "idle.png", cell: (112, 128), columns: 1, rows: 1, padding: 0, density: 2),
+        "run6": (texture: "run6.png", cell: (112, 128), columns: 6, rows: 1, padding: 0, density: 2),
+        "run10": (texture: "run10.png", cell: (112, 128), columns: 10, rows: 1, padding: 0, density: 2),
+    },
+    clips: {
+        "idle": (atlas: "idle", first: 0, count: 1, mode: Loop(fps: 1.0),
+            pivot: (56.0, 118.0), fallback: None,
+            durations: [1.00000], speed_reference: None),
+        "run6": (atlas: "run6", first: 0, count: 6, mode: Loop(fps: 12.0),
+            pivot: (56.0, 118.0), fallback: None,
+            durations: [0.08333, 0.08333, 0.08333, 0.08333, 0.08333, 0.08333], speed_reference: None),
+        "run10": (atlas: "run10", first: 0, count: 10, mode: Loop(fps: 24.0),
+            pivot: (56.0, 118.0), fallback: None,
+            durations: [0.08333, 0.04167, 0.04167, 0.04167, 0.04167, 0.08333, 0.04167, 0.04167, 0.04167, 0.04167], speed_reference: None),
+    },
+)

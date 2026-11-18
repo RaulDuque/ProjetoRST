@@ -1,0 +1,12 @@
+(
+    reference_speed: 157.0,
+    game_speed: 310.0,
+    base_fps: 12.0,
+    scenarios: [
+        (id: "A", name: "original", rate: 1.000, speed: 310.0),
+        (id: "B", name: "clip faster", rate: 1.975, speed: 310.0),
+        (id: "C", name: "slower travel", rate: 1.000, speed: 157.0),
+        (id: "D", name: "moderate", rate: 1.500, speed: 235.5),
+    ],
+    run6_phase: ["stance", "push_off", "air", "stance", "push_off", "heel_strike"],
+)

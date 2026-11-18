@@ -1,0 +1,39 @@
+{
+ "method": "mean |luminance(silhouette texel) - luminance(background)| on lower-body edge texels (rows >= 62), mean of the 6 run6 frames",
+ "rim_texels_changed": 512,
+ "boot_texels_changed": 1897,
+ "hip_row": 62,
+ "boot_row": 92,
+ "rim_key": "q",
+ "boot_step": {
+  "K": "d",
+  "d": "l",
+  "o": "p"
+ },
+ "edge_contrast": {
+  "A original": {
+   "claro": 196.7,
+   "cinza": 122.3,
+   "quase preto": 12.3,
+   "castelo (captura do jogo)": 10.1
+  },
+  "B borda de luz": {
+   "claro": 179.8,
+   "cinza": 105.4,
+   "quase preto": 29.2,
+   "castelo (captura do jogo)": 21.1
+  },
+  "C botas +1 tom": {
+   "claro": 190.0,
+   "cinza": 115.6,
+   "quase preto": 18.9,
+   "castelo (captura do jogo)": 9.7
+  },
+  "D cena com contraluz": {
+   "claro": 196.7,
+   "cinza": 122.3,
+   "quase preto": 27.9,
+   "castelo (captura do jogo)": 10.1
+  }
+ }
+}

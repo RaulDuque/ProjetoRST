@@ -1,0 +1,392 @@
+{
+ "method": "connected feet in the lowest 60 px; contact within 4 px of the ground row; patch = lowest 7 rows; same foot kept between consecutive frames",
+ "video_scale": 0.23661,
+ "ground_row_px": 523,
+ "hip_row_px": 274,
+ "units_per_px_per_frame": 2.8393,
+ "frames": {
+  "48": {
+   "feet": [
+    {
+     "x0": 237,
+     "x1": 319,
+     "bottom": 522,
+     "pixels": 2803,
+     "contact": true,
+     "patch": [
+      237,
+      319
+     ],
+     "patch_centre": 278.0,
+     "phase": "stance"
+    }
+   ],
+   "hip_x": 262.5,
+   "phase": "stance",
+   "ghosted": false,
+   "bottom": 522
+  },
+  "49": {
+   "feet": [
+    {
+     "x0": 178,
+     "x1": 258,
+     "bottom": 522,
+     "pixels": 2829,
+     "contact": true,
+     "patch": [
+      179,
+      258
+     ],
+     "patch_centre": 218.5,
+     "phase": "stance"
+    }
+   ],
+   "hip_x": 249.0,
+   "phase": "stance",
+   "ghosted": true,
+   "bottom": 522
+  },
+  "50": {
+   "feet": [
+    {
+     "x0": 84,
+     "x1": 147,
+     "bottom": 519,
+     "pixels": 2099,
+     "contact": true,
+     "patch": [
+      117,
+      147
+     ],
+     "patch_centre": 132.0,
+     "phase": "push_off"
+    },
+    {
+     "x0": 256,
+     "x1": 318,
+     "bottom": 497,
+     "pixels": 1061,
+     "contact": false,
+     "phase": "swing"
+    }
+   ],
+   "hip_x": 245.5,
+   "phase": "push_off",
+   "ghosted": false,
+   "bottom": 519
+  },
+  "51": {
+   "feet": [
+    {
+     "x0": 68,
+     "x1": 101,
+     "bottom": 499,
+     "pixels": 849,
+     "contact": false,
+     "phase": "swing"
+    },
+    {
+     "x0": 300,
+     "x1": 392,
+     "bottom": 495,
+     "pixels": 2384,
+     "contact": false,
+     "phase": "swing"
+    }
+   ],
+   "hip_x": 246.0,
+   "phase": "air",
+   "ghosted": false,
+   "bottom": 499
+  },
+  "52": {
+   "feet": [
+    {
+     "x0": 327,
+     "x1": 414,
+     "bottom": 507,
+     "pixels": 2546,
+     "contact": false,
+     "phase": "swing"
+    }
+   ],
+   "hip_x": 246.5,
+   "phase": "air",
+   "ghosted": false,
+   "bottom": 507
+  },
+  "53": {
+   "feet": [
+    {
+     "x0": 327,
+     "x1": 416,
+     "bottom": 520,
+     "pixels": 2905,
+     "contact": true,
+     "patch": [
+      337,
+      350
+     ],
+     "patch_centre": 343.5,
+     "phase": "heel_strike"
+    }
+   ],
+   "hip_x": 248.0,
+   "phase": "heel_strike",
+   "ghosted": false,
+   "bottom": 520
+  },
+  "54": {
+   "feet": [
+    {
+     "x0": 211,
+     "x1": 297,
+     "bottom": 522,
+     "pixels": 2890,
+     "contact": true,
+     "patch": [
+      213,
+      296
+     ],
+     "patch_centre": 254.5,
+     "phase": "stance"
+    }
+   ],
+   "hip_x": 256.0,
+   "phase": "stance",
+   "ghosted": false,
+   "bottom": 522
+  },
+  "55": {
+   "feet": [
+    {
+     "x0": 155,
+     "x1": 238,
+     "bottom": 521,
+     "pixels": 2785,
+     "contact": true,
+     "patch": [
+      192,
+      238
+     ],
+     "patch_centre": 215.0,
+     "phase": "stance"
+    }
+   ],
+   "hip_x": 249.0,
+   "phase": "stance",
+   "ghosted": true,
+   "bottom": 521
+  },
+  "56": {
+   "feet": [
+    {
+     "x0": 112,
+     "x1": 189,
+     "bottom": 520,
+     "pixels": 2475,
+     "contact": true,
+     "patch": [
+      152,
+      189
+     ],
+     "patch_centre": 170.5,
+     "phase": "push_off"
+    },
+    {
+     "x0": 242,
+     "x1": 282,
+     "bottom": 489,
+     "pixels": 674,
+     "contact": false,
+     "phase": "swing"
+    }
+   ],
+   "hip_x": 248.5,
+   "phase": "push_off",
+   "ghosted": false,
+   "bottom": 520
+  },
+  "57": {
+   "feet": [
+    {
+     "x0": 71,
+     "x1": 100,
+     "bottom": 501,
+     "pixels": 862,
+     "contact": false,
+     "phase": "swing"
+    },
+    {
+     "x0": 270,
+     "x1": 347,
+     "bottom": 498,
+     "pixels": 1707,
+     "contact": false,
+     "phase": "swing"
+    }
+   ],
+   "hip_x": 248.5,
+   "phase": "air",
+   "ghosted": false,
+   "bottom": 501
+  },
+  "58": {
+   "feet": [
+    {
+     "x0": 320,
+     "x1": 413,
+     "bottom": 520,
+     "pixels": 2867,
+     "contact": true,
+     "patch": [
+      335,
+      351
+     ],
+     "patch_centre": 343.0,
+     "phase": "heel_strike"
+    }
+   ],
+   "hip_x": 248.5,
+   "phase": "heel_strike",
+   "ghosted": false,
+   "bottom": 520
+  },
+  "59": {
+   "feet": [
+    {
+     "x0": 281,
+     "x1": 365,
+     "bottom": 523,
+     "pixels": 2924,
+     "contact": true,
+     "patch": [
+      281,
+      364
+     ],
+     "patch_centre": 322.5,
+     "phase": "stance"
+    }
+   ],
+   "hip_x": 255.0,
+   "phase": "stance",
+   "ghosted": false,
+   "bottom": 523
+  }
+ },
+ "planted_pairs": [
+  {
+   "from": 48,
+   "to": 49,
+   "shift_px": 59.5,
+   "phases": [
+    "stance",
+    "stance"
+   ]
+  },
+  {
+   "from": 49,
+   "to": 50,
+   "shift_px": 86.5,
+   "phases": [
+    "stance",
+    "push_off"
+   ]
+  },
+  {
+   "from": 53,
+   "to": 54,
+   "shift_px": 89.0,
+   "phases": [
+    "heel_strike",
+    "stance"
+   ]
+  },
+  {
+   "from": 54,
+   "to": 55,
+   "shift_px": 39.5,
+   "phases": [
+    "stance",
+    "stance"
+   ]
+  },
+  {
+   "from": 55,
+   "to": 56,
+   "shift_px": 44.5,
+   "phases": [
+    "stance",
+    "push_off"
+   ]
+  },
+  {
+   "from": 58,
+   "to": 59,
+   "shift_px": 20.5,
+   "phases": [
+    "heel_strike",
+    "stance"
+   ]
+  },
+  {
+   "from": 59,
+   "to": 48,
+   "shift_px": 44.5,
+   "phases": [
+    "stance",
+    "stance"
+   ]
+  }
+ ],
+ "stance_shift_px": {
+  "median": 44.5,
+  "min": 39.5,
+  "max": 59.5,
+  "all_pairs_min": 20.5,
+  "all_pairs_max": 89.0
+ },
+ "steps": [
+  {
+   "strike": 58,
+   "push_off": 50,
+   "frames": 4,
+   "travel_px": 211.0,
+   "speed_units_s": 149.8
+  },
+  {
+   "strike": 53,
+   "push_off": 56,
+   "frames": 3,
+   "travel_px": 173.0,
+   "speed_units_s": 163.7
+  }
+ ],
+ "reference_speed_units_s": 157,
+ "stance_speed_units_s": {
+  "median": 126.3,
+  "min": 112.2,
+  "max": 168.9
+ },
+ "hip_x_px": {
+  "min": 245.5,
+  "max": 262.5
+ },
+ "hip_drift_units": 2.01,
+ "run6_phase": {
+  "48": "stance",
+  "50": "push_off",
+  "52": "air",
+  "54": "stance",
+  "56": "push_off",
+  "58": "heel_strike"
+ },
+ "n36_estimate_units_s": 78.0,
+ "limits": [
+  "AI-generated video with interpolated frames (49 and 55 ghosted)",
+  "in-place run, no root motion authored",
+  "1 video px = 0.237 texel; the sprite rounds to whole texels",
+  "the foot rolls (heel to toe), so the patch centre moves even without sliding"
+ ]
+}

@@ -1,0 +1,6 @@
+(
+    idle_hold: 1.0,
+    run_frames: 12,
+    exit_frame: 3,
+    start_clip: "run_start",
+)

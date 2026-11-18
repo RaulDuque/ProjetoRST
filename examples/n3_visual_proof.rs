@@ -17,11 +17,15 @@
 //! | X | light armor / heavy armor |
 //! | C | cape on / off |
 //! | M | mirror |
-//! | B | N3 baseline / automatic pixel / raw render / N3.2 concept / N3.3 construction / N3.4 base / N3.5 fidelity / N3.6 run proof |
+//! | B | N3 baseline / automatic pixel / raw render / N3.2 concept / N3.3 construction / N3.4 base / N3.5 fidelity / N3.6 run proof / N3.7 sync proof |
 //! | R | N3.6 run proof: run6 / run10 / stand |
 //! | F | N3.6 run proof: manifest timing / 8 / 10 / 12 fps |
-//! | O | N3.6 run proof: pivot and bounding-box overlay on / off |
-//! | T | N3.6 run proof: in place / moving across the view |
+//! | O | N3.6 and N3.7 proofs: pivot and bounding-box overlay on / off |
+//! | T | N3.6 and N3.7 proofs: in place / moving across the view |
+//! | G | N3.7 sync proof: scenario A original / B faster clip / C slower travel / D moderate |
+//! | H | N3.7 sync proof: speed mode / idle -> start -> run -> idle transition |
+//! | L | N3.7 sync proof: original / rim-light / lighter-boots frames |
+//! | K | N3.7 sync proof: backdrop default / light / grey / near black / near black + back-light |
 //! | V | close view (360, integer 2×) / game framing (405) / integer game framing (360, 1 texel = 1 px) |
 //! | Space | pause |
 //! | . | one frame while paused |
@@ -158,9 +162,61 @@ struct Proof {
     overlay: bool,
     /// N3.6 run proof: the body travels across the view instead of in place.
     moving: bool,
-    /// N3.6 run proof: horizontal world offset while moving.
+    /// N3.6 run proof: horizontal world offset while moving. N3.7: game
+    /// units travelled (drawn at 2 texels per unit).
     travel: f32,
+    /// N3.7 sync proof: index into `sync.ron` scenarios.
+    sync_scenario: usize,
+    /// N3.7 sync proof: index into `SYNC_VARIANTS`.
+    sync_variant: usize,
+    /// N3.7 sync proof: index into `SYNC_BACKDROPS`.
+    sync_backdrop: usize,
+    /// N3.7 sync proof: idle -> start -> run -> idle loop instead of the run alone.
+    sync_transition: bool,
+    sync_stage: Stage,
+    /// Seconds spent in the idle stage.
+    sync_stage_time: f32,
+    /// Run frames shown since the run stage began.
+    sync_run_frames: usize,
+    /// One frame step requested with `.` while paused.
+    sync_step: bool,
+    /// Pivot and opaque box of the shown N3.7 frame, for the overlay.
+    sync_overlay: Option<((f32, f32), Option<(u32, u32, u32, u32)>)>,
 }
+
+/// Stage of the N3.7 transition loop.
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum Stage {
+    /// The N3.5 idle candidate.
+    Idle,
+    /// The real start of the video (`run_start`).
+    Start,
+    /// The approved run6 cycle.
+    Run,
+}
+
+/// Source index of the N3.7 synchronization proof (no cape, no weapon).
+const SYNC_SOURCE: u8 = 8;
+const SYNC_DIR: &str = "art-src/n3-7-run-sync/generated";
+const START_DIR: &str = "art-src/n3-7-run-sync/pipeline/run_start/generated";
+const DEFAULT_CLEAR: Color = Color::srgb(0.07, 0.05, 0.08);
+const NEAR_BLACK: Color = Color::srgb(0.071, 0.055, 0.086);
+/// Run frames the L key cycles through (new files; run6 stays untouched).
+const SYNC_VARIANTS: [&str; 3] = ["original", "rim-light", "lighter-boots"];
+/// Backdrops the K key cycles through; the last adds the back-light plate.
+const SYNC_BACKDROPS: [(&str, Color); 5] = [
+    ("default", DEFAULT_CLEAR),
+    ("light", Color::srgb(0.886, 0.878, 0.894)),
+    ("grey", Color::srgb(0.588, 0.588, 0.612)),
+    ("near-black", NEAR_BLACK),
+    ("near-black+back-light", NEAR_BLACK),
+];
+const BACKLIGHT_BACKDROP: usize = 4;
+/// Ground ticks every 20 game units, so a sliding foot is visible.
+const TICK_SPACING_UNITS: f32 = 20.0;
+const TICK_COUNT: i32 = 41;
+/// Texels per game unit of the run art (density 2).
+const RUN_DENSITY: f32 = 2.0;
 
 /// Source index of the N3.6 run proof (no cape, no weapon).
 const RUN_SOURCE: u8 = 7;
@@ -191,7 +247,7 @@ fn is_base(source: u8) -> bool {
 
 /// Sources drawn without cape or weapon.
 fn without_equipment(source: u8) -> bool {
-    is_base(source) || source == RUN_SOURCE
+    is_base(source) || source == RUN_SOURCE || source == SYNC_SOURCE
 }
 
 #[derive(Component)]
@@ -217,6 +273,17 @@ struct Shot {
     file: &'static str,
     source: u8,
     folder: &'static str,
+    /// N3.7 settings of the capture (`None` for the older sources).
+    sync: Option<SyncShot>,
+}
+
+#[derive(Clone, Copy)]
+struct SyncShot {
+    scenario: usize,
+    variant: usize,
+    backdrop: usize,
+    /// `Some` captures the transition loop at that stage.
+    stage: Option<Stage>,
 }
 
 #[derive(Resource)]
@@ -248,7 +315,7 @@ fn main() {
                     ..default()
                 }),
         )
-        .insert_resource(ClearColor(Color::srgb(0.07, 0.05, 0.08)))
+        .insert_resource(ClearColor(DEFAULT_CLEAR))
         .insert_resource(TimeUpdateStrategy::ManualDuration(Duration::from_millis(
             16,
         )))
@@ -267,6 +334,15 @@ fn main() {
             overlay: true,
             moving: false,
             travel: 0.0,
+            sync_scenario: 0,
+            sync_variant: 0,
+            sync_backdrop: 0,
+            sync_transition: false,
+            sync_stage: Stage::Run,
+            sync_stage_time: 0.0,
+            sync_run_frames: 0,
+            sync_step: false,
+            sync_overlay: None,
         })
         .insert_resource(Script {
             interactive,
@@ -282,6 +358,7 @@ fn main() {
                 wait_or_drive,
                 read_keys,
                 sync,
+                sync_n37,
                 draw_run_overlay,
                 capture,
                 finish,
@@ -501,7 +578,72 @@ fn shots() -> Vec<Shot> {
             });
         }
     }
+    if project_root().join(SYNC_DIR).join("sync.ron").is_file() {
+        let base = SyncShot {
+            scenario: 0,
+            variant: 0,
+            backdrop: 0,
+            stage: None,
+        };
+        // Scenario D (moderate), stride frame, overlay on.
+        list.push(sync_shot(
+            View::Close,
+            "bevy_n37.png",
+            SyncShot {
+                scenario: 3,
+                ..base
+            },
+            2,
+        ));
+        list.push(sync_shot(View::Game, "camera_405.png", base, 2));
+        list.push(sync_shot(View::GameInteger, "camera_360.png", base, 2));
+        list.push(sync_shot(
+            View::GameInteger,
+            "bevy_n37_rim.png",
+            SyncShot {
+                variant: 1,
+                backdrop: 3,
+                ..base
+            },
+            2,
+        ));
+        list.push(sync_shot(
+            View::GameInteger,
+            "bevy_n37_backlight.png",
+            SyncShot {
+                backdrop: BACKLIGHT_BACKDROP,
+                ..base
+            },
+            2,
+        ));
+        list.push(sync_shot(
+            View::Close,
+            "bevy_n37_transition.png",
+            SyncShot {
+                stage: Some(Stage::Start),
+                ..base
+            },
+            2,
+        ));
+    }
     list
+}
+
+/// N3.7 captures: paused, the body at the origin.
+fn sync_shot(view: View, file: &'static str, sync: SyncShot, frame: usize) -> Shot {
+    Shot {
+        clip: "run6",
+        frame,
+        heavy: false,
+        spear: false,
+        cape: false,
+        mirror: false,
+        view,
+        file,
+        source: SYNC_SOURCE,
+        folder: "docs/development/n3_7/evidence",
+        sync: Some(sync),
+    }
 }
 
 const RUN_FRAME_SHOTS: [&str; 6] = [
@@ -526,6 +668,7 @@ fn run_shot(view: View, file: &'static str) -> Shot {
         file,
         source: RUN_SOURCE,
         folder: "docs/development/n3_6/evidence",
+        sync: None,
     }
 }
 
@@ -542,6 +685,7 @@ fn fidelity_shot(source: u8, view: View, file: &'static str) -> Shot {
         file,
         source,
         folder: "docs/development/n3_5/evidence",
+        sync: None,
     }
 }
 
@@ -557,6 +701,7 @@ fn base_shot(close: bool, file: &'static str) -> Shot {
         file,
         source: BASE_SOURCE,
         folder: "docs/development/n3_4/evidence",
+        sync: None,
     }
 }
 
@@ -572,6 +717,7 @@ fn native_shot() -> Shot {
         file: "bevy_n33.png",
         source: 4,
         folder: "docs/development/n3_3/evidence",
+        sync: None,
     }
 }
 
@@ -587,6 +733,7 @@ fn concept_shot(close: bool, file: &'static str) -> Shot {
         file,
         source: 3,
         folder: "docs/development/n3_2/evidence",
+        sync: None,
     }
 }
 
@@ -602,6 +749,7 @@ fn render_shot(frame: usize, source: u8, close: bool, file: &'static str) -> Sho
         file,
         source,
         folder: "docs/development/n3_1/evidence",
+        sync: None,
     }
 }
 
@@ -626,6 +774,7 @@ fn shot(
         file,
         source: 0,
         folder: "docs/development/n3/evidence",
+        sync: None,
     }
 }
 
@@ -673,6 +822,7 @@ fn setup(
     load_native(&mut commands, &assets);
     load_base(&mut commands, &assets);
     load_run(&mut commands, &assets, &mut layouts);
+    load_sync(&mut commands, &assets, &mut layouts);
 
     commands.spawn((
         Camera2d,
@@ -974,6 +1124,145 @@ fn load_run(
     });
 }
 
+/// One speed scenario of `sync.ron` (written by `sync_study.py`).
+#[derive(Deserialize)]
+struct SyncScenario {
+    id: String,
+    name: String,
+    /// Playback factor over the authored 12 fps.
+    rate: f32,
+    /// Horizontal speed, game units per second.
+    speed: f32,
+}
+
+#[derive(Deserialize)]
+struct SyncPlan {
+    /// Measured backward speed of the planted foot at the video's timing.
+    reference_speed: f32,
+    /// `PLAYER_RUN_SPEED` of the game (read only, never changed here).
+    game_speed: f32,
+    base_fps: f32,
+    scenarios: Vec<SyncScenario>,
+    run6_phase: Vec<String>,
+}
+
+/// `transition.ron` (written by `transition_study.py`).
+#[derive(Deserialize)]
+struct TransitionPlan {
+    idle_hold: f32,
+    /// Run frames shown before the stop may happen.
+    run_frames: usize,
+    /// run6 frame closest to the idle silhouette: the cut happens after it.
+    exit_frame: usize,
+    start_clip: String,
+}
+
+/// The N3.7 synchronization proof: scenarios, transition plan, the real
+/// start of the video and the experimental run6 variants (new files).
+#[derive(Resource)]
+struct SyncBank {
+    plan: SyncPlan,
+    transition: TransitionPlan,
+    start: AnimationManifest,
+    start_boxes: std::collections::BTreeMap<String, Vec<(u32, u32, u32, u32)>>,
+    start_image: Handle<Image>,
+    start_layout: Handle<TextureAtlasLayout>,
+    rim: Handle<Image>,
+    boots: Handle<Image>,
+    backlight: Handle<Image>,
+}
+
+impl SyncBank {
+    fn handles(&self) -> [&Handle<Image>; 4] {
+        [&self.start_image, &self.rim, &self.boots, &self.backlight]
+    }
+}
+
+#[derive(Component)]
+struct GroundTick(i32);
+
+#[derive(Component)]
+struct Backdrop;
+
+fn read_ron<T: serde::de::DeserializeOwned>(path: &std::path::Path) -> T {
+    ron::from_str(
+        &std::fs::read_to_string(path).unwrap_or_else(|err| panic!("{}: {err}", path.display())),
+    )
+    .unwrap_or_else(|err| panic!("{}: {err}", path.display()))
+}
+
+fn load_sync(
+    commands: &mut Commands,
+    assets: &AssetServer,
+    layouts: &mut Assets<TextureAtlasLayout>,
+) {
+    let dir = project_root().join(SYNC_DIR);
+    let start_dir = project_root().join(START_DIR);
+    if !dir.join("sync.ron").is_file()
+        || !dir.join("transition.ron").is_file()
+        || !start_dir.join("run_start.ron").is_file()
+    {
+        return;
+    }
+    let plan: SyncPlan = read_ron(&dir.join("sync.ron"));
+    let transition: TransitionPlan = read_ron(&dir.join("transition.ron"));
+    let start = AnimationManifest::from_ron(
+        &std::fs::read_to_string(start_dir.join("run_start.ron"))
+            .unwrap_or_else(|err| panic!("run_start manifest: {err}")),
+    )
+    .unwrap_or_else(|err| panic!("run_start manifest: {err}"));
+    let start_boxes = read_ron(&start_dir.join("boxes.ron"));
+    let Some(atlas) = start
+        .clips
+        .get(&transition.start_clip)
+        .and_then(|clip| start.atlases.get(&clip.atlas))
+    else {
+        panic!("run_start manifest: no {} clip", transition.start_clip);
+    };
+    let start_image = assets.load(format!("{START_DIR}/{}", atlas.texture));
+    let start_layout = layouts.add(TextureAtlasLayout::from_grid(
+        UVec2::new(atlas.cell.0, atlas.cell.1),
+        atlas.columns,
+        atlas.rows,
+        Some(UVec2::splat(atlas.padding)),
+        None,
+    ));
+    let backlight = assets.load(format!("{SYNC_DIR}/backlight.png"));
+    for k in 0..TICK_COUNT {
+        commands.spawn((
+            GroundTick(k - TICK_COUNT / 2),
+            Sprite {
+                color: Color::srgb(0.45, 0.42, 0.48),
+                custom_size: Some(Vec2::ONE),
+                ..default()
+            },
+            Transform::from_xyz(0.0, 0.0, 4.0),
+            Visibility::Hidden,
+        ));
+    }
+    commands.spawn((
+        Backdrop,
+        Sprite {
+            image: backlight.clone(),
+            ..default()
+        },
+        Anchor(Vec2::ZERO),
+        Transform::from_xyz(0.0, 0.0, 0.2),
+        Visibility::Hidden,
+    ));
+    commands.insert_resource(SyncBank {
+        plan,
+        transition,
+        start,
+        start_boxes,
+        start_image,
+        start_layout,
+        rim: assets.load(format!("{SYNC_DIR}/run6_rim.png")),
+        boots: assets.load(format!("{SYNC_DIR}/run6_boots.png")),
+        backlight,
+    });
+}
+
 /// One bar of the run-proof overlay. The project builds Bevy without the
 /// gizmo renderer, so the overlay is drawn with thin plain sprites.
 #[derive(Component, Clone, Copy)]
@@ -1024,20 +1313,26 @@ fn draw_run_overlay(
     body: Query<&Transform, (With<BodyLayer>, Without<OverlayBar>)>,
     mut bars: Query<(&OverlayBar, &mut Transform, &mut Sprite, &mut Visibility)>,
 ) {
-    let shown = (proof.source == RUN_SOURCE && proof.overlay)
-        .then_some(())
-        .and(run.as_ref())
-        .and_then(|run| {
-            let clip = run.manifest.clips.get(&proof.clip)?;
-            let frame_box = *run.boxes.get(&proof.clip)?.get(proof.frame)?;
-            Some((clip.pivot, frame_box))
-        });
-    let (Some((pivot, (x0, y0, x1, y1))), Ok(body)) = (shown, body.single()) else {
+    let shown = if proof.source == SYNC_SOURCE {
+        proof.sync_overlay.filter(|_| proof.overlay)
+    } else {
+        (proof.source == RUN_SOURCE && proof.overlay)
+            .then_some(())
+            .and(run.as_ref())
+            .and_then(|run| {
+                let clip = run.manifest.clips.get(&proof.clip)?;
+                let frame_box = *run.boxes.get(&proof.clip)?.get(proof.frame)?;
+                Some((clip.pivot, Some(frame_box)))
+            })
+    };
+    let (Some((pivot, frame_box)), Ok(body)) = (shown, body.single()) else {
         for (_, _, _, mut visibility) in &mut bars {
             *visibility = Visibility::Hidden;
         }
         return;
     };
+    // The N3.7 idle stage has no recorded box: pivot and ground only.
+    let (x0, y0, x1, y1) = frame_box.unwrap_or((0, 0, 0, 0));
     let scale = proof.view.scale();
     let sign = if proof.mirror { -1.0 } else { 1.0 };
     let origin = body.translation.truncate();
@@ -1075,9 +1370,17 @@ fn draw_run_overlay(
                 Vec2::new(2.0 * (RUN_TRAVEL_HALF_WIDTH + 60.0), thin),
             ),
         };
+        let is_box = matches!(
+            bar,
+            OverlayBar::BoxTop | OverlayBar::BoxBottom | OverlayBar::BoxLeft | OverlayBar::BoxRight
+        );
         transform.translation = centre.extend(5.0);
         sprite.custom_size = Some(size);
-        *visibility = Visibility::Inherited;
+        *visibility = if is_box && frame_box.is_none() {
+            Visibility::Hidden
+        } else {
+            Visibility::Inherited
+        };
     }
 }
 
@@ -1089,6 +1392,7 @@ fn wait_or_drive(
     native: Option<Res<NativeBank>>,
     base: Option<Res<BaseBank>>,
     run: Option<Res<RunBank>>,
+    sync_bank: Option<Res<SyncBank>>,
     mut proof: ResMut<Proof>,
     mut script: ResMut<Script>,
     mut exit: MessageWriter<AppExit>,
@@ -1196,6 +1500,21 @@ fn wait_or_drive(
             }
         }
     }
+    if let Some(sync_bank) = sync_bank.as_ref() {
+        for handle in sync_bank.handles() {
+            if assets
+                .get_load_state(handle)
+                .is_some_and(|state| state.is_failed())
+            {
+                eprintln!("[n3_visual_proof] an n3.7 texture failed to load");
+                exit.write(AppExit::error());
+                return;
+            }
+            if !assets.is_loaded(handle) {
+                return;
+            }
+        }
+    }
     script.ready_frames = script.ready_frames.saturating_add(1);
     if script.ready_frames < 12 {
         return;
@@ -1221,6 +1540,22 @@ fn apply_shot(proof: &mut Proof, shot: &Shot) {
     proof.moving = false;
     proof.travel = 0.0;
     proof.run_fps = 0;
+    let sync = shot.sync.unwrap_or(SyncShot {
+        scenario: 0,
+        variant: 0,
+        backdrop: 0,
+        stage: None,
+    });
+    proof.sync_scenario = sync.scenario;
+    proof.sync_variant = sync.variant;
+    proof.sync_backdrop = sync.backdrop;
+    proof.sync_transition = sync.stage.is_some();
+    proof.sync_stage = sync.stage.unwrap_or(Stage::Run);
+    proof.sync_stage_time = 0.0;
+    proof.sync_run_frames = 0;
+    proof.sync_step = false;
+    // N3.7 speed captures report the scenario's slide, so they count as moving.
+    proof.moving = shot.sync.is_some_and(|sync| sync.stage.is_none());
 }
 
 fn read_keys(
@@ -1269,7 +1604,9 @@ fn read_keys(
         proof.view = proof.view.next();
     }
     if keys.just_pressed(KeyCode::KeyB) {
-        let span = if project_root().join(RUN_DIR).join("run.ron").is_file() {
+        let span = if project_root().join(SYNC_DIR).join("sync.ron").is_file() {
+            9
+        } else if project_root().join(RUN_DIR).join("run.ron").is_file() {
             8
         } else if project_root().join(FIDELITY_SPRITE).is_file() {
             7
@@ -1293,6 +1630,13 @@ fn read_keys(
             proof.clip = "attack".into();
         } else if proof.source == RUN_SOURCE {
             proof.clip = RUN_CLIPS[0].into();
+        } else if proof.source == SYNC_SOURCE {
+            proof.clip = RUN_CLIPS[0].into();
+            proof.moving = true;
+            proof.travel = 0.0;
+            proof.sync_transition = false;
+            proof.sync_stage = Stage::Run;
+            proof.sync_run_frames = 0;
         } else if proof.source == 0 {
             proof.clip = "idle".into();
         }
@@ -1320,11 +1664,47 @@ fn read_keys(
             proof.travel = 0.0;
         }
     }
+    if proof.source == SYNC_SOURCE {
+        if keys.just_pressed(KeyCode::KeyG) {
+            proof.sync_scenario = proof.sync_scenario.saturating_add(1);
+            proof.elapsed = 0.0;
+        }
+        if keys.just_pressed(KeyCode::KeyH) {
+            proof.sync_transition = !proof.sync_transition;
+            proof.sync_stage = if proof.sync_transition {
+                Stage::Idle
+            } else {
+                Stage::Run
+            };
+            proof.sync_stage_time = 0.0;
+            proof.sync_run_frames = 0;
+            proof.frame = 0;
+            proof.elapsed = 0.0;
+            proof.travel = 0.0;
+        }
+        if keys.just_pressed(KeyCode::KeyL) {
+            proof.sync_variant = (proof.sync_variant + 1) % SYNC_VARIANTS.len();
+        }
+        if keys.just_pressed(KeyCode::KeyK) {
+            proof.sync_backdrop = (proof.sync_backdrop + 1) % SYNC_BACKDROPS.len();
+        }
+        if keys.just_pressed(KeyCode::KeyO) {
+            proof.overlay = !proof.overlay;
+        }
+        if keys.just_pressed(KeyCode::KeyT) {
+            proof.moving = !proof.moving;
+            proof.travel = 0.0;
+        }
+    }
     if keys.just_pressed(KeyCode::Space) {
         proof.paused = !proof.paused;
     }
     if keys.just_pressed(KeyCode::Period) && proof.paused {
-        proof.frame = proof.frame.saturating_add(1);
+        if proof.source == SYNC_SOURCE {
+            proof.sync_step = true;
+        } else {
+            proof.frame = proof.frame.saturating_add(1);
+        }
     }
 }
 
@@ -1367,6 +1747,10 @@ fn sync(
     let Some(bank) = bank else {
         return;
     };
+    // The N3.7 proof is drawn by `sync_n37`.
+    if proof.source == SYNC_SOURCE {
+        return;
+    }
     if matches!(proof.source, 1 | 2) && render.is_none() {
         proof.source = 0;
     }
@@ -1762,6 +2146,334 @@ fn sync(
                 if proof.overlay { "on" } else { "off" },
             ));
         }
+    }
+}
+
+/// One frame step of the N3.7 proof. In the transition loop the stop is a
+/// direct cut after the exit frame (the video has no stop frames).
+fn sync_advance(proof: &mut Proof, start_count: usize, run_count: usize, plan: &TransitionPlan) {
+    match proof.sync_stage {
+        Stage::Idle => {
+            proof.sync_stage = Stage::Start;
+            proof.frame = 0;
+        }
+        Stage::Start => {
+            proof.frame += 1;
+            if proof.frame >= start_count {
+                proof.sync_stage = Stage::Run;
+                proof.frame = 0;
+                proof.sync_run_frames = 0;
+            }
+        }
+        Stage::Run => {
+            let leaving = proof.frame % run_count.max(1);
+            proof.sync_run_frames = proof.sync_run_frames.saturating_add(1);
+            if proof.sync_transition
+                && proof.sync_run_frames >= plan.run_frames
+                && leaving == plan.exit_frame
+            {
+                proof.sync_stage = Stage::Idle;
+                proof.sync_stage_time = 0.0;
+                proof.frame = 0;
+            } else {
+                proof.frame = (leaving + 1) % run_count.max(1);
+            }
+        }
+    }
+}
+
+/// The N3.7 sync proof: speed scenarios, transition loop, contrast variants
+/// and backdrops. Every other source is left to `sync`.
+fn sync_n37(
+    mut proof: ResMut<Proof>,
+    sync_bank: Option<Res<SyncBank>>,
+    run: Option<Res<RunBank>>,
+    base: Option<Res<BaseBank>>,
+    time: Res<Time>,
+    mut clear: ResMut<ClearColor>,
+    mut cameras: Query<&mut Projection, With<Camera2d>>,
+    mut body: Query<
+        (&mut Sprite, &mut Anchor, &mut Transform),
+        (With<BodyLayer>, Without<WeaponLayer>, Without<Backdrop>),
+    >,
+    mut weapon: Query<&mut Sprite, (With<WeaponLayer>, Without<BodyLayer>, Without<Backdrop>)>,
+    mut cape: Query<&mut Visibility, (With<CapeLayerMark>, Without<GroundTick>, Without<Backdrop>)>,
+    mut ticks: Query<
+        (&GroundTick, &mut Transform, &mut Sprite, &mut Visibility),
+        (
+            Without<BodyLayer>,
+            Without<WeaponLayer>,
+            Without<CapeLayerMark>,
+            Without<Backdrop>,
+        ),
+    >,
+    mut backdrop: Query<
+        (&mut Sprite, &mut Anchor, &mut Transform, &mut Visibility),
+        (
+            With<Backdrop>,
+            Without<BodyLayer>,
+            Without<WeaponLayer>,
+            Without<CapeLayerMark>,
+            Without<GroundTick>,
+        ),
+    >,
+    mut hud: Query<&mut Text, With<ProofHud>>,
+) {
+    if proof.source != SYNC_SOURCE {
+        if clear.0 != DEFAULT_CLEAR {
+            clear.0 = DEFAULT_CLEAR;
+        }
+        proof.sync_overlay = None;
+        for (_, _, _, mut visibility) in &mut ticks {
+            *visibility = Visibility::Hidden;
+        }
+        for (_, _, _, mut visibility) in &mut backdrop {
+            *visibility = Visibility::Hidden;
+        }
+        return;
+    }
+    let (Some(bank), Some(run)) = (sync_bank, run) else {
+        proof.source = 0;
+        return;
+    };
+    let (Some(run6), Some(start)) = (
+        run.manifest.clips.get("run6"),
+        bank.start.clips.get(&bank.transition.start_clip),
+    ) else {
+        proof.source = 0;
+        return;
+    };
+    let scenario_count = bank.plan.scenarios.len().max(1);
+    proof.sync_scenario %= scenario_count;
+    let Some(scenario) = bank.plan.scenarios.get(proof.sync_scenario) else {
+        return;
+    };
+    let rate = scenario.rate.max(0.01);
+    let run_count = run6.count.max(1) as usize;
+    let start_count = start.count.max(1) as usize;
+    if !proof.sync_transition {
+        proof.sync_stage = Stage::Run;
+    }
+
+    // --- timing ---------------------------------------------------------
+    let dt = time.delta_secs();
+    if !proof.paused {
+        if proof.sync_stage == Stage::Idle {
+            proof.sync_stage_time += dt;
+            if proof.sync_stage_time >= bank.transition.idle_hold {
+                sync_advance(&mut proof, start_count, run_count, &bank.transition);
+                proof.elapsed = 0.0;
+            }
+        } else {
+            proof.elapsed += dt;
+            loop {
+                let authored = match proof.sync_stage {
+                    Stage::Start => start.durations[proof.frame % start_count],
+                    Stage::Run => run6.durations[proof.frame % run_count],
+                    Stage::Idle => break,
+                };
+                let step = authored / rate;
+                if step <= 0.0 || proof.elapsed < step {
+                    break;
+                }
+                proof.elapsed -= step;
+                sync_advance(&mut proof, start_count, run_count, &bank.transition);
+            }
+        }
+    }
+    if proof.sync_step {
+        proof.sync_step = false;
+        sync_advance(&mut proof, start_count, run_count, &bank.transition);
+    }
+    match proof.sync_stage {
+        Stage::Start => proof.frame %= start_count,
+        Stage::Run => proof.frame %= run_count,
+        Stage::Idle => proof.frame = 0,
+    }
+
+    // --- camera and travel (game units, drawn at 2 texels per unit) -------
+    let scale = proof.view.scale();
+    let height = proof.view.height();
+    for mut projection in &mut cameras {
+        if let Projection::Orthographic(ortho) = projection.as_mut() {
+            ortho.scaling_mode = ScalingMode::FixedVertical {
+                viewport_height: height,
+            };
+        }
+    }
+    let world_per_unit = RUN_DENSITY * scale;
+    let half_view = WINDOW_HEIGHT.recip() * 1280.0 * height / 2.0;
+    let wrap = (half_view - 60.0) / world_per_unit;
+    if proof.moving && !proof.paused && proof.sync_stage != Stage::Idle {
+        proof.travel += scenario.speed * dt;
+        if proof.travel > wrap {
+            proof.travel -= 2.0 * wrap;
+        }
+    }
+    if !proof.moving {
+        proof.travel = 0.0;
+    }
+    let sign = if proof.mirror { -1.0 } else { 1.0 };
+    let origin_x = proof.travel * world_per_unit * sign;
+
+    // --- body -------------------------------------------------------------
+    let idle_entry = base.as_ref().and_then(|base| base.get(FIDELITY_SOURCE));
+    let shown = match proof.sync_stage {
+        Stage::Idle => idle_entry.and_then(|entry| {
+            let clip = entry.manifest.clips.get("idle")?;
+            let atlas = entry.manifest.atlases.get(&clip.atlas)?;
+            Some((entry.body.clone(), None, atlas.cell, clip.pivot, None))
+        }),
+        Stage::Start => bank.start.atlases.get(&start.atlas).map(|atlas| {
+            let frame_box = bank
+                .start_boxes
+                .get(&bank.transition.start_clip)
+                .and_then(|boxes| boxes.get(proof.frame).copied());
+            (
+                bank.start_image.clone(),
+                Some((
+                    bank.start_layout.clone(),
+                    start.first as usize + proof.frame,
+                )),
+                atlas.cell,
+                start.pivot,
+                frame_box,
+            )
+        }),
+        Stage::Run => {
+            let image = match proof.sync_variant {
+                1 => Some(bank.rim.clone()),
+                2 => Some(bank.boots.clone()),
+                _ => run.images.get(&run6.atlas).cloned(),
+            };
+            let frame_box = run
+                .boxes
+                .get("run6")
+                .and_then(|boxes| boxes.get(proof.frame).copied());
+            match (
+                image,
+                run.layouts.get(&run6.atlas),
+                run.manifest.atlases.get(&run6.atlas),
+            ) {
+                (Some(image), Some(layout), Some(atlas)) => Some((
+                    image,
+                    Some((layout.clone(), run6.first as usize + proof.frame)),
+                    atlas.cell,
+                    run6.pivot,
+                    frame_box,
+                )),
+                _ => None,
+            }
+        }
+    };
+    let Some((image, atlas, cell, pivot, frame_box)) = shown else {
+        return;
+    };
+    proof.sync_overlay = Some((pivot, frame_box));
+    if let Ok((mut sprite, mut anchor, mut transform)) = body.single_mut() {
+        sprite.image = image;
+        sprite.texture_atlas = atlas.map(|(layout, index)| TextureAtlas { layout, index });
+        sprite.flip_x = proof.mirror;
+        sprite.custom_size = Some(Vec2::new(cell.0 as f32 * scale, cell.1 as f32 * scale));
+        let (x, y) = anchor_for(pivot, cell, proof.mirror);
+        anchor.0 = Vec2::new(x, y);
+        transform.translation.x = origin_x;
+        transform.translation.y = 0.0;
+    }
+    for mut sprite in &mut weapon {
+        sprite.custom_size = Some(Vec2::ZERO);
+    }
+    for mut visibility in &mut cape {
+        *visibility = Visibility::Hidden;
+    }
+
+    // --- backdrop, back-light and ground ticks ----------------------------
+    let (backdrop_name, colour) = SYNC_BACKDROPS[proof.sync_backdrop % SYNC_BACKDROPS.len()];
+    if clear.0 != colour {
+        clear.0 = colour;
+    }
+    let lit = proof.sync_backdrop % SYNC_BACKDROPS.len() == BACKLIGHT_BACKDROP;
+    for (mut sprite, mut anchor, mut transform, mut visibility) in &mut backdrop {
+        let plate = (112.0, 128.0);
+        sprite.custom_size = Some(Vec2::new(plate.0 * scale, plate.1 * scale));
+        let (x, y) = anchor_for((56.0, 118.0), (112, 128), false);
+        anchor.0 = Vec2::new(x, y);
+        transform.translation.x = origin_x;
+        *visibility = if lit {
+            Visibility::Inherited
+        } else {
+            Visibility::Hidden
+        };
+    }
+    for (tick, mut transform, mut sprite, mut visibility) in &mut ticks {
+        let x = tick.0 as f32 * TICK_SPACING_UNITS * world_per_unit;
+        transform.translation = Vec3::new(x, -3.0 * scale, 4.0);
+        sprite.custom_size = Some(Vec2::new(scale, 4.0 * scale));
+        *visibility = Visibility::Inherited;
+    }
+
+    // --- HUD --------------------------------------------------------------
+    if let Ok(mut text) = hud.single_mut() {
+        let (stage, clip_name, count) = match proof.sync_stage {
+            Stage::Idle => ("idle (N3.5)", "idle", 1),
+            Stage::Start => (
+                "start (video 3-13)",
+                bank.transition.start_clip.as_str(),
+                start_count,
+            ),
+            Stage::Run => ("run", "run6", run_count),
+        };
+        let phase = match proof.sync_stage {
+            Stage::Run => bank
+                .plan
+                .run6_phase
+                .get(proof.frame)
+                .map_or("?", String::as_str),
+            Stage::Start => "start",
+            Stage::Idle => "idle",
+        };
+        let slide = (scenario.speed - rate * bank.plan.reference_speed).abs();
+        let slide_text = if proof.moving {
+            format!(
+                "slide {slide:.0} u/s ({:.0}%)",
+                slide / scenario.speed.max(1.0) * 100.0
+            )
+        } else {
+            format!(
+                "in place: planted foot moves back {:.0} u/s",
+                rate * bank.plan.reference_speed
+            )
+        };
+        text.0 = format!(
+            "n3.7-sync-proof  scenario {} {}  mode {}  stage {stage}  clip {clip_name}  frame {}/{}  view {}  {}",
+            scenario.id,
+            scenario.name,
+            if proof.sync_transition {
+                "transition"
+            } else {
+                "speed"
+            },
+            proof.frame,
+            count,
+            proof.view.label(),
+            if proof.paused { "paused" } else { "playing" },
+        );
+        text.0.push_str(&format!(
+            "\nfps {:.1}  rate {:.2}  speed {:.0} u/s (game {:.0})  x {:.1} u  phase {phase}  {slide_text}",
+            bank.plan.base_fps * rate,
+            rate,
+            scenario.speed,
+            bank.plan.game_speed,
+            proof.travel,
+        ));
+        text.0.push_str(&format!(
+            "\nframes {}  backdrop {backdrop_name}  camera {:.0}  {:.3} screen px/texel  overlay {}  {}  NOT APPROVED",
+            SYNC_VARIANTS[proof.sync_variant % SYNC_VARIANTS.len()],
+            height,
+            proof.view.screen_px_per_texel(),
+            if proof.overlay { "on" } else { "off" },
+            if proof.moving { "moving" } else { "in place" },
+        ));
     }
 }
 
