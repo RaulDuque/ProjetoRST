@@ -17,7 +17,7 @@
 //! | X | light armor / heavy armor |
 //! | C | cape on / off |
 //! | M | mirror |
-//! | B | N3 baseline / automatic pixel of the V2.2 attack / raw render |
+//! | B | N3 baseline / automatic pixel / raw render / N3.2 concept, when the file exists |
 //! | V | close view (360, integer 2×) / game framing (405) |
 //! | Space | pause |
 //! | . | one frame while paused |
@@ -339,7 +339,31 @@ fn shots() -> Vec<Shot> {
             render_shot(0, 1, false, "bevy_attack_game_frame.png"),
         ]);
     }
+    if project_root()
+        .join("art-src/n3-2-art-direction/generated/concept_b_sprite.png")
+        .is_file()
+    {
+        list.extend([
+            concept_shot(true, "bevy_concept_b.png"),
+            concept_shot(false, "bevy_concept_b_game.png"),
+        ]);
+    }
     list
+}
+
+fn concept_shot(close: bool, file: &'static str) -> Shot {
+    Shot {
+        clip: "idle",
+        frame: 0,
+        heavy: false,
+        spear: false,
+        cape: false,
+        mirror: false,
+        close,
+        file,
+        source: 3,
+        folder: "docs/development/n3_2/evidence",
+    }
 }
 
 fn render_shot(frame: usize, source: u8, close: bool, file: &'static str) -> Shot {
@@ -421,6 +445,7 @@ fn setup(
     let sword = assets.load(format!("art-src/n3-proof/generated/{}", loadout.sword));
     let spear = assets.load(format!("art-src/n3-proof/generated/{}", loadout.spear));
     load_render(&mut commands, &assets, &mut layouts);
+    load_concept(&mut commands, &assets);
 
     commands.spawn((
         Camera2d,
@@ -557,10 +582,30 @@ fn load_render(
     });
 }
 
+#[derive(Resource)]
+struct ConceptView {
+    manifest: AnimationManifest,
+    image: Handle<Image>,
+}
+
+fn load_concept(commands: &mut Commands, assets: &AssetServer) {
+    let path = project_root().join("art-src/n3-2-art-direction/generated/concept_b.ron");
+    if !path.is_file() {
+        return;
+    }
+    let manifest = AnimationManifest::from_ron(
+        &std::fs::read_to_string(&path).unwrap_or_else(|err| panic!("n3.2 manifest: {err}")),
+    )
+    .unwrap_or_else(|err| panic!("n3.2 manifest: {err}"));
+    let image = assets.load("art-src/n3-2-art-direction/generated/concept_b_sprite.png");
+    commands.insert_resource(ConceptView { manifest, image });
+}
+
 fn wait_or_drive(
     assets: Res<AssetServer>,
     bank: Option<Res<ProofAssets>>,
     render: Option<Res<RenderBank>>,
+    concept: Option<Res<ConceptView>>,
     mut proof: ResMut<Proof>,
     mut script: ResMut<Script>,
     mut exit: MessageWriter<AppExit>,
@@ -607,6 +652,19 @@ fn wait_or_drive(
             return;
         }
         if pending {
+            return;
+        }
+    }
+    if let Some(concept) = concept.as_ref() {
+        if assets
+            .get_load_state(&concept.image)
+            .is_some_and(|state| state.is_failed())
+        {
+            eprintln!("[n3_visual_proof] the n3.2 concept failed to load");
+            exit.write(AppExit::error());
+            return;
+        }
+        if !assets.is_loaded(&concept.image) {
             return;
         }
     }
@@ -678,8 +736,18 @@ fn read_keys(
         proof.close = !proof.close;
     }
     if keys.just_pressed(KeyCode::KeyB) {
-        proof.source = (proof.source + 1) % 3;
-        proof.clip = "attack".into();
+        let span = if project_root()
+            .join("art-src/n3-2-art-direction/generated/concept_b_sprite.png")
+            .is_file()
+        {
+            4
+        } else {
+            3
+        };
+        proof.source = (proof.source + 1) % span;
+        if proof.source == 1 || proof.source == 2 {
+            proof.clip = "attack".into();
+        }
         proof.frame = 0;
         proof.elapsed = 0.0;
     }
@@ -722,14 +790,32 @@ fn sync(
     mut hud: Query<&mut Text, With<ProofHud>>,
     time: Res<Time>,
     render: Option<Res<RenderBank>>,
+    concept: Option<Res<ConceptView>>,
 ) {
     let Some(bank) = bank else {
         return;
     };
-    if proof.source != 0 && render.is_none() {
+    if matches!(proof.source, 1 | 2) && render.is_none() {
         proof.source = 0;
     }
-    let shown = if proof.source != 0 {
+    if proof.source == 3 && concept.is_none() {
+        proof.source = 0;
+    }
+    let shown = if proof.source == 3 {
+        let Some(concept) = concept.as_ref() else {
+            return;
+        };
+        let Some(clip) = concept.manifest.clips.get("idle") else {
+            return;
+        };
+        (
+            clip.count as usize,
+            clip.first as usize,
+            clip.pivot,
+            1.0,
+            true,
+        )
+    } else if proof.source != 0 {
         let Some(render) = render.as_ref() else {
             return;
         };
@@ -784,10 +870,21 @@ fn sync(
     if let Ok((mut sprite, mut anchor, _transform)) = body.single_mut() {
         let cell = if proof.source == 0 {
             bank.loadout.cell
+        } else if proof.source == 3 {
+            concept
+                .as_ref()
+                .and_then(|concept| concept.manifest.atlases.get("concept"))
+                .map(|atlas| atlas.cell)
+                .unwrap_or((31, 100))
         } else {
             (256, 192)
         };
-        if proof.source == 0 {
+        if proof.source == 3 {
+            if let Some(concept) = concept.as_ref() {
+                sprite.texture_atlas = None;
+                sprite.image = concept.image.clone();
+            }
+        } else if proof.source == 0 {
             sprite.image = if proof.armor_heavy {
                 bank.heavy.clone()
             } else {
@@ -856,7 +953,11 @@ fn sync(
         };
         sprite.image = image;
         sprite.flip_x = proof.mirror;
-        sprite.custom_size = Some(Vec2::new(size.0 as f32 * scale, size.1 as f32 * scale));
+        sprite.custom_size = if proof.source == 3 {
+            Some(Vec2::ZERO)
+        } else {
+            Some(Vec2::new(size.0 as f32 * scale, size.1 as f32 * scale))
+        };
         let x = grip.0 / size.0 as f32 - 0.5;
         let y = 0.5 - grip.1 / size.1 as f32;
         anchor.0 = Vec2::new(if proof.mirror { -x } else { x }, y);
@@ -883,9 +984,12 @@ fn sync(
         let weapon_name = match (proof.source, proof.spear) {
             (0, true) => "spear",
             (0, false) => "sword",
+            (3, _) => "not a separate layer",
             _ => "N3 sword sprite on the measured socket",
         };
-        let cape = if proof.source != 0 {
+        let cape = if proof.source == 3 {
+            "not a separate layer"
+        } else if proof.source != 0 {
             "inside the render"
         } else if proof.cape {
             "on"
@@ -902,6 +1006,7 @@ fn sync(
         let source = match proof.source {
             1 => "auto-pixel",
             2 => "raw-render",
+            3 => "n3.2-concept-b",
             _ => "n3-baseline",
         };
         text.0 = format!(

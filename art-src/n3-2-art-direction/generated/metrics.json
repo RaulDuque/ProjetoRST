@@ -1,0 +1,47 @@
+{
+  "full": {
+    "concept_a_side": {
+      "width": 864,
+      "height": 1118,
+      "image_width": 864,
+      "image_height": 1118
+    },
+    "concept_b_side": {
+      "width": 341,
+      "height": 1092,
+      "image_width": 341,
+      "image_height": 1092
+    },
+    "concept_c_side": {
+      "width": 343,
+      "height": 1075,
+      "image_width": 343,
+      "image_height": 1075
+    },
+    "b_anticipation": {
+      "width": 652,
+      "height": 1087,
+      "image_width": 652,
+      "image_height": 1087
+    },
+    "b_impact": {
+      "width": 851,
+      "height": 1026,
+      "image_width": 851,
+      "image_height": 1026
+    },
+    "b_recovery": {
+      "width": 479,
+      "height": 1093,
+      "image_width": 479,
+      "image_height": 1093
+    },
+    "b_face": {
+      "width": 933,
+      "height": 1024,
+      "image_width": 933,
+      "image_height": 1024
+    }
+  },
+  "target_height": 100
+}

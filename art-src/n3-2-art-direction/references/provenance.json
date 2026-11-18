@@ -1,0 +1,52 @@
+{
+  "tool": "Cursor GenerateImage",
+  "model": null,
+  "model_note": "A ferramenta não informou modelo nem versão.",
+  "date": "2026-11-18",
+  "output": "JPEG sem alpha. O PNG e a transparência foram feitos depois, no script local.",
+  "manual_paint": false,
+  "edited_by_hand": false,
+  "private_files_sent": false,
+  "license": "Não informada. Não é uma licença aberta conhecida. Estas imagens são referência, não arte publicável do jogo.",
+  "images": [
+    {
+      "file": "concept_a_side.png",
+      "role": "conceito A, vista lateral direita, sem imagem de referência",
+      "prompt": "Original gothic dark fantasy action RPG protagonist, full-body strict orthographic side view facing right, elegant armored swordsman standing neutral with feet together on a flat ground line. Dark steel armor with restrained antique gold accents, long fitted coat, deep crimson cape hanging behind the body, leather boots, articulated gauntlets, readable heroic silhouette, detailed but production-friendly anatomy, dramatic restrained lighting, consistent materials, clean separation of body and equipment. Isolated plain light gray background, single character only, no text, no watermark, no logo, no extra figures, original design not based on any existing named character."
+    },
+    {
+      "file": "concept_b_side.png",
+      "role": "conceito B, vista lateral direita, sem imagem de referência",
+      "prompt": "Original aristocratic supernatural hunter for a gothic 2D action RPG, full-body strict orthographic side view facing right, standing neutral with feet together. Long tailored dark coat, layered leather and light metal protection, expressive hair silhouette, refined boots and gloves, deep burgundy fabric accents, elegant athletic proportions, mysterious expression, readable face and hands, coherent anatomy. Isolated plain light gray background, single character only, production-ready character design reference, no text, no watermark, no logo, no extra figures, original design not based on any existing named character."
+    },
+    {
+      "file": "concept_c_side.png",
+      "role": "conceito C, vista lateral direita, sem imagem de referência",
+      "prompt": "Original cursed gothic warrior for a dark fantasy 2D action RPG, full-body strict orthographic side view facing right, standing neutral with feet together. Asymmetrical aged armor, weathered damaged cloak, restrained arcane markings, layered dark fabrics, worn steel and leather, powerful readable silhouette, subtle supernatural atmosphere, consistent proportions, clear separation of costume elements. Isolated plain light gray background, single character only, no text, no watermark, no logo, no extra figures, original design not based on any existing named character."
+    },
+    {
+      "file": "b_anticipation.png",
+      "role": "pose do conceito B, com a vista lateral B como referência",
+      "used_reference": "concept_b_side",
+      "prompt": "Same original character as the reference image, aristocratic gothic hunter, strict orthographic side view facing right, full body including both feet. Anticipation of a one-handed sword attack: the sword is drawn back behind the body, elbow bent, weight on the rear foot, front knee soft, long dark tailored coat, burgundy lining, long dark hair, leather boots and gloves, light metal plates on the shoulder and knees. Same proportions, same costume, same face, same hair, plain light gray background, single character, no text, no watermark."
+    },
+    {
+      "file": "b_impact.png",
+      "role": "pose do conceito B, com a vista lateral B como referência",
+      "used_reference": "concept_b_side",
+      "prompt": "Same original character as the reference image, aristocratic gothic hunter, strict orthographic side view facing right, full body including both feet. Impact of a one-handed sword attack: the sword arm is extended forward at chest height, blade pointing right, the other arm trailing, coat and burgundy lining swinging back, long dark hair, leather boots and gloves, light metal plates. Same proportions, same costume, same face, same hair as the reference, plain light gray background, single character, no text, no watermark."
+    },
+    {
+      "file": "b_recovery.png",
+      "role": "pose do conceito B, com a vista lateral B como referência",
+      "used_reference": "concept_b_side",
+      "prompt": "Same original character as the reference image, aristocratic gothic hunter, strict orthographic side view facing right, full body including both feet. Recovery after a one-handed sword attack: the sword has followed through and points down and forward, torso leaning slightly forward, coat and burgundy lining settling behind the legs, long dark hair, leather boots and gloves, light metal plates. Same proportions, same costume, same face, same hair as the reference, plain light gray background, single character, no text, no watermark."
+    },
+    {
+      "file": "b_face.png",
+      "role": "close do rosto do conceito B, com a vista lateral B como referência",
+      "used_reference": "concept_b_side",
+      "prompt": "Close-up of the same original character as the reference, aristocratic gothic hunter, strict side profile facing right, head and collar only. Readable face, eye, nose, mouth, long dark hair, pale skin, dark high collar with a burgundy accent. Plain light gray background, no text, no watermark, no extra figures."
+    }
+  ]
+}

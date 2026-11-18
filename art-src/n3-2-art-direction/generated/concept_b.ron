@@ -1,0 +1,13 @@
+(
+    version: 1,
+    facing: Right,
+    weapon_in_body: true,
+    atlases: {
+        "concept": (texture: "concept_b_sprite.png", cell: (31, 100), columns: 1, rows: 1, padding: 0, density: 1),
+    },
+    clips: {
+        "idle": (atlas: "concept", first: 0, count: 1, mode: Loop(fps: 1.0),
+            pivot: (15.5, 99.0), fallback: None,
+            durations: [1.0], speed_reference: None),
+    },
+)
