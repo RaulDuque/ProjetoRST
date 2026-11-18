@@ -1,0 +1,86 @@
+{
+  "machine_seconds": 0.6614,
+  "human_artist_hours": null,
+  "attack_frames": 7,
+  "raw_size": [
+    1024,
+    768
+  ],
+  "contract_cell": [
+    128,
+    96
+  ],
+  "presentation_cell": [
+    256,
+    192
+  ],
+  "figure_texels_contract": 49,
+  "figure_texels_presentation": 102,
+  "weapon_baked": false,
+  "manual_pixelorama": false,
+  "independent_drawing": false,
+  "windup_in_source_clip": false,
+  "palette_rgb": [
+    [
+      56,
+      60,
+      77
+    ],
+    [
+      34,
+      36,
+      49
+    ],
+    [
+      29,
+      36,
+      52
+    ],
+    [
+      29,
+      36,
+      51
+    ],
+    [
+      28,
+      36,
+      52
+    ],
+    [
+      35,
+      34,
+      49
+    ],
+    [
+      96,
+      27,
+      43
+    ],
+    [
+      93,
+      25,
+      41
+    ],
+    [
+      77,
+      27,
+      41
+    ],
+    [
+      22,
+      20,
+      28
+    ],
+    [
+      12,
+      8,
+      16
+    ],
+    [
+      0,
+      0,
+      0
+    ]
+  ],
+  "note": "Automatic processing of the V2.2 attack renders. No hand painting."
+}

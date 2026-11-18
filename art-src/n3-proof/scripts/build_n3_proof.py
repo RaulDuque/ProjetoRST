@@ -93,13 +93,14 @@ def pose_for(clip: str, index: int) -> Pose:
         bob, lean, breath, tl, tr, ar, al, cape = table[index]
         return Pose(bob, lean, breath, tl, tr, ar, al, cape)
     if clip == "jump":
+        # Cape swing stays negative: behind a right-facing body, not across the chest.
         table = (
-            (-5, 2, 0, 24, -22, -40, -18, 4),
-            (4, -2, 0, -4, -2, -155, -145, -14),
-            (12, -1, 0, 6, -8, -135, -125, -8),
-            (16, 0, 0, 36, 28, -110, -100, 2),
-            (8, 2, 0, 12, -14, -28, -16, 12),
-            (-4, 3, 0, 26, -20, 8, -6, 6),
+            (-5, 2, 0, 24, -22, -40, -18, -8),
+            (4, -2, 0, -4, -2, -155, -145, -18),
+            (12, -1, 0, 6, -8, -135, -125, -16),
+            (16, 0, 0, 36, 28, -110, -100, -14),
+            (8, 2, 0, 12, -14, -28, -16, -12),
+            (-4, 3, 0, 26, -20, 8, -6, -8),
         )
         bob, lean, breath, tl, tr, ar, al, cape = table[index]
         return Pose(bob, lean, breath, tl, tr, ar, al, cape)

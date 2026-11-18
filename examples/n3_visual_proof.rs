@@ -17,6 +17,7 @@
 //! | X | light armor / heavy armor |
 //! | C | cape on / off |
 //! | M | mirror |
+//! | B | N3 baseline / automatic pixel of the V2.2 attack / raw render |
 //! | V | close view (360, integer 2×) / game framing (405) |
 //! | Space | pause |
 //! | . | one frame while paused |
@@ -44,10 +45,6 @@ const GAME_VIEW: f32 = 405.0;
 
 fn generated_dir() -> PathBuf {
     project_root().join("art-src/n3-proof/generated")
-}
-
-fn evidence_dir() -> PathBuf {
-    project_root().join("docs/development/n3/evidence")
 }
 
 #[derive(Deserialize)]
@@ -95,6 +92,8 @@ struct Proof {
     /// Close view is 640×360 world units on a 1280×720 window: exactly 2×.
     close: bool,
     paused: bool,
+    /// 0 = N3 baseline, 1 = automatic pixel of the V2.2 attack, 2 = the raw render.
+    source: u8,
 }
 
 #[derive(Component)]
@@ -118,6 +117,8 @@ struct Shot {
     mirror: bool,
     close: bool,
     file: &'static str,
+    source: u8,
+    folder: &'static str,
 }
 
 #[derive(Resource)]
@@ -145,7 +146,7 @@ fn main() {
                     ..default()
                 })
                 .set(AssetPlugin {
-                    file_path: generated_dir().display().to_string(),
+                    file_path: project_root().display().to_string(),
                     ..default()
                 }),
         )
@@ -163,6 +164,7 @@ fn main() {
             mirror: false,
             close: true,
             paused: true,
+            source: 0,
         })
         .insert_resource(Script {
             interactive,
@@ -180,7 +182,7 @@ fn main() {
 }
 
 fn shots() -> Vec<Shot> {
-    vec![
+    let mut list = vec![
         shot("idle", 1, false, false, true, false, true, "bevy_idle.png"),
         shot(
             "walk",
@@ -324,7 +326,35 @@ fn shots() -> Vec<Shot> {
             "bevy_framing_close.png",
         ),
         shot("idle", 1, false, false, true, false, true, "bevy_idle.png"),
-    ]
+    ];
+    if project_root()
+        .join("art-src/n3-proof/n3_1/attack_pixel.png")
+        .is_file()
+    {
+        list.extend([
+            render_shot(0, 1, true, "bevy_attack_pixel.png"),
+            render_shot(0, 2, true, "bevy_attack_raw.png"),
+            render_shot(3, 1, true, "bevy_attack_follow.png"),
+            render_shot(6, 1, true, "bevy_attack_recover.png"),
+            render_shot(0, 1, false, "bevy_attack_game_frame.png"),
+        ]);
+    }
+    list
+}
+
+fn render_shot(frame: usize, source: u8, close: bool, file: &'static str) -> Shot {
+    Shot {
+        clip: "attack",
+        frame,
+        heavy: false,
+        spear: false,
+        cape: true,
+        mirror: false,
+        close,
+        file,
+        source,
+        folder: "docs/development/n3_1/evidence",
+    }
 }
 
 fn shot(
@@ -346,6 +376,8 @@ fn shot(
         mirror,
         close,
         file,
+        source: 0,
+        folder: "docs/development/n3/evidence",
     }
 }
 
@@ -383,11 +415,12 @@ fn setup(
         Some(UVec2::ZERO),
         None,
     ));
-    let light = assets.load(loadout.body_light.clone());
-    let heavy = assets.load(loadout.body_heavy.clone());
-    let cape = assets.load(loadout.cape.clone());
-    let sword = assets.load(loadout.sword.clone());
-    let spear = assets.load(loadout.spear.clone());
+    let light = assets.load(format!("art-src/n3-proof/generated/{}", loadout.body_light));
+    let heavy = assets.load(format!("art-src/n3-proof/generated/{}", loadout.body_heavy));
+    let cape = assets.load(format!("art-src/n3-proof/generated/{}", loadout.cape));
+    let sword = assets.load(format!("art-src/n3-proof/generated/{}", loadout.sword));
+    let spear = assets.load(format!("art-src/n3-proof/generated/{}", loadout.spear));
+    load_render(&mut commands, &assets, &mut layouts);
 
     commands.spawn((
         Camera2d,
@@ -474,9 +507,60 @@ fn setup(
     });
 }
 
+#[derive(Resource)]
+struct RenderBank {
+    manifest: AnimationManifest,
+    sockets: SocketTable,
+    pixel: Handle<Image>,
+    layout: Handle<TextureAtlasLayout>,
+    raw: Vec<Handle<Image>>,
+}
+
+fn load_render(
+    commands: &mut Commands,
+    assets: &AssetServer,
+    layouts: &mut Assets<TextureAtlasLayout>,
+) {
+    let dir = project_root().join("art-src/n3-proof/n3_1");
+    let manifest_path = dir.join("attack.ron");
+    if !manifest_path.is_file() {
+        return;
+    }
+    let manifest = AnimationManifest::from_ron(
+        &std::fs::read_to_string(&manifest_path)
+            .unwrap_or_else(|err| panic!("n3.1 manifest: {err}")),
+    )
+    .unwrap_or_else(|err| panic!("n3.1 manifest: {err}"));
+    let sockets = SocketTable::from_ron(
+        &std::fs::read_to_string(dir.join("sockets.ron"))
+            .unwrap_or_else(|err| panic!("n3.1 sockets: {err}")),
+        &manifest,
+    )
+    .unwrap_or_else(|err| panic!("n3.1 sockets: {err}"));
+    let layout = layouts.add(TextureAtlasLayout::from_grid(
+        UVec2::new(256, 192),
+        7,
+        1,
+        Some(UVec2::ZERO),
+        None,
+    ));
+    let pixel = assets.load("art-src/n3-proof/n3_1/attack_pixel.png");
+    let raw = (0..7)
+        .map(|index| assets.load(format!("art-src/n3-proof/n3_1/raw/attack_{index:02}.png")))
+        .collect();
+    commands.insert_resource(RenderBank {
+        manifest,
+        sockets,
+        pixel,
+        layout,
+        raw,
+    });
+}
+
 fn wait_or_drive(
     assets: Res<AssetServer>,
     bank: Option<Res<ProofAssets>>,
+    render: Option<Res<RenderBank>>,
     mut proof: ResMut<Proof>,
     mut script: ResMut<Script>,
     mut exit: MessageWriter<AppExit>,
@@ -506,6 +590,26 @@ fn wait_or_drive(
     if !handles.iter().all(|handle| assets.is_loaded(*handle)) {
         return;
     }
+    if let Some(render) = render.as_ref() {
+        let pending = !assets.is_loaded(&render.pixel)
+            || render.raw.iter().any(|handle| !assets.is_loaded(handle));
+        let failed = assets
+            .get_load_state(&render.pixel)
+            .is_some_and(|state| state.is_failed())
+            || render.raw.iter().any(|handle| {
+                assets
+                    .get_load_state(handle)
+                    .is_some_and(|state| state.is_failed())
+            });
+        if failed {
+            eprintln!("[n3_visual_proof] an n3.1 texture failed to load");
+            exit.write(AppExit::error());
+            return;
+        }
+        if pending {
+            return;
+        }
+    }
     script.ready_frames = script.ready_frames.saturating_add(1);
     if script.ready_frames < 12 {
         return;
@@ -525,6 +629,7 @@ fn apply_shot(proof: &mut Proof, shot: &Shot) {
     proof.mirror = shot.mirror;
     proof.close = shot.close;
     proof.paused = true;
+    proof.source = shot.source;
 }
 
 fn read_keys(
@@ -555,6 +660,7 @@ fn read_keys(
         proof.clip = clip.to_string();
         proof.frame = 0;
         proof.elapsed = 0.0;
+        proof.source = 0;
     }
     if keys.just_pressed(KeyCode::KeyZ) {
         proof.spear = !proof.spear;
@@ -570,6 +676,12 @@ fn read_keys(
     }
     if keys.just_pressed(KeyCode::KeyV) {
         proof.close = !proof.close;
+    }
+    if keys.just_pressed(KeyCode::KeyB) {
+        proof.source = (proof.source + 1) % 3;
+        proof.clip = "attack".into();
+        proof.frame = 0;
+        proof.elapsed = 0.0;
     }
     if keys.just_pressed(KeyCode::Space) {
         proof.paused = !proof.paused;
@@ -609,25 +721,49 @@ fn sync(
     >,
     mut hud: Query<&mut Text, With<ProofHud>>,
     time: Res<Time>,
+    render: Option<Res<RenderBank>>,
 ) {
     let Some(bank) = bank else {
         return;
     };
-    let Some(clip) = bank.manifest.clips.get(&proof.clip) else {
-        return;
+    if proof.source != 0 && render.is_none() {
+        proof.source = 0;
+    }
+    let shown = if proof.source != 0 {
+        let Some(render) = render.as_ref() else {
+            return;
+        };
+        let Some(clip) = render.manifest.clips.get("attack") else {
+            return;
+        };
+        (
+            clip.count as usize,
+            clip.first as usize,
+            clip.pivot,
+            clip.durations.first().copied().unwrap_or(0.1),
+            false,
+        )
+    } else {
+        let Some(clip) = bank.manifest.clips.get(&proof.clip) else {
+            return;
+        };
+        (
+            clip.count as usize,
+            clip.first as usize,
+            clip.pivot,
+            clip.durations.first().copied().unwrap_or(0.1),
+            matches!(clip.mode, ClipMode::Loop { .. }),
+        )
     };
-    let count = clip.count as usize;
-    if !proof.paused {
-        let step = clip.durations.first().copied().unwrap_or(0.1);
-        if step > 0.0 {
-            proof.elapsed += time.delta_secs();
-            while proof.elapsed >= step {
-                proof.elapsed -= step;
-                proof.frame = proof.frame.saturating_add(1);
-            }
+    let (count, first, pivot, step, looped) = shown;
+    if !proof.paused && step > 0.0 {
+        proof.elapsed += time.delta_secs();
+        while proof.elapsed >= step {
+            proof.elapsed -= step;
+            proof.frame = proof.frame.saturating_add(1);
         }
     }
-    if matches!(clip.mode, ClipMode::Loop { .. }) {
+    if looped {
         if count > 0 {
             proof.frame %= count;
         }
@@ -644,27 +780,43 @@ fn sync(
         }
     }
     let sign = if proof.mirror { -1.0 } else { 1.0 };
-    let index = clip.first as usize + proof.frame;
+    let index = first + proof.frame;
     if let Ok((mut sprite, mut anchor, _transform)) = body.single_mut() {
-        sprite.image = if proof.armor_heavy {
-            bank.heavy.clone()
+        let cell = if proof.source == 0 {
+            bank.loadout.cell
         } else {
-            bank.light.clone()
+            (256, 192)
         };
-        if let Some(atlas) = sprite.texture_atlas.as_mut() {
-            atlas.layout = bank.body_layout.clone();
-            atlas.index = index;
+        if proof.source == 0 {
+            sprite.image = if proof.armor_heavy {
+                bank.heavy.clone()
+            } else {
+                bank.light.clone()
+            };
+            if let Some(atlas) = sprite.texture_atlas.as_mut() {
+                atlas.layout = bank.body_layout.clone();
+                atlas.index = index;
+            }
+        } else if let Some(render) = render.as_ref() {
+            if proof.source == 2 {
+                sprite.texture_atlas = None;
+                let raw_index = proof.frame.min(render.raw.len().saturating_sub(1));
+                sprite.image = render.raw[raw_index].clone();
+            } else {
+                sprite.image = render.pixel.clone();
+                sprite.texture_atlas = Some(TextureAtlas {
+                    layout: render.layout.clone(),
+                    index,
+                });
+            }
         }
         sprite.flip_x = proof.mirror;
-        sprite.custom_size = Some(Vec2::new(
-            bank.loadout.cell.0 as f32 * scale,
-            bank.loadout.cell.1 as f32 * scale,
-        ));
-        let (x, y) = anchor_for(clip.pivot, bank.loadout.cell, proof.mirror);
+        sprite.custom_size = Some(Vec2::new(cell.0 as f32 * scale, cell.1 as f32 * scale));
+        let (x, y) = anchor_for(pivot, cell, proof.mirror);
         anchor.0 = Vec2::new(x, y);
     }
     if let Ok((mut sprite, mut anchor, mut transform, mut visibility)) = cape.single_mut() {
-        *visibility = if proof.cape {
+        *visibility = if proof.cape && proof.source == 0 {
             Visibility::Inherited
         } else {
             Visibility::Hidden
@@ -708,7 +860,14 @@ fn sync(
         let x = grip.0 / size.0 as f32 - 0.5;
         let y = 0.5 - grip.1 / size.1 as f32;
         anchor.0 = Vec2::new(if proof.mirror { -x } else { x }, y);
-        if let Some(frame) = bank.sockets.frame(&proof.clip, proof.frame) {
+        let socket_frame = if proof.source == 0 {
+            bank.sockets.frame(&proof.clip, proof.frame)
+        } else {
+            render
+                .as_ref()
+                .and_then(|render| render.sockets.frame("attack", proof.frame))
+        };
+        if let Some(frame) = socket_frame {
             let (sx, sy, rotation) =
                 place(frame.weapon.x, frame.weapon.y, frame.weapon.angle, sign);
             transform.translation = Vec3::new(
@@ -721,8 +880,18 @@ fn sync(
     }
     if let Ok(mut text) = hud.single_mut() {
         let armor = if proof.armor_heavy { "heavy" } else { "light" };
-        let weapon_name = if proof.spear { "spear" } else { "sword" };
-        let cape = if proof.cape { "on" } else { "off" };
+        let weapon_name = match (proof.source, proof.spear) {
+            (0, true) => "spear",
+            (0, false) => "sword",
+            _ => "N3 sword sprite on the measured socket",
+        };
+        let cape = if proof.source != 0 {
+            "inside the render"
+        } else if proof.cape {
+            "on"
+        } else {
+            "off"
+        };
         let facing = if proof.mirror { "left" } else { "right" };
         let view = if proof.close {
             "close-360-2x"
@@ -730,8 +899,13 @@ fn sync(
             "game-405"
         };
         let paused = if proof.paused { "paused" } else { "playing" };
+        let source = match proof.source {
+            1 => "auto-pixel",
+            2 => "raw-render",
+            _ => "n3-baseline",
+        };
         text.0 = format!(
-            "clip {}  frame {}/{}  armor {}  weapon {}  cape {}  facing {}  view {}  {}",
+            "{source}  clip {}  frame {}/{}  armor {}  weapon {}  cape {}  facing {}  view {}  {}",
             proof.clip, proof.frame, count, armor, weapon_name, cape, facing, view, paused
         );
     }
@@ -750,7 +924,7 @@ fn capture(mut script: ResMut<Script>, mut proof: ResMut<Proof>, mut commands: C
         return;
     }
     let shot = &script.shots[script.index];
-    let path = evidence_dir().join(shot.file);
+    let path = project_root().join(shot.folder).join(shot.file);
     println!("[n3_visual_proof] {}", shot.file);
     commands
         .spawn(Screenshot::primary_window())

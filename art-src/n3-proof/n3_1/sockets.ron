@@ -1,0 +1,17 @@
+(
+    version: 1,
+    clips: {
+        "attack": [
+            (weapon: (x: 28.82, y: 89.06, angle: 50.81, front: false), hand_l: (x: -18.42, y: 50.84, front: false), head: (x: 3.60, y: 91.00), chest: (x: 2.18, y: 73.40), back: (x: 2.10, y: 78.74)),
+            (weapon: (x: 31.46, y: 80.66, angle: 3.67, front: false), hand_l: (x: -20.42, y: 52.04, front: false), head: (x: 4.78, y: 90.30), chest: (x: 2.80, y: 72.76), back: (x: 2.98, y: 78.08)),
+            (weapon: (x: 31.76, y: 70.64, angle: -50.27, front: false), hand_l: (x: -21.18, y: 52.90, front: false), head: (x: 5.72, y: 89.74), chest: (x: 3.28, y: 72.26), back: (x: 3.66, y: 77.60)),
+            (weapon: (x: 32.70, y: 66.30, angle: -61.58, front: false), hand_l: (x: -19.56, y: 51.80, front: false), head: (x: 5.50, y: 90.06), chest: (x: 3.18, y: 72.56), back: (x: 3.44, y: 77.90)),
+            (weapon: (x: 32.46, y: 63.66, angle: -64.61, front: false), hand_l: (x: -15.98, y: 50.36, front: false), head: (x: 4.86, y: 90.78), chest: (x: 2.82, y: 73.26), back: (x: 2.88, y: 78.60)),
+            (weapon: (x: 30.32, y: 61.62, angle: -62.97, front: true), hand_l: (x: -11.92, y: 49.66, front: false), head: (x: 4.12, y: 91.78), chest: (x: 2.40, y: 74.20), back: (x: 2.26, y: 79.54)),
+            (weapon: (x: 26.80, y: 60.30, angle: -57.32, front: true), hand_l: (x: -7.08, y: 49.58, front: false), head: (x: 3.24, y: 93.02), chest: (x: 1.86, y: 75.42), back: (x: 1.54, y: 80.76)),
+        ],
+        "idle": [
+            (weapon: (x: 26.80, y: 60.30, angle: -57.32, front: true), hand_l: (x: -7.08, y: 49.58, front: false), head: (x: 3.24, y: 93.02), chest: (x: 1.86, y: 75.42), back: (x: 1.54, y: 80.76)),
+        ],
+    },
+)

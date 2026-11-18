@@ -1,0 +1,1368 @@
+{
+  "blend": "/home/raul/\u00c1rea de trabalho/Andvarion/ProjetoRST/art-src/player/blender/swordsman_rig_v007.blend",
+  "blender": "5.2.4 LTS",
+  "saved": false,
+  "armature": "rig_v007",
+  "bone_count": 43,
+  "bones": [
+    {
+      "name": "root",
+      "parent": null
+    },
+    {
+      "name": "pelvis",
+      "parent": "root"
+    },
+    {
+      "name": "spine_01",
+      "parent": "pelvis"
+    },
+    {
+      "name": "spine_02",
+      "parent": "spine_01"
+    },
+    {
+      "name": "chest",
+      "parent": "spine_02"
+    },
+    {
+      "name": "neck",
+      "parent": "chest"
+    },
+    {
+      "name": "head",
+      "parent": "neck"
+    },
+    {
+      "name": "clavicle.R",
+      "parent": "chest"
+    },
+    {
+      "name": "upper_arm.R",
+      "parent": "clavicle.R"
+    },
+    {
+      "name": "forearm.R",
+      "parent": "upper_arm.R"
+    },
+    {
+      "name": "hand.R",
+      "parent": "forearm.R"
+    },
+    {
+      "name": "sword",
+      "parent": "hand.R"
+    },
+    {
+      "name": "clavicle.L",
+      "parent": "chest"
+    },
+    {
+      "name": "upper_arm.L",
+      "parent": "clavicle.L"
+    },
+    {
+      "name": "forearm.L",
+      "parent": "upper_arm.L"
+    },
+    {
+      "name": "hand.L",
+      "parent": "forearm.L"
+    },
+    {
+      "name": "cape_arm.L_01",
+      "parent": "clavicle.L"
+    },
+    {
+      "name": "cape_arm.L_02",
+      "parent": "cape_arm.L_01"
+    },
+    {
+      "name": "collar_back",
+      "parent": "chest"
+    },
+    {
+      "name": "cape_back_01",
+      "parent": "spine_02"
+    },
+    {
+      "name": "cape_back_02",
+      "parent": "cape_back_01"
+    },
+    {
+      "name": "thigh.R",
+      "parent": "pelvis"
+    },
+    {
+      "name": "shin.R",
+      "parent": "thigh.R"
+    },
+    {
+      "name": "foot.R",
+      "parent": "shin.R"
+    },
+    {
+      "name": "toe.R",
+      "parent": "foot.R"
+    },
+    {
+      "name": "thigh.L",
+      "parent": "pelvis"
+    },
+    {
+      "name": "shin.L",
+      "parent": "thigh.L"
+    },
+    {
+      "name": "foot.L",
+      "parent": "shin.L"
+    },
+    {
+      "name": "toe.L",
+      "parent": "foot.L"
+    },
+    {
+      "name": "coat_front.R_01",
+      "parent": "pelvis"
+    },
+    {
+      "name": "coat_front.R_02",
+      "parent": "coat_front.R_01"
+    },
+    {
+      "name": "coat_back.R_01",
+      "parent": "pelvis"
+    },
+    {
+      "name": "coat_back.R_02",
+      "parent": "coat_back.R_01"
+    },
+    {
+      "name": "coat_front.L_01",
+      "parent": "pelvis"
+    },
+    {
+      "name": "coat_front.L_02",
+      "parent": "coat_front.L_01"
+    },
+    {
+      "name": "coat_back.L_01",
+      "parent": "pelvis"
+    },
+    {
+      "name": "coat_back.L_02",
+      "parent": "coat_back.L_01"
+    },
+    {
+      "name": "CTRL_foot_ik.R",
+      "parent": "root"
+    },
+    {
+      "name": "CTRL_knee_pole.R",
+      "parent": "root"
+    },
+    {
+      "name": "CTRL_foot_ik.L",
+      "parent": "root"
+    },
+    {
+      "name": "CTRL_knee_pole.L",
+      "parent": "root"
+    },
+    {
+      "name": "CTRL_hand_ik.R",
+      "parent": "root"
+    },
+    {
+      "name": "CTRL_elbow_pole.R",
+      "parent": "root"
+    }
+  ],
+  "mesh_count": 132,
+  "meshes": [
+    {
+      "name": "belt",
+      "verts": 192,
+      "hide_render": false,
+      "materials": [
+        "v4_belt_leather",
+        "v4_belt_leather"
+      ]
+    },
+    {
+      "name": "belt_buckle_bar_0",
+      "verts": 18,
+      "hide_render": false,
+      "materials": [
+        "v4_brass"
+      ]
+    },
+    {
+      "name": "belt_buckle_bar_1",
+      "verts": 18,
+      "hide_render": false,
+      "materials": [
+        "v4_brass"
+      ]
+    },
+    {
+      "name": "belt_buckle_bar_2",
+      "verts": 18,
+      "hide_render": false,
+      "materials": [
+        "v4_brass"
+      ]
+    },
+    {
+      "name": "belt_buckle_bar_3",
+      "verts": 18,
+      "hide_render": false,
+      "materials": [
+        "v4_brass"
+      ]
+    },
+    {
+      "name": "belt_hole_0",
+      "verts": 18,
+      "hide_render": false,
+      "materials": [
+        "v4_sole"
+      ]
+    },
+    {
+      "name": "belt_hole_1",
+      "verts": 18,
+      "hide_render": false,
+      "materials": [
+        "v4_sole"
+      ]
+    },
+    {
+      "name": "belt_keeper",
+      "verts": 18,
+      "hide_render": false,
+      "materials": [
+        "v4_belt_leather"
+      ]
+    },
+    {
+      "name": "belt_prong",
+      "verts": 18,
+      "hide_render": false,
+      "materials": [
+        "v4_brass"
+      ]
+    },
+    {
+      "name": "belt_tongue",
+      "verts": 34,
+      "hide_render": false,
+      "materials": [
+        "v4_belt_leather"
+      ]
+    },
+    {
+      "name": "blade",
+      "verts": 158,
+      "hide_render": false,
+      "materials": [
+        "v4_blade",
+        "v4_blade_edge"
+      ]
+    },
+    {
+      "name": "blade_readable",
+      "verts": 158,
+      "hide_render": true,
+      "materials": [
+        "v4_blade",
+        "v4_blade_edge"
+      ]
+    },
+    {
+      "name": "boot_foot_far",
+      "verts": 530,
+      "hide_render": false,
+      "materials": [
+        "v4_boot_leather"
+      ]
+    },
+    {
+      "name": "boot_foot_near",
+      "verts": 530,
+      "hide_render": false,
+      "materials": [
+        "v4_boot_leather"
+      ]
+    },
+    {
+      "name": "boot_heel_far",
+      "verts": 14,
+      "hide_render": false,
+      "materials": [
+        "v4_sole"
+      ]
+    },
+    {
+      "name": "boot_heel_near",
+      "verts": 14,
+      "hide_render": false,
+      "materials": [
+        "v4_sole"
+      ]
+    },
+    {
+      "name": "boot_seam_far",
+      "verts": 86,
+      "hide_render": false,
+      "materials": [
+        "v4_stitch"
+      ]
+    },
+    {
+      "name": "boot_seam_near",
+      "verts": 86,
+      "hide_render": false,
+      "materials": [
+        "v4_stitch"
+      ]
+    },
+    {
+      "name": "boot_shaft_far",
+      "verts": 841,
+      "hide_render": false,
+      "materials": [
+        "v4_boot_leather",
+        "v4_boot_cuff"
+      ]
+    },
+    {
+      "name": "boot_shaft_near",
+      "verts": 841,
+      "hide_render": false,
+      "materials": [
+        "v4_boot_leather",
+        "v4_boot_cuff"
+      ]
+    },
+    {
+      "name": "boot_sole_far",
+      "verts": 82,
+      "hide_render": false,
+      "materials": [
+        "v4_sole"
+      ]
+    },
+    {
+      "name": "boot_sole_near",
+      "verts": 82,
+      "hide_render": false,
+      "materials": [
+        "v4_sole"
+      ]
+    },
+    {
+      "name": "boot_toe_seam_far",
+      "verts": 86,
+      "hide_render": false,
+      "materials": [
+        "v4_stitch"
+      ]
+    },
+    {
+      "name": "boot_toe_seam_near",
+      "verts": 86,
+      "hide_render": false,
+      "materials": [
+        "v4_stitch"
+      ]
+    },
+    {
+      "name": "boot_welt_far",
+      "verts": 82,
+      "hide_render": false,
+      "materials": [
+        "v4_stitch"
+      ]
+    },
+    {
+      "name": "boot_welt_near",
+      "verts": 82,
+      "hide_render": false,
+      "materials": [
+        "v4_stitch"
+      ]
+    },
+    {
+      "name": "brow_far",
+      "verts": 114,
+      "hide_render": false,
+      "materials": [
+        "v4_brow"
+      ]
+    },
+    {
+      "name": "brow_near",
+      "verts": 114,
+      "hide_render": false,
+      "materials": [
+        "v4_brow"
+      ]
+    },
+    {
+      "name": "cape_clasp",
+      "verts": 42,
+      "hide_render": false,
+      "materials": [
+        "v4_brass"
+      ]
+    },
+    {
+      "name": "cape_cord",
+      "verts": 130,
+      "hide_render": false,
+      "materials": [
+        "v4_metal_dark"
+      ]
+    },
+    {
+      "name": "cape_stud",
+      "verts": 26,
+      "hide_render": false,
+      "materials": [
+        "v4_brass"
+      ]
+    },
+    {
+      "name": "coat",
+      "verts": 5448,
+      "hide_render": false,
+      "materials": [
+        "v4_coat_wool",
+        "v4_lining_satin",
+        "v4_lining_satin"
+      ]
+    },
+    {
+      "name": "collar",
+      "verts": 574,
+      "hide_render": false,
+      "materials": [
+        "v4_vest",
+        "v4_lining_satin"
+      ]
+    },
+    {
+      "name": "cuff_band_far",
+      "verts": 74,
+      "hide_render": false,
+      "materials": [
+        "v4_metal_dark"
+      ]
+    },
+    {
+      "name": "cuff_band_near",
+      "verts": 74,
+      "hide_render": false,
+      "materials": [
+        "v4_metal_dark"
+      ]
+    },
+    {
+      "name": "cuff_far",
+      "verts": 146,
+      "hide_render": false,
+      "materials": [
+        "v4_vest"
+      ]
+    },
+    {
+      "name": "cuff_near",
+      "verts": 146,
+      "hide_render": false,
+      "materials": [
+        "v4_vest"
+      ]
+    },
+    {
+      "name": "ear_far",
+      "verts": 82,
+      "hide_render": false,
+      "materials": [
+        "v4_skin"
+      ]
+    },
+    {
+      "name": "ear_near",
+      "verts": 82,
+      "hide_render": false,
+      "materials": [
+        "v4_skin"
+      ]
+    },
+    {
+      "name": "eye_iris_far",
+      "verts": 42,
+      "hide_render": false,
+      "materials": [
+        "v4_eye"
+      ]
+    },
+    {
+      "name": "eye_iris_near",
+      "verts": 42,
+      "hide_render": false,
+      "materials": [
+        "v4_eye"
+      ]
+    },
+    {
+      "name": "eye_ring_far",
+      "verts": 42,
+      "hide_render": false,
+      "materials": [
+        "v4_lash"
+      ]
+    },
+    {
+      "name": "eye_ring_near",
+      "verts": 42,
+      "hide_render": false,
+      "materials": [
+        "v4_lash"
+      ]
+    },
+    {
+      "name": "eye_sclera_far",
+      "verts": 119,
+      "hide_render": false,
+      "materials": [
+        "v4_sclera"
+      ]
+    },
+    {
+      "name": "eye_sclera_near",
+      "verts": 119,
+      "hide_render": false,
+      "materials": [
+        "v4_sclera"
+      ]
+    },
+    {
+      "name": "glove_far_finger_0",
+      "verts": 58,
+      "hide_render": false,
+      "materials": [
+        "v4_glove_leather"
+      ]
+    },
+    {
+      "name": "glove_far_finger_1",
+      "verts": 58,
+      "hide_render": false,
+      "materials": [
+        "v4_glove_leather"
+      ]
+    },
+    {
+      "name": "glove_far_finger_2",
+      "verts": 58,
+      "hide_render": false,
+      "materials": [
+        "v4_glove_leather"
+      ]
+    },
+    {
+      "name": "glove_far_finger_3",
+      "verts": 58,
+      "hide_render": false,
+      "materials": [
+        "v4_glove_leather"
+      ]
+    },
+    {
+      "name": "glove_far_palm",
+      "verts": 74,
+      "hide_render": false,
+      "materials": [
+        "v4_glove_leather"
+      ]
+    },
+    {
+      "name": "glove_far_thumb",
+      "verts": 58,
+      "hide_render": false,
+      "materials": [
+        "v4_glove_leather"
+      ]
+    },
+    {
+      "name": "glove_near_finger_0",
+      "verts": 58,
+      "hide_render": false,
+      "materials": [
+        "v4_glove_leather"
+      ]
+    },
+    {
+      "name": "glove_near_finger_1",
+      "verts": 58,
+      "hide_render": false,
+      "materials": [
+        "v4_glove_leather"
+      ]
+    },
+    {
+      "name": "glove_near_finger_2",
+      "verts": 58,
+      "hide_render": false,
+      "materials": [
+        "v4_glove_leather"
+      ]
+    },
+    {
+      "name": "glove_near_finger_3",
+      "verts": 58,
+      "hide_render": false,
+      "materials": [
+        "v4_glove_leather"
+      ]
+    },
+    {
+      "name": "glove_near_palm",
+      "verts": 74,
+      "hide_render": false,
+      "materials": [
+        "v4_glove_leather"
+      ]
+    },
+    {
+      "name": "glove_near_thumb",
+      "verts": 58,
+      "hide_render": false,
+      "materials": [
+        "v4_glove_leather"
+      ]
+    },
+    {
+      "name": "hair_back_0",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "hair_back_1",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "hair_back_2",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "hair_back_3",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "hair_back_4",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "hair_back_5",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "hair_back_6",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "hair_back_7",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "hair_back_8",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "hair_back_9",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "hair_back_over_0",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "hair_back_over_1",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "hair_back_over_2",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair_light"
+      ]
+    },
+    {
+      "name": "hair_back_over_3",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "hair_fringe_0",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "hair_fringe_1",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair_light"
+      ]
+    },
+    {
+      "name": "hair_fringe_10",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "hair_fringe_2",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "hair_fringe_3",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "hair_fringe_4",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "hair_fringe_5",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair_light"
+      ]
+    },
+    {
+      "name": "hair_fringe_6",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "hair_fringe_7",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "hair_fringe_8",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "hair_fringe_9",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair_light"
+      ]
+    },
+    {
+      "name": "hair_fringe_over_0",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "hair_fringe_over_1",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair_light"
+      ]
+    },
+    {
+      "name": "hair_fringe_over_2",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "hair_fringe_over_3",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair_light"
+      ]
+    },
+    {
+      "name": "hair_scalp",
+      "verts": 1153,
+      "hide_render": false,
+      "materials": [
+        "v4_hair",
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "hair_side_far_0",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "hair_side_far_1",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "hair_side_far_2",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair_light"
+      ]
+    },
+    {
+      "name": "hair_side_far_3",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "hair_side_far_4",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "hair_side_near_0",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "hair_side_near_1",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "hair_side_near_2",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair_light"
+      ]
+    },
+    {
+      "name": "hair_side_near_3",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "hair_side_near_4",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "hair_top_0",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "hair_top_1",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "hair_top_2",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "hair_top_3",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "hair_top_4",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "hair_top_5",
+      "verts": 182,
+      "hide_render": false,
+      "materials": [
+        "v4_hair"
+      ]
+    },
+    {
+      "name": "half_cape",
+      "verts": 2336,
+      "hide_render": false,
+      "materials": [
+        "v4_cape_wool",
+        "v4_cape_inner"
+      ]
+    },
+    {
+      "name": "head",
+      "verts": 6338,
+      "hide_render": false,
+      "materials": [
+        "v4_skin"
+      ]
+    },
+    {
+      "name": "leg_far",
+      "verts": 722,
+      "hide_render": false,
+      "materials": [
+        "v4_trousers"
+      ]
+    },
+    {
+      "name": "leg_near",
+      "verts": 722,
+      "hide_render": false,
+      "materials": [
+        "v4_trousers"
+      ]
+    },
+    {
+      "name": "lid_crease_far",
+      "verts": 62,
+      "hide_render": false,
+      "materials": [
+        "v4_skin_shadow"
+      ]
+    },
+    {
+      "name": "lid_crease_near",
+      "verts": 62,
+      "hide_render": false,
+      "materials": [
+        "v4_skin_shadow"
+      ]
+    },
+    {
+      "name": "lid_lower_far",
+      "verts": 62,
+      "hide_render": false,
+      "materials": [
+        "v4_skin_shadow"
+      ]
+    },
+    {
+      "name": "lid_lower_near",
+      "verts": 62,
+      "hide_render": false,
+      "materials": [
+        "v4_skin_shadow"
+      ]
+    },
+    {
+      "name": "lid_upper_far",
+      "verts": 98,
+      "hide_render": false,
+      "materials": [
+        "v4_lash"
+      ]
+    },
+    {
+      "name": "lid_upper_near",
+      "verts": 98,
+      "hide_render": false,
+      "materials": [
+        "v4_lash"
+      ]
+    },
+    {
+      "name": "mouth",
+      "verts": 80,
+      "hide_render": false,
+      "materials": [
+        "v4_lip"
+      ]
+    },
+    {
+      "name": "neck",
+      "verts": 114,
+      "hide_render": false,
+      "materials": [
+        "v4_skin"
+      ]
+    },
+    {
+      "name": "pauldron",
+      "verts": 325,
+      "hide_render": false,
+      "materials": [
+        "v4_metal_dark",
+        "v4_metal_dark"
+      ]
+    },
+    {
+      "name": "pauldron_lame",
+      "verts": 325,
+      "hide_render": false,
+      "materials": [
+        "v4_metal_dark",
+        "v4_metal_dark"
+      ]
+    },
+    {
+      "name": "sleeve_far",
+      "verts": 578,
+      "hide_render": false,
+      "materials": [
+        "v4_coat_wool"
+      ]
+    },
+    {
+      "name": "sleeve_near",
+      "verts": 578,
+      "hide_render": false,
+      "materials": [
+        "v4_coat_wool"
+      ]
+    },
+    {
+      "name": "sword_collar",
+      "verts": 22,
+      "hide_render": false,
+      "materials": [
+        "v4_metal_dark"
+      ]
+    },
+    {
+      "name": "sword_grip",
+      "verts": 82,
+      "hide_render": false,
+      "materials": [
+        "v4_boot_leather"
+      ]
+    },
+    {
+      "name": "sword_guard",
+      "verts": 122,
+      "hide_render": false,
+      "materials": [
+        "v4_brass"
+      ]
+    },
+    {
+      "name": "sword_pommel",
+      "verts": 50,
+      "hide_render": false,
+      "materials": [
+        "v4_brass"
+      ]
+    },
+    {
+      "name": "torso_trousers",
+      "verts": 1154,
+      "hide_render": false,
+      "materials": [
+        "v4_trousers"
+      ]
+    },
+    {
+      "name": "torso_vest",
+      "verts": 2161,
+      "hide_render": false,
+      "materials": [
+        "v4_vest"
+      ]
+    },
+    {
+      "name": "trouser_fly",
+      "verts": 50,
+      "hide_render": false,
+      "materials": [
+        "v4_vest_trim"
+      ]
+    },
+    {
+      "name": "vest_button_0",
+      "verts": 26,
+      "hide_render": false,
+      "materials": [
+        "v4_metal_dark"
+      ]
+    },
+    {
+      "name": "vest_button_1",
+      "verts": 26,
+      "hide_render": false,
+      "materials": [
+        "v4_metal_dark"
+      ]
+    },
+    {
+      "name": "vest_button_2",
+      "verts": 26,
+      "hide_render": false,
+      "materials": [
+        "v4_metal_dark"
+      ]
+    },
+    {
+      "name": "vest_button_3",
+      "verts": 26,
+      "hide_render": false,
+      "materials": [
+        "v4_metal_dark"
+      ]
+    },
+    {
+      "name": "vest_hem_trim",
+      "verts": 584,
+      "hide_render": false,
+      "materials": [
+        "v4_vest_trim"
+      ]
+    },
+    {
+      "name": "vest_placket",
+      "verts": 98,
+      "hide_render": false,
+      "materials": [
+        "v4_vest_trim"
+      ]
+    }
+  ],
+  "materials": [
+    "v4_belt_leather",
+    "v4_blade",
+    "v4_blade_edge",
+    "v4_boot_cuff",
+    "v4_boot_leather",
+    "v4_brass",
+    "v4_brow",
+    "v4_cape_inner",
+    "v4_cape_wool",
+    "v4_coat_wool",
+    "v4_eye",
+    "v4_glove_leather",
+    "v4_hair",
+    "v4_hair_light",
+    "v4_lash",
+    "v4_lining_satin",
+    "v4_lip",
+    "v4_metal_dark",
+    "v4_sclera",
+    "v4_skin",
+    "v4_skin_shadow",
+    "v4_sole",
+    "v4_stitch",
+    "v4_trousers",
+    "v4_vest",
+    "v4_vest_trim"
+  ],
+  "cameras": [
+    {
+      "name": "cam_back",
+      "type": "ORTHO",
+      "ortho_scale": 2.240000009536743
+    },
+    {
+      "name": "cam_close_boots",
+      "type": "ORTHO",
+      "ortho_scale": 0.6000000238418579
+    },
+    {
+      "name": "cam_close_cape",
+      "type": "ORTHO",
+      "ortho_scale": 0.8199999928474426
+    },
+    {
+      "name": "cam_close_coat",
+      "type": "ORTHO",
+      "ortho_scale": 1.2000000476837158
+    },
+    {
+      "name": "cam_close_face",
+      "type": "ORTHO",
+      "ortho_scale": 0.30000001192092896
+    },
+    {
+      "name": "cam_close_face_front",
+      "type": "ORTHO",
+      "ortho_scale": 0.27000001072883606
+    },
+    {
+      "name": "cam_close_face_profile",
+      "type": "ORTHO",
+      "ortho_scale": 0.27000001072883606
+    },
+    {
+      "name": "cam_close_hair",
+      "type": "ORTHO",
+      "ortho_scale": 0.36000001430511475
+    },
+    {
+      "name": "cam_close_sword",
+      "type": "ORTHO",
+      "ortho_scale": 1.0800000429153442
+    },
+    {
+      "name": "cam_close_torso",
+      "type": "ORTHO",
+      "ortho_scale": 0.6200000047683716
+    },
+    {
+      "name": "cam_front",
+      "type": "ORTHO",
+      "ortho_scale": 2.240000009536743
+    },
+    {
+      "name": "cam_side",
+      "type": "ORTHO",
+      "ortho_scale": 2.240000009536743
+    },
+    {
+      "name": "cam_three_quarter",
+      "type": "PERSP",
+      "ortho_scale": 6.0
+    }
+  ],
+  "actions": [
+    "POSE_P01_neutral",
+    "POSE_P02_walk_contact",
+    "POSE_P03_run_extreme",
+    "POSE_P04_jump_rise",
+    "POSE_P05_jump_fall",
+    "POSE_P06_basic_attack",
+    "POSE_P07_crescent_slash",
+    "POSE_P08_rising_edge",
+    "POSE_P09_dodge",
+    "POSE_P10_guard",
+    "POSE_P11_hurt",
+    "POSE_P12_magic_cast",
+    "POSE_P13_death"
+  ],
+  "lights": [
+    "v3_light_fill",
+    "v3_light_key",
+    "v3_light_rim_back",
+    "v3_light_rim_front"
+  ]
+}

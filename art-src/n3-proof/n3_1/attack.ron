@@ -1,0 +1,16 @@
+(
+    version: 1,
+    facing: Right,
+    weapon_in_body: false,
+    atlases: {
+        "attack": (texture: "attack_pixel.png", cell: (256, 192), columns: 7, rows: 1, padding: 0, density: 1),
+    },
+    clips: {
+        "idle": (atlas: "attack", first: 6, count: 1, mode: Loop(fps: 1.0),
+            pivot: (80.0, 190.0), fallback: None,
+            durations: [1.0], speed_reference: None),
+        "attack": (atlas: "attack", first: 0, count: 7, mode: Once(fps: 24.0),
+            pivot: (80.0, 190.0), fallback: Some("idle"),
+            durations: [0.0417, 0.0417, 0.0417, 0.0417, 0.0417, 0.0417, 0.0417], speed_reference: None),
+    },
+)
