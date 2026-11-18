@@ -21,13 +21,19 @@ impl Plugin for SavePlugin {
             )
             .add_systems(
                 Update,
-                (systems::rest_at_save_point, systems::quick_save)
+                (
+                    systems::rest_at_save_point,
+                    systems::offer_fast_travel,
+                    systems::quick_save,
+                )
                     .chain()
                     .in_set(GameSet::Presentation),
             )
             .add_systems(
                 Update,
-                systems::quick_load.in_set(crate::world::transitions::RoomStep::Request),
+                (systems::apply_fast_travel_requests, systems::quick_load)
+                    .chain()
+                    .in_set(crate::world::transitions::RoomStep::Request),
             );
     }
 }

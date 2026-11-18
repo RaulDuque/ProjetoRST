@@ -70,3 +70,11 @@ Altares descobertos aparecem no painel do mapa (`M`) em ciano.
 
 O F5 livre permanece para desenvolvimento; “salvar apenas em pontos de
 save” continua pendente no roadmap.
+
+## Viagem rápida (D19)
+
+Após o descanso, se existir outro altar em `discovered_save_points`, abre
+`GameState::FastTravel`. Enter envia `FastTravelRequest` → `RoomRequest` com
+`Arrival::Position` no altar de destino (mesmo ciclo do F9). A viagem **não**
+cura, **não** grava o slot e **não** altera `last_save_point`. Esc cancela.
+Segundo altar piloto: `vg_causeway_save` (Broken Causeway).

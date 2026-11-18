@@ -207,7 +207,24 @@ fn damage_numbers_and_pending_respawns_do_not_follow_the_player() {
     assert_eq!(count::<With<DamageNumber>>(&mut app), 0);
     run(&mut app, 20);
     assert!(app.world().resource::<PendingRespawns>().0.is_empty());
-    assert_eq!(count::<With<Enemy>>(&mut app), 0);
+    // D20: the shaft has a Bone Bolt; the causeway sentry must not follow.
+    let defs: Vec<String> = {
+        let world = app.world_mut();
+        world
+            .query::<&Enemy>()
+            .iter(world)
+            .map(|e| e.definition.clone())
+            .collect()
+    };
+    assert!(
+        !defs.iter().any(|d| d == "bone_sentry"),
+        "causeway sentry leaked into the shaft: {defs:?}"
+    );
+    assert_eq!(
+        defs.iter().filter(|d| *d == "bone_bolt").count(),
+        1,
+        "expected the shaft Bone Bolt: {defs:?}"
+    );
 }
 
 #[test]

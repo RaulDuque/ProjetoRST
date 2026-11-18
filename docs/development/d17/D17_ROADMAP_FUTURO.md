@@ -7,9 +7,10 @@ não altera automaticamente `docs/ROADMAP.md` além do item entregue na D17.
 |---|---|
 | **D17** | Auditoria + pontos de save no mapa (**feito**) |
 | **D18** | Consumíveis em jogo (**feito** — ver `docs/development/d18/`) |
-| **D19** | Viagem rápida entre saves descobertos (preferência) |
-| **D19** | Gerador de drops de equipamento / recompensas de rota |
-| **D20** | Combat Feel V2.4 (só com autorização) **ou** variedade de inimigos |
+| **D19** | Viagem rápida entre saves descobertos (**feito** — ver `docs/development/d19/`) |
+| **D20** | Variedade de inimigos (**feito** — ver `docs/development/d20/`) |
+| **D21** | Primeiro chefe (ver `D20_PREPARACAO_CHEFES.md`) **ou** Combat Feel V2.4 |
+| **D22** | Gerador de drops de equipamento / recompensas de rota |
 | **D21** | Chefes (fases + arena) |
 | **D22** | NPCs/missões leves |
 | **D23** | Expansão de conteúdo de castelo com placeholders |

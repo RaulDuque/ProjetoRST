@@ -210,3 +210,10 @@ pub struct ItemUsed {
     pub mp_restored: i32,
     pub hearts_restored: i32,
 }
+
+/// Request to travel to a discovered save altar (D19). Written by the
+/// fast-travel screen; applied in `RoomStep::Request` via `RoomRequest`.
+#[derive(Message, Debug, Clone, PartialEq, Eq)]
+pub struct FastTravelRequest {
+    pub destination: String,
+}

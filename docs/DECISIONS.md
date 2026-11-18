@@ -649,3 +649,86 @@ sem altar.
 
 **Consequências:** `minor_ether` (RestoreMp) no catálogo/start/loja;
 testes `consumable_app_tests`. Viagem rápida permanece para D19.
+
+## D-031 — Viagem rápida só entre altares descobertos (D19)
+
+**Contexto:** D17 deixou `discovered_save_points` sem deslocamento. Teleporte
+livre quebraria o Metroidvania; duplicar o loader de salas seria perigoso.
+
+**Decisão:**
+- Reutilizar `RoomRequest` + `Arrival::Position` (mesmo caminho do F9).
+- Abrir menu só após descanso, se houver outro altar descoberto.
+- Viajar não cura, não grava save e não altera `last_save_point`.
+- Segundo altar em Broken Causeway; sem bump de Save V3.
+
+**Consequências:** `world::fast_travel` + `GameState::FastTravel`; testes
+`fast_travel_app_tests`. Viagem pelo mapa fica para etapa futura.
+
+## D-032 — Arquétipos de IA por estilo em dados (D20)
+
+**Contexto:** só o Bone Sentry melee existia; Defend/Retreat no enum estavam
+subutilizados. Chefes (D21) precisam de variedade de combate comum primeiro.
+
+**Decisão:**
+- Estender `AiProfile` com `style`, faixas e `projectile_speed` (defaults
+  preservam RON antigo).
+- Dois arquétipos novos via dados + execução compartilhada; sem FSM por inimigo.
+- Spawns fora das rotas de chão críticas (ledge do shaft; gallery leste).
+
+**Consequências:** testes `enemy_archetype_tests`; doc de chefes em
+`D20_PREPARACAO_CHEFES.md` sem implementar chefe.
+
+## D-033 — Primeiro chefe no pipeline de inimigos (D21)
+
+**Contexto:** `defeated_bosses` existia no Save V3 sem escritor; D20.1 pediu
+arena plana e fases sem FSM nova.
+
+**Decisão:**
+- `BossDefinition` opcional na definição + `Boss`/`BossRuntime` no spawn.
+- Fases por limiar de HP; padrões slash/lunge/ash-wave no mesmo `think_and_move`.
+- `BossEncounter` mantém `TransitionLock` durante a luta; vitória grava
+  `defeated_bosses` e recompensa única sem bump de versão de save.
+- Arena acima do Reliquary (porta Top) para não interceptar rotas de chão.
+
+**Consequências:** `boss_encounter_tests`, `d21_boss_probe`, docs `d21/`.
+
+## D-034 — Luta do chefe legível e no chão (D22)
+
+**Contexto:** o probe da D21 injetava `DamageDealt`. Em combate real, os golpes
+do jogador cancelavam o wind-up (o chefe nunca completava o padrão) e a
+patrulha entrava no vão da porta do chão.
+
+**Decisão:**
+- Chefe mantém o wind-up já iniciado; inimigos comuns continuam perdendo o golpe.
+- Fase 2 só após FrontalSlash e Lunge, ou com HP abaixo de 25%.
+- Cores de preparação distintas; a barra nomeia o padrão.
+- Spawn/patrulha na laje direita (x 1040, meia-largura 80). Escada one-way no
+  Reliquary até a porta do teto. Save V3 sem bump.
+
+**Consequências:** `boss_real_fight_tests`, `d22_boss_probe`, docs `d22/`.
+O probe da D21 não é prova de combate real.
+
+## D-035 — Chegada na arena e telégrafo visível sob o dano (D23)
+
+**Contexto:** a porta da Ashen Court precisa ser `Bottom` (o mapa exige o
+lado oposto ao `Top` do Reliquary). O ponto de entrada cai no vão do chão
+(x 540–740), então o corpo voltava para a sala de baixo. No combate, o flash
+branco cobria a cor do golpe e a contagem do wind-up parava enquanto o flash
+estava ativo, então o telégrafo não dizia quando o golpe saía.
+
+**Decisão:**
+- Plataforma sólida em (600, 32), 220×16, cobrindo a entrada (x 640) e
+  emendando no chão da direita (a partir de x 740). O vão x 540–600 fica
+  aberto como descida. A porta não muda de lado. A patrulha continua em
+  x 1040 ± 80.
+- A cor do phase lock e do wind-up do chefe substitui o flash branco.
+  Inimigos comuns continuam brancos, inclusive sobre o próprio wind-up.
+- O wind-up já iniciado de um chefe continua contando durante o flash.
+  Inimigos comuns continuam atordoados e ainda perdem o wind-up ao apanhar.
+- Números de dano, HP, esquiva e guarda não mudam. A câmera global não muda:
+  o chefe fora de quadro na porta é distância (vista ~720 px, chefe em
+  x 1040), e os quadros de corpo a corpo já mostram os dois.
+
+**Consequências:** `arena_access_tests`, `boss_tell_counts_down_while_the_hurt_flash_is_up`,
+`d23_play_probe` (derrota sem cura, boss em 13 HP), docs `d23/`.
+O probe não é um playtest humano.

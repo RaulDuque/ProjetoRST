@@ -38,6 +38,16 @@
             sell_value: 120,
         ),
         (
+            // D21: unique reward from The Ashen Sentinel (once).
+            id: "sentinel_brand",
+            name: "Sentinel Brand",
+            description: "A scorched crest torn from the Ashen Sentinel. Steadies the blade.",
+            category: Ring,
+            rarity: "rare",
+            modifiers: (strength: 3, attack: 2, defense: 1),
+            sell_value: 200,
+        ),
+        (
             // V1.8: reward of the Forgotten Galleries' rare chest.
             id: "warden_greaves",
             name: "Warden Greaves",

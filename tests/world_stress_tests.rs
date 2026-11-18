@@ -114,7 +114,8 @@ fn back_to_back_transitions_every_frame_stay_consistent() {
     let after = *app.world().resource::<RoomChangeStats>();
     assert_eq!(current(&app), SHAFT);
     assert_eq!(after.applied - before.applied, 100);
-    assert_eq!(count::<With<Enemy>>(&mut app), 0);
+    // D20: shaft hosts Bone Bolt; count stays stable across rapid transitions.
+    assert_eq!(count::<With<Enemy>>(&mut app), 1);
     assert_eq!(entities(&mut app), baseline);
 }
 

@@ -102,11 +102,12 @@ já está feito, etapa por etapa.
 - [x] Arquitetura genérica orientada a dados; IA pura testada
 - [x] Patrulha, perseguição, ataque com aviso, espera, fuga; dano por contato
 - [x] Fraquezas/resistências, EXP, drops, respawn
-- [ ] Mais arquétipos (voadores, à distância, defensores) e uso de habilidades
+- [x] Mais arquétipos (D20: `ranged` Bone Bolt, `keep_distance` Ash Warden; voadores/habilidades ainda pendentes)
 - [ ] Barra de vida de inimigos
 
 ## Etapa 10 — Chefes
-- [ ] Máquina de estados de chefe, múltiplas fases, padrões de ataque em dados
+- [x] Primeiro chefe funcional (D21: Ashen Sentinel — fases, arena, barra, persistência; D22: luta real, telégrafos, escada do Reliquary; D23: chegada na arena, telégrafo sobre o flash, luta sem cura — playtest humano pendente)
+- [ ] Máquina de estados de chefe expandida / mais padrões em dados
 - [ ] Arena com portas trancadas e recompensa
 
 ## Etapa 11 — Mundo e mapas
@@ -116,6 +117,7 @@ já está feito, etapa por etapa.
 - [x] Primeira transformação (V1.9: Forma Espectral com a Relíquia do Véu, véus espectrais, região Claustro Velado; `TRANSFORMATIONS_V1_9.md`)
 - [ ] Outras transformações (voadora, veloz, pequena, aquática, sombra) e arte própria da forma espectral
 - [x] Pontos de save no mapa (D17: `ObjectKind::SavePoint`, cura HP/MP, descoberta, mapa; F5 livre permanece)
+- [x] Viagem rápida entre altares descobertos (D19: menu após descanso, `RoomRequest`/`Arrival::Position`)
 - [ ] Placas de pressão, baús de chefe
 - [ ] Mapa do castelo (minimapa) (V1.7: painel no jogo com a tecla M; V1.8: baús, atalhos e % por região; tela cheia pendente)
 - [x] Grafo de mundo em RON com validador de conexões e alcance (V1.6, `world_report`)

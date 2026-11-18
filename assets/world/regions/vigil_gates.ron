@@ -72,6 +72,10 @@
                 // V2.0: a cloak past the sentry.
                 (id: "vg_causeway_chest", kind: Chest(tier: Rare, reward: Item("emberlined_cloak")),
                     area: (min: (1800.0, 40.0), size: (48.0, 36.0))),
+                // D19: second save altar for fast travel (past the cloak,
+                // clear of the sentry patrol around x 1300).
+                (id: "vg_causeway_save", kind: SavePoint,
+                    area: (min: (1920.0, 40.0), size: (40.0, 48.0))),
             ],
             // V2.3 decoration (drawn only, never collides).
             decor: [
@@ -130,6 +134,10 @@
             // onto the door's ledge.
             (min: (750.0, 760.0), size: (260.0, 16.0), one_way: true),
             ],
+            // D20: ranged Bone Bolt on a mid ledge (floor routes stay clear).
+            enemies: [
+                (enemy: "bone_bolt", position: (680.0, 409.0), patrol_half_width: 100.0),
+            ],
             doors: [
                 (id: "from_causeway", side: Left, to: (room: "vigil_gates_causeway", door: "to_shaft")),
                 (id: "to_barbican", side: Right, to: (room: "vigil_gates_barbican", door: "from_shaft")),
@@ -186,6 +194,10 @@
             background: (0.07, 0.07, 0.11),
             platforms: [
                 (min: (1100.0, 40.0), size: (160.0, 60.0)),
+            ],
+            // D20: keep-distance Ash Warden (east of the relic, clear of the veil).
+            enemies: [
+                (enemy: "ash_warden", position: (1600.0, 70.0), patrol_half_width: 180.0),
             ],
             pickups: [
                 (id: "veil_relic", name: "Relic of the Veil", position: (500.0, 70.0), grants: Ability(VeilStep)),
@@ -247,11 +259,52 @@
             pickups: [
                 (id: "gatekeeper_sigil", name: "Gatekeeper's Sigil", position: (400.0, 70.0), grants: Flag("vigil_gates_cleared")),
             ],
+            // D22: stairs under the Ashen Court door (ceiling is not a single jump).
+            platforms: [
+                (min: (520.0, 150.0), size: (220.0, 16.0), one_way: true),
+                (min: (540.0, 260.0), size: (220.0, 16.0), one_way: true),
+                (min: (520.0, 370.0), size: (220.0, 16.0), one_way: true),
+                (min: (540.0, 480.0), size: (220.0, 16.0), one_way: true),
+                (min: (500.0, 590.0), size: (280.0, 16.0), one_way: true),
+            ],
             doors: [
                 (id: "from_sealed", side: Right, to: (room: "vigil_gates_sealed_hall", door: "to_reliquary")),
                 // V1.8: the way on, once the sigil is taken.
                 (id: "to_galleries", side: Left, to: (room: "fg_threshold", door: "to_reliquary"),
                     requires: Some(Flag("vigil_gates_cleared"))),
+                // D21: jump up into the Ashen Court (Top — floor routes stay clear).
+                (id: "to_ashen_court", side: Top, to: (room: "vigil_gates_ashen_court", door: "from_reliquary")),
+            ],
+        ),
+        (
+            // D21: arena above the Reliquary (Top door). D23: a landing over
+            // the floor-door gap so the arrival (x 640, y 72) is not a fall
+            // back out. The gap x 540–600 stays open as the way down.
+            id: "vigil_gates_ashen_court",
+            name: "Ashen Court",
+            region: "vigil_gates",
+            role: Optional,
+            map: (x: -2, y: 1, w: 1, h: 1),
+            background: (0.08, 0.05, 0.04),
+            platforms: [
+                (min: (80.0, 40.0), size: (48.0, 40.0)),
+                (min: (600.0, 32.0), size: (220.0, 16.0)),
+                (min: (1072.0, 40.0), size: (48.0, 40.0)),
+            ],
+            enemies: [
+                // Right of the floor gap (bottom door, x 540–740). Patrol and a
+                // leftward lunge stay on the solid slab.
+                (enemy: "ashen_sentinel", position: (1040.0, 72.0), patrol_half_width: 80.0),
+            ],
+            doors: [
+                (id: "from_reliquary", side: Bottom, to: (room: "vigil_gates_reliquary", door: "to_ashen_court")),
+            ],
+            decor: [
+                (kind: Pillar(height: 520.0), at: (220.0, 40.0)),
+                (kind: Pillar(height: 520.0), at: (980.0, 40.0)),
+                (kind: Torch, at: (400.0, 280.0)),
+                (kind: Torch, at: (880.0, 280.0)),
+                (kind: Banner(length: 160.0, color: (0.45, 0.12, 0.08)), at: (640.0, 560.0)),
             ],
         ),
     ],

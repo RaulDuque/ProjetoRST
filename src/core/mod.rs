@@ -42,6 +42,7 @@ impl Plugin for CorePlugin {
             .add_message::<events::EquipmentChanged>()
             .add_message::<events::UseItemRequest>()
             .add_message::<events::ItemUsed>()
+            .add_message::<events::FastTravelRequest>()
             .add_message::<events::TradeRequest>();
     }
 }

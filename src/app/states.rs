@@ -15,6 +15,8 @@ pub enum GameState {
     Dialogue,
     /// A shop is open (V2.1); the simulation is paused.
     Shop,
+    /// Fast travel between discovered save altars (D19); simulation paused.
+    FastTravel,
 }
 
 /// Order of one gameplay frame. Every set except `Rooms` and `Presentation`

@@ -511,16 +511,17 @@ fn exploration_percentage_counts_every_room_and_secret() {
     // V1.8: the numbers of the Vigil Gates region (this slice); the global
     // ones keep the same formula over every region (checked below).
     let empty = state.region_stats(&world, "vigil_gates");
-    assert_eq!((empty.visited, empty.total, empty.percent), (0, 9, 0.0));
+    assert_eq!((empty.visited, empty.total, empty.percent), (0, 10, 0.0));
     let global = state.stats(&world);
     // V1.9: 22 rooms (the Veiled Cloister adds two, no secret).
     // V2.1: 28 rooms (the Village of Ashes adds six, no secret).
-    assert_eq!((global.total, global.secrets_total), (28, 3));
+    // D21: 29 rooms (Ashen Court boss arena).
+    assert_eq!((global.total, global.secrets_total), (29, 3));
     state.enter_room(&world, APPROACH);
-    assert!((state.stats(&world).percent - 100.0 / 28.0).abs() < 1e-4);
+    assert!((state.stats(&world).percent - 100.0 / 29.0).abs() < 1e-4);
     let one = state.region_stats(&world, "vigil_gates");
     assert_eq!(one.visited, 1);
-    assert!((one.percent - 100.0 / 9.0).abs() < 1e-4);
+    assert!((one.percent - 100.0 / 10.0).abs() < 1e-4);
     assert_eq!(one.known, 3, "approach + causeway + sealed hall");
     assert_eq!((one.secrets_found, one.secrets_total), (0, 1));
     for id in world.rooms.keys() {
@@ -869,8 +870,9 @@ mod v1_8 {
         let global = state.stats(&world);
         // V1.9: 22 rooms in the world (Veiled Cloister).
         // V2.1: 28 rooms (Village of Ashes).
-        assert_eq!((global.visited, global.total), (11, 28));
-        assert!((global.percent - 100.0 * 11.0 / 28.0).abs() < 1e-4);
+        // D21: 29 rooms (Ashen Court).
+        assert_eq!((global.visited, global.total), (11, 29));
+        assert!((global.percent - 100.0 * 11.0 / 29.0).abs() < 1e-4);
         assert_eq!(state.region_stats(&world, "vigil_gates").visited, 0);
     }
 }

@@ -235,9 +235,10 @@ pub enum NotificationPlacement {
 pub fn notification_placement(state: GameState) -> NotificationPlacement {
     match state {
         GameState::Playing | GameState::Dialogue => NotificationPlacement::Column,
-        GameState::Shop | GameState::Inventory | GameState::StatusScreen => {
-            NotificationPlacement::BottomStrip
-        }
+        GameState::Shop
+        | GameState::Inventory
+        | GameState::StatusScreen
+        | GameState::FastTravel => NotificationPlacement::BottomStrip,
     }
 }
 
@@ -557,6 +558,7 @@ mod placement_tests {
             GameState::Shop,
             GameState::Inventory,
             GameState::StatusScreen,
+            GameState::FastTravel,
         ] {
             assert_eq!(
                 notification_placement(state),

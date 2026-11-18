@@ -4,6 +4,7 @@
 use serde::{Deserialize, Serialize};
 
 use super::ai::AiProfile;
+use super::boss::BossDefinition;
 use crate::magic::elements::{ElementalResistances, StatusResistances};
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -53,6 +54,16 @@ pub struct EnemyDefinition {
     /// Seconds before a defeated enemy reappears (0 = never).
     #[serde(default)]
     pub respawn_time: f32,
+    /// When set, this archetype is a boss (D21): no respawn spawn after
+    /// defeat, phase table, arena encounter hooks.
+    #[serde(default)]
+    pub boss: Option<BossDefinition>,
+}
+
+impl EnemyDefinition {
+    pub fn is_boss(&self) -> bool {
+        self.boss.is_some()
+    }
 }
 
 fn default_hit() -> i32 {

@@ -32,6 +32,7 @@ use dark_castle_rpg::inventory::inventory::Inventory;
 use dark_castle_rpg::inventory::visual::CapeLayer;
 use dark_castle_rpg::player::components::{Belongings, CharacterSheet, Player, Vitals};
 use dark_castle_rpg::transform::systems::Transformation;
+use dark_castle_rpg::world::WorldState;
 use dark_castle_rpg::world::exploration_systems::Exploration;
 use dark_castle_rpg::world::graph::Ability;
 use dark_castle_rpg::world::maps::CurrentRoom;
@@ -114,6 +115,14 @@ pub enum Expect {
     BagCount(&'static str, u32),
     /// Units left of a limited shop entry (V2.1.1).
     StockLeft(&'static str, &'static str, u32),
+    /// Fast-travel menu open (D19 / D20.1).
+    FastTravelOpen(bool),
+    /// HP is strictly below max (damage taken before a tonic).
+    HpBelowMax,
+    /// `WorldState.last_save_point` equals this id (D17 / D19).
+    LastSavePoint(&'static str),
+    /// At least one live enemy of this definition is in the room (D20).
+    EnemyAlive(&'static str),
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -233,6 +242,8 @@ struct View {
     inventory: Inventory,
     form_active: bool,
     mp: i32,
+    hp: i32,
+    hp_max: i32,
     equipment: Equipment,
     attack: i32,
     defense: i32,
@@ -242,6 +253,8 @@ struct View {
     game_state: Option<GameState>,
     coins: u32,
     stock_left: Vec<(String, String, u32)>,
+    last_save_point: Option<String>,
+    enemy_defs: Vec<String>,
 }
 
 fn hold(keys: &mut ButtonInput<KeyCode>, dir: Dir) {
@@ -279,13 +292,14 @@ pub fn drive_route(
         ),
         With<Player>,
     >,
-    enemies: Query<&Transform, (With<Enemy>, Without<Player>)>,
+    enemies: Query<(&Transform, &Enemy), Without<Player>>,
     strikes: Query<&Hitbox, With<WeaponStrike>>,
     capes: Query<&Visibility, With<CapeLayer>>,
     game_state: Option<Res<State<GameState>>>,
     purses: Query<&PlayerPurse, With<Player>>,
     stock: Option<Res<ShopStockState>>,
     data: Option<Res<GameData>>,
+    world_state: Option<Res<WorldState>>,
 ) {
     let (Some(room), Ok((transform, grounded, facing, belongings, vitals, form, sheet))) =
         (room, player.single())
@@ -301,6 +315,8 @@ pub fn drive_route(
         inventory: belongings.inventory.clone(),
         form_active: form.is_some_and(|f| f.is_active()),
         mp: vitals.mp.current(),
+        hp: vitals.hp.current(),
+        hp_max: vitals.hp.max(),
         equipment: belongings.equipment.clone(),
         attack: sheet.derived().attack,
         defense: sheet.derived().defense,
@@ -325,6 +341,10 @@ pub fn drive_route(
                 .collect(),
             _ => Vec::new(),
         },
+        last_save_point: world_state
+            .as_ref()
+            .and_then(|w| w.0.last_save_point.clone()),
+        enemy_defs: enemies.iter().map(|(_, e)| e.definition.clone()).collect(),
     };
     let applied = stats.map_or(0, |s| s.applied);
     driver.frame += 1;
@@ -450,7 +470,7 @@ fn advance(
     view: &View,
     step: Step,
     exploration: &Option<Res<Exploration>>,
-    enemies: &Query<&Transform, (With<Enemy>, Without<Player>)>,
+    enemies: &Query<(&Transform, &Enemy), Without<Player>>,
 ) -> Outcome {
     match step {
         Step::WalkTo(x) => {
@@ -498,7 +518,7 @@ fn advance(
         Step::Fight => {
             let nearest = enemies
                 .iter()
-                .map(|t| t.translation.truncate())
+                .map(|(t, _)| t.translation.truncate())
                 .min_by(|a, b| {
                     a.distance(view.position)
                         .total_cmp(&b.distance(view.position))
@@ -573,6 +593,10 @@ fn check(view: &View, expect: Expect, exploration: &Option<Res<Exploration>>) ->
             .stock_left
             .iter()
             .any(|(s, i, n)| s == shop && i == item && *n == left),
+        Expect::FastTravelOpen(open) => (view.game_state == Some(GameState::FastTravel)) == open,
+        Expect::HpBelowMax => view.hp < view.hp_max,
+        Expect::LastSavePoint(id) => view.last_save_point.as_deref() == Some(id),
+        Expect::EnemyAlive(id) => view.enemy_defs.iter().any(|d| d == id),
     };
     if ok {
         Outcome::Done("ok".into())

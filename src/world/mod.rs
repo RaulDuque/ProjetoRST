@@ -11,6 +11,7 @@ pub mod camera_rules;
 pub mod collision;
 pub mod exploration;
 pub mod exploration_systems;
+pub mod fast_travel;
 pub mod graph;
 pub mod interactions;
 pub mod maps;

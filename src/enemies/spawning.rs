@@ -3,7 +3,10 @@
 use bevy::prelude::*;
 
 use super::ai::EnemyBehavior;
-use super::components::{Enemy, EnemyBrain, EnemyHealth, PendingRespawns, SpawnOrigin};
+use super::boss_systems::may_spawn;
+use super::components::{
+    Boss, BossRuntime, Enemy, EnemyBrain, EnemyHealth, PendingRespawns, SpawnOrigin,
+};
 use super::definitions::EnemyDefinition;
 use crate::combat::damage::{AttackProfile, DefenseProfile};
 use crate::combat::hitboxes::{CombatProfile, Hurtbox, Team};
@@ -12,6 +15,7 @@ use crate::core::events::RoomChanged;
 use crate::core::resources::GameData;
 use crate::core::time::frame_delta;
 use crate::player::attributes::ResourcePool;
+use crate::world::WorldState;
 use crate::world::maps::RoomEntity;
 use crate::world::physics::{AffectedByGravity, Body, FacingDirection, Grounded, Velocity};
 use crate::world::rooms::EnemySpawn;
@@ -42,7 +46,7 @@ pub fn combat_profile(def: &EnemyDefinition) -> CombatProfile {
 pub fn spawn_enemy(commands: &mut Commands, def: &EnemyDefinition, spawn: &EnemySpawn) {
     let size = Vec2::new(def.size.0, def.size.1);
     let color = Color::srgb(def.color.0, def.color.1, def.color.2);
-    commands.spawn((
+    let mut entity = commands.spawn((
         (
             Enemy {
                 definition: def.id.clone(),
@@ -76,14 +80,25 @@ pub fn spawn_enemy(commands: &mut Commands, def: &EnemyDefinition, spawn: &Enemy
             Transform::from_xyz(spawn.position.0, spawn.position.1, Z_ENEMIES),
         ),
     ));
+    if def.is_boss() {
+        entity.insert((Boss { id: def.id.clone() }, BossRuntime::default()));
+    }
 }
 
-pub fn spawn_room_enemies(mut commands: Commands, data: Res<GameData>) {
+pub fn spawn_room_enemies(
+    mut commands: Commands,
+    data: Res<GameData>,
+    world: Option<Res<WorldState>>,
+) {
     let Some(room) = data.rooms.get(&data.character.start.room) else {
         return;
     };
+    let progress = world.as_ref().map(|w| &w.0);
     for spawn in &room.enemies {
         if let Some(def) = data.enemies.get(&spawn.enemy) {
+            if progress.is_some_and(|p| !may_spawn(p, def)) {
+                continue;
+            }
             spawn_enemy(&mut commands, def, spawn);
         }
     }
@@ -97,6 +112,7 @@ pub fn spawn_room_enemies(mut commands: Commands, data: Res<GameData>) {
 pub fn enter_new_room(
     mut commands: Commands,
     data: Res<GameData>,
+    world: Option<Res<WorldState>>,
     mut changes: MessageReader<RoomChanged>,
     mut pending: ResMut<PendingRespawns>,
 ) {
@@ -108,8 +124,12 @@ pub fn enter_new_room(
         warn!(room = %change.to, "entered a room without a definition");
         return;
     };
+    let progress = world.as_ref().map(|w| &w.0);
     for spawn in &room.enemies {
         if let Some(def) = data.enemies.get(&spawn.enemy) {
+            if progress.is_some_and(|p| !may_spawn(p, def)) {
+                continue;
+            }
             spawn_enemy(&mut commands, def, spawn);
         }
     }

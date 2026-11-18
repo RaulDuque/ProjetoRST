@@ -14,7 +14,9 @@ use super::serialization::{PlayerSave, SaveData};
 use crate::app::states::GameState;
 use crate::combat::hitboxes::Invulnerable;
 use crate::core::constants::{DEFAULT_SAVE_SLOT, PLAYER_INVULNERABILITY, SAVE_DIR};
-use crate::core::events::{Arrival, Notification, RoomRequest, SavePointActivated};
+use crate::core::events::{
+    Arrival, FastTravelRequest, Notification, RoomRequest, SavePointActivated,
+};
 use crate::core::resources::{GameData, project_root};
 use crate::input::InputBindings;
 use crate::player::attributes::{RegenAccumulator, ResourcePool};
@@ -22,13 +24,16 @@ use crate::player::components::{
     ActionState, Belongings, CharacterSheet, CommandInput, Player, SkillBook, Vitals,
 };
 use crate::player::state::PlayerState;
+use crate::ui::fast_travel_screen::FastTravelSession;
 use crate::world::WorldState;
 use crate::world::exploration::ExplorationState;
 use crate::world::exploration_systems::{Exploration, WorldGraph};
+use crate::world::fast_travel::{self, FastTravelError};
 use crate::world::maps::CurrentRoom;
 use crate::world::physics::{Body, Phasing, RoomGeometry, Velocity};
 use crate::world::progress::WorldProgress;
 use crate::world::restore::resolve_placement;
+use crate::world::transitions::TransitionLock;
 
 #[derive(Resource, Debug, Clone)]
 pub struct SaveSlots(pub SaveStorage);
@@ -223,6 +228,105 @@ pub fn rest_at_save_point(
             "Rested and saved"
         };
         write_slot(&slots, &data, &mut notifications, message);
+    }
+}
+
+/// After a successful rest, open the fast-travel menu when other altars are known.
+pub fn offer_fast_travel(
+    mut activated: MessageReader<SavePointActivated>,
+    graph: Option<Res<WorldGraph>>,
+    world: Res<WorldState>,
+    player: Query<&ActionState, With<Player>>,
+    lock: Option<Res<TransitionLock>>,
+    mut session: ResMut<FastTravelSession>,
+    mut next: ResMut<NextState<GameState>>,
+) {
+    let Some(graph) = graph else {
+        activated.clear();
+        return;
+    };
+    let Ok(action) = player.single() else {
+        activated.clear();
+        return;
+    };
+    if action.state() == PlayerState::Dead {
+        activated.clear();
+        return;
+    }
+    if lock.is_some_and(|l| l.is_locked()) {
+        activated.clear();
+        return;
+    }
+    for event in activated.read() {
+        let dests = fast_travel::destinations(&graph.0, &world.0, &event.id);
+        if dests.is_empty() {
+            continue;
+        }
+        session.origin = event.id.clone();
+        next.set(GameState::FastTravel);
+    }
+}
+
+fn travel_refusal_text(error: &FastTravelError) -> String {
+    match error {
+        FastTravelError::UnknownOrigin(_) | FastTravelError::UnknownDestination(_) => {
+            "Cannot travel there".into()
+        }
+        FastTravelError::DestinationNotDiscovered(_) => "Altar not yet discovered".into(),
+        FastTravelError::SameAltar => "Already at this altar".into(),
+        FastTravelError::Dead => "Cannot travel while fallen".into(),
+        FastTravelError::Busy => "Cannot travel right now".into(),
+        FastTravelError::TransitionLocked => "Cannot travel during a passage".into(),
+        FastTravelError::NoDestinations => "No other discovered altars".into(),
+    }
+}
+
+/// Applies a confirmed fast-travel choice via the room lifecycle (D19).
+/// Does not heal, does not write a save, does not change `last_save_point`.
+pub fn apply_fast_travel_requests(
+    mut requests: MessageReader<FastTravelRequest>,
+    graph: Option<Res<WorldGraph>>,
+    world: Res<WorldState>,
+    session: Res<FastTravelSession>,
+    lock: Option<Res<TransitionLock>>,
+    player: Query<&ActionState, With<Player>>,
+    mut room_requests: MessageWriter<RoomRequest>,
+    mut next: ResMut<NextState<GameState>>,
+    mut notifications: MessageWriter<Notification>,
+) {
+    if requests.is_empty() {
+        return;
+    }
+    let Some(graph) = graph else {
+        requests.clear();
+        return;
+    };
+    let Ok(action) = player.single() else {
+        requests.clear();
+        return;
+    };
+    let locked = lock.is_some_and(|l| l.is_locked());
+    for request in requests.read() {
+        match fast_travel::plan_travel(
+            &graph.0,
+            &world.0,
+            &session.origin,
+            &request.destination,
+            action.state(),
+            locked,
+        ) {
+            Ok(dest) => {
+                notifications.write(Notification(format!("Traveling to {}", dest.room_name)));
+                next.set(GameState::Playing);
+                room_requests.write(RoomRequest {
+                    room: dest.room_id,
+                    arrival: Arrival::Position(Vec2::new(dest.arrival.0, dest.arrival.1)),
+                });
+            }
+            Err(error) => {
+                notifications.write(Notification(travel_refusal_text(&error)));
+            }
+        }
     }
 }
 

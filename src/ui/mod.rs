@@ -1,8 +1,10 @@
 //! User interface: HUD, status screen and combat feedback. Each screen is
 //! its own module and each element is updated by a small dedicated system.
 
+pub mod boss_hud;
 pub mod damage_numbers;
 pub mod dialogue_box;
+pub mod fast_travel_screen;
 pub mod hud;
 pub mod inventory_screen;
 pub mod room_fade;
@@ -22,11 +24,17 @@ impl Plugin for UiPlugin {
         app.init_resource::<hud::HudMessages>()
             .init_resource::<inventory_screen::InventoryCursor>()
             .init_resource::<shop_screen::ShopCursor>()
+            .init_resource::<fast_travel_screen::FastTravelSession>()
+            .init_resource::<fast_travel_screen::FastTravelCursor>()
             .add_systems(
                 OnEnter(GameState::Dialogue),
                 dialogue_box::spawn_dialogue_box,
             )
             .add_systems(OnEnter(GameState::Shop), shop_screen::spawn_shop_screen)
+            .add_systems(
+                OnEnter(GameState::FastTravel),
+                fast_travel_screen::spawn_fast_travel_screen,
+            )
             .add_systems(
                 Update,
                 dialogue_box::update_dialogue_box
@@ -43,11 +51,12 @@ impl Plugin for UiPlugin {
                     .in_set(GameSet::Presentation)
                     .run_if(in_state(GameState::Shop)),
             )
-            .add_systems(Startup, hud::spawn_hud)
+            .add_systems(Startup, (hud::spawn_hud, boss_hud::spawn_boss_hud))
             .add_systems(
                 Update,
                 (
                     hud::update_bars,
+                    boss_hud::update_boss_hud,
                     hud::update_level_and_hearts,
                     hud::update_cooldowns,
                     hud::update_form_text,
@@ -100,6 +109,17 @@ impl Plugin for UiPlugin {
                     .chain()
                     .in_set(GameSet::Presentation)
                     .run_if(in_state(GameState::StatusScreen)),
+            )
+            .add_systems(
+                Update,
+                (
+                    // Writes FastTravelRequest in Presentation; applied next
+                    // frame in RoomStep::Request (Rooms runs before Presentation).
+                    fast_travel_screen::navigate_fast_travel,
+                    fast_travel_screen::update_fast_travel_screen,
+                )
+                    .in_set(GameSet::Presentation)
+                    .run_if(in_state(GameState::FastTravel)),
             );
     }
 }

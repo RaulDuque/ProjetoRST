@@ -1,0 +1,210 @@
+    30    0.46s vigil_gates_approach       (   72.0,    63.0)  Wait(30)                           waited
+    31    0.48s vigil_gates_approach       (   72.0,    63.0)  Mark("01_start_approach")          mark 01_start_approach
+    32    0.50s vigil_gates_approach       (   72.0,    63.0)  Check(Room("vigil_gates_approach")) ok
+    33    0.51s vigil_gates_approach       (   72.0,    63.0)  Tap(KeyI)                          tapped KeyI
+    35    0.54s vigil_gates_approach       (   72.0,    63.0)  Wait(2)                            waited
+    36    0.56s vigil_gates_approach       (   72.0,    63.0)  Check(InventoryOpen(true))         ok
+    37    0.58s vigil_gates_approach       (   72.0,    63.0)  Tap(ArrowUp)                       tapped ArrowUp
+    39    0.61s vigil_gates_approach       (   72.0,    63.0)  Wait(2)                            waited
+    40    0.62s vigil_gates_approach       (   72.0,    63.0)  Tap(ArrowUp)                       tapped ArrowUp
+    42    0.66s vigil_gates_approach       (   72.0,    63.0)  Wait(2)                            waited
+    43    0.67s vigil_gates_approach       (   72.0,    63.0)  Tap(ArrowUp)                       tapped ArrowUp
+    45    0.70s vigil_gates_approach       (   72.0,    63.0)  Wait(2)                            waited
+    46    0.72s vigil_gates_approach       (   72.0,    63.0)  Tap(ArrowUp)                       tapped ArrowUp
+    48    0.75s vigil_gates_approach       (   72.0,    63.0)  Wait(2)                            waited
+    49    0.77s vigil_gates_approach       (   72.0,    63.0)  Tap(ArrowUp)                       tapped ArrowUp
+    51    0.80s vigil_gates_approach       (   72.0,    63.0)  Wait(2)                            waited
+    52    0.82s vigil_gates_approach       (   72.0,    63.0)  Tap(ArrowUp)                       tapped ArrowUp
+    54    0.85s vigil_gates_approach       (   72.0,    63.0)  Wait(2)                            waited
+    55    0.86s vigil_gates_approach       (   72.0,    63.0)  Tap(ArrowUp)                       tapped ArrowUp
+    57    0.90s vigil_gates_approach       (   72.0,    63.0)  Wait(2)                            waited
+    58    0.91s vigil_gates_approach       (   72.0,    63.0)  Tap(ArrowUp)                       tapped ArrowUp
+    60    0.94s vigil_gates_approach       (   72.0,    63.0)  Wait(2)                            waited
+    61    0.96s vigil_gates_approach       (   72.0,    63.0)  Tap(ArrowUp)                       tapped ArrowUp
+    63    0.99s vigil_gates_approach       (   72.0,    63.0)  Wait(2)                            waited
+    64    1.01s vigil_gates_approach       (   72.0,    63.0)  Tap(ArrowUp)                       tapped ArrowUp
+    66    1.04s vigil_gates_approach       (   72.0,    63.0)  Wait(2)                            waited
+    67    1.06s vigil_gates_approach       (   72.0,    63.0)  Tap(ArrowUp)                       tapped ArrowUp
+    69    1.09s vigil_gates_approach       (   72.0,    63.0)  Wait(2)                            waited
+    70    1.10s vigil_gates_approach       (   72.0,    63.0)  Tap(ArrowUp)                       tapped ArrowUp
+    72    1.14s vigil_gates_approach       (   72.0,    63.0)  Wait(2)                            waited
+    73    1.15s vigil_gates_approach       (   72.0,    63.0)  Tap(ArrowUp)                       tapped ArrowUp
+    75    1.18s vigil_gates_approach       (   72.0,    63.0)  Wait(2)                            waited
+    76    1.20s vigil_gates_approach       (   72.0,    63.0)  Tap(ArrowUp)                       tapped ArrowUp
+    78    1.23s vigil_gates_approach       (   72.0,    63.0)  Wait(2)                            waited
+    79    1.25s vigil_gates_approach       (   72.0,    63.0)  Tap(ArrowUp)                       tapped ArrowUp
+    81    1.28s vigil_gates_approach       (   72.0,    63.0)  Wait(2)                            waited
+    82    1.30s vigil_gates_approach       (   72.0,    63.0)  Tap(ArrowUp)                       tapped ArrowUp
+    84    1.33s vigil_gates_approach       (   72.0,    63.0)  Wait(2)                            waited
+    85    1.34s vigil_gates_approach       (   72.0,    63.0)  Tap(ArrowDown)                     tapped ArrowDown
+    87    1.38s vigil_gates_approach       (   72.0,    63.0)  Wait(2)                            waited
+    88    1.39s vigil_gates_approach       (   72.0,    63.0)  Tap(ArrowDown)                     tapped ArrowDown
+    90    1.42s vigil_gates_approach       (   72.0,    63.0)  Wait(2)                            waited
+    91    1.44s vigil_gates_approach       (   72.0,    63.0)  Tap(ArrowDown)                     tapped ArrowDown
+    93    1.47s vigil_gates_approach       (   72.0,    63.0)  Wait(2)                            waited
+    94    1.49s vigil_gates_approach       (   72.0,    63.0)  Tap(ArrowDown)                     tapped ArrowDown
+    96    1.52s vigil_gates_approach       (   72.0,    63.0)  Wait(2)                            waited
+    97    1.54s vigil_gates_approach       (   72.0,    63.0)  Tap(ArrowDown)                     tapped ArrowDown
+    99    1.57s vigil_gates_approach       (   72.0,    63.0)  Wait(2)                            waited
+   100    1.58s vigil_gates_approach       (   72.0,    63.0)  Tap(ArrowDown)                     tapped ArrowDown
+   102    1.62s vigil_gates_approach       (   72.0,    63.0)  Wait(2)                            waited
+   103    1.63s vigil_gates_approach       (   72.0,    63.0)  Tap(ArrowDown)                     tapped ArrowDown
+   105    1.66s vigil_gates_approach       (   72.0,    63.0)  Wait(2)                            waited
+   106    1.68s vigil_gates_approach       (   72.0,    63.0)  Tap(ArrowDown)                     tapped ArrowDown
+   108    1.71s vigil_gates_approach       (   72.0,    63.0)  Wait(2)                            waited
+   113    1.79s vigil_gates_approach       (   72.0,    63.0)  Wait(5)                            waited
+   114    1.81s vigil_gates_approach       (   72.0,    63.0)  Mark("02_inventory_consumable")    mark 02_inventory_consumable
+   115    1.82s vigil_gates_approach       (   72.0,    63.0)  Tap(KeyI)                          tapped KeyI
+   117    1.86s vigil_gates_approach       (   72.0,    63.0)  Wait(2)                            waited
+   118    1.87s vigil_gates_approach       (   72.0,    63.0)  Check(InventoryOpen(false))        ok
+   213    3.39s vigil_gates_approach       (  357.8,    63.0)  WalkTo(360.0)                      arrived
+   214    3.41s vigil_gates_approach       (  357.8,    63.0)  Tap(KeyD)                          tapped KeyD
+   222    3.54s vigil_gates_approach       (  357.8,    63.0)  Wait(8)                            waited
+   223    3.55s vigil_gates_approach       (  357.8,    63.0)  Check(LastSavePoint("vg_approach_save")) ok
+   224    3.57s vigil_gates_approach       (  357.8,    63.0)  Check(FastTravelOpen(false))       ok
+   225    3.58s vigil_gates_approach       (  357.8,    63.0)  Mark("03_altar_approach")          mark 03_altar_approach
+   534    8.53s vigil_gates_causeway       (   72.0,    64.0)  WalkUntilRoom(Right, "vigil_gates_causeway") entered vigil_gates_causeway
+   554    8.85s vigil_gates_causeway       (   72.0,    63.0)  Wait(20)                           waited
+   964   15.41s vigil_gates_causeway       ( 1276.8,    63.0)  WalkTo(1280.0)                     arrived
+  1114   17.81s vigil_gates_causeway       ( 1199.3,    66.7)  Wait(150)                          waited
+  1115   17.82s vigil_gates_causeway       ( 1195.8,    69.9)  Check(EnemyAlive("bone_sentry"))   ok
+  1116   17.84s vigil_gates_causeway       ( 1192.3,    72.6)  Mark("04_bone_sentry")             mark 04_bone_sentry
+  1117   17.86s vigil_gates_causeway       ( 1188.8,    74.8)  Check(HpBelowMax)                  ok
+  1118   17.87s vigil_gates_causeway       ( 1185.2,    76.5)  Tap(KeyI)                          tapped KeyI
+  1120   17.90s vigil_gates_causeway       ( 1181.7,    77.7)  Wait(2)                            waited
+  1121   17.92s vigil_gates_causeway       ( 1181.7,    77.7)  Check(InventoryOpen(true))         ok
+  1122   17.94s vigil_gates_causeway       ( 1181.7,    77.7)  Tap(ArrowUp)                       tapped ArrowUp
+  1124   17.97s vigil_gates_causeway       ( 1181.7,    77.7)  Wait(2)                            waited
+  1125   17.98s vigil_gates_causeway       ( 1181.7,    77.7)  Tap(ArrowUp)                       tapped ArrowUp
+  1127   18.02s vigil_gates_causeway       ( 1181.7,    77.7)  Wait(2)                            waited
+  1128   18.03s vigil_gates_causeway       ( 1181.7,    77.7)  Tap(ArrowUp)                       tapped ArrowUp
+  1130   18.06s vigil_gates_causeway       ( 1181.7,    77.7)  Wait(2)                            waited
+  1131   18.08s vigil_gates_causeway       ( 1181.7,    77.7)  Tap(ArrowUp)                       tapped ArrowUp
+  1133   18.11s vigil_gates_causeway       ( 1181.7,    77.7)  Wait(2)                            waited
+  1134   18.13s vigil_gates_causeway       ( 1181.7,    77.7)  Tap(ArrowUp)                       tapped ArrowUp
+  1136   18.16s vigil_gates_causeway       ( 1181.7,    77.7)  Wait(2)                            waited
+  1137   18.18s vigil_gates_causeway       ( 1181.7,    77.7)  Tap(ArrowUp)                       tapped ArrowUp
+  1139   18.21s vigil_gates_causeway       ( 1181.7,    77.7)  Wait(2)                            waited
+  1140   18.22s vigil_gates_causeway       ( 1181.7,    77.7)  Tap(ArrowUp)                       tapped ArrowUp
+  1142   18.26s vigil_gates_causeway       ( 1181.7,    77.7)  Wait(2)                            waited
+  1143   18.27s vigil_gates_causeway       ( 1181.7,    77.7)  Tap(ArrowUp)                       tapped ArrowUp
+  1145   18.30s vigil_gates_causeway       ( 1181.7,    77.7)  Wait(2)                            waited
+  1146   18.32s vigil_gates_causeway       ( 1181.7,    77.7)  Tap(ArrowUp)                       tapped ArrowUp
+  1148   18.35s vigil_gates_causeway       ( 1181.7,    77.7)  Wait(2)                            waited
+  1149   18.37s vigil_gates_causeway       ( 1181.7,    77.7)  Tap(ArrowUp)                       tapped ArrowUp
+  1151   18.40s vigil_gates_causeway       ( 1181.7,    77.7)  Wait(2)                            waited
+  1152   18.42s vigil_gates_causeway       ( 1181.7,    77.7)  Tap(ArrowUp)                       tapped ArrowUp
+  1154   18.45s vigil_gates_causeway       ( 1181.7,    77.7)  Wait(2)                            waited
+  1155   18.46s vigil_gates_causeway       ( 1181.7,    77.7)  Tap(ArrowUp)                       tapped ArrowUp
+  1157   18.50s vigil_gates_causeway       ( 1181.7,    77.7)  Wait(2)                            waited
+  1158   18.51s vigil_gates_causeway       ( 1181.7,    77.7)  Tap(ArrowUp)                       tapped ArrowUp
+  1160   18.54s vigil_gates_causeway       ( 1181.7,    77.7)  Wait(2)                            waited
+  1161   18.56s vigil_gates_causeway       ( 1181.7,    77.7)  Tap(ArrowUp)                       tapped ArrowUp
+  1163   18.59s vigil_gates_causeway       ( 1181.7,    77.7)  Wait(2)                            waited
+  1164   18.61s vigil_gates_causeway       ( 1181.7,    77.7)  Tap(ArrowUp)                       tapped ArrowUp
+  1166   18.64s vigil_gates_causeway       ( 1181.7,    77.7)  Wait(2)                            waited
+  1167   18.66s vigil_gates_causeway       ( 1181.7,    77.7)  Tap(ArrowUp)                       tapped ArrowUp
+  1169   18.69s vigil_gates_causeway       ( 1181.7,    77.7)  Wait(2)                            waited
+  1170   18.70s vigil_gates_causeway       ( 1181.7,    77.7)  Tap(ArrowDown)                     tapped ArrowDown
+  1172   18.74s vigil_gates_causeway       ( 1181.7,    77.7)  Wait(2)                            waited
+  1173   18.75s vigil_gates_causeway       ( 1181.7,    77.7)  Tap(ArrowDown)                     tapped ArrowDown
+  1175   18.78s vigil_gates_causeway       ( 1181.7,    77.7)  Wait(2)                            waited
+  1176   18.80s vigil_gates_causeway       ( 1181.7,    77.7)  Tap(ArrowDown)                     tapped ArrowDown
+  1178   18.83s vigil_gates_causeway       ( 1181.7,    77.7)  Wait(2)                            waited
+  1179   18.85s vigil_gates_causeway       ( 1181.7,    77.7)  Tap(ArrowDown)                     tapped ArrowDown
+  1181   18.88s vigil_gates_causeway       ( 1181.7,    77.7)  Wait(2)                            waited
+  1182   18.90s vigil_gates_causeway       ( 1181.7,    77.7)  Tap(ArrowDown)                     tapped ArrowDown
+  1184   18.93s vigil_gates_causeway       ( 1181.7,    77.7)  Wait(2)                            waited
+  1185   18.94s vigil_gates_causeway       ( 1181.7,    77.7)  Tap(ArrowDown)                     tapped ArrowDown
+  1187   18.98s vigil_gates_causeway       ( 1181.7,    77.7)  Wait(2)                            waited
+  1188   18.99s vigil_gates_causeway       ( 1181.7,    77.7)  Tap(ArrowDown)                     tapped ArrowDown
+  1190   19.02s vigil_gates_causeway       ( 1181.7,    77.7)  Wait(2)                            waited
+  1191   19.04s vigil_gates_causeway       ( 1181.7,    77.7)  Tap(ArrowDown)                     tapped ArrowDown
+  1193   19.07s vigil_gates_causeway       ( 1181.7,    77.7)  Wait(2)                            waited
+  1196   19.12s vigil_gates_causeway       ( 1181.7,    77.7)  Wait(3)                            waited
+  1197   19.14s vigil_gates_causeway       ( 1181.7,    77.7)  Mark("05_consumable_selected")     mark 05_consumable_selected
+  1198   19.15s vigil_gates_causeway       ( 1181.7,    77.7)  Tap(Enter)                         tapped Enter
+  1204   19.25s vigil_gates_causeway       ( 1181.7,    77.7)  Wait(6)                            waited
+  1205   19.26s vigil_gates_causeway       ( 1181.7,    77.7)  Check(BagCount("minor_tonic", 2))  ok
+  1206   19.28s vigil_gates_causeway       ( 1181.7,    77.7)  Mark("06_tonic_used")              mark 06_tonic_used
+  1207   19.30s vigil_gates_causeway       ( 1181.7,    77.7)  Tap(KeyI)                          tapped KeyI
+  1209   19.33s vigil_gates_causeway       ( 1178.2,    78.5)  Wait(2)                            waited
+  1210   19.34s vigil_gates_causeway       ( 1174.7,    78.8)  Check(InventoryOpen(false))        ok
+  1282   20.50s vigil_gates_causeway       ( 1195.8,    63.0)  Fight                              no enemy left
+  1283   20.51s vigil_gates_causeway       ( 1195.8,    63.0)  Mark("07_sentry_defeated")         mark 07_sentry_defeated
+  1543   24.67s vigil_gates_causeway       ( 1937.6,    63.0)  WalkTo(1940.0)                     arrived
+  1544   24.69s vigil_gates_causeway       ( 1937.6,    63.0)  Tap(KeyD)                          tapped KeyD
+  1552   24.82s vigil_gates_causeway       ( 1937.6,    63.0)  Wait(8)                            waited
+  1553   24.83s vigil_gates_causeway       ( 1937.6,    63.0)  Check(FastTravelOpen(true))        ok
+  1554   24.85s vigil_gates_causeway       ( 1937.6,    63.0)  Check(LastSavePoint("vg_causeway_save")) ok
+  1555   24.86s vigil_gates_causeway       ( 1937.6,    63.0)  Mark("08_fast_travel_menu")        mark 08_fast_travel_menu
+  1556   24.88s vigil_gates_causeway       ( 1937.6,    63.0)  Tap(Enter)                         tapped Enter
+  1568   25.07s vigil_gates_approach       (  360.0,    63.0)  Wait(12)                           waited
+  1569   25.09s vigil_gates_approach       (  360.0,    63.0)  Check(Room("vigil_gates_approach")) ok
+  1570   25.10s vigil_gates_approach       (  360.0,    63.0)  Check(FastTravelOpen(false))       ok
+  1571   25.12s vigil_gates_approach       (  360.0,    63.0)  Check(LastSavePoint("vg_causeway_save")) ok
+  1572   25.14s vigil_gates_approach       (  360.0,    63.0)  Mark("09_after_fast_travel")       mark 09_after_fast_travel
+  1573   25.15s vigil_gates_approach       (  360.0,    63.0)  Tap(KeyM)                          tapped KeyM
+  1577   25.22s vigil_gates_approach       (  360.0,    63.0)  Wait(4)                            waited
+  1578   25.23s vigil_gates_approach       (  360.0,    63.0)  Mark("10_map_altars")              mark 10_map_altars
+  1579   25.25s vigil_gates_approach       (  360.0,    63.0)  Tap(KeyM)                          tapped KeyM
+  1581   25.28s vigil_gates_approach       (  360.0,    63.0)  Wait(2)                            waited
+  1889   30.21s vigil_gates_causeway       (   72.0,    64.0)  WalkUntilRoom(Right, "vigil_gates_causeway") entered vigil_gates_causeway
+  1909   30.53s vigil_gates_causeway       (   72.0,    63.0)  Wait(20)                           waited
+  2798   44.75s vigil_gates_shaft          (   72.0,    64.0)  WalkUntilRoom(Right, "vigil_gates_shaft") entered vigil_gates_shaft
+  2818   45.07s vigil_gates_shaft          (   72.0,    63.0)  Wait(20)                           waited
+  2819   45.09s vigil_gates_shaft          (   72.0,    63.0)  Mark("11_shaft_bottom")            mark 11_shaft_bottom
+  3013   48.19s vigil_gates_shaft          (  658.7,    63.0)  WalkTo(660.0)                      arrived
+  3047   48.74s vigil_gates_shaft          (  658.7,   169.0)  Jump(Still)                        landed at y=169.0
+  3048   48.75s vigil_gates_shaft          (  658.7,   169.0)  Check(StandingAt(169.0))           ok
+  3049   48.77s vigil_gates_shaft          (  658.7,   169.0)  WalkTo(660.0)                      arrived
+  3075   49.18s vigil_gates_shaft          (  658.7,   299.0)  Jump(Still)                        landed at y=299.0
+  3076   49.20s vigil_gates_shaft          (  658.7,   299.0)  Check(StandingAt(299.0))           ok
+  3079   49.25s vigil_gates_shaft          (  652.6,   299.0)  WalkTo(650.0)                      arrived
+  3113   49.79s vigil_gates_shaft          (  652.6,   409.0)  Jump(Still)                        landed at y=409.0
+  3114   49.81s vigil_gates_shaft          (  652.6,   409.0)  Check(StandingAt(409.0))           ok
+  3123   49.95s vigil_gates_shaft          (  677.0,   409.0)  WalkTo(680.0)                      arrived
+  3183   50.91s vigil_gates_shaft          (  677.0,   409.0)  Wait(60)                           waited
+  3184   50.93s vigil_gates_shaft          (  677.0,   409.0)  Check(EnemyAlive("bone_bolt"))     ok
+  3185   50.94s vigil_gates_shaft          (  677.0,   409.0)  Mark("12_bone_bolt")               mark 12_bone_bolt
+  3197   51.14s vigil_gates_shaft          (  643.5,   409.0)  WalkTo(640.0)                      arrived
+  3231   51.68s vigil_gates_shaft          (  643.5,   519.0)  Jump(Still)                        landed at y=519.0
+  3232   51.70s vigil_gates_shaft          (  643.5,   519.0)  Check(StandingAt(519.0))           ok
+  3238   51.79s vigil_gates_shaft          (  628.3,   519.0)  WalkTo(625.0)                      arrived
+  3272   52.34s vigil_gates_shaft          (  628.3,   629.0)  Jump(Still)                        landed at y=629.0
+  3273   52.35s vigil_gates_shaft          (  628.3,   629.0)  Check(StandingAt(629.0))           ok
+  3281   52.48s vigil_gates_shaft          (  607.0,   629.0)  WalkTo(605.0)                      arrived
+  3315   53.02s vigil_gates_shaft          (  607.0,   739.0)  Jump(Still)                        landed at y=739.0
+  3316   53.04s vigil_gates_shaft          (  607.0,   739.0)  Check(StandingAt(739.0))           ok
+  3323   53.15s vigil_gates_shaft          (  588.8,   739.0)  WalkTo(585.0)                      arrived
+  3357   53.70s vigil_gates_shaft          (  588.8,   849.0)  Jump(Still)                        landed at y=849.0
+  3358   53.71s vigil_gates_shaft          (  588.8,   849.0)  Check(StandingAt(849.0))           ok
+  3368   53.87s vigil_gates_shaft          (  561.4,   849.0)  WalkTo(560.0)                      arrived
+  3402   54.42s vigil_gates_shaft          (  561.4,   959.0)  Jump(Still)                        landed at y=959.0
+  3403   54.43s vigil_gates_shaft          (  561.4,   959.0)  Check(StandingAt(959.0))           ok
+  3412   54.58s vigil_gates_shaft          (  537.1,   959.0)  WalkTo(535.0)                      arrived
+  3446   55.12s vigil_gates_shaft          (  537.1,  1069.0)  Jump(Still)                        landed at y=1069.0
+  3447   55.14s vigil_gates_shaft          (  537.1,  1069.0)  Check(StandingAt(1069.0))          ok
+  3468   55.47s vigil_gates_shaft          (  476.3,  1069.0)  WalkTo(475.0)                      arrived
+  3502   56.02s vigil_gates_shaft          (  476.3,  1179.0)  Jump(Still)                        landed at y=1179.0
+  3503   56.03s vigil_gates_shaft          (  476.3,  1179.0)  Check(StandingAt(1179.0))          ok
+  3527   56.42s vigil_gates_shaft          (  406.4,  1179.0)  WalkTo(405.0)                      arrived
+  3561   56.96s vigil_gates_shaft          (  406.4,  1289.0)  Jump(Still)                        landed at y=1289.0
+  3562   56.98s vigil_gates_shaft          (  406.4,  1289.0)  Check(StandingAt(1289.0))          ok
+  3582   57.30s vigil_gates_shaft          (  348.6,  1289.0)  WalkTo(345.0)                      arrived
+  3613   57.79s vigil_gates_shaft          (  348.6,  1409.0)  Jump(Still)                        landed at y=1409.0
+  3614   57.81s vigil_gates_shaft          (  348.6,  1409.0)  Check(StandingAt(1409.0))          ok
+  3651   58.40s vigil_gates_shaft          (  239.2,  1503.0)  Jump(Left)                         landed at y=1503.0
+  3652   58.42s vigil_gates_shaft          (  239.2,  1503.0)  Check(StandingAt(1503.0))          ok
+  3727   59.62s vigil_gates_gallery        ( 2488.0,    64.0)  WalkUntilRoom(Left, "vigil_gates_gallery") entered vigil_gates_gallery
+  3747   59.94s vigil_gates_gallery        ( 2488.0,    63.0)  Wait(20)                           waited
+  4525   72.38s vigil_gates_gallery        ( 1503.5,    63.0)  WalkTo(1500.0)                     arrived
+  4575   73.18s vigil_gates_gallery        ( 1429.6,    63.0)  Wait(50)                           waited
+  4576   73.20s vigil_gates_gallery        ( 1429.6,    63.0)  Check(EnemyAlive("ash_warden"))    ok
+  4577   73.22s vigil_gates_gallery        ( 1429.6,    63.0)  Mark("13_ash_warden")              mark 13_ash_warden
+  4707   75.30s vigil_gates_gallery        ( 1596.8,    63.0)  Fight                              no enemy left
+  4708   75.31s vigil_gates_gallery        ( 1596.8,    63.0)  Mark("14_ash_warden_defeated")     mark 14_ash_warden_defeated
+  4718   75.47s vigil_gates_gallery        ( 1596.8,    63.0)  Wait(10)                           waited
+  4719   75.49s vigil_gates_gallery        ( 1596.8,    63.0)  Mark("15_done")                    mark 15_done
+  4720   75.50s vigil_gates_gallery        ( 1596.8,    63.0)  end                                PASS
+status: Passed  room changes: 5  artificial repositions: 0

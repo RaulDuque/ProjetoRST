@@ -4,6 +4,33 @@ Formato: [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/). Versioname
 
 ## [Unreleased]
 
+### D23 — Pronto para playtest humano do Ashen Sentinel
+- Plataforma de chegada sobre o vão da porta do chão da Ashen Court; a escada do Reliquary sobe só com o pulo.
+- O telégrafo do chefe (cor e contagem) prevalece sobre o flash branco de dano. Inimigos comuns continuam piscando branco.
+- Probe de janela sem cura injetada (`d23_play_probe`): derrota registrada, boss em 13 HP. Sem retune. Playtest humano ainda pendente.
+
+### D22 — Luta real contra o Ashen Sentinel
+- Wind-up do chefe não é interrompido por dano; fase 2 só depois de slash e lunge (ou HP < 25%).
+- Telégrafos por cor e rótulo da barra (slash / lunge / ash wave / phase shift).
+- Escada de plataformas no Reliquary até a porta do teto; patrulha do sentinela fora do vão da saída.
+- Teste `boss_real_fight_tests` (só `KeyX`) e probe `d22_boss_probe`. Sem bump de save.
+
+### D21 — Primeiro chefe (Ashen Sentinel)
+- `BossDefinition` + fases (slash/lunge → ash wave), arena `vigil_gates_ashen_court`.
+- Encontro sela saídas; barra de HP; `defeated_bosses` + `sentinel_brand` únicos.
+- Testes `boss_encounter_tests`, probe `d21_boss_probe`, docs `docs/development/d21/`.
+
+### D20 — Variedade de inimigos
+- `AiStyle` (`melee` / `ranged` / `keep_distance`) em `AiProfile`.
+- `bone_bolt` (projéteis) no Watch Shaft; `ash_warden` (skirmisher) na Gallery.
+- Docs: `docs/development/d20/` (inclui preparação para chefes D21).
+
+### D19 — Viagem rápida entre altares
+- Após descansar num altar, se houver outros descobertos, abre o menu de
+  viagem (`GameState::FastTravel`); Enter teleporta via o ciclo de salas.
+- Segundo altar `vg_causeway_save`; viagem não salva nem muda `last_save_point`.
+- Docs: `docs/development/d19/`.
+
 ### D18 — Consumíveis utilizáveis
 - Uso atômico pela tela `I` (`UseItemRequest` → `use_consumable`):
   `minor_tonic` (HP) e `minor_ether` (MP); recusa se o recurso já está cheio.
