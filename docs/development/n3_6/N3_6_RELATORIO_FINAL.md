@@ -96,7 +96,11 @@ Os SHA-256 dos dez arquivos de `Md-usario/assets-user/prota/base/` estão regist
 
 ## X. GitHub
 
-Preenchido depois do push.
+Push em `origin/art/v1.2-protagonist`, sem force, merge ou rebase:
+
+- `f6e156e989eccc02684e4523c65678d71caf7ef3` feat(visual): add n3.6 animation feasibility proof
+- `1cf74d2dcdda320431341633f37a1e4c00886fb2` docs(n3): record animation reference analysis and evidence
+- O commit que grava este parágrafo é o registro da publicação. O hash remoto final é o HEAD depois do push dele.
 
 ## Y. Limitações
 
