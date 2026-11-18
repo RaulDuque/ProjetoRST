@@ -1,0 +1,13 @@
+(
+    version: 1,
+    facing: Right,
+    weapon_in_body: false,
+    atlases: {
+        "body": (texture: "candidate_106.png", cell: (80, 128), columns: 1, rows: 1, padding: 0, density: 2),
+    },
+    clips: {
+        "idle": (atlas: "body", first: 0, count: 1, mode: Loop(fps: 1.0),
+            pivot: (40.0, 118.0), fallback: None,
+            durations: [1.0], speed_reference: None),
+    },
+)

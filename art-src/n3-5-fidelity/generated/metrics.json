@@ -1,0 +1,94 @@
+{
+  "canvas": [
+    80,
+    128
+  ],
+  "opaque_box": [
+    26,
+    13,
+    48,
+    118
+  ],
+  "opaque_width": 23,
+  "opaque_height": 106,
+  "sole_y": 118,
+  "sole_span": [
+    32,
+    48
+  ],
+  "pivot": [
+    40,
+    118
+  ],
+  "colours_used": 17,
+  "alpha_values": [
+    0,
+    255
+  ],
+  "source": "source/candidate_106.txt",
+  "method": "reduce_fidelity.py (eroded mask, BOX, N3.4 palette) + hand edits",
+  "gui_paint": false,
+  "ai_generation": false,
+  "hand_edits": [
+    {
+      "x": 47,
+      "y": 17,
+      "from": "G",
+      "to": "."
+    },
+    {
+      "x": 46,
+      "y": 18,
+      "from": "g",
+      "to": "."
+    },
+    {
+      "x": 46,
+      "y": 19,
+      "from": "H",
+      "to": "."
+    },
+    {
+      "x": 46,
+      "y": 20,
+      "from": "g",
+      "to": "."
+    },
+    {
+      "x": 46,
+      "y": 21,
+      "from": "G",
+      "to": "z"
+    },
+    {
+      "x": 46,
+      "y": 22,
+      "from": "G",
+      "to": "s"
+    },
+    {
+      "x": 46,
+      "y": 23,
+      "from": "L",
+      "to": "z"
+    },
+    {
+      "x": 47,
+      "y": 39,
+      "from": "W",
+      "to": "."
+    },
+    {
+      "x": 33,
+      "y": 50,
+      "from": "o",
+      "to": "."
+    },
+    {
+      "x": 49,
+      "y": 118,
+      "from": "L",
+      "to": "."
+    }
+  ]
+}

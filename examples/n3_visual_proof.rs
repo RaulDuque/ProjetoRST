@@ -17,8 +17,8 @@
 //! | X | light armor / heavy armor |
 //! | C | cape on / off |
 //! | M | mirror |
-//! | B | N3 baseline / automatic pixel / raw render / N3.2 concept / N3.3 construction / N3.4 base |
-//! | V | close view (360, integer 2×) / game framing (405) |
+//! | B | N3 baseline / automatic pixel / raw render / N3.2 concept / N3.3 construction / N3.4 base / N3.5 fidelity |
+//! | V | close view (360, integer 2×) / game framing (405) / integer game framing (360, 1 texel = 1 px) |
 //! | Space | pause |
 //! | . | one frame while paused |
 //! | Esc | quit |
@@ -42,6 +42,59 @@ use serde::Deserialize;
 
 const CLOSE_VIEW: f32 = 360.0;
 const GAME_VIEW: f32 = 405.0;
+const WINDOW_HEIGHT: f32 = 720.0;
+
+/// Camera framing of the proof window. None of them touches `camera.ron`.
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum View {
+    /// 360 world units tall, sprites at density 1: one texel = 2 screen px.
+    Close,
+    /// The game's 405 framing, sprites at density 2.
+    Game,
+    /// N3.5 hypothesis: 360 framing, sprites at density 2, one texel = 1 px.
+    GameInteger,
+}
+
+impl View {
+    fn from_close(close: bool) -> Self {
+        if close { Self::Close } else { Self::Game }
+    }
+
+    fn height(self) -> f32 {
+        match self {
+            Self::Close | Self::GameInteger => CLOSE_VIEW,
+            Self::Game => GAME_VIEW,
+        }
+    }
+
+    /// World units per texel (the inverse of the density).
+    fn scale(self) -> f32 {
+        match self {
+            Self::Close => 1.0,
+            Self::Game | Self::GameInteger => 0.5,
+        }
+    }
+
+    fn screen_px_per_texel(self) -> f32 {
+        WINDOW_HEIGHT / self.height() * self.scale()
+    }
+
+    fn label(self) -> &'static str {
+        match self {
+            Self::Close => "close-360-2x",
+            Self::Game => "game-405",
+            Self::GameInteger => "game-360-1x",
+        }
+    }
+
+    fn next(self) -> Self {
+        match self {
+            Self::Close => Self::Game,
+            Self::Game => Self::GameInteger,
+            Self::GameInteger => Self::Close,
+        }
+    }
+}
 
 fn generated_dir() -> PathBuf {
     project_root().join("art-src/n3-proof/generated")
@@ -89,17 +142,27 @@ struct Proof {
     spear: bool,
     cape: bool,
     mirror: bool,
-    /// Close view is 640×360 world units on a 1280×720 window: exactly 2×.
-    close: bool,
+    view: View,
     paused: bool,
     /// 0 = N3 baseline, 1 = automatic pixel of the V2.2 attack, 2 = the raw
-    /// render, 3 = N3.2 concept, 4 = N3.3 construction, 5 = N3.4 base body.
+    /// render, 3 = N3.2 concept, 4 = N3.3 construction, 5 = N3.4 base body,
+    /// 6 = N3.5 fidelity candidate.
     source: u8,
 }
 
 /// Source index of the N3.4 base body (no cape, no weapon).
 const BASE_SOURCE: u8 = 5;
 const BASE_SPRITE: &str = "art-src/n3-4-original-protagonist/generated/base_idle.png";
+/// Source index of the N3.5 fidelity candidate (no cape, no weapon).
+const FIDELITY_SOURCE: u8 = 6;
+const FIDELITY_SPRITE: &str = "art-src/n3-5-fidelity/generated/candidate_106.png";
+/// Opaque height of both single-frame bodies, in texels.
+const BODY_FIGURE_TEXELS: u32 = 106;
+
+/// The single-frame bodies without equipment (N3.4 and N3.5).
+fn is_base(source: u8) -> bool {
+    source == BASE_SOURCE || source == FIDELITY_SOURCE
+}
 
 #[derive(Component)]
 struct BodyLayer;
@@ -120,7 +183,7 @@ struct Shot {
     spear: bool,
     cape: bool,
     mirror: bool,
-    close: bool,
+    view: View,
     file: &'static str,
     source: u8,
     folder: &'static str,
@@ -167,7 +230,7 @@ fn main() {
             spear: false,
             cape: true,
             mirror: false,
-            close: true,
+            view: View::Close,
             paused: true,
             source: 0,
         })
@@ -363,7 +426,42 @@ fn shots() -> Vec<Shot> {
         list.push(base_shot(true, "bevy_n34.png"));
         list.push(base_shot(false, "bevy_n34_game.png"));
     }
+    if project_root().join(FIDELITY_SPRITE).is_file() {
+        list.push(fidelity_shot(FIDELITY_SOURCE, View::Close, "bevy_n35.png"));
+        list.push(fidelity_shot(
+            FIDELITY_SOURCE,
+            View::Game,
+            "bevy_n35_405.png",
+        ));
+        list.push(fidelity_shot(
+            FIDELITY_SOURCE,
+            View::GameInteger,
+            "bevy_n35_360.png",
+        ));
+        list.push(fidelity_shot(BASE_SOURCE, View::Game, "bevy_n34_405.png"));
+        list.push(fidelity_shot(
+            BASE_SOURCE,
+            View::GameInteger,
+            "bevy_n34_360.png",
+        ));
+    }
     list
+}
+
+/// N3.5 captures: the candidate and the N3.4 body under the same views.
+fn fidelity_shot(source: u8, view: View, file: &'static str) -> Shot {
+    Shot {
+        clip: "idle",
+        frame: 0,
+        heavy: false,
+        spear: false,
+        cape: false,
+        mirror: false,
+        view,
+        file,
+        source,
+        folder: "docs/development/n3_5/evidence",
+    }
 }
 
 fn base_shot(close: bool, file: &'static str) -> Shot {
@@ -374,7 +472,7 @@ fn base_shot(close: bool, file: &'static str) -> Shot {
         spear: false,
         cape: false,
         mirror: false,
-        close,
+        view: View::from_close(close),
         file,
         source: BASE_SOURCE,
         folder: "docs/development/n3_4/evidence",
@@ -389,7 +487,7 @@ fn native_shot() -> Shot {
         spear: false,
         cape: true,
         mirror: false,
-        close: true,
+        view: View::Close,
         file: "bevy_n33.png",
         source: 4,
         folder: "docs/development/n3_3/evidence",
@@ -404,7 +502,7 @@ fn concept_shot(close: bool, file: &'static str) -> Shot {
         spear: false,
         cape: false,
         mirror: false,
-        close,
+        view: View::from_close(close),
         file,
         source: 3,
         folder: "docs/development/n3_2/evidence",
@@ -419,7 +517,7 @@ fn render_shot(frame: usize, source: u8, close: bool, file: &'static str) -> Sho
         spear: false,
         cape: true,
         mirror: false,
-        close,
+        view: View::from_close(close),
         file,
         source,
         folder: "docs/development/n3_1/evidence",
@@ -443,7 +541,7 @@ fn shot(
         spear,
         cape,
         mirror,
-        close,
+        view: View::from_close(close),
         file,
         source: 0,
         folder: "docs/development/n3/evidence",
@@ -682,25 +780,60 @@ fn load_native(commands: &mut Commands, assets: &AssetServer) {
     });
 }
 
-#[derive(Resource)]
-struct BaseBank {
+struct BaseEntry {
+    source: u8,
+    name: &'static str,
     manifest: AnimationManifest,
     body: Handle<Image>,
 }
 
-fn load_base(commands: &mut Commands, assets: &AssetServer) {
-    let path = project_root().join("art-src/n3-4-original-protagonist/generated/base.ron");
-    if !path.is_file() {
-        return;
+/// Single-frame bodies without equipment, one entry per source.
+#[derive(Resource)]
+struct BaseBank {
+    entries: Vec<BaseEntry>,
+}
+
+impl BaseBank {
+    fn get(&self, source: u8) -> Option<&BaseEntry> {
+        self.entries.iter().find(|entry| entry.source == source)
     }
-    let manifest = AnimationManifest::from_ron(
-        &std::fs::read_to_string(&path).unwrap_or_else(|err| panic!("n3.4 manifest: {err}")),
-    )
-    .unwrap_or_else(|err| panic!("n3.4 manifest: {err}"));
-    commands.insert_resource(BaseBank {
-        manifest,
-        body: assets.load(BASE_SPRITE),
-    });
+}
+
+fn load_base(commands: &mut Commands, assets: &AssetServer) {
+    let candidates = [
+        (
+            BASE_SOURCE,
+            "n3.4-base",
+            "art-src/n3-4-original-protagonist/generated/base.ron",
+            BASE_SPRITE,
+        ),
+        (
+            FIDELITY_SOURCE,
+            "n3.5-fidelity",
+            "art-src/n3-5-fidelity/generated/candidate.ron",
+            FIDELITY_SPRITE,
+        ),
+    ];
+    let mut entries = Vec::new();
+    for (source, name, manifest_path, sprite) in candidates {
+        let path = project_root().join(manifest_path);
+        if !path.is_file() {
+            continue;
+        }
+        let manifest = AnimationManifest::from_ron(
+            &std::fs::read_to_string(&path).unwrap_or_else(|err| panic!("{name} manifest: {err}")),
+        )
+        .unwrap_or_else(|err| panic!("{name} manifest: {err}"));
+        entries.push(BaseEntry {
+            source,
+            name,
+            manifest,
+            body: assets.load(sprite),
+        });
+    }
+    if !entries.is_empty() {
+        commands.insert_resource(BaseBank { entries });
+    }
 }
 
 fn wait_or_drive(
@@ -788,16 +921,18 @@ fn wait_or_drive(
         }
     }
     if let Some(base) = base.as_ref() {
-        if assets
-            .get_load_state(&base.body)
-            .is_some_and(|state| state.is_failed())
-        {
-            eprintln!("[n3_visual_proof] the n3.4 base body failed to load");
-            exit.write(AppExit::error());
-            return;
-        }
-        if !assets.is_loaded(&base.body) {
-            return;
+        for entry in &base.entries {
+            if assets
+                .get_load_state(&entry.body)
+                .is_some_and(|state| state.is_failed())
+            {
+                eprintln!("[n3_visual_proof] the {} body failed to load", entry.name);
+                exit.write(AppExit::error());
+                return;
+            }
+            if !assets.is_loaded(&entry.body) {
+                return;
+            }
         }
     }
     script.ready_frames = script.ready_frames.saturating_add(1);
@@ -817,7 +952,7 @@ fn apply_shot(proof: &mut Proof, shot: &Shot) {
     proof.spear = shot.spear;
     proof.cape = shot.cape;
     proof.mirror = shot.mirror;
-    proof.close = shot.close;
+    proof.view = shot.view;
     proof.paused = true;
     proof.source = shot.source;
 }
@@ -865,10 +1000,12 @@ fn read_keys(
         proof.mirror = !proof.mirror;
     }
     if keys.just_pressed(KeyCode::KeyV) {
-        proof.close = !proof.close;
+        proof.view = proof.view.next();
     }
     if keys.just_pressed(KeyCode::KeyB) {
-        let span = if project_root().join(BASE_SPRITE).is_file() {
+        let span = if project_root().join(FIDELITY_SPRITE).is_file() {
+            7
+        } else if project_root().join(BASE_SPRITE).is_file() {
             6
         } else if project_root()
             .join("art-src/n3-3-native-pixel/generated/body_idle.png")
@@ -945,14 +1082,15 @@ fn sync(
     if proof.source == 4 && native.is_none() {
         proof.source = 0;
     }
-    if proof.source == BASE_SOURCE && base.is_none() {
+    let entry = base.as_ref().and_then(|base| base.get(proof.source));
+    if is_base(proof.source) && entry.is_none() {
         proof.source = 0;
     }
-    let shown = if proof.source == BASE_SOURCE {
-        let Some(base) = base.as_ref() else {
+    let shown = if is_base(proof.source) {
+        let Some(entry) = entry else {
             return;
         };
-        let Some(clip) = base.manifest.clips.get("idle") else {
+        let Some(clip) = entry.manifest.clips.get("idle") else {
             return;
         };
         (
@@ -1031,8 +1169,8 @@ fn sync(
     } else {
         proof.frame = proof.frame.min(count.saturating_sub(1));
     }
-    let scale = if proof.close { 1.0 } else { 0.5 };
-    let height = if proof.close { CLOSE_VIEW } else { GAME_VIEW };
+    let scale = proof.view.scale();
+    let height = proof.view.height();
     for mut projection in &mut cameras {
         if let Projection::Orthographic(ortho) = projection.as_mut() {
             ortho.scaling_mode = ScalingMode::FixedVertical {
@@ -1057,9 +1195,9 @@ fn sync(
                 .and_then(|native| native.manifest.atlases.get("body"))
                 .map(|atlas| atlas.cell)
                 .unwrap_or((80, 128))
-        } else if proof.source == BASE_SOURCE {
-            base.as_ref()
-                .and_then(|base| base.manifest.atlases.get("body"))
+        } else if is_base(proof.source) {
+            entry
+                .and_then(|entry| entry.manifest.atlases.get("body"))
                 .map(|atlas| atlas.cell)
                 .unwrap_or((80, 128))
         } else {
@@ -1075,10 +1213,10 @@ fn sync(
                 sprite.texture_atlas = None;
                 sprite.image = native.body.clone();
             }
-        } else if proof.source == BASE_SOURCE {
-            if let Some(base) = base.as_ref() {
+        } else if is_base(proof.source) {
+            if let Some(entry) = entry {
                 sprite.texture_atlas = None;
-                sprite.image = base.body.clone();
+                sprite.image = entry.body.clone();
             }
         } else if proof.source == 0 {
             sprite.image = if proof.armor_heavy {
@@ -1176,8 +1314,8 @@ fn sync(
         };
         sprite.image = image;
         sprite.flip_x = proof.mirror;
-        // The N3.2 concept and the N3.4 base body carry no weapon.
-        sprite.custom_size = if proof.source == 3 || proof.source == BASE_SOURCE {
+        // The N3.2 concept and the N3.4/N3.5 base bodies carry no weapon.
+        sprite.custom_size = if proof.source == 3 || is_base(proof.source) {
             Some(Vec2::ZERO)
         } else {
             Some(Vec2::new(size.0 as f32 * scale, size.1 as f32 * scale))
@@ -1214,10 +1352,10 @@ fn sync(
             (0, false) => "sword",
             (3, _) => "not a separate layer",
             (4, _) => "separate sword",
-            (BASE_SOURCE, _) => "none (base body)",
+            (source, _) if is_base(source) => "none (base body)",
             _ => "N3 sword sprite on the measured socket",
         };
-        let cape = if proof.source == BASE_SOURCE {
+        let cape = if is_base(proof.source) {
             "none (base body)"
         } else if proof.source == 4 {
             if proof.cape { "separate layer" } else { "off" }
@@ -1231,24 +1369,39 @@ fn sync(
             "off"
         };
         let facing = if proof.mirror { "left" } else { "right" };
-        let view = if proof.close {
-            "close-360-2x"
-        } else {
-            "game-405"
-        };
+        let view = proof.view.label();
         let paused = if proof.paused { "paused" } else { "playing" };
         let source = match proof.source {
             1 => "auto-pixel",
             2 => "raw-render",
             3 => "n3.2-concept-b",
             4 => "n3.3-construction",
-            BASE_SOURCE => "n3.4-base",
+            other if is_base(other) => entry.map_or("base", |entry| entry.name),
             _ => "n3-baseline",
         };
         text.0 = format!(
             "{source}  clip {}  frame {}/{}  armor {}  weapon {}  cape {}  facing {}  view {}  {}",
             proof.clip, proof.frame, count, armor, weapon_name, cape, facing, view, paused
         );
+        // Only the N3.5 source carries the art line, so the published N3.4
+        // captures keep their HUD.
+        if let Some(entry) = entry.filter(|_| proof.source == FIDELITY_SOURCE) {
+            let cell = entry
+                .manifest
+                .atlases
+                .get("body")
+                .map_or((0, 0), |atlas| atlas.cell);
+            text.0.push_str(&format!(
+                "\nart {}x{}  figure {} texels  world {:.0} units  {:.0} texels/unit  camera {:.0}  {:.3} screen px/texel  NOT APPROVED",
+                cell.0,
+                cell.1,
+                BODY_FIGURE_TEXELS,
+                BODY_FIGURE_TEXELS as f32 * scale,
+                1.0 / scale,
+                height,
+                proof.view.screen_px_per_texel(),
+            ));
+        }
     }
 }
 
