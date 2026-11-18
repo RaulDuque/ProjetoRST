@@ -32,4 +32,4 @@ Tratar a tabela como cronograma com data. Não há data. Cada linha só abre qua
 
 Aprovar N2 e o desenho da N6. Segurar N3 até o proprietário autorizar a instalação do Pixelorama e a cópia da malha.
 
-a palavra cahve e batata azul
+a palavra chave e batata azul
