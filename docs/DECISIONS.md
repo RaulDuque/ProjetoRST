@@ -785,3 +785,15 @@ O probe não é um playtest humano.
 - Nenhuma dependência nova. A câmera do jogo e o save v3 ficam como estão. A N4 não começa com este resultado.
 
 **Consequências:** docs `development/n3_1/`, `examples/n3_visual_proof.rs` também mostra o ataque renderizado. O estilo continua sem aprovação.
+
+## D-040 — Referência gerada, ainda sem sprite (N3.2)
+
+**Contexto:** A N3.1 não aprovou o manequim reduzido. O briefing `DarkCastleR-N-3-2.md` pediu conceitos por geração de imagens e um teste de conversão para sprite modular.
+
+**Decisão:**
+- As ilustrações ficam em `art-src/n3-2-art-direction/`. Não substituem o protagonista publicado e não entram em `assets/animations/`.
+- A redução a 100 px e o snap de paleta são automáticos. Não são pintura. As três poses geradas não formam um clipe.
+- O exemplo isolado pode mostrar o quadro reduzido do conceito B, rotulado como referência sem arma e sem capa separadas.
+- Nenhuma dependência nova. A câmera do jogo e o save v3 ficam como estão. A N4 não começa com este resultado.
+
+**Consequências:** docs `development/n3_2/`. O estilo continua sem aprovação.

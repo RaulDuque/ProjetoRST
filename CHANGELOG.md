@@ -4,6 +4,10 @@ Formato: [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/). Versioname
 
 ## [Unreleased]
 
+### N3.2 — Referência gerada, ainda isolada
+- Três conceitos laterais e um quadro reduzido a 100 px no exemplo da prova visual.
+- As poses geradas não formam um clipe. O estilo não está aprovado. A câmera do jogo não muda.
+
 ### N3.1 — Comparação do manequim, ainda isolada
 - O exemplo da N3 também mostra o ataque renderizado do V2.2 e a redução automática para pixel.
 - Pixelorama 1.2.4 foi baixado e não pintou. O estilo não está aprovado. A câmera do jogo não muda.
