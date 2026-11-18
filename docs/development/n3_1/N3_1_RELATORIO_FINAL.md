@@ -107,7 +107,8 @@ Scripts em `art-src/n3-proof/scripts/`, atlas e manifesto em `art-src/n3-proof/n
 ## T. GitHub
 
 - `fa7fcd4` feat(visual): compare the V2.2 attack inside the isolated proof
-- O commit que grava esta pasta, e o hash remoto, ficam no registro seguinte a este texto.
+- `354ad9e` docs(n3): record the mannequin comparison without approving it
+- O commit que grava este parágrafo é o registro da publicação. O hash remoto é o que o push deixar em `origin/art/v1.2-protagonist`.
 
 ## U. Recomendação
 
