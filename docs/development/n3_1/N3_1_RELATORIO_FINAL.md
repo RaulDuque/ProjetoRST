@@ -108,7 +108,8 @@ Scripts em `art-src/n3-proof/scripts/`, atlas e manifesto em `art-src/n3-proof/n
 
 - `fa7fcd4` feat(visual): compare the V2.2 attack inside the isolated proof
 - `354ad9e` docs(n3): record the mannequin comparison without approving it
-- O commit que grava este parágrafo é o registro da publicação. O hash remoto é o que o push deixar em `origin/art/v1.2-protagonist`.
+- `fe9962a` docs(n3): record the published comparison commits
+- O push deixou `origin/art/v1.2-protagonist` em `fe9962a31cdca4715a318a9a3165c54ca009e0d0`. Este parágrafo é o registro posterior a esse push.
 
 ## U. Recomendação
 
