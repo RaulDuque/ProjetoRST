@@ -95,7 +95,12 @@ Novos: `art-src/n3-proof/`, `examples/n3_visual_proof.rs`, `tests/n3_visual_proo
 
 ## T. GitHub
 
-O push desta etapa vai para `origin/art/v1.2-protagonist`. Os hashes ficam registrados no commit que fecha a publicação e na resposta ao proprietário. Sem force push.
+Publicado em `origin/art/v1.2-protagonist`, em cima de `707a593`. Sem force push. O remoto não tinha andado.
+
+- `cc48f6ed26ae51192ec1ba3c2a990baad23d8bef` — `feat(visual): add an isolated pixel proof for equipment layers`
+- `fafe69dfea8b822243bb95939edfc3814191c304` — `docs(n3): record the visual proof without claiming the style`
+
+O remoto ficou em `fafe69d` antes deste parágrafo. O commit que grava estes hashes é o seguinte, na mesma branch.
 
 ## U. Recomendação
 
