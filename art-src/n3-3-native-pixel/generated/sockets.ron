@@ -1,0 +1,8 @@
+(
+    version: 1,
+    clips: {
+        "idle": [
+            (weapon: (x: 12.0, y: 61.0, angle: 0.0, front: true), hand_l: (x: -8.0, y: 40.0, front: false), head: (x: 2.0, y: 100.0), chest: (x: 2.0, y: 70.0), back: (x: -16.0, y: 82.0)),
+        ],
+    },
+)

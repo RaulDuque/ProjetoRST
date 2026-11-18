@@ -17,7 +17,7 @@
 //! | X | light armor / heavy armor |
 //! | C | cape on / off |
 //! | M | mirror |
-//! | B | N3 baseline / automatic pixel / raw render / N3.2 concept, when the file exists |
+//! | B | N3 baseline / automatic pixel / raw render / N3.2 concept / N3.3 construction |
 //! | V | close view (360, integer 2×) / game framing (405) |
 //! | Space | pause |
 //! | . | one frame while paused |
@@ -348,7 +348,28 @@ fn shots() -> Vec<Shot> {
             concept_shot(false, "bevy_concept_b_game.png"),
         ]);
     }
+    if project_root()
+        .join("art-src/n3-3-native-pixel/generated/body_idle.png")
+        .is_file()
+    {
+        list.push(native_shot());
+    }
     list
+}
+
+fn native_shot() -> Shot {
+    Shot {
+        clip: "idle",
+        frame: 0,
+        heavy: false,
+        spear: false,
+        cape: true,
+        mirror: false,
+        close: true,
+        file: "bevy_n33.png",
+        source: 4,
+        folder: "docs/development/n3_3/evidence",
+    }
 }
 
 fn concept_shot(close: bool, file: &'static str) -> Shot {
@@ -446,6 +467,7 @@ fn setup(
     let spear = assets.load(format!("art-src/n3-proof/generated/{}", loadout.spear));
     load_render(&mut commands, &assets, &mut layouts);
     load_concept(&mut commands, &assets);
+    load_native(&mut commands, &assets);
 
     commands.spawn((
         Camera2d,
@@ -601,11 +623,46 @@ fn load_concept(commands: &mut Commands, assets: &AssetServer) {
     commands.insert_resource(ConceptView { manifest, image });
 }
 
+#[derive(Resource)]
+struct NativeBank {
+    manifest: AnimationManifest,
+    sockets: SocketTable,
+    body: Handle<Image>,
+    cape: Handle<Image>,
+    sword: Handle<Image>,
+}
+
+fn load_native(commands: &mut Commands, assets: &AssetServer) {
+    let dir = project_root().join("art-src/n3-3-native-pixel/generated");
+    let path = dir.join("native.ron");
+    if !path.is_file() {
+        return;
+    }
+    let manifest = AnimationManifest::from_ron(
+        &std::fs::read_to_string(&path).unwrap_or_else(|err| panic!("n3.3 manifest: {err}")),
+    )
+    .unwrap_or_else(|err| panic!("n3.3 manifest: {err}"));
+    let sockets = SocketTable::from_ron(
+        &std::fs::read_to_string(dir.join("sockets.ron"))
+            .unwrap_or_else(|err| panic!("n3.3 sockets: {err}")),
+        &manifest,
+    )
+    .unwrap_or_else(|err| panic!("n3.3 sockets: {err}"));
+    commands.insert_resource(NativeBank {
+        manifest,
+        sockets,
+        body: assets.load("art-src/n3-3-native-pixel/generated/body_idle.png"),
+        cape: assets.load("art-src/n3-3-native-pixel/generated/cape_idle.png"),
+        sword: assets.load("art-src/n3-3-native-pixel/generated/sword.png"),
+    });
+}
+
 fn wait_or_drive(
     assets: Res<AssetServer>,
     bank: Option<Res<ProofAssets>>,
     render: Option<Res<RenderBank>>,
     concept: Option<Res<ConceptView>>,
+    native: Option<Res<NativeBank>>,
     mut proof: ResMut<Proof>,
     mut script: ResMut<Script>,
     mut exit: MessageWriter<AppExit>,
@@ -665,6 +722,21 @@ fn wait_or_drive(
             return;
         }
         if !assets.is_loaded(&concept.image) {
+            return;
+        }
+    }
+    if let Some(native) = native.as_ref() {
+        let handles = [&native.body, &native.cape, &native.sword];
+        if handles.iter().any(|handle| {
+            assets
+                .get_load_state(*handle)
+                .is_some_and(|state| state.is_failed())
+        }) {
+            eprintln!("[n3_visual_proof] the n3.3 construction failed to load");
+            exit.write(AppExit::error());
+            return;
+        }
+        if handles.iter().any(|handle| !assets.is_loaded(*handle)) {
             return;
         }
     }
@@ -737,6 +809,11 @@ fn read_keys(
     }
     if keys.just_pressed(KeyCode::KeyB) {
         let span = if project_root()
+            .join("art-src/n3-3-native-pixel/generated/body_idle.png")
+            .is_file()
+        {
+            5
+        } else if project_root()
             .join("art-src/n3-2-art-direction/generated/concept_b_sprite.png")
             .is_file()
         {
@@ -791,6 +868,7 @@ fn sync(
     time: Res<Time>,
     render: Option<Res<RenderBank>>,
     concept: Option<Res<ConceptView>>,
+    native: Option<Res<NativeBank>>,
 ) {
     let Some(bank) = bank else {
         return;
@@ -801,7 +879,24 @@ fn sync(
     if proof.source == 3 && concept.is_none() {
         proof.source = 0;
     }
-    let shown = if proof.source == 3 {
+    if proof.source == 4 && native.is_none() {
+        proof.source = 0;
+    }
+    let shown = if proof.source == 4 {
+        let Some(native) = native.as_ref() else {
+            return;
+        };
+        let Some(clip) = native.manifest.clips.get("idle") else {
+            return;
+        };
+        (
+            clip.count as usize,
+            clip.first as usize,
+            clip.pivot,
+            1.0,
+            true,
+        )
+    } else if proof.source == 3 {
         let Some(concept) = concept.as_ref() else {
             return;
         };
@@ -876,6 +971,12 @@ fn sync(
                 .and_then(|concept| concept.manifest.atlases.get("concept"))
                 .map(|atlas| atlas.cell)
                 .unwrap_or((31, 100))
+        } else if proof.source == 4 {
+            native
+                .as_ref()
+                .and_then(|native| native.manifest.atlases.get("body"))
+                .map(|atlas| atlas.cell)
+                .unwrap_or((80, 128))
         } else {
             (256, 192)
         };
@@ -883,6 +984,11 @@ fn sync(
             if let Some(concept) = concept.as_ref() {
                 sprite.texture_atlas = None;
                 sprite.image = concept.image.clone();
+            }
+        } else if proof.source == 4 {
+            if let Some(native) = native.as_ref() {
+                sprite.texture_atlas = None;
+                sprite.image = native.body.clone();
             }
         } else if proof.source == 0 {
             sprite.image = if proof.armor_heavy {
@@ -913,32 +1019,59 @@ fn sync(
         anchor.0 = Vec2::new(x, y);
     }
     if let Ok((mut sprite, mut anchor, mut transform, mut visibility)) = cape.single_mut() {
-        *visibility = if proof.cape && proof.source == 0 {
+        *visibility = if proof.cape && (proof.source == 0 || proof.source == 4) {
             Visibility::Inherited
         } else {
             Visibility::Hidden
         };
-        if let Some(atlas) = sprite.texture_atlas.as_mut() {
-            atlas.index = index;
-        }
-        sprite.flip_x = proof.mirror;
-        sprite.custom_size = Some(Vec2::new(
-            bank.loadout.cape_cell.0 as f32 * scale,
-            bank.loadout.cape_cell.1 as f32 * scale,
-        ));
-        let (x, y) = anchor_for(
-            bank.loadout.cape_pivot,
-            bank.loadout.cape_cell,
-            proof.mirror,
-        );
-        anchor.0 = Vec2::new(x, y);
-        if let Some(frame) = bank.sockets.frame(&proof.clip, proof.frame) {
-            let (sx, sy, _) = place(frame.back.x, frame.back.y, 0.0, sign);
-            transform.translation = Vec3::new(sx * scale, sy * scale, 1.0);
+        if proof.source == 4 {
+            if let Some(native) = native.as_ref() {
+                let cell = native
+                    .manifest
+                    .atlases
+                    .get("body")
+                    .map(|atlas| atlas.cell)
+                    .unwrap_or((80, 128));
+                sprite.texture_atlas = None;
+                sprite.image = native.cape.clone();
+                sprite.flip_x = proof.mirror;
+                sprite.custom_size = Some(Vec2::new(cell.0 as f32 * scale, cell.1 as f32 * scale));
+                let (x, y) = anchor_for(pivot, cell, proof.mirror);
+                anchor.0 = Vec2::new(x, y);
+                transform.translation = Vec3::new(0.0, 0.0, 1.0);
+            }
+        } else {
+            if let Some(atlas) = sprite.texture_atlas.as_mut() {
+                atlas.index = index;
+            }
+            sprite.flip_x = proof.mirror;
+            sprite.custom_size = Some(Vec2::new(
+                bank.loadout.cape_cell.0 as f32 * scale,
+                bank.loadout.cape_cell.1 as f32 * scale,
+            ));
+            let (x, y) = anchor_for(
+                bank.loadout.cape_pivot,
+                bank.loadout.cape_cell,
+                proof.mirror,
+            );
+            anchor.0 = Vec2::new(x, y);
+            if let Some(frame) = bank.sockets.frame(&proof.clip, proof.frame) {
+                let (sx, sy, _) = place(frame.back.x, frame.back.y, 0.0, sign);
+                transform.translation = Vec3::new(sx * scale, sy * scale, 1.0);
+            }
         }
     }
     if let Ok((mut sprite, mut anchor, mut transform)) = weapon.single_mut() {
-        let (grip, size, image) = if proof.spear {
+        let (grip, size, image) = if proof.source == 4 {
+            (
+                (6.0, 5.0),
+                (36, 10),
+                native
+                    .as_ref()
+                    .map(|native| native.sword.clone())
+                    .unwrap_or_else(|| bank.sword.clone()),
+            )
+        } else if proof.spear {
             (
                 bank.loadout.spear_grip,
                 bank.loadout.spear_size,
@@ -961,7 +1094,11 @@ fn sync(
         let x = grip.0 / size.0 as f32 - 0.5;
         let y = 0.5 - grip.1 / size.1 as f32;
         anchor.0 = Vec2::new(if proof.mirror { -x } else { x }, y);
-        let socket_frame = if proof.source == 0 {
+        let socket_frame = if proof.source == 4 {
+            native
+                .as_ref()
+                .and_then(|native| native.sockets.frame("idle", proof.frame))
+        } else if proof.source == 0 {
             bank.sockets.frame(&proof.clip, proof.frame)
         } else {
             render
@@ -985,9 +1122,12 @@ fn sync(
             (0, true) => "spear",
             (0, false) => "sword",
             (3, _) => "not a separate layer",
+            (4, _) => "separate sword",
             _ => "N3 sword sprite on the measured socket",
         };
-        let cape = if proof.source == 3 {
+        let cape = if proof.source == 4 {
+            if proof.cape { "separate layer" } else { "off" }
+        } else if proof.source == 3 {
             "not a separate layer"
         } else if proof.source != 0 {
             "inside the render"
@@ -1007,6 +1147,7 @@ fn sync(
             1 => "auto-pixel",
             2 => "raw-render",
             3 => "n3.2-concept-b",
+            4 => "n3.3-construction",
             _ => "n3-baseline",
         };
         text.0 = format!(

@@ -1,0 +1,21 @@
+{
+  "opaque_width": 65,
+  "opaque_height": 106,
+  "canvas": [
+    80,
+    128
+  ],
+  "sole_y": 118,
+  "hand": [
+    52,
+    57
+  ],
+  "pivot": [
+    40,
+    118
+  ],
+  "machine_seconds": 0.1073,
+  "human_artist_hours": null,
+  "pixelorama_paint": false,
+  "reduced_from_illustration": false
+}
