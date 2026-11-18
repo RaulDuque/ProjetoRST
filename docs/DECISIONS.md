@@ -773,3 +773,15 @@ O probe não é um playtest humano.
 - Nenhuma dependência nova. O save continua na versão 3.
 
 **Consequências:** docs `development/n3/`. A N4 não começa com esta figura.
+
+## D-039 — Segunda prova visual, ainda isolada (N3.1)
+
+**Contexto:** D-038 mostrou o contrato de camadas com uma figura geométrica e deixou o estilo sem aprovação. O briefing `DarkCastleR-N-3-1.md` pediu a comparação do manequim real, no mesmo gesto, sem promover a arte.
+
+**Decisão:**
+- Os renders saem do blend V2.2 aberto só para leitura. O arquivo não é salvo e não substitui o protagonista publicado.
+- A redução para pixel (BOX, 16 cores, contorno de script, vizinho 2×) é automática. Não é pintura no Pixelorama. O binário 1.2.4 foi baixado e não pintou nenhum quadro.
+- Não há desenho independente nesta execução. Não há segunda malha de armadura. O ataque publicado não ganha antecipação.
+- Nenhuma dependência nova. A câmera do jogo e o save v3 ficam como estão. A N4 não começa com este resultado.
+
+**Consequências:** docs `development/n3_1/`, `examples/n3_visual_proof.rs` também mostra o ataque renderizado. O estilo continua sem aprovação.

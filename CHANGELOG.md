@@ -4,6 +4,10 @@ Formato: [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/). Versioname
 
 ## [Unreleased]
 
+### N3.1 — Comparação do manequim, ainda isolada
+- O exemplo da N3 também mostra o ataque renderizado do V2.2 e a redução automática para pixel.
+- Pixelorama 1.2.4 foi baixado e não pintou. O estilo não está aprovado. A câmera do jogo não muda.
+
 ### N3 — Prova visual isolada
 - Exemplo `n3_visual_proof`: corpo, duas armaduras, espada, lança e capa, fora do jogo.
 - Vista 640×360 em escala inteira 2× na janela 1280×720. A câmera do `cargo run` não muda.

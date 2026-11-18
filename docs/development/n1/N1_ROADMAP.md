@@ -30,6 +30,6 @@ Tratar a tabela como cronograma com data. Não há data. Cada linha só abre qua
 
 ## Recomendação
 
-O desenho da N6 está aprovado e ainda não foi implementado. A N2 e a prova da N3 foram feitas sob os briefings próprios. A N3 não mudou a câmera do jogo e não instalou o Pixelorama. A N4 continua fechada até uma autorização nova.
+O desenho da N6 está aprovado e ainda não foi implementado. A N2, a prova da N3 e a comparação da N3.1 foram feitas sob os briefings próprios. A N3.1 renderizou o manequim existente e não aprovou o estilo. A câmera do jogo não mudou. O Pixelorama foi baixado na N3.1 e não foi usado para pintar. A N4 continua fechada até uma autorização nova.
 
 a palavra chave e batata azul
