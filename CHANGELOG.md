@@ -4,6 +4,10 @@ Formato: [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/). Versioname
 
 ## [Unreleased]
 
+### N3.5 — Prova de fidelidade e resolução, ainda isolada
+- Candidato de 106 px reduzido da ficha original com o método da `reducao` escolhida pelo proprietário, sem halo e com 10 pixels corrigidos.
+- Hipóteses 80×128, 96×160 e 72×112 e câmeras 405 e 360 no exemplo isolado; na 360 a tela é idêntica ao sprite. Câmera do jogo inalterada, estilo sem aprovação.
+
 ### N3.4 — Protagonista-base a partir da ficha original, ainda isolado
 - Um quadro lateral de 106 px do protagonista sem equipamentos (cabelo prateado, camisa, calça, botas), corrigido pixel a pixel sobre a redução da ficha modular.
 - Fonte editável em texto, exemplo isolado com a fonte `n3.4-base`. Sem pintura em programa gráfico, sem ataque. O estilo aguarda o proprietário.

@@ -822,3 +822,15 @@ O probe não é um playtest humano.
 - Nenhuma dependência nova. A câmera, o save v3 e os controles ficam como estão. A N4 e a N5 não começam.
 
 **Consequências:** docs `development/n3_4/`. O estilo continua sem aprovação.
+
+## D-043 — Redução fiel em vez de redesenho, câmera 360 só como proposta (N3.5)
+
+**Contexto:** O proprietário reprovou a N3.4 e apontou como alvo a `ficha (perfil)`, a `ficha lateral` e a `reducao`. A `reducao` é o rascunho automático da N3.4, com a mesma resolução de 106 px.
+
+**Decisão:**
+- O candidato fica em `art-src/n3-5-fidelity/` e não substitui nem a N3.4 nem o protagonista publicado.
+- Os pixels vêm da redução da ficha lateral (máscara erodida, BOX, paleta da N3.4) com poucas correções à mão. Um teste limita as edições a 16 pixels.
+- As resoluções 96×160 e 72×112 ficam como evidência. A recomendação é 80×128 com densidade 2 e câmera 360 (1 texel = 1 px). `camera.ron` não muda sem nova autorização.
+- O exemplo isolado ganha o enquadramento `game-360-1x`. Nenhuma dependência nova.
+
+**Consequências:** docs `development/n3_5/`. O estilo continua sem aprovação; a N4 e a N5 não começam.
