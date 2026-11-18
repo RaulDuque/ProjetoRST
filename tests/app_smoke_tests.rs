@@ -62,6 +62,7 @@ fn app() -> App {
     let data = GameData::load(Path::new(env!("CARGO_MANIFEST_DIR")))
         .unwrap_or_else(|e| panic!("game data failed to load: {e}"));
     let mut app = App::new();
+    dark_castle_rpg::input::use_legacy_controls(&mut app);
     app.add_plugins((MinimalPlugins, StatesPlugin, BevyInputPlugin))
         .insert_resource(TimeUpdateStrategy::ManualDuration(FRAME))
         .insert_resource(data)

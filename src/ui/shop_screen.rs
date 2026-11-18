@@ -16,7 +16,8 @@ use crate::core::events::{TradeOp, TradeRequest};
 use crate::core::resources::GameData;
 use crate::economy::shop::{ShopDefinition, Stock};
 use crate::economy::systems::{PlayerPurse, ShopStockState};
-use crate::input::InputBindings;
+use crate::input::ActionEdges;
+use crate::input::action::Action;
 use crate::inventory::compare::{Snapshot, compare};
 use crate::inventory::loadout::target_slot;
 use crate::npc::definitions::{DialogueFacts, all_hold};
@@ -133,7 +134,7 @@ pub fn spawn_shop_screen(mut commands: Commands, mut cursor: ResMut<ShopCursor>)
 pub fn navigate_shop(
     mut commands: Commands,
     keys: Res<ButtonInput<KeyCode>>,
-    bindings: Res<InputBindings>,
+    edges: Res<ActionEdges>,
     data: Res<GameData>,
     active: Option<Res<ActiveShop>>,
     world: Option<Res<WorldGraph>>,
@@ -152,13 +153,13 @@ pub fn navigate_shop(
         next.set(GameState::Playing);
         return;
     }
-    if keys.just_pressed(bindings.right) && shop.buys {
+    if edges.just_pressed(Action::MoveRight) && shop.buys {
         *cursor = ShopCursor {
             tab: ShopTab::Sell,
             index: 0,
         };
     }
-    if keys.just_pressed(bindings.left) {
+    if edges.just_pressed(Action::MoveLeft) {
         *cursor = ShopCursor {
             tab: ShopTab::Buy,
             index: 0,
@@ -173,14 +174,14 @@ pub fn navigate_shop(
         ShopTab::Sell => sell_rows(&player),
     };
     let last = rows.len().saturating_sub(1);
-    if keys.just_pressed(bindings.down) {
+    if edges.just_pressed(Action::AimDown) {
         cursor.index = (cursor.index + 1).min(last);
     }
-    if keys.just_pressed(bindings.up) {
+    if edges.just_pressed(Action::AimUp) {
         cursor.index = cursor.index.saturating_sub(1);
     }
     cursor.index = cursor.index.min(last);
-    if !keys.just_pressed(bindings.confirm) {
+    if !edges.just_pressed(Action::Confirm) {
         return;
     }
     if let Some(item) = rows.get(cursor.index) {

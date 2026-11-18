@@ -18,7 +18,8 @@ use crate::core::events::{
     Arrival, FastTravelRequest, Notification, RoomRequest, SavePointActivated,
 };
 use crate::core::resources::{GameData, project_root};
-use crate::input::InputBindings;
+use crate::input::ActionEdges;
+use crate::input::action::Action;
 use crate::player::attributes::{RegenAccumulator, ResourcePool};
 use crate::player::components::{
     ActionState, Belongings, CharacterSheet, CommandInput, Player, SkillBook, Vitals,
@@ -121,8 +122,7 @@ fn write_slot(
 }
 
 pub fn quick_save(
-    keys: Res<ButtonInput<KeyCode>>,
-    bindings: Res<InputBindings>,
+    edges: Res<ActionEdges>,
     slots: Res<SaveSlots>,
     room: Res<CurrentRoom>,
     world: Res<WorldState>,
@@ -133,7 +133,7 @@ pub fn quick_save(
     stock: Option<Res<crate::economy::systems::ShopStockState>>,
     mut notifications: MessageWriter<Notification>,
 ) {
-    if !keys.just_pressed(bindings.quick_save) {
+    if !edges.just_pressed(Action::QuickSave) {
         return;
     }
     let (transform, sheet, vitals, book, belongings, state, body, phasing, purse) =
@@ -343,8 +343,7 @@ type PlayerLoadQuery<'a> = (
 );
 
 pub fn quick_load(
-    keys: Res<ButtonInput<KeyCode>>,
-    bindings: Res<InputBindings>,
+    edges: Res<ActionEdges>,
     slots: Res<SaveSlots>,
     data: Res<GameData>,
     graph: Option<Res<WorldGraph>>,
@@ -357,7 +356,7 @@ pub fn quick_load(
     mut requests: MessageWriter<RoomRequest>,
     mut notifications: MessageWriter<Notification>,
 ) {
-    if !keys.just_pressed(bindings.quick_load) {
+    if !edges.just_pressed(Action::QuickLoad) {
         return;
     }
     let save = match slots.0.load_versioned(DEFAULT_SAVE_SLOT) {

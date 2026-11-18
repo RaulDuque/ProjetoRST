@@ -22,7 +22,8 @@ use crate::app::states::GameState;
 use crate::combat::hitboxes::{AttachedToOwner, Hitbox};
 use crate::core::events::{EquipOp, EquipRequest, UseItemRequest};
 use crate::core::resources::GameData;
-use crate::input::InputBindings;
+use crate::input::ActionEdges;
+use crate::input::action::Action;
 use crate::inventory::compare::{Snapshot, StatLine, ValueFormat, compare};
 use crate::inventory::equipment::EquipmentSlot;
 use crate::inventory::items::{ItemCatalog, ItemDefinition};
@@ -90,13 +91,13 @@ pub fn rows(belongings: &Belongings, catalog: &ItemCatalog) -> Vec<Row> {
 
 pub fn toggle_inventory_screen(
     keys: Res<ButtonInput<KeyCode>>,
-    bindings: Res<InputBindings>,
+    edges: Res<ActionEdges>,
     state: Res<State<GameState>>,
     mut next: ResMut<NextState<GameState>>,
 ) {
-    let close = keys.just_pressed(bindings.inventory) || keys.just_pressed(KeyCode::Escape);
+    let close = edges.just_pressed(Action::Inventory) || keys.just_pressed(KeyCode::Escape);
     match state.get() {
-        GameState::Playing if keys.just_pressed(bindings.inventory) => {
+        GameState::Playing if edges.just_pressed(Action::Inventory) => {
             next.set(GameState::Inventory);
         }
         GameState::Inventory if close => next.set(GameState::Playing),
@@ -188,8 +189,7 @@ pub fn spawn_inventory_screen(mut commands: Commands) {
 /// Moves the cursor and turns `Enter` into an [`EquipRequest`] or
 /// [`UseItemRequest`] (D18 consumables).
 pub fn navigate_inventory(
-    keys: Res<ButtonInput<KeyCode>>,
-    bindings: Res<InputBindings>,
+    edges: Res<ActionEdges>,
     data: Res<GameData>,
     mut cursor: ResMut<InventoryCursor>,
     player: Single<&Belongings, With<Player>>,
@@ -198,14 +198,14 @@ pub fn navigate_inventory(
 ) {
     let rows = rows(&player, &data.items);
     let last = rows.len().saturating_sub(1);
-    if keys.just_pressed(bindings.down) {
+    if edges.just_pressed(Action::AimDown) {
         cursor.0 = (cursor.0 + 1).min(last);
     }
-    if keys.just_pressed(bindings.up) {
+    if edges.just_pressed(Action::AimUp) {
         cursor.0 = cursor.0.saturating_sub(1);
     }
     cursor.0 = cursor.0.min(last);
-    if !keys.just_pressed(bindings.confirm) {
+    if !edges.just_pressed(Action::Confirm) {
         return;
     }
     match rows.get(cursor.0) {

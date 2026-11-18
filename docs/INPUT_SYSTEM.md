@@ -1,44 +1,45 @@
 # Entrada e reconhecimento de comandos
 
-## Teclas padrão (`src/input/mod.rs`, `InputBindings`)
+## Ações (`src/input/`)
 
-| Ação | Tecla |
-|---|---|
-| Mover / direções de comando | Setas |
-| Correr | Shift esquerdo |
-| Pular | Z |
-| Ataque | X |
-| Magia | C |
-| Guarda (segurar) / cancelar comando | A |
-| Esquiva | S |
-| Tela de status | Tab |
-| Distribuir pontos (na tela de status) | 1–4 |
-| Levantar após morrer | R |
-| Salvar / carregar | F5 / F9 |
-| Abrir / fechar o mapa (V1.7; tecla livre antes) | M |
-| Usar baú, alavanca ou interruptor (V1.8; tecla livre antes) | D |
-| Entrar / sair da Forma Espectral (V1.9; tecla livre antes) | T |
-| Abrir / fechar a tela de equipamento (V2.0; tecla livre antes) | I (fecha também com Esc) |
-| Na tela de equipamento: selecionar / equipar ou remover | ↑ ↓ / Enter |
-| Conversar com um NPC ao alcance (V2.1; objetos têm prioridade) | D |
-| No diálogo: avançar ou confirmar / escolher / sair | Enter ou D / ↑ ↓ / Esc |
-| Na loja: comprar ou vender / selecionar / trocar de aba / sair | Enter / ↑ ↓ / ← → / Esc |
+O jogo lê `PlayerInput` e `ActionEdges`. Tecla e mouse são convertidos antes.
+Cada ação aceita um controle principal e um alternativo. Os dois viram um
+único pressionar, segurar ou soltar: a segunda tecla, com a primeira já
+segurada, não é outro pressionar; soltar uma delas, com a outra ainda
+segurada, não é um soltar.
 
-A interação não usa `↑`: no comando `↓ ↑ + ATTACK`, o frame do `↑` já não é
-agachado e usaria um objeto sem querer.
+Sem `controls.ron`, o preset é o híbrido. O clássico reproduz as teclas
+antigas. A lista jogável está em `controles.md`. O desenho da N2 está em
+`docs/development/n2/`.
 
-Na forma espectral (V1.9), `transform::systems::mask_form_input` zera, logo
-após a leitura do teclado, as entradas das ações que a forma bloqueia
-(ataque, magia, guarda, esquiva, interação, pulo, corrida): nenhum comando
-é reconhecido nela. A dica de controles fica no painel de status (antes, na
-borda inferior, cobria o chão).
+| Ação | Híbrido | Clássico |
+|---|---|---|
+| Andar | A / D | setas |
+| Pular | W e Espaço | Z |
+| Cima do comando (não pula) | seta para cima | seta para cima |
+| Baixo do comando / agachar | S | seta para baixo |
+| Ataque | mouse esquerdo e X | X |
+| Magia | C | C |
+| Guarda | Q | A |
+| Esquiva | F | S |
+| Interagir | E | D |
+| Confirmar menu | Enter | Enter |
 
-A tela de equipamento (V2.0) pausa a simulação como a tela de status: o
-`GameSet::Input` não roda, então ↑/↓/Enter dentro dela nunca viram
-movimento, comando ou ataque. Tab não age dentro dela.
+Distribuir pontos na tela de status continua em 1–4, fora do perfil.
+Escape abre a tela de controles e não pode ser binding. Não há gamepad:
+um dispositivo futuro alimentaria o mesmo combinador (`edges::combine`).
 
-Agachar: segurar ↓ no chão. Os sistemas de jogo leem `PlayerInput`, nunca as teclas.
-Suporte a gamepad: roadmap.
+A interação não usa a mira para cima. No comando `↓ ↑ + ATTACK`, o frame
+do `↑` não está agachado e não usa um objeto.
+
+Na forma espectral, `transform::systems::mask_form_input` zera, logo após
+`publish_player_input`, as ações que a forma bloqueia. A dica do HUD sai
+do perfil ativo.
+
+Inventário, status, diálogo, loja, viagem rápida e a tela de controles
+pausam a simulação: o `GameSet` de jogo só roda em `Playing`. As bordas
+das ações continuam sendo lidas, então uma tecla que ficou segurada não
+nasce de novo ao voltar ao jogo.
 
 ## Notação de comandos
 

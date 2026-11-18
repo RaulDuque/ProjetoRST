@@ -732,3 +732,32 @@ estava ativo, então o telégrafo não dizia quando o golpe saía.
 **Consequências:** `arena_access_tests`, `boss_tell_counts_down_while_the_hurt_flash_is_up`,
 `d23_play_probe` (derrota sem cura, boss em 13 HP), docs `d23/`.
 O probe não é um playtest humano.
+
+## D-036 — Aprovação da fundação N1, sem implementação
+
+**Contexto:** a N1 propôs controles, escala, ferramentas, o papel do Ashen Sentinel e a primeira região nova. O proprietário aprovou as cinco em 17 de novembro de 2026 e pediu para não escrever código sem uma autorização nova.
+
+**Decisão:**
+- Controles futuros: A/D andam, W e Espaço pulam, S agacha, o mouse esquerdo ataca, E usa. O preset antigo permanece.
+- 640×360 fica restrito a um protótipo isolado. A câmera do jogo não muda.
+- Blender, Pixelorama e Bevy são a hipótese de pipeline, válidos só depois da prova.
+- The Ashen Sentinel é minichefe na documentação. A mudança no dado espera a N10 e não apaga saves.
+- A primeira região nova usa só habilidades que já funcionam e fecha um laço.
+
+**Consequências:** docs `n1/`. Nenhum sistema de jogo muda por esta decisão. A implementação veio depois, autorizada pelo briefing N2, e está em D-037.
+
+## D-037 — Controles híbridos remapeáveis (N2)
+
+**Contexto:** D-036 aprovou o esquema e pediu para não escrever código. O briefing `DarkCastleR-N-2.md` autorizou a implementação. O jogo tinha uma tecla por ação (`InputBindings`). Menus, diálogo, loja, mapa e o save rápido liam essa tecla direto.
+
+**Decisão:**
+- A ação lógica é o que o jogo lê. Tecla e mouse só alimentam essa ação. Várias teclas da mesma ação viram um único pressionar, segurar ou soltar.
+- Sem arquivo de controles, o padrão é o preset híbrido: A/D andam, W e Espaço pulam, S agacha e é o "baixo" do comando, seta para cima é o "cima" do comando e não pula, mouse esquerdo ataca e X continua como ataque alternativo, E interage. Guarda foi para Q e esquiva para F, porque A e S passaram a ser movimento. O jogador pode remapear as duas.
+- O preset clássico reproduz as teclas antigas (setas, Z, X, C, A, S, D, e o resto). Editar um preset copia para um perfil customizado. O preset em si não muda.
+- Conflito no mesmo contexto é recusado. A tecla anterior fica. Enter pode confirmar menu e, ao mesmo tempo, ser uma tecla de jogo. Escape não entra em binding: abre a tela no jogo e, durante a captura, só cancela a captura.
+- A tela de controles usa as setas e Enter, não os bindings de jogo. Aplicar grava `controls.ron` fora do save. O save do personagem continua na versão 3 e não guarda teclas.
+- Arquivo inválido não derruba o jogo e não é sobrescrito. O preset híbrido entra na memória e a tela avisa.
+- Testes e exemplos que apertam as teclas antigas instalam o preset clássico. `play_before_boss` usa o perfil real.
+- Não há gamepad. Um dispositivo futuro teria de alimentar o mesmo combinador de bordas. As teclas 1–4 da tela de status continuam fixas, fora do perfil.
+
+**Consequências:** `src/input/`, `GameState::Controls`, docs `development/n2/`, `controles.md`. Câmera, arte, save v3 e o grafo de salas não mudam.

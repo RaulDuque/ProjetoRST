@@ -29,9 +29,10 @@ const FORM_WARNING: Color = Color::srgb(0.95, 0.55, 0.4);
 const BAR_WIDTH: f32 = 220.0;
 const BAR_HEIGHT: f32 = 14.0;
 const MAX_NOTIFICATIONS: usize = 4;
-const CONTROLS_HINT: &str = "Arrows move  Shift run  Z jump  X attack  C magic\n\
-     A guard  S dodge  D use  T form\n\
-     M map  Tab status  I equip  F5 save  F9 load";
+#[derive(Component)]
+pub struct ControlsHint;
+
+const CONTROLS_HINT_FALLBACK: &str = "Esc controls";
 
 #[derive(Component, Debug, Clone, Copy, PartialEq, Eq)]
 pub enum BarKind {
@@ -160,7 +161,10 @@ pub fn spawn_hud(mut commands: Commands) {
             panel.spawn((CooldownText, text("", FONT_SMALL, TEXT_DIM)));
             // Controls hint (V1.9: moved here from the bottom edge, where it
             // covered the floor, and kept clear of the map in the top right).
-            panel.spawn(text(CONTROLS_HINT, FONT_SMALL, TEXT_DIM));
+            panel.spawn((
+                ControlsHint,
+                text(CONTROLS_HINT_FALLBACK, FONT_SMALL, TEXT_DIM),
+            ));
         });
 
     // Command feedback and notifications, each on its own panel.
@@ -238,7 +242,29 @@ pub fn notification_placement(state: GameState) -> NotificationPlacement {
         GameState::Shop
         | GameState::Inventory
         | GameState::StatusScreen
-        | GameState::FastTravel => NotificationPlacement::BottomStrip,
+        | GameState::FastTravel
+        | GameState::Controls => NotificationPlacement::BottomStrip,
+    }
+}
+
+pub fn update_controls_hint(
+    profile: Option<Res<crate::input::profile::ControlProfile>>,
+    notice: Option<Res<crate::input::ControlsNotice>>,
+    mut hint: Query<&mut Text, With<ControlsHint>>,
+) {
+    let Ok(mut hint) = hint.single_mut() else {
+        return;
+    };
+    let line = profile
+        .as_ref()
+        .map(|profile| crate::input::controls_hint(profile))
+        .unwrap_or_else(|| CONTROLS_HINT_FALLBACK.to_string());
+    let text = match notice {
+        Some(notice) => format!("{line}\n{}", notice.0),
+        None => line,
+    };
+    if hint.0 != text {
+        hint.0 = text;
     }
 }
 
@@ -559,6 +585,7 @@ mod placement_tests {
             GameState::Inventory,
             GameState::StatusScreen,
             GameState::FastTravel,
+            GameState::Controls,
         ] {
             assert_eq!(
                 notification_placement(state),

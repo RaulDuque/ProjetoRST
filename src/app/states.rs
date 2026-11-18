@@ -17,13 +17,15 @@ pub enum GameState {
     Shop,
     /// Fast travel between discovered save altars (D19); simulation paused.
     FastTravel,
+    /// Controls screen. Gameplay sets stay stopped, the same way Inventory does.
+    Controls,
 }
 
 /// Order of one gameplay frame. Every set except `Rooms` and `Presentation`
 /// only runs in [`GameState::Playing`].
 #[derive(SystemSet, Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum GameSet {
-    /// Keyboard/gamepad → `PlayerInput`.
+    /// Devices → `PlayerInput` (keyboard and mouse today).
     Input,
     /// Command buffer recording and recognition.
     Commands,

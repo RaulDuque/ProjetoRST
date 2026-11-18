@@ -423,6 +423,7 @@ fn the_complete_example_is_playable_with_real_keys() {
     install_world(&mut data, &world);
     let saves = SaveStorage::new(PathBuf::from(env!("CARGO_TARGET_TMPDIR")).join("tutorial_saves"));
     let mut app = App::new();
+    dark_castle_rpg::input::use_legacy_controls(&mut app);
     app.add_plugins((MinimalPlugins, StatesPlugin, BevyInputPlugin))
         .insert_resource(TimeUpdateStrategy::ManualDuration(Duration::from_millis(
             16,

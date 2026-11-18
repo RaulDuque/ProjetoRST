@@ -1,10 +1,10 @@
 # N1 — Controles
 
-O proprietário escolheu o esquema híbrido. A N1 registra. Não remapeia o jogo.
+O proprietário aprovou o esquema híbrido em 17 de novembro de 2026. Este arquivo é o plano da N1. A implementação está em `docs/development/n2/` e em `controles.md`.
 
 ## Hoje
 
-Uma tecla por ação, em `InputBindings`, sem mouse e sem gravar a escolha. O arquivo `controles.md` na raiz lista o que cada tecla faz agora.
+A tabela abaixo é a auditoria de antes da implementação. O jogo agora usa o perfil descrito em `controles.md`.
 
 | Ação | Tecla atual | Tecla desejada |
 |---|---|---|

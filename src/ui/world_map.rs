@@ -8,7 +8,7 @@
 //! flags a visited room whose secret was found. Below it: exploration
 //! percentage and secrets. It is UI: the world camera is not touched.
 //! Rebuilt only when the exploration state, the current room or the panel
-//! state changes. `M` (`InputBindings::map`) opens and closes it; it stays
+//! state changes. The map action opens and closes it; it stays
 //! hidden while no world is active (the single-room test game).
 //!
 //! V1.8: chests of visited rooms are marked (bright while closed, dim once
@@ -22,9 +22,10 @@
 use bevy::prelude::*;
 
 use super::theme::{FONT_SMALL, PANEL_BG, PANEL_BORDER, TEXT_MAIN, text};
-use crate::app::states::GameSet;
+use crate::app::states::{GameSet, GameState};
 use crate::core::resources::GameData;
-use crate::input::InputBindings;
+use crate::input::ActionEdges;
+use crate::input::action::Action;
 use crate::npc::definitions::NpcMapMarker;
 use crate::world::WorldState;
 use crate::world::exploration::{Discovery, DoorState, ObjectState};
@@ -119,13 +120,17 @@ pub fn spawn_map_panel(mut commands: Commands) {
         });
 }
 
-/// `M` opens or closes the panel (also while paused).
+/// The map binding opens or closes the panel. It stays closed on the
+/// controls screen so a remap does not fight the cursor.
 pub fn toggle_map(
-    keys: Res<ButtonInput<KeyCode>>,
-    bindings: Res<InputBindings>,
+    edges: Res<ActionEdges>,
+    state: Option<Res<State<GameState>>>,
     mut panel: ResMut<MapPanelState>,
 ) {
-    if keys.just_pressed(bindings.map) {
+    if state.is_some_and(|state| *state.get() == GameState::Controls) {
+        return;
+    }
+    if edges.just_pressed(Action::Map) {
         panel.open = !panel.open;
     }
 }

@@ -66,6 +66,7 @@ pub fn game(saves: &SaveStorage) -> App {
     let mut data = GameData::load(root()).unwrap_or_else(|e| panic!("{e}"));
     let world = load_world(root(), &mut data).unwrap_or_else(|e| panic!("{e}"));
     let mut app = App::new();
+    dark_castle_rpg::input::use_legacy_controls(&mut app);
     app.add_plugins((MinimalPlugins, StatesPlugin, BevyInputPlugin))
         .insert_resource(TimeUpdateStrategy::ManualDuration(FRAME))
         .insert_resource(data)

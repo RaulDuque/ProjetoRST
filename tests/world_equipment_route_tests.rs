@@ -45,6 +45,7 @@ fn game(save_dir: &str) -> (App, SaveStorage) {
         let _ = std::fs::remove_file(path);
     }
     let mut app = App::new();
+    dark_castle_rpg::input::use_legacy_controls(&mut app);
     app.add_plugins((MinimalPlugins, StatesPlugin, BevyInputPlugin))
         .insert_resource(TimeUpdateStrategy::ManualDuration(FRAME))
         .insert_resource(data)

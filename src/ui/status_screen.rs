@@ -10,7 +10,8 @@ use super::theme::{
 use crate::app::states::GameState;
 use crate::core::events::Notification;
 use crate::core::resources::GameData;
-use crate::input::InputBindings;
+use crate::input::ActionEdges;
+use crate::input::action::Action;
 use crate::magic::elements::{Element, StatusEffect};
 use crate::player::attributes::PrimaryAttribute;
 use crate::player::components::{CharacterSheet, Player, SkillBook, Vitals};
@@ -26,19 +27,22 @@ const ALLOCATION_KEYS: [(KeyCode, PrimaryAttribute); 4] = [
 ];
 
 pub fn toggle_status_screen(
-    keys: Res<ButtonInput<KeyCode>>,
-    bindings: Res<InputBindings>,
+    edges: Res<ActionEdges>,
     state: Res<State<GameState>>,
     mut next: ResMut<NextState<GameState>>,
 ) {
-    if !keys.just_pressed(bindings.status) {
+    if !edges.just_pressed(Action::Status) {
         return;
     }
     next.set(match state.get() {
         GameState::Playing => GameState::StatusScreen,
         GameState::StatusScreen => GameState::Playing,
-        // V2.0: Tab does nothing on the inventory screen (I closes it).
-        GameState::Inventory | GameState::Dialogue | GameState::Shop | GameState::FastTravel => {
+        // Tab does nothing on the other screens (each one has its own close).
+        GameState::Inventory
+        | GameState::Dialogue
+        | GameState::Shop
+        | GameState::FastTravel
+        | GameState::Controls => {
             return;
         }
     });

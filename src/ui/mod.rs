@@ -2,6 +2,7 @@
 //! its own module and each element is updated by a small dedicated system.
 
 pub mod boss_hud;
+pub mod controls_screen;
 pub mod damage_numbers;
 pub mod dialogue_box;
 pub mod fast_travel_screen;
@@ -56,6 +57,7 @@ impl Plugin for UiPlugin {
                 Update,
                 (
                     hud::update_bars,
+                    hud::update_controls_hint,
                     boss_hud::update_boss_hud,
                     hud::update_level_and_hearts,
                     hud::update_cooldowns,
@@ -70,6 +72,7 @@ impl Plugin for UiPlugin {
                     damage_numbers::animate_damage_numbers,
                     status_screen::toggle_status_screen,
                     inventory_screen::toggle_inventory_screen,
+                    controls_screen::drive_controls,
                 )
                     .in_set(GameSet::Presentation),
             )
@@ -120,6 +123,20 @@ impl Plugin for UiPlugin {
                 )
                     .in_set(GameSet::Presentation)
                     .run_if(in_state(GameState::FastTravel)),
+            )
+            .add_systems(
+                OnEnter(GameState::Controls),
+                controls_screen::spawn_controls_screen,
+            )
+            .add_systems(
+                OnExit(GameState::Controls),
+                controls_screen::close_controls_screen,
+            )
+            .add_systems(
+                Update,
+                controls_screen::update_controls_screen
+                    .in_set(GameSet::Presentation)
+                    .run_if(in_state(GameState::Controls)),
             );
     }
 }

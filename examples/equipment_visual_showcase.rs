@@ -478,6 +478,7 @@ fn main() -> AppExit {
     } else {
         dark_castle_rpg::app::build_with_candidate_art(data, world, &stage)
     };
+    dark_castle_rpg::input::use_legacy_controls(&mut app);
     app.insert_resource(SaveSlots(SaveStorage::new(saves)))
         .insert_resource(TimeUpdateStrategy::ManualDuration(FRAME))
         .insert_resource(Bench {

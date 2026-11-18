@@ -62,6 +62,7 @@ fn app_with(state: Option<ExplorationState>) -> App {
     let world = world();
     install_world(&mut data, &world);
     let mut app = App::new();
+    dark_castle_rpg::input::use_legacy_controls(&mut app);
     app.add_plugins((MinimalPlugins, StatesPlugin, BevyInputPlugin))
         .insert_resource(TimeUpdateStrategy::ManualDuration(FRAME))
         .insert_resource(data)
@@ -157,6 +158,7 @@ fn the_game_without_the_plugin_keeps_its_single_room() {
         "the slice is not loaded by GameData"
     );
     let mut app = App::new();
+    dark_castle_rpg::input::use_legacy_controls(&mut app);
     app.add_plugins((MinimalPlugins, StatesPlugin, BevyInputPlugin))
         .insert_resource(data)
         .add_plugins(GamePlugin)

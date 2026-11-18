@@ -8,7 +8,8 @@ use super::theme::{
 };
 use crate::app::states::GameState;
 use crate::core::events::{FastTravelRequest, Notification};
-use crate::input::InputBindings;
+use crate::input::ActionEdges;
+use crate::input::action::Action;
 use crate::world::WorldState;
 use crate::world::exploration_systems::WorldGraph;
 use crate::world::fast_travel::{self, SavePointSite};
@@ -84,7 +85,7 @@ fn destination_rows(graph: &WorldGraph, progress: &WorldState, origin: &str) -> 
 
 pub fn navigate_fast_travel(
     keys: Res<ButtonInput<KeyCode>>,
-    bindings: Res<InputBindings>,
+    edges: Res<ActionEdges>,
     session: Res<FastTravelSession>,
     graph: Option<Res<WorldGraph>>,
     progress: Res<WorldState>,
@@ -103,10 +104,10 @@ pub fn navigate_fast_travel(
         return;
     }
     let last = rows.len().saturating_sub(1);
-    if keys.just_pressed(bindings.down) {
+    if edges.just_pressed(Action::AimDown) {
         cursor.0 = (cursor.0 + 1).min(last);
     }
-    if keys.just_pressed(bindings.up) {
+    if edges.just_pressed(Action::AimUp) {
         cursor.0 = cursor.0.saturating_sub(1);
     }
     cursor.0 = cursor.0.min(last);
@@ -115,7 +116,7 @@ pub fn navigate_fast_travel(
         next.set(GameState::Playing);
         return;
     }
-    if !keys.just_pressed(bindings.confirm) {
+    if !edges.just_pressed(Action::Confirm) {
         return;
     }
     let Some(dest) = rows.get(cursor.0) else {

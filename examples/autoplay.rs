@@ -774,6 +774,7 @@ fn main() -> AppExit {
     let start_room = data.character.start.room.clone();
 
     let mut app = dark_castle_rpg::app::build(data);
+    dark_castle_rpg::input::use_legacy_controls(&mut app);
     app.insert_resource(SaveSlots(SaveStorage::new(&saves_dir)))
         .insert_resource(TimeUpdateStrategy::ManualDuration(FRAME))
         .insert_resource(Verification::new(saves_dir.clone(), real_saves, start_room));

@@ -351,6 +351,7 @@ fn main() -> AppExit {
         }
     };
     let mut app = dark_castle_rpg::app::build(data);
+    dark_castle_rpg::input::use_legacy_controls(&mut app);
     app.insert_resource(SaveSlots(SaveStorage::new(out_dir().join("saves"))))
         .insert_resource(TimeUpdateStrategy::ManualDuration(FRAME))
         .init_resource::<Demo>()

@@ -32,7 +32,7 @@ impl Plugin for TransformPlugin {
             (systems::attach_form_state, systems::mask_form_input)
                 .chain()
                 .in_set(GameSet::Input)
-                .after(crate::input::read_keyboard),
+                .after(crate::input::publish_player_input),
         )
         .add_systems(
             Update,

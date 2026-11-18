@@ -23,7 +23,8 @@ use crate::app::states::GameState;
 use crate::core::constants::Z_ENEMIES;
 use crate::core::events::{Notification, RoomChanged};
 use crate::core::resources::GameData;
-use crate::input::{InputBindings, PlayerInput};
+use crate::input::action::Action;
+use crate::input::{ActionEdges, PlayerInput};
 use crate::player::components::{ActionState, Belongings, Player};
 use crate::player::state::PlayerAction;
 use crate::world::exploration::Discovery;
@@ -246,7 +247,7 @@ pub fn show_talk_prompts(
 pub fn run_conversation(
     mut commands: Commands,
     keys: Res<ButtonInput<KeyCode>>,
-    bindings: Res<InputBindings>,
+    edges: Res<ActionEdges>,
     data: Res<GameData>,
     world: Option<Res<WorldGraph>>,
     exploration: Option<Res<Exploration>>,
@@ -268,13 +269,13 @@ pub fn run_conversation(
         next.set(GameState::Playing);
         return;
     }
-    if keys.just_pressed(bindings.down) {
+    if edges.just_pressed(Action::AimDown) {
         conversation.0.move_cursor(1, &data.npcs, &facts);
     }
-    if keys.just_pressed(bindings.up) {
+    if edges.just_pressed(Action::AimUp) {
         conversation.0.move_cursor(-1, &data.npcs, &facts);
     }
-    if !(keys.just_pressed(bindings.confirm) || keys.just_pressed(bindings.interact)) {
+    if !(edges.just_pressed(Action::Confirm) || edges.just_pressed(Action::Interact)) {
         return;
     }
     match conversation.0.confirm(&data.npcs, &facts) {

@@ -87,6 +87,7 @@ fn app(policy: SimultaneousHitPolicy, stagger: f32) -> App {
         .unwrap_or_else(|e| panic!("game data failed to load: {e}"));
     let threshold = StaggerThreshold::new(stagger).unwrap_or_else(|e| panic!("{e}"));
     let mut app = App::new();
+    dark_castle_rpg::input::use_legacy_controls(&mut app);
     app.add_plugins((MinimalPlugins, StatesPlugin, BevyInputPlugin))
         .insert_resource(TimeUpdateStrategy::ManualDuration(FRAME))
         .insert_resource(data)
@@ -276,6 +277,7 @@ fn spawn_strike(app: &mut App, power: i32, element: Element, at: Vec3) -> Entity
 #[test]
 fn defaults_are_the_legacy_rules() {
     let mut app = App::new();
+    dark_castle_rpg::input::use_legacy_controls(&mut app);
     app.add_plugins((MinimalPlugins, StatesPlugin, BevyInputPlugin))
         .insert_resource(
             GameData::load(Path::new(env!("CARGO_MANIFEST_DIR"))).unwrap_or_else(|e| panic!("{e}")),

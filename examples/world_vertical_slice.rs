@@ -382,6 +382,7 @@ fn main() -> AppExit {
     install_world(&mut data, &world);
     // V1.7: the exploration and map plugins are part of `GamePlugin`.
     let mut app = dark_castle_rpg::app::build_with_world(data, world);
+    dark_castle_rpg::input::use_legacy_controls(&mut app);
     app.insert_resource(SaveSlots(SaveStorage::new(out_dir().join("saves"))));
     if interactive {
         app.add_systems(Last, save_on_exit);

@@ -414,6 +414,7 @@ fn main() -> AppExit {
         evidence_dir().display()
     );
     let mut app = dark_castle_rpg::app::build_with_world(data, world);
+    dark_castle_rpg::input::use_legacy_controls(&mut app);
     app.insert_resource(SaveSlots(SaveStorage::new(saves)))
         .insert_resource(TimeUpdateStrategy::ManualDuration(FRAME))
         .insert_resource(Keys::default())

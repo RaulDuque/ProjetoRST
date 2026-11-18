@@ -132,6 +132,7 @@ fn apply_pending_keys(mut pending: ResMut<PendingKeys>, mut keys: ResMut<ButtonI
 fn app(stage: Option<&Path>, saves: &str) -> App {
     let data = GameData::load(root()).unwrap_or_else(|e| panic!("{e}"));
     let mut app = App::new();
+    dark_castle_rpg::input::use_legacy_controls(&mut app);
     app.add_plugins((MinimalPlugins, StatesPlugin, BevyInputPlugin))
         .add_plugins(AssetPlugin::default())
         .init_asset::<Image>()

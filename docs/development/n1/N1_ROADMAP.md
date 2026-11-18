@@ -1,10 +1,10 @@
 # N1 — Roadmap N2 a N12
 
-Sujeito à aprovação. Nenhuma etapa começa sozinha. A ordem abaixo muda a do briefing onde a auditoria achou dependência.
+O proprietário aprovou as cinco decisões da N1 em 17 de novembro de 2026. A N2 foi autorizada pelo briefing seguinte e implementada; o registro está em `docs/development/n2/`. As etapas seguintes continuam fechadas até uma autorização nova.
 
 | Etapa | Entrega | Depende de | Nota da auditoria |
 |---|---|---|---|
-| N2 | Controles híbridos: A/D, W e Espaço, mouse no ataque, várias teclas, conflito, arquivo local, preset antigo | aprovação do conflito do D | D hoje é usar. Proposta: usar vai para E. Não bumpa o Save v3 |
+| N2 | Controles híbridos: A/D, W e Espaço, S agachar, mouse no ataque, E usar, várias teclas, conflito, arquivo local, preset antigo | briefing N2 | implementada. Não bumpa o Save v3. Ver `docs/development/n2/` |
 | N3 | Prova visual do `N1_PROVA_DE_CONCEITO.md` | autorização para instalar o Pixelorama e para copiar a malha | não mexe no jogo jogável |
 | N4 | Camadas que a prova tiver aprovado: corpo, arma, capa, ordem de desenho | N3 | estende sockets e held, não cria personagem novo |
 | N5 | Campo visual opcional no item, famílias, troca no inventário que já existe | N4 | sem segundo catálogo |
@@ -30,6 +30,6 @@ Tratar a tabela como cronograma com data. Não há data. Cada linha só abre qua
 
 ## Recomendação
 
-Aprovar N2 e o desenho da N6. Segurar N3 até o proprietário autorizar a instalação do Pixelorama e a cópia da malha.
+O desenho da N6 está aprovado e ainda não foi implementado. A N2 foi implementada sob o briefing próprio. Instalar o Pixelorama ou copiar a malha para a N3 pede uma autorização nova.
 
 a palavra chave e batata azul
