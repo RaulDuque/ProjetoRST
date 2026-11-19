@@ -15,6 +15,8 @@ use bevy::prelude::*;
 
 use crate::core::constants::{WINDOW_HEIGHT, WINDOW_TITLE, WINDOW_WIDTH};
 use crate::core::resources::{GameData, project_root};
+use crate::player::visual::art_profile::{N3_EXPERIMENTAL_STAGE, PROTAGONIST_ENV, ProtagonistArt};
+use crate::player::visual::{ExperimentalProtagonist, NearestPlayerArt};
 use crate::transform::crossing::crossing_mp;
 use crate::world::exploration_systems::{activate_world, install_world};
 use crate::world::graph::{Grant, WorldDefinition};
@@ -31,7 +33,9 @@ pub fn run() -> AppExit {
         .map_err(|e| format!("failed to load game data: {e}"))
         .and_then(|mut data| load_world(&root, &mut data).map(|world| (data, world)));
     match loaded {
-        Ok((data, world)) => build_with_world(data, world).run(),
+        Ok((data, world)) => {
+            build_for_protagonist(data, world, &root, protagonist_from_env()).run()
+        }
         Err(error) => {
             eprintln!("{error}");
             AppExit::error()
@@ -132,6 +136,51 @@ pub fn check_transformations(world: &WorldDefinition, data: &GameData) -> Result
         }
     }
     Ok(())
+}
+
+/// N3.8: the protagonist art chosen by `DARK_CASTLE_PROTAGONIST`. Unset is
+/// the production art; an unknown value is reported and also falls back to
+/// the production art (never a half-loaded protagonist).
+pub fn protagonist_from_env() -> ProtagonistArt {
+    let value = std::env::var(PROTAGONIST_ENV).ok();
+    let (art, error) = ProtagonistArt::from_setting_or_production(value.as_deref());
+    if let Some(error) = error {
+        eprintln!("{error}; using the production protagonist");
+    }
+    art
+}
+
+/// The shipped game with the chosen protagonist art (N3.8).
+///
+/// - [`ProtagonistArt::Production`]: [`build_with_world`], unchanged.
+/// - [`ProtagonistArt::N3Experimental`]: the same game, systems and data,
+///   with the player art read from [`N3_EXPERIMENTAL_STAGE`] (N3.5 idle +
+///   N3.6 run at 15 fps), sampled with nearest filtering (crisp texels, as
+///   in the approved proofs) and the experimental badge on. A missing stage is
+///   reported and falls back to the production art.
+pub fn build_for_protagonist(
+    data: GameData,
+    world: WorldDefinition,
+    root: &Path,
+    art: ProtagonistArt,
+) -> App {
+    match art {
+        ProtagonistArt::Production => build_with_world(data, world),
+        ProtagonistArt::N3Experimental => {
+            let stage = root.join(N3_EXPERIMENTAL_STAGE);
+            if !stage.join(crate::player::visual::MANIFEST_PATH).is_file() {
+                eprintln!(
+                    "experimental protagonist stage missing ({}); using the production protagonist",
+                    stage.display()
+                );
+                return build_with_world(data, world);
+            }
+            let mut app = build_with_candidate_art(data, world, &stage);
+            app.insert_resource(ExperimentalProtagonist)
+                .insert_resource(NearestPlayerArt);
+            app
+        }
+    }
 }
 
 /// Builds the full game application around already-loaded data (single

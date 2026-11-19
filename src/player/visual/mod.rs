@@ -1,6 +1,8 @@
 //! Sprite visual of the player (V1.3): a child entity that shows the
 //! rendered protagonist (model v007) and follows the gameplay state.
 //!
+//! - [`art_profile`] (pure, N3.8): production art or the experimental
+//!   N3 protagonist (`DARK_CASTLE_PROTAGONIST=n3`);
 //! - [`manifest`] (pure): atlases and clips of `assets/animations/player.ron`;
 //! - [`playback`] (pure): frame timing (loops, actions, per-frame durations);
 //! - [`selection`] (pure): which clip shows a gameplay state, and fallbacks;
@@ -14,6 +16,7 @@
 //! headless apps without an `AssetServer`) the placeholder box of
 //! `player::animation` stays visible. Details: docs/PLAYER_VISUAL_ANIMATION_V1_3.md.
 
+pub mod art_profile;
 pub mod manifest;
 pub mod modular_lab;
 pub mod playback;
@@ -62,7 +65,21 @@ pub struct VisualPlayback {
     pub last_position: Option<Vec2>,
     /// Seconds spent in `Falling` so far (a landing needs a real fall).
     pub falling_time: f32,
+    /// N3.8: the clip the state wanted when the manifest lacks it (the idle
+    /// pose is shown instead); `None` when the wanted clip is shown.
+    pub placeholder_for: Option<String>,
 }
+
+/// N3.8: the player atlases are sampled with nearest filtering (crisp
+/// texels, as in the approved N3.5/N3.7 proofs). Absent: Bevy's default
+/// sampler, so the production art keeps exactly the look it has always had.
+#[derive(Resource, Debug, Clone, Copy, Default)]
+pub struct NearestPlayerArt;
+
+/// N3.8: the game runs with the experimental N3 protagonist (not the
+/// production art). Only presentation reads it (the experimental badge).
+#[derive(Resource, Debug, Clone, Copy, Default)]
+pub struct ExperimentalProtagonist;
 
 /// Image and grid of one atlas.
 #[derive(Debug, Clone)]

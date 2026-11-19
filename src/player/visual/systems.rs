@@ -2,6 +2,7 @@
 
 use std::collections::HashMap;
 
+use bevy::image::{ImageLoaderSettings, ImageSampler};
 use bevy::prelude::*;
 use bevy::sprite::Anchor;
 
@@ -10,7 +11,8 @@ use super::playback::{action_frame, action_progress, locomotion_rate, loop_frame
 use super::selection::{self, SelectionContext, Timing, Tint, select};
 use super::sockets::{SOCKETS_PATH, SocketTable};
 use super::{
-    AtlasHandles, MANIFEST_PATH, PlayerArtSource, PlayerSpriteSet, PlayerVisual, VisualPlayback,
+    AtlasHandles, MANIFEST_PATH, NearestPlayerArt, PlayerArtSource, PlayerSpriteSet, PlayerVisual,
+    VisualPlayback,
 };
 use crate::app::states::GameState;
 use crate::combat::hitboxes::Invulnerable;
@@ -36,6 +38,7 @@ pub const VISUAL_Z: f32 = 0.05;
 pub fn load_player_sprites(
     mut commands: Commands,
     source: Option<Res<PlayerArtSource>>,
+    nearest: Option<Res<NearestPlayerArt>>,
     asset_server: Option<Res<AssetServer>>,
     layouts: Option<ResMut<Assets<TextureAtlasLayout>>>,
 ) {
@@ -72,8 +75,19 @@ pub fn load_player_sprites(
                 None,
             );
             let (w, h) = def.world_size();
+            let path = format!("{}{}", source.texture_prefix, def.texture);
+            let image = if nearest.is_some() {
+                server
+                    .load_builder()
+                    .with_settings(|s: &mut ImageLoaderSettings| {
+                        s.sampler = ImageSampler::nearest();
+                    })
+                    .load(path)
+            } else {
+                server.load(path)
+            };
             let handles = AtlasHandles {
-                image: server.load(format!("{}{}", source.texture_prefix, def.texture)),
+                image,
                 layout: layouts.add(layout),
                 cell: def.cell,
                 world_size: Vec2::new(w, h),
@@ -249,7 +263,7 @@ pub fn animate_player_visual(
             playback.state = Some(state);
             continue;
         }
-        let (key, clip, timing, tint) = {
+        let (key, clip, timing, tint, placeholder) = {
             // V1.5: an attack off the ground shows the air variant (read-only
             // ground contact; only when the manifest has the clip).
             let airborne_attack = state == PlayerState::Attacking
@@ -266,11 +280,20 @@ pub fn animate_player_visual(
             };
             // The manifest lacks the wanted clip: hold the idle frame, tinted.
             if key == plan.clip {
-                (key, clip, plan.timing, Tint::None)
+                (key, clip, plan.timing, Tint::None, None)
             } else {
-                (key, clip, Timing::Hold, plan.missing_tint)
+                (
+                    key,
+                    clip,
+                    Timing::Hold,
+                    plan.missing_tint,
+                    Some(plan.clip.to_owned()),
+                )
             }
         };
+        if playback.placeholder_for != placeholder {
+            playback.placeholder_for = placeholder;
+        }
         let Some(atlas) = set.atlases.get(&clip.atlas) else {
             continue;
         };
