@@ -29,7 +29,7 @@ biblioteca (`src/lib.rs`), o que permite testes de integração e o exemplo
 | Módulo | Regras puras (sem Bevy) | Camada Bevy |
 |---|---|---|
 | `core` | `rng.rs`, `pixel_art.rs` (V2.2: rasterizador da arte provisória) | `constants.rs`, `events.rs`, `resources.rs` (carregador de dados), `time.rs`, `pixel_image.rs` (V2.2) |
-| `player` | `attributes.rs`, `progression.rs`, `state.rs`, `action_rules.rs` (V2.4), `visual/{manifest,playback,selection,sockets}.rs` (`sockets`: V2.2), `visual/art_profile.rs` (N3.8), `visual/vfx/rules.rs` | `components.rs`, `movement.rs`, `systems.rs`, `animation.rs`, `visual/{mod,systems}.rs`, `visual/vfx/{mod,systems}.rs` |
+| `player` | `attributes.rs`, `progression.rs`, `state.rs`, `action_rules.rs` (V2.4), `visual/{manifest,playback,selection,sockets}.rs` (`sockets`: V2.2), `visual/art_profile.rs` (N3.8), `visual/composition.rs` (N4-A), `visual/vfx/rules.rs` | `components.rs`, `movement.rs`, `systems.rs`, `animation.rs`, `visual/{mod,systems,composite}.rs` (`composite`: N4-A), `visual/vfx/{mod,systems}.rs` |
 | `combat` | `damage.rs`, `command_buffer.rs`, `command_parser.rs`, `strike_timeline.rs`, `reaction.rs`, `simultaneous.rs` (V2.4) | `command_input.rs`, `hitboxes.rs`, `attacks.rs` |
 | `skills` | `definitions.rs`, `unlock.rs`, `cooldowns.rs`, `execution.rs` | `systems.rs` |
 | `magic` | `elements.rs` | `casting.rs`, `projectiles.rs` |
@@ -71,6 +71,15 @@ Com `n3`, `app::build_for_protagonist` lê a arte de
 (atlas com amostragem *nearest*). Estados sem clipe mostram o idle, e
 `VisualPlayback::placeholder_for` guarda o clipe que faltou. Detalhes:
 `docs/development/n3_8/N3_8_CORRIDA_PRODUCAO.md`.
+
+**N4-A — máquina de sprites (prova isolada):** `player::visual::composition`
+(puro) lê um personagem em camadas de um RON (peças, camadas, ordem,
+ocultação, variantes, exceções de ordem por clipe) e resolve as camadas de
+um clipe e quadro. `player::visual::composite` (Bevy) cria um sprite por
+slot de camada e aponta todos para o mesmo `VisualPlayback` (`frame` e
+`flip`, preenchidos por `animate_player_visual`): um relógio só. Ainda não
+é usado pelo jogo; a prova é `cargo run --example n4_sprite_machine`.
+Detalhes: `docs/development/n4/N4A_ARQUITETURA.md`.
 
 ## Ordem de um frame
 
