@@ -1,5 +1,6 @@
 // N4-A sprite machine: the N3.5 protagonist as independent layers (isolated
-// proof; NOT the production art, NOT read by `cargo run`).
+// proof; NOT the production art, NOT read by `cargo run`). N4-1 (C1) adds the
+// run frames #0, #2 and #4 (`run_c1`), built by build_run_layers.py.
 //
 // Every layer PNG has the original 80x128 canvas and the (40, 118) pivot.
 // The visible texels of the layers are a partition of the approved idle
@@ -13,34 +14,72 @@
     id: "protagonist_n4a",
     clips: {
         "idle": (cell: (80, 128), pivot: (40.0, 118.0), density: 2, frames: 1),
-        // Prepared, not built in N4-A: the run uses 112x128, pivot (56, 118),
-        // 6 frames. Its sheets will be added per part in a later phase.
+        // N4-1 C1: the approved run frames #0, #2 and #4 (video 48, 52, 56)
+        // on the run canvas. Frame k of this clip is run6 frame 2k. The
+        // full 6-frame `run` clip waits for the owner's approval of C1.
+        "run_c1": (cell: (112, 128), pivot: (56.0, 118.0), density: 2, frames: 3),
     },
-    // Back to front (the index is the z).
-    layers: ["body", "trousers", "boots", "arm_front", "shirt", "bracers", "hair_back", "hair_front"],
+    // Back to front (the index is the z). The six `*_back` layers and
+    // `shirt_torso` only exist in the run (far limbs behind the body, the
+    // shirt behind the near arm); the idle layers keep their relative order.
+    layers: [
+        "body_back", "trousers_back", "boots_back", "sleeve_back", "bracers_back",
+        "body", "trousers", "boots", "shirt_torso", "arm_front", "shirt", "bracers",
+        "hair_back", "hair_front",
+    ],
     parts: {
         // Neutral anatomical body: torso, head, legs and feet behind the
         // clothes, and the front arm, which hangs in front of the trousers
         // and under the sleeve.
         "body": (region: Body, removable: false, pieces: [
-            (layer: "body", sheets: { "idle": (texture: "parts/idle/body.png") }),
-            (layer: "arm_front", sheets: { "idle": (texture: "parts/idle/arm_front.png") }),
+            (layer: "body_back", sheets: { "run_c1": (texture: "parts/run_c1/body_back.png", columns: 3) }),
+            (layer: "body", sheets: {
+                "idle": (texture: "parts/idle/body.png"),
+                "run_c1": (texture: "parts/run_c1/body.png", columns: 3),
+            }),
+            (layer: "arm_front", sheets: {
+                "idle": (texture: "parts/idle/arm_front.png"),
+                "run_c1": (texture: "parts/run_c1/arm_front.png", columns: 3),
+            }),
         ]),
         "hair": (region: HairBack, pieces: [
-            (layer: "hair_back", sheets: { "idle": (texture: "parts/idle/hair_back.png") }),
-            (layer: "hair_front", sheets: { "idle": (texture: "parts/idle/hair_front.png") }),
+            (layer: "hair_back", sheets: {
+                "idle": (texture: "parts/idle/hair_back.png"),
+                "run_c1": (texture: "parts/run_c1/hair_back.png", columns: 3),
+            }),
+            (layer: "hair_front", sheets: {
+                "idle": (texture: "parts/idle/hair_front.png"),
+                "run_c1": (texture: "parts/run_c1/hair_front.png", columns: 3),
+            }),
         ]),
         "shirt": (region: Shirt, pieces: [
-            (layer: "shirt", sheets: { "idle": (texture: "parts/idle/shirt.png") }),
+            (layer: "sleeve_back", sheets: { "run_c1": (texture: "parts/run_c1/sleeve_back.png", columns: 3) }),
+            (layer: "shirt_torso", sheets: { "run_c1": (texture: "parts/run_c1/shirt_torso.png", columns: 3) }),
+            (layer: "shirt", sheets: {
+                "idle": (texture: "parts/idle/shirt.png"),
+                "run_c1": (texture: "parts/run_c1/shirt.png", columns: 3),
+            }),
         ]),
         "trousers": (region: Trousers, pieces: [
-            (layer: "trousers", sheets: { "idle": (texture: "parts/idle/trousers.png") }),
+            (layer: "trousers_back", sheets: { "run_c1": (texture: "parts/run_c1/trousers_back.png", columns: 3) }),
+            (layer: "trousers", sheets: {
+                "idle": (texture: "parts/idle/trousers.png"),
+                "run_c1": (texture: "parts/run_c1/trousers.png", columns: 3),
+            }),
         ]),
         "boots": (region: Boots, pieces: [
-            (layer: "boots", sheets: { "idle": (texture: "parts/idle/boots.png") }),
+            (layer: "boots_back", sheets: { "run_c1": (texture: "parts/run_c1/boots_back.png", columns: 3) }),
+            (layer: "boots", sheets: {
+                "idle": (texture: "parts/idle/boots.png"),
+                "run_c1": (texture: "parts/run_c1/boots.png", columns: 3),
+            }),
         ]),
         "bracers": (region: Bracers, pieces: [
-            (layer: "bracers", sheets: { "idle": (texture: "parts/idle/bracers.png") }),
+            (layer: "bracers_back", sheets: { "run_c1": (texture: "parts/run_c1/bracers_back.png", columns: 3) }),
+            (layer: "bracers", sheets: {
+                "idle": (texture: "parts/idle/bracers.png"),
+                "run_c1": (texture: "parts/run_c1/bracers.png", columns: 3),
+            }),
         ]),
     },
     default_outfit: ["hair", "shirt", "trousers", "boots", "bracers"],

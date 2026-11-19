@@ -144,8 +144,31 @@ fn the_proof_composition_loads_with_the_n35_canvas_and_pivot() {
     assert_eq!(idle.density, 2);
     assert_eq!(idle.frames, 1);
     assert_eq!(c.base_part(), Some("body"));
+    // N4-1 added six run-only layers; the idle layers keep their order.
     assert_eq!(
         c.layers,
+        [
+            "body_back",
+            "trousers_back",
+            "boots_back",
+            "sleeve_back",
+            "bracers_back",
+            "body",
+            "trousers",
+            "boots",
+            "shirt_torso",
+            "arm_front",
+            "shirt",
+            "bracers",
+            "hair_back",
+            "hair_front"
+        ]
+    );
+    let idle_layers =
+        resolve(&c, &Outfit::default_for(&c), "idle", 0).unwrap_or_else(|e| panic!("{e}"));
+    let idle_order: Vec<&str> = idle_layers.iter().map(|d| d.layer.as_str()).collect();
+    assert_eq!(
+        idle_order,
         [
             "body",
             "trousers",
@@ -170,7 +193,9 @@ fn the_proof_composition_loads_with_the_n35_canvas_and_pivot() {
     // Every layer texture: same canvas as the clip, palette keys only.
     for part in c.parts.values() {
         for piece in &part.pieces {
-            let sheet = &piece.sheets["idle"];
+            let Some(sheet) = piece.sheets.get("idle") else {
+                continue; // run-only layer (tests/n4c_run_c1_tests.rs)
+            };
             assert_eq!(png_size(&stage().join(&sheet.texture)), (80, 128));
             let g = layer_grid(&sheet.texture);
             assert!(
@@ -223,7 +248,8 @@ fn each_piece_is_independent_and_leaves_no_hole() {
         let own: Vec<Grid> = c.parts[id]
             .pieces
             .iter()
-            .map(|p| layer_grid(&p.sheets["idle"].texture))
+            .filter_map(|p| p.sheets.get("idle"))
+            .map(|sheet| layer_grid(&sheet.texture))
             .collect();
         for (x, y) in differences(&full, &without) {
             assert!(
