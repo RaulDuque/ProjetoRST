@@ -78,7 +78,8 @@ Novos: `art-src/n4-sprite-machine/scripts/factory.py`, `factory_report.py`, `scr
 - `7af3f98` test(player): validate the generated factory equipment
 - `31f45d5` feat(data): add two factory items made from data only (**só dados**: nenhum `.rs`/`.py`)
 - `4bde1d2` feat(visual): add factory quality, diversity and evidence reports
-- e os commits de documentação que gravam este relatório.
+- `626aee5` docs(architecture), `689aad8` docs(claude), `79831af` docs(tutorials), `995980d` docs(n4)
+- `d6a97ec` test(visual): treat the factory proof catalogue as a floor — **correção**: o commit `31f45d5` quebrou o teste Python que exigia exatamente 40 receitas (passaram a ser 42); só detectado depois dele. Nos commits intermediários `31f45d5`..`995980d` esse teste falha; os testes Rust passam em todos.
 
 ## 25. Estado do Git
 Branch `art/v1.2-protagonist` à frente de `origin/art/v1.2-protagonist`, sem push. Não rastreados: só os arquivos pessoais de `Md-usario/`.
