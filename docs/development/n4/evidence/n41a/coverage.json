@@ -1,0 +1,132 @@
+{
+  "blackened_breastplate": {
+    "family": "torso_plate",
+    "hide_layers": {},
+    "frames": {
+      "idle#0": {
+        "item_texels": 103,
+        "holes_with_its_rules": 0,
+        "hidden_texels": 0,
+        "hidden_not_covered": 0,
+        "exposed_if_it_hid_the_torso_shirt": 194
+      },
+      "run_c1#0": {
+        "item_texels": 232,
+        "holes_with_its_rules": 0,
+        "hidden_texels": 0,
+        "hidden_not_covered": 0,
+        "exposed_if_it_hid_the_torso_shirt": 32
+      },
+      "run_c1#1": {
+        "item_texels": 294,
+        "holes_with_its_rules": 0,
+        "hidden_texels": 0,
+        "hidden_not_covered": 0,
+        "exposed_if_it_hid_the_torso_shirt": 87
+      },
+      "run_c1#2": {
+        "item_texels": 304,
+        "holes_with_its_rules": 0,
+        "hidden_texels": 0,
+        "hidden_not_covered": 0,
+        "exposed_if_it_hid_the_torso_shirt": 68
+      }
+    }
+  },
+  "iron_cuirass": {
+    "family": "torso_plate",
+    "hide_layers": {
+      "run_c1": [
+        "shirt_torso"
+      ]
+    },
+    "frames": {
+      "idle#0": {
+        "item_texels": 154,
+        "holes_with_its_rules": 0,
+        "hidden_texels": 0,
+        "hidden_not_covered": 0,
+        "exposed_if_it_hid_the_torso_shirt": 143
+      },
+      "run_c1#0": {
+        "item_texels": 361,
+        "holes_with_its_rules": 0,
+        "hidden_texels": 166,
+        "hidden_not_covered": 0,
+        "exposed_if_it_hid_the_torso_shirt": 0
+      },
+      "run_c1#1": {
+        "item_texels": 399,
+        "holes_with_its_rules": 0,
+        "hidden_texels": 242,
+        "hidden_not_covered": 0,
+        "exposed_if_it_hid_the_torso_shirt": 0
+      },
+      "run_c1#2": {
+        "item_texels": 432,
+        "holes_with_its_rules": 0,
+        "hidden_texels": 294,
+        "hidden_not_covered": 0,
+        "exposed_if_it_hid_the_torso_shirt": 0
+      }
+    }
+  },
+  "bevy_pixel_check": {
+    "bevy_n41a_idle_blackened_breastplate": {
+      "pixels": 163840,
+      "different": 0
+    },
+    "bevy_n41a_idle_iron_cuirass": {
+      "pixels": 163840,
+      "different": 0
+    },
+    "bevy_n41a_idle_mirrored_iron_cuirass": {
+      "pixels": 163840,
+      "different": 0
+    },
+    "bevy_n41a_idle_none": {
+      "pixels": 163840,
+      "different": 0
+    },
+    "bevy_n41a_run_f0_blackened_breastplate": {
+      "pixels": 229376,
+      "different": 0
+    },
+    "bevy_n41a_run_f0_iron_cuirass": {
+      "pixels": 229376,
+      "different": 0
+    },
+    "bevy_n41a_run_f0_none": {
+      "pixels": 229376,
+      "different": 0
+    },
+    "bevy_n41a_run_f2_blackened_breastplate": {
+      "pixels": 229376,
+      "different": 0
+    },
+    "bevy_n41a_run_f2_iron_cuirass": {
+      "pixels": 229376,
+      "different": 0
+    },
+    "bevy_n41a_run_f2_none": {
+      "pixels": 229376,
+      "different": 0
+    },
+    "bevy_n41a_run_f4_blackened_breastplate": {
+      "pixels": 229376,
+      "different": 0
+    },
+    "bevy_n41a_run_f4_iron_cuirass": {
+      "pixels": 229376,
+      "different": 0
+    },
+    "bevy_n41a_run_f4_none": {
+      "pixels": 229376,
+      "different": 0
+    },
+    "bevy_n41a_run_mirrored_iron_cuirass": {
+      "pixels": 229376,
+      "different": 0
+    }
+  }
+}
