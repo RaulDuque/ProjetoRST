@@ -1,0 +1,146 @@
+{
+ "bevy_n41b_idle_brigandine_coat_blackened_steel": {
+  "different": 0,
+  "pixels": 163840
+ },
+ "bevy_n41b_idle_brigandine_coat_bronze": {
+  "different": 0,
+  "pixels": 163840
+ },
+ "bevy_n41b_idle_brigandine_coat_hardened_leather": {
+  "different": 0,
+  "pixels": 163840
+ },
+ "bevy_n41b_idle_brigandine_coat_iron": {
+  "different": 0,
+  "pixels": 163840
+ },
+ "bevy_n41b_idle_mirrored_brigandine_coat_blackened_steel": {
+  "different": 0,
+  "pixels": 163840
+ },
+ "bevy_n41b_idle_none": {
+  "different": 0,
+  "pixels": 163840
+ },
+ "bevy_n41b_idle_ridged_breastplate_blackened_steel": {
+  "different": 0,
+  "pixels": 163840
+ },
+ "bevy_n41b_idle_ridged_breastplate_bronze": {
+  "different": 0,
+  "pixels": 163840
+ },
+ "bevy_n41b_idle_ridged_breastplate_gilded_steel": {
+  "different": 0,
+  "pixels": 163840
+ },
+ "bevy_n41b_idle_ridged_breastplate_hardened_leather": {
+  "different": 0,
+  "pixels": 163840
+ },
+ "bevy_n41b_idle_ridged_breastplate_iron": {
+  "different": 0,
+  "pixels": 163840
+ },
+ "bevy_n41b_idle_scale_hauberk_blackened_steel": {
+  "different": 0,
+  "pixels": 163840
+ },
+ "bevy_n41b_idle_scale_hauberk_bronze": {
+  "different": 0,
+  "pixels": 163840
+ },
+ "bevy_n41b_idle_scale_hauberk_gilded_steel": {
+  "different": 0,
+  "pixels": 163840
+ },
+ "bevy_n41b_idle_scale_hauberk_hardened_leather": {
+  "different": 0,
+  "pixels": 163840
+ },
+ "bevy_n41b_idle_scale_hauberk_iron": {
+  "different": 0,
+  "pixels": 163840
+ },
+ "bevy_n41b_idle_segmented_cuirass_blackened_steel": {
+  "different": 0,
+  "pixels": 163840
+ },
+ "bevy_n41b_idle_segmented_cuirass_bronze": {
+  "different": 0,
+  "pixels": 163840
+ },
+ "bevy_n41b_idle_segmented_cuirass_hardened_leather": {
+  "different": 0,
+  "pixels": 163840
+ },
+ "bevy_n41b_idle_segmented_cuirass_iron": {
+  "different": 0,
+  "pixels": 163840
+ },
+ "bevy_n41b_run_c1_mirrored_segmented_cuirass_blackened_steel": {
+  "different": 0,
+  "pixels": 229376
+ },
+ "bevy_n41b_run_f0_none": {
+  "different": 0,
+  "pixels": 229376
+ },
+ "bevy_n41b_run_f0_segmented_cuirass_blackened_steel": {
+  "different": 0,
+  "pixels": 229376
+ },
+ "bevy_n41b_run_f0_segmented_cuirass_bronze": {
+  "different": 0,
+  "pixels": 229376
+ },
+ "bevy_n41b_run_f0_segmented_cuirass_hardened_leather": {
+  "different": 0,
+  "pixels": 229376
+ },
+ "bevy_n41b_run_f0_segmented_cuirass_iron": {
+  "different": 0,
+  "pixels": 229376
+ },
+ "bevy_n41b_run_f2_none": {
+  "different": 0,
+  "pixels": 229376
+ },
+ "bevy_n41b_run_f2_segmented_cuirass_blackened_steel": {
+  "different": 0,
+  "pixels": 229376
+ },
+ "bevy_n41b_run_f2_segmented_cuirass_bronze": {
+  "different": 0,
+  "pixels": 229376
+ },
+ "bevy_n41b_run_f2_segmented_cuirass_hardened_leather": {
+  "different": 0,
+  "pixels": 229376
+ },
+ "bevy_n41b_run_f2_segmented_cuirass_iron": {
+  "different": 0,
+  "pixels": 229376
+ },
+ "bevy_n41b_run_f4_none": {
+  "different": 0,
+  "pixels": 229376
+ },
+ "bevy_n41b_run_f4_segmented_cuirass_blackened_steel": {
+  "different": 0,
+  "pixels": 229376
+ },
+ "bevy_n41b_run_f4_segmented_cuirass_bronze": {
+  "different": 0,
+  "pixels": 229376
+ },
+ "bevy_n41b_run_f4_segmented_cuirass_hardened_leather": {
+  "different": 0,
+  "pixels": 229376
+ },
+ "bevy_n41b_run_f4_segmented_cuirass_iron": {
+  "different": 0,
+  "pixels": 229376
+ }
+}

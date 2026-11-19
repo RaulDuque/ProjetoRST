@@ -1,0 +1,9 @@
+{
+ "differ_between_runs": [],
+ "differ_from_stage": [],
+ "files": 204,
+ "generator_version": "n41b-1",
+ "identical": true,
+ "run_a_seconds": 0.402,
+ "run_b_seconds": 0.346
+}

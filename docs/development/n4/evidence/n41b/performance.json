@@ -1,0 +1,43 @@
+{
+ "by_kind": {
+  "art": {
+   "bytes": 376507,
+   "files": 44
+  },
+  "batch_report.json": {
+   "bytes": 16799,
+   "files": 1
+  },
+  "isolated": {
+   "bytes": 59062,
+   "files": 48
+  },
+  "items": {
+   "bytes": 9639,
+   "files": 18
+  },
+  "preview": {
+   "bytes": 276279,
+   "files": 36
+  },
+  "provenance": {
+   "bytes": 166543,
+   "files": 42
+  },
+  "relief": {
+   "bytes": 7594,
+   "files": 16
+  }
+ },
+ "bytes": 912423,
+ "composition_cost": "+1 sprite (the armor_torso slot) per worn item; switching items = Outfit::wear + one texture handle swap in sync_composite_layers (no generation at runtime)",
+ "files": 205,
+ "generation_seconds_full_batch_fresh": 0.402,
+ "generation_seconds_per_item_mean": 0.0096,
+ "generator_peak_rss_mib": 36.3,
+ "not_measured": "Bevy load time and frame cost were not profiled (isolated proof, 16 + 3x4 captures ran without frame drops observed; no profiler attached)",
+ "runtime_textures": {
+  "bytes": 17339,
+  "files": 22
+ }
+}

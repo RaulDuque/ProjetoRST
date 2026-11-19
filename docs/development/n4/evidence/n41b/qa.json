@@ -1,0 +1,794 @@
+{
+ "items": {
+  "brigandine_coat_blackened_steel": {
+   "artistic_warnings": [
+    "detail skipped: brigandine_coat:idle:0: buckle: 1/1 stamp(s) skipped (do not fit inside the mask)",
+    "detail skipped: brigandine_coat:idle:0: rivet: 3/6 stamp(s) skipped (do not fit inside the mask)",
+    "detail skipped: brigandine_coat:run_c1:1: buckle: 1/1 stamp(s) skipped (do not fit inside the mask)",
+    "detail skipped: brigandine_coat:run_c1:1: rivet: 8/21 stamp(s) skipped (do not fit inside the mask)",
+    "known issue: torso: no idle a camisa e a manga s\u00e3o uma camada s\u00f3; o peitoral aparece em duas faixas estreitas em volta da manga"
+   ],
+   "stats": {
+    "idle": {
+     "colours": 8,
+     "main_tones": 7,
+     "texels": 188,
+     "top_colour_share": 0.356
+    },
+    "preview": {
+     "colours": 7,
+     "main_tones": 6,
+     "texels": 414,
+     "top_colour_share": 0.307
+    }
+   },
+   "technical_errors": [],
+   "verdict": "REVIEW"
+  },
+  "brigandine_coat_bronze": {
+   "artistic_warnings": [
+    "detail skipped: brigandine_coat:idle:0: buckle: 1/1 stamp(s) skipped (do not fit inside the mask)",
+    "detail skipped: brigandine_coat:idle:0: rivet: 3/6 stamp(s) skipped (do not fit inside the mask)",
+    "detail skipped: brigandine_coat:run_c1:1: buckle: 1/1 stamp(s) skipped (do not fit inside the mask)",
+    "detail skipped: brigandine_coat:run_c1:1: rivet: 8/21 stamp(s) skipped (do not fit inside the mask)",
+    "known issue: torso: no idle a camisa e a manga s\u00e3o uma camada s\u00f3; o peitoral aparece em duas faixas estreitas em volta da manga"
+   ],
+   "stats": {
+    "idle": {
+     "colours": 8,
+     "main_tones": 7,
+     "texels": 188,
+     "top_colour_share": 0.356
+    },
+    "preview": {
+     "colours": 8,
+     "main_tones": 7,
+     "texels": 414,
+     "top_colour_share": 0.307
+    }
+   },
+   "technical_errors": [],
+   "verdict": "REVIEW"
+  },
+  "brigandine_coat_hardened_leather": {
+   "artistic_warnings": [
+    "detail skipped: brigandine_coat:idle:0: buckle: 1/1 stamp(s) skipped (do not fit inside the mask)",
+    "detail skipped: brigandine_coat:idle:0: rivet: 3/6 stamp(s) skipped (do not fit inside the mask)",
+    "detail skipped: brigandine_coat:run_c1:1: buckle: 1/1 stamp(s) skipped (do not fit inside the mask)",
+    "detail skipped: brigandine_coat:run_c1:1: rivet: 8/21 stamp(s) skipped (do not fit inside the mask)",
+    "known issue: torso: no idle a camisa e a manga s\u00e3o uma camada s\u00f3; o peitoral aparece em duas faixas estreitas em volta da manga"
+   ],
+   "stats": {
+    "idle": {
+     "colours": 8,
+     "main_tones": 6,
+     "texels": 188,
+     "top_colour_share": 0.324
+    },
+    "preview": {
+     "colours": 8,
+     "main_tones": 6,
+     "texels": 414,
+     "top_colour_share": 0.3
+    }
+   },
+   "technical_errors": [],
+   "verdict": "REVIEW"
+  },
+  "brigandine_coat_iron": {
+   "artistic_warnings": [
+    "detail skipped: brigandine_coat:idle:0: buckle: 1/1 stamp(s) skipped (do not fit inside the mask)",
+    "detail skipped: brigandine_coat:idle:0: rivet: 3/6 stamp(s) skipped (do not fit inside the mask)",
+    "detail skipped: brigandine_coat:run_c1:1: buckle: 1/1 stamp(s) skipped (do not fit inside the mask)",
+    "detail skipped: brigandine_coat:run_c1:1: rivet: 8/21 stamp(s) skipped (do not fit inside the mask)",
+    "known issue: torso: no idle a camisa e a manga s\u00e3o uma camada s\u00f3; o peitoral aparece em duas faixas estreitas em volta da manga"
+   ],
+   "stats": {
+    "idle": {
+     "colours": 8,
+     "main_tones": 7,
+     "texels": 188,
+     "top_colour_share": 0.356
+    },
+    "preview": {
+     "colours": 7,
+     "main_tones": 6,
+     "texels": 414,
+     "top_colour_share": 0.292
+    }
+   },
+   "technical_errors": [],
+   "verdict": "REVIEW"
+  },
+  "cape_long_ash_grey": {
+   "artistic_warnings": [],
+   "stats": {
+    "isolated": {
+     "colours": 16,
+     "main_tones": 6,
+     "texels": 813,
+     "top_colour_share": 0.25
+    }
+   },
+   "technical_errors": [],
+   "verdict": "TECHNICALLY_VALID"
+  },
+  "cape_long_crimson": {
+   "artistic_warnings": [],
+   "stats": {
+    "isolated": {
+     "colours": 12,
+     "main_tones": 6,
+     "texels": 813,
+     "top_colour_share": 0.255
+    }
+   },
+   "technical_errors": [],
+   "verdict": "TECHNICALLY_VALID"
+  },
+  "cape_long_moss_green": {
+   "artistic_warnings": [],
+   "stats": {
+    "isolated": {
+     "colours": 16,
+     "main_tones": 6,
+     "texels": 813,
+     "top_colour_share": 0.247
+    }
+   },
+   "technical_errors": [],
+   "verdict": "TECHNICALLY_VALID"
+  },
+  "cape_long_royal_blue": {
+   "artistic_warnings": [],
+   "stats": {
+    "isolated": {
+     "colours": 15,
+     "main_tones": 6,
+     "texels": 813,
+     "top_colour_share": 0.236
+    }
+   },
+   "technical_errors": [],
+   "verdict": "TECHNICALLY_VALID"
+  },
+  "mantle_ash_grey_hardened_leather": {
+   "artistic_warnings": [
+    "isolated: one colour covers 46% of the item (flat fill)",
+    "known issue: fur_mantle: gola de pelagem l\u00ea como faixa de textura, sem tufos caindo sobre o ombro; silhueta ainda parecida com saia \u2014 revisar (agente)"
+   ],
+   "stats": {
+    "isolated": {
+     "colours": 14,
+     "main_tones": 5,
+     "texels": 725,
+     "top_colour_share": 0.461
+    }
+   },
+   "technical_errors": [],
+   "verdict": "REVIEW"
+  },
+  "mantle_crimson_wolf_fur": {
+   "artistic_warnings": [
+    "isolated: one colour covers 46% of the item (flat fill)",
+    "known issue: fur_mantle: gola de pelagem l\u00ea como faixa de textura, sem tufos caindo sobre o ombro; silhueta ainda parecida com saia \u2014 revisar (agente)"
+   ],
+   "stats": {
+    "isolated": {
+     "colours": 11,
+     "main_tones": 5,
+     "texels": 725,
+     "top_colour_share": 0.463
+    }
+   },
+   "technical_errors": [],
+   "verdict": "REVIEW"
+  },
+  "mantle_moss_green_wolf_fur": {
+   "artistic_warnings": [
+    "isolated: one colour covers 45% of the item (flat fill)",
+    "known issue: fur_mantle: gola de pelagem l\u00ea como faixa de textura, sem tufos caindo sobre o ombro; silhueta ainda parecida com saia \u2014 revisar (agente)"
+   ],
+   "stats": {
+    "isolated": {
+     "colours": 12,
+     "main_tones": 5,
+     "texels": 725,
+     "top_colour_share": 0.451
+    }
+   },
+   "technical_errors": [],
+   "verdict": "REVIEW"
+  },
+  "mantle_royal_blue_wolf_fur": {
+   "artistic_warnings": [
+    "isolated: one colour covers 41% of the item (flat fill)",
+    "known issue: fur_mantle: gola de pelagem l\u00ea como faixa de textura, sem tufos caindo sobre o ombro; silhueta ainda parecida com saia \u2014 revisar (agente)"
+   ],
+   "stats": {
+    "isolated": {
+     "colours": 14,
+     "main_tones": 5,
+     "texels": 725,
+     "top_colour_share": 0.406
+    }
+   },
+   "technical_errors": [],
+   "verdict": "REVIEW"
+  },
+  "pauldron_blackened_steel": {
+   "artistic_warnings": [
+    "known issue: plate_pauldron: vista isolada sem o ombro de refer\u00eancia e sem correia de fixa\u00e7\u00e3o; com desgaste (wear) o ferro fica ruidoso \u2014 revisar (agente)"
+   ],
+   "stats": {
+    "isolated": {
+     "colours": 10,
+     "main_tones": 6,
+     "texels": 712,
+     "top_colour_share": 0.295
+    }
+   },
+   "technical_errors": [],
+   "verdict": "REVIEW"
+  },
+  "pauldron_bronze": {
+   "artistic_warnings": [
+    "detail skipped: plate_pauldron: rivet: 2/6 stamp(s) skipped (do not fit inside the mask)",
+    "known issue: plate_pauldron: vista isolada sem o ombro de refer\u00eancia e sem correia de fixa\u00e7\u00e3o; com desgaste (wear) o ferro fica ruidoso \u2014 revisar (agente)"
+   ],
+   "stats": {
+    "isolated": {
+     "colours": 10,
+     "main_tones": 6,
+     "texels": 712,
+     "top_colour_share": 0.291
+    }
+   },
+   "technical_errors": [],
+   "verdict": "REVIEW"
+  },
+  "pauldron_iron": {
+   "artistic_warnings": [
+    "detail skipped: plate_pauldron: rivet: 2/6 stamp(s) skipped (do not fit inside the mask)",
+    "known issue: plate_pauldron: vista isolada sem o ombro de refer\u00eancia e sem correia de fixa\u00e7\u00e3o; com desgaste (wear) o ferro fica ruidoso \u2014 revisar (agente)"
+   ],
+   "stats": {
+    "isolated": {
+     "colours": 10,
+     "main_tones": 6,
+     "texels": 712,
+     "top_colour_share": 0.279
+    }
+   },
+   "technical_errors": [],
+   "verdict": "REVIEW"
+  },
+  "pauldron_steel": {
+   "artistic_warnings": [
+    "known issue: plate_pauldron: vista isolada sem o ombro de refer\u00eancia e sem correia de fixa\u00e7\u00e3o; com desgaste (wear) o ferro fica ruidoso \u2014 revisar (agente)"
+   ],
+   "stats": {
+    "isolated": {
+     "colours": 11,
+     "main_tones": 7,
+     "texels": 712,
+     "top_colour_share": 0.257
+    }
+   },
+   "technical_errors": [],
+   "verdict": "REVIEW"
+  },
+  "ridged_breastplate_blackened_steel": {
+   "artistic_warnings": [
+    "detail skipped: ridged_breastplate:idle:0: emblem_sun: 1/1 stamp(s) skipped (do not fit inside the mask)",
+    "known issue: torso: no idle a camisa e a manga s\u00e3o uma camada s\u00f3; o peitoral aparece em duas faixas estreitas em volta da manga"
+   ],
+   "stats": {
+    "idle": {
+     "colours": 9,
+     "main_tones": 6,
+     "texels": 108,
+     "top_colour_share": 0.398
+    },
+    "preview": {
+     "colours": 12,
+     "main_tones": 7,
+     "texels": 314,
+     "top_colour_share": 0.287
+    }
+   },
+   "technical_errors": [],
+   "verdict": "REVIEW"
+  },
+  "ridged_breastplate_bronze": {
+   "artistic_warnings": [
+    "idle: one colour covers 41% of the item (flat fill)",
+    "known issue: torso: no idle a camisa e a manga s\u00e3o uma camada s\u00f3; o peitoral aparece em duas faixas estreitas em volta da manga"
+   ],
+   "stats": {
+    "idle": {
+     "colours": 9,
+     "main_tones": 6,
+     "texels": 108,
+     "top_colour_share": 0.407
+    },
+    "preview": {
+     "colours": 11,
+     "main_tones": 7,
+     "texels": 314,
+     "top_colour_share": 0.296
+    }
+   },
+   "technical_errors": [],
+   "verdict": "REVIEW"
+  },
+  "ridged_breastplate_gilded_steel": {
+   "artistic_warnings": [
+    "detail skipped: ridged_breastplate:idle:0: emblem_tower: 1/1 stamp(s) skipped (do not fit inside the mask)",
+    "known issue: torso: no idle a camisa e a manga s\u00e3o uma camada s\u00f3; o peitoral aparece em duas faixas estreitas em volta da manga"
+   ],
+   "stats": {
+    "idle": {
+     "colours": 8,
+     "main_tones": 5,
+     "texels": 108,
+     "top_colour_share": 0.398
+    },
+    "preview": {
+     "colours": 11,
+     "main_tones": 7,
+     "texels": 314,
+     "top_colour_share": 0.274
+    }
+   },
+   "technical_errors": [],
+   "verdict": "REVIEW"
+  },
+  "ridged_breastplate_hardened_leather": {
+   "artistic_warnings": [
+    "known issue: torso: no idle a camisa e a manga s\u00e3o uma camada s\u00f3; o peitoral aparece em duas faixas estreitas em volta da manga"
+   ],
+   "stats": {
+    "idle": {
+     "colours": 10,
+     "main_tones": 6,
+     "texels": 108,
+     "top_colour_share": 0.37
+    },
+    "preview": {
+     "colours": 10,
+     "main_tones": 6,
+     "texels": 314,
+     "top_colour_share": 0.315
+    }
+   },
+   "technical_errors": [],
+   "verdict": "REVIEW"
+  },
+  "ridged_breastplate_iron": {
+   "artistic_warnings": [
+    "known issue: torso: no idle a camisa e a manga s\u00e3o uma camada s\u00f3; o peitoral aparece em duas faixas estreitas em volta da manga"
+   ],
+   "stats": {
+    "idle": {
+     "colours": 10,
+     "main_tones": 6,
+     "texels": 108,
+     "top_colour_share": 0.38
+    },
+    "preview": {
+     "colours": 11,
+     "main_tones": 7,
+     "texels": 314,
+     "top_colour_share": 0.296
+    }
+   },
+   "technical_errors": [],
+   "verdict": "REVIEW"
+  },
+  "scale_hauberk_blackened_steel": {
+   "artistic_warnings": [
+    "detail skipped: scale_hauberk:idle:0: gem: 1/1 stamp(s) skipped (do not fit inside the mask)",
+    "known issue: torso: no idle a camisa e a manga s\u00e3o uma camada s\u00f3; o peitoral aparece em duas faixas estreitas em volta da manga"
+   ],
+   "stats": {
+    "idle": {
+     "colours": 11,
+     "main_tones": 7,
+     "texels": 184,
+     "top_colour_share": 0.397
+    },
+    "preview": {
+     "colours": 15,
+     "main_tones": 7,
+     "texels": 425,
+     "top_colour_share": 0.216
+    }
+   },
+   "technical_errors": [],
+   "verdict": "REVIEW"
+  },
+  "scale_hauberk_bronze": {
+   "artistic_warnings": [
+    "known issue: torso: no idle a camisa e a manga s\u00e3o uma camada s\u00f3; o peitoral aparece em duas faixas estreitas em volta da manga"
+   ],
+   "stats": {
+    "idle": {
+     "colours": 11,
+     "main_tones": 7,
+     "texels": 184,
+     "top_colour_share": 0.397
+    },
+    "preview": {
+     "colours": 11,
+     "main_tones": 7,
+     "texels": 425,
+     "top_colour_share": 0.219
+    }
+   },
+   "technical_errors": [],
+   "verdict": "REVIEW"
+  },
+  "scale_hauberk_gilded_steel": {
+   "artistic_warnings": [
+    "detail skipped: scale_hauberk:idle:0: emblem_tower: 1/1 stamp(s) skipped (do not fit inside the mask)",
+    "known issue: torso: no idle a camisa e a manga s\u00e3o uma camada s\u00f3; o peitoral aparece em duas faixas estreitas em volta da manga"
+   ],
+   "stats": {
+    "idle": {
+     "colours": 11,
+     "main_tones": 7,
+     "texels": 184,
+     "top_colour_share": 0.391
+    },
+    "preview": {
+     "colours": 15,
+     "main_tones": 7,
+     "texels": 425,
+     "top_colour_share": 0.221
+    }
+   },
+   "technical_errors": [],
+   "verdict": "REVIEW"
+  },
+  "scale_hauberk_hardened_leather": {
+   "artistic_warnings": [
+    "known issue: torso: no idle a camisa e a manga s\u00e3o uma camada s\u00f3; o peitoral aparece em duas faixas estreitas em volta da manga"
+   ],
+   "stats": {
+    "idle": {
+     "colours": 10,
+     "main_tones": 6,
+     "texels": 184,
+     "top_colour_share": 0.364
+    },
+    "preview": {
+     "colours": 10,
+     "main_tones": 6,
+     "texels": 425,
+     "top_colour_share": 0.249
+    }
+   },
+   "technical_errors": [],
+   "verdict": "REVIEW"
+  },
+  "scale_hauberk_iron": {
+   "artistic_warnings": [
+    "detail skipped: scale_hauberk:idle:0: gem: 1/1 stamp(s) skipped (do not fit inside the mask)",
+    "known issue: torso: no idle a camisa e a manga s\u00e3o uma camada s\u00f3; o peitoral aparece em duas faixas estreitas em volta da manga"
+   ],
+   "stats": {
+    "idle": {
+     "colours": 11,
+     "main_tones": 7,
+     "texels": 184,
+     "top_colour_share": 0.386
+    },
+    "preview": {
+     "colours": 15,
+     "main_tones": 7,
+     "texels": 425,
+     "top_colour_share": 0.219
+    }
+   },
+   "technical_errors": [],
+   "verdict": "REVIEW"
+  },
+  "segmented_cuirass_blackened_steel": {
+   "artistic_warnings": [
+    "idle: one colour covers 46% of the item (flat fill)",
+    "detail skipped: segmented_cuirass:idle:0: emblem_wolf: 1/1 stamp(s) skipped (do not fit inside the mask)",
+    "detail skipped: segmented_cuirass:idle:0: rivet: 2/2 stamp(s) skipped (do not fit inside the mask)",
+    "known issue: torso: na pose de corrida o tronco vis\u00edvel \u00e9 estreito (bra\u00e7o da frente e manga de tr\u00e1s por cima); a pe\u00e7a cobre s\u00f3 a faixa entre os bra\u00e7os"
+   ],
+   "stats": {
+    "idle": {
+     "colours": 10,
+     "main_tones": 6,
+     "texels": 154,
+     "top_colour_share": 0.461
+    },
+    "preview": {
+     "colours": 12,
+     "main_tones": 7,
+     "texels": 399,
+     "top_colour_share": 0.238
+    },
+    "run_c1": {
+     "colours": 12,
+     "main_tones": 7,
+     "texels": 1192,
+     "top_colour_share": 0.223
+    }
+   },
+   "technical_errors": [],
+   "verdict": "REVIEW"
+  },
+  "segmented_cuirass_bronze": {
+   "artistic_warnings": [
+    "idle: one colour covers 46% of the item (flat fill)",
+    "detail skipped: segmented_cuirass:idle:0: emblem_sun: 1/1 stamp(s) skipped (do not fit inside the mask)",
+    "detail skipped: segmented_cuirass:idle:0: rivet: 2/2 stamp(s) skipped (do not fit inside the mask)",
+    "known issue: torso: na pose de corrida o tronco vis\u00edvel \u00e9 estreito (bra\u00e7o da frente e manga de tr\u00e1s por cima); a pe\u00e7a cobre s\u00f3 a faixa entre os bra\u00e7os"
+   ],
+   "stats": {
+    "idle": {
+     "colours": 10,
+     "main_tones": 6,
+     "texels": 154,
+     "top_colour_share": 0.461
+    },
+    "preview": {
+     "colours": 12,
+     "main_tones": 7,
+     "texels": 399,
+     "top_colour_share": 0.236
+    },
+    "run_c1": {
+     "colours": 12,
+     "main_tones": 7,
+     "texels": 1192,
+     "top_colour_share": 0.223
+    }
+   },
+   "technical_errors": [],
+   "verdict": "REVIEW"
+  },
+  "segmented_cuirass_hardened_leather": {
+   "artistic_warnings": [
+    "idle: one colour covers 41% of the item (flat fill)",
+    "detail skipped: segmented_cuirass:idle:0: rivet: 2/2 stamp(s) skipped (do not fit inside the mask)",
+    "known issue: torso: na pose de corrida o tronco vis\u00edvel \u00e9 estreito (bra\u00e7o da frente e manga de tr\u00e1s por cima); a pe\u00e7a cobre s\u00f3 a faixa entre os bra\u00e7os"
+   ],
+   "stats": {
+    "idle": {
+     "colours": 10,
+     "main_tones": 6,
+     "texels": 154,
+     "top_colour_share": 0.409
+    },
+    "preview": {
+     "colours": 10,
+     "main_tones": 6,
+     "texels": 399,
+     "top_colour_share": 0.236
+    },
+    "run_c1": {
+     "colours": 10,
+     "main_tones": 6,
+     "texels": 1192,
+     "top_colour_share": 0.227
+    }
+   },
+   "technical_errors": [],
+   "verdict": "REVIEW"
+  },
+  "segmented_cuirass_iron": {
+   "artistic_warnings": [
+    "idle: one colour covers 46% of the item (flat fill)",
+    "detail skipped: segmented_cuirass:idle:0: rivet: 2/2 stamp(s) skipped (do not fit inside the mask)",
+    "known issue: torso: na pose de corrida o tronco vis\u00edvel \u00e9 estreito (bra\u00e7o da frente e manga de tr\u00e1s por cima); a pe\u00e7a cobre s\u00f3 a faixa entre os bra\u00e7os"
+   ],
+   "stats": {
+    "idle": {
+     "colours": 10,
+     "main_tones": 6,
+     "texels": 154,
+     "top_colour_share": 0.461
+    },
+    "preview": {
+     "colours": 11,
+     "main_tones": 7,
+     "texels": 399,
+     "top_colour_share": 0.221
+    },
+    "run_c1": {
+     "colours": 11,
+     "main_tones": 7,
+     "texels": 1192,
+     "top_colour_share": 0.207
+    }
+   },
+   "technical_errors": [],
+   "verdict": "REVIEW"
+  },
+  "sword_arming_crescent": {
+   "artistic_warnings": [],
+   "stats": {
+    "isolated": {
+     "colours": 21,
+     "main_tones": 6,
+     "texels": 264,
+     "top_colour_share": 0.17
+    }
+   },
+   "technical_errors": [],
+   "verdict": "TECHNICALLY_VALID"
+  },
+  "sword_arming_cross": {
+   "artistic_warnings": [],
+   "stats": {
+    "isolated": {
+     "colours": 15,
+     "main_tones": 6,
+     "texels": 269,
+     "top_colour_share": 0.182
+    }
+   },
+   "technical_errors": [],
+   "verdict": "TECHNICALLY_VALID"
+  },
+  "sword_arming_ring": {
+   "artistic_warnings": [],
+   "stats": {
+    "isolated": {
+     "colours": 19,
+     "main_tones": 6,
+     "texels": 268,
+     "top_colour_share": 0.201
+    }
+   },
+   "technical_errors": [],
+   "verdict": "TECHNICALLY_VALID"
+  },
+  "sword_broad_falchion_crescent": {
+   "artistic_warnings": [
+    "known issue: broad_falchion: curvatura do gume discreta e ponta curta \u2014 revisar silhueta (agente)"
+   ],
+   "stats": {
+    "isolated": {
+     "colours": 17,
+     "main_tones": 4,
+     "texels": 299,
+     "top_colour_share": 0.381
+    }
+   },
+   "technical_errors": [],
+   "verdict": "REVIEW"
+  },
+  "sword_broad_falchion_cross": {
+   "artistic_warnings": [
+    "known issue: broad_falchion: curvatura do gume discreta e ponta curta \u2014 revisar silhueta (agente)"
+   ],
+   "stats": {
+    "isolated": {
+     "colours": 10,
+     "main_tones": 6,
+     "texels": 304,
+     "top_colour_share": 0.345
+    }
+   },
+   "technical_errors": [],
+   "verdict": "REVIEW"
+  },
+  "sword_broad_falchion_ring": {
+   "artistic_warnings": [
+    "known issue: broad_falchion: curvatura do gume discreta e ponta curta \u2014 revisar silhueta (agente)"
+   ],
+   "stats": {
+    "isolated": {
+     "colours": 22,
+     "main_tones": 4,
+     "texels": 303,
+     "top_colour_share": 0.35
+    }
+   },
+   "technical_errors": [],
+   "verdict": "REVIEW"
+  },
+  "sword_estoc_crescent": {
+   "artistic_warnings": [],
+   "stats": {
+    "isolated": {
+     "colours": 17,
+     "main_tones": 4,
+     "texels": 236,
+     "top_colour_share": 0.233
+    }
+   },
+   "technical_errors": [],
+   "verdict": "TECHNICALLY_VALID"
+  },
+  "sword_estoc_cross": {
+   "artistic_warnings": [],
+   "stats": {
+    "isolated": {
+     "colours": 13,
+     "main_tones": 4,
+     "texels": 241,
+     "top_colour_share": 0.228
+    }
+   },
+   "technical_errors": [],
+   "verdict": "TECHNICALLY_VALID"
+  },
+  "sword_estoc_ring": {
+   "artistic_warnings": [],
+   "stats": {
+    "isolated": {
+     "colours": 23,
+     "main_tones": 4,
+     "texels": 240,
+     "top_colour_share": 0.225
+    }
+   },
+   "technical_errors": [],
+   "verdict": "TECHNICALLY_VALID"
+  },
+  "sword_flame_crescent": {
+   "artistic_warnings": [],
+   "stats": {
+    "isolated": {
+     "colours": 19,
+     "main_tones": 6,
+     "texels": 260,
+     "top_colour_share": 0.238
+    }
+   },
+   "technical_errors": [],
+   "verdict": "TECHNICALLY_VALID"
+  },
+  "sword_flame_cross": {
+   "artistic_warnings": [],
+   "stats": {
+    "isolated": {
+     "colours": 17,
+     "main_tones": 6,
+     "texels": 265,
+     "top_colour_share": 0.234
+    }
+   },
+   "technical_errors": [],
+   "verdict": "TECHNICALLY_VALID"
+  },
+  "sword_flame_ring": {
+   "artistic_warnings": [],
+   "stats": {
+    "isolated": {
+     "colours": 19,
+     "main_tones": 6,
+     "texels": 264,
+     "top_colour_share": 0.269
+    }
+   },
+   "technical_errors": [],
+   "verdict": "TECHNICALLY_VALID"
+  }
+ },
+ "summary": {
+  "deterministic": true,
+  "diversity": {
+   "CANDIDATO_DISTINTO": 12,
+   "REVISAR_VISUALMENTE": 30
+  },
+  "integrated_idle": 18,
+  "integrated_run_c1": 4,
+  "isolated": 24,
+  "pngs_produced": 42,
+  "recipes_failed": [],
+  "recipes_valid": 42,
+  "technical_errors": 0,
+  "technically_valid": 42,
+  "with_artistic_warnings": 29
+ }
+}
