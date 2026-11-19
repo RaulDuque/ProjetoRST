@@ -1,0 +1,4 @@
+b28e9b3f489e7bc4177d30b25d3f133bee6cc1bad01439731a11dc444efe7bd0  art-src/player/blender/swordsman_rig_v007.blend
+dee827ecaf6855eba744b39587b0a8c1a610195f970d405c679ab13c471b2af5  evidence/erro_corretion/etapa02b/work/swordsman_rig_v007_02b_shoulders.blend
+e8e4bfd3837ea58dbc1437ee5ff9f829f80702c8732dfba4044611d6da971984  art-src/n3-5-fidelity/generated/candidate_106.png
+e15803703a4d1d3c8e6da5d815f3a6a2d759839bbb966b6c8762de8b36864957  art-src/n3-6-animation-proof/generated/run6.png

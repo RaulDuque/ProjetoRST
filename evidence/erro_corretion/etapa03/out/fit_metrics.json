@@ -1,0 +1,38 @@
+{
+ "idle": {
+  "shirt_torso_texels": 105,
+  "shirt_covered": 105,
+  "shirt_exposed": 0,
+  "armour_texels": 761,
+  "armour_visible_after_front_layers": 466,
+  "silhouette_growth_texels": 238,
+  "bare_reconstruction_diff_px_at_preview": 0
+ },
+ "run_c1_0": {
+  "shirt_torso_texels": 148,
+  "shirt_covered": 147,
+  "shirt_exposed": 1,
+  "armour_texels": 795,
+  "armour_visible_after_front_layers": 508,
+  "silhouette_growth_texels": 158,
+  "bare_reconstruction_diff_px_at_preview": 0
+ },
+ "run_c1_2": {
+  "shirt_torso_texels": 232,
+  "shirt_covered": 231,
+  "shirt_exposed": 1,
+  "armour_texels": 836,
+  "armour_visible_after_front_layers": 512,
+  "silhouette_growth_texels": 132,
+  "bare_reconstruction_diff_px_at_preview": 0
+ },
+ "run_c1_4": {
+  "shirt_torso_texels": 278,
+  "shirt_covered": 249,
+  "shirt_exposed": 29,
+  "armour_texels": 882,
+  "armour_visible_after_front_layers": 585,
+  "silhouette_growth_texels": 107,
+  "bare_reconstruction_diff_px_at_preview": 0
+ }
+}

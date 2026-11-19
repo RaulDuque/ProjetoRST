@@ -1,0 +1,615 @@
+{
+ "engine": "BLENDER_EEVEE",
+ "params": {
+  "segments": 72,
+  "plate_standoff": 0.054,
+  "plate_side": 0.032,
+  "plate_thickness": 0.012,
+  "keel": 0.024,
+  "flutes": 0.004,
+  "plate_top": 1.465,
+  "neck_dip": 0.022,
+  "armhole": 0.07,
+  "plate_bottom": 1.13,
+  "plackart_point": 0.05,
+  "lames": 3,
+  "lame_step": 0.034,
+  "lame_height": 0.046,
+  "lame_grow": 0.005,
+  "tasset_top": 1.03,
+  "tasset_flare": 0.022,
+  "tasset_height": 0.072,
+  "tasset_step": 0.058,
+  "gorget_bottom": 1.43,
+  "gorget_back": 1.525,
+  "gorget_front": 1.485,
+  "gorget_flare": 0.034,
+  "pauldron_radius": 0.118,
+  "pauldron_flatten": 0.22,
+  "pauldron_lames": 3,
+  "pauldron_thickness": 0.012,
+  "trim": 0.0075,
+  "trim_thin": 0.005,
+  "rivet": 0.0095
+ },
+ "torso_sections": [
+  [
+   0.96,
+   -0.097,
+   0.092,
+   0.141
+  ],
+  [
+   1.02,
+   -0.091,
+   0.09,
+   0.133
+  ],
+  [
+   1.08,
+   -0.081,
+   0.093,
+   0.126
+  ],
+  [
+   1.14,
+   -0.079,
+   0.097,
+   0.124
+  ],
+  [
+   1.2,
+   -0.076,
+   0.106,
+   0.136
+  ],
+  [
+   1.26,
+   -0.079,
+   0.115,
+   0.148
+  ],
+  [
+   1.32,
+   -0.082,
+   0.117,
+   0.157
+  ],
+  [
+   1.38,
+   -0.084,
+   0.108,
+   0.164
+  ],
+  [
+   1.44,
+   -0.085,
+   0.085,
+   0.167
+  ]
+ ],
+ "pieces": [
+  [
+   "armor_breastplate",
+   "torso",
+   "chest"
+  ],
+  [
+   "armor_breastplate_keel",
+   "torso",
+   "chest"
+  ],
+  [
+   "armor_breastplate_rib_far",
+   "torso",
+   "chest"
+  ],
+  [
+   "armor_breastplate_rib_near",
+   "torso",
+   "chest"
+  ],
+  [
+   "armor_breastplate_trim_bottom",
+   "torso",
+   "chest"
+  ],
+  [
+   "armor_breastplate_trim_top",
+   "torso",
+   "chest"
+  ],
+  [
+   "armor_gorget",
+   "torso",
+   "chest"
+  ],
+  [
+   "armor_gorget_trim",
+   "torso",
+   "chest"
+  ],
+  [
+   "armor_lame_0",
+   "torso",
+   "spine_01"
+  ],
+  [
+   "armor_lame_0_rivet_0",
+   "torso",
+   "spine_01"
+  ],
+  [
+   "armor_lame_0_rivet_18",
+   "torso",
+   "spine_01"
+  ],
+  [
+   "armor_lame_0_rivet_27",
+   "torso",
+   "spine_01"
+  ],
+  [
+   "armor_lame_0_rivet_36",
+   "torso",
+   "spine_01"
+  ],
+  [
+   "armor_lame_0_rivet_45",
+   "torso",
+   "spine_01"
+  ],
+  [
+   "armor_lame_0_rivet_54",
+   "torso",
+   "spine_01"
+  ],
+  [
+   "armor_lame_0_rivet_63",
+   "torso",
+   "spine_01"
+  ],
+  [
+   "armor_lame_0_rivet_9",
+   "torso",
+   "spine_01"
+  ],
+  [
+   "armor_lame_0_trim",
+   "torso",
+   "spine_01"
+  ],
+  [
+   "armor_lame_1",
+   "torso",
+   "spine_01"
+  ],
+  [
+   "armor_lame_1_rivet_0",
+   "torso",
+   "spine_01"
+  ],
+  [
+   "armor_lame_1_rivet_18",
+   "torso",
+   "spine_01"
+  ],
+  [
+   "armor_lame_1_rivet_27",
+   "torso",
+   "spine_01"
+  ],
+  [
+   "armor_lame_1_rivet_36",
+   "torso",
+   "spine_01"
+  ],
+  [
+   "armor_lame_1_rivet_45",
+   "torso",
+   "spine_01"
+  ],
+  [
+   "armor_lame_1_rivet_54",
+   "torso",
+   "spine_01"
+  ],
+  [
+   "armor_lame_1_rivet_63",
+   "torso",
+   "spine_01"
+  ],
+  [
+   "armor_lame_1_rivet_9",
+   "torso",
+   "spine_01"
+  ],
+  [
+   "armor_lame_1_trim",
+   "torso",
+   "spine_01"
+  ],
+  [
+   "armor_lame_2",
+   "torso",
+   "pelvis"
+  ],
+  [
+   "armor_lame_2_rivet_0",
+   "torso",
+   "pelvis"
+  ],
+  [
+   "armor_lame_2_rivet_18",
+   "torso",
+   "pelvis"
+  ],
+  [
+   "armor_lame_2_rivet_27",
+   "torso",
+   "pelvis"
+  ],
+  [
+   "armor_lame_2_rivet_36",
+   "torso",
+   "pelvis"
+  ],
+  [
+   "armor_lame_2_rivet_45",
+   "torso",
+   "pelvis"
+  ],
+  [
+   "armor_lame_2_rivet_54",
+   "torso",
+   "pelvis"
+  ],
+  [
+   "armor_lame_2_rivet_63",
+   "torso",
+   "pelvis"
+  ],
+  [
+   "armor_lame_2_rivet_9",
+   "torso",
+   "pelvis"
+  ],
+  [
+   "armor_lame_2_trim",
+   "torso",
+   "pelvis"
+  ],
+  [
+   "armor_pauldron_far_crest",
+   "pauldron_far",
+   "upper_arm.L"
+  ],
+  [
+   "armor_pauldron_far_dome",
+   "pauldron_far",
+   "upper_arm.L"
+  ],
+  [
+   "armor_pauldron_far_lame_0",
+   "pauldron_far",
+   "upper_arm.L"
+  ],
+  [
+   "armor_pauldron_far_lame_0_rivet_12",
+   "pauldron_far",
+   "upper_arm.L"
+  ],
+  [
+   "armor_pauldron_far_lame_0_rivet_20",
+   "pauldron_far",
+   "upper_arm.L"
+  ],
+  [
+   "armor_pauldron_far_lame_0_rivet_4",
+   "pauldron_far",
+   "upper_arm.L"
+  ],
+  [
+   "armor_pauldron_far_lame_0_trim",
+   "pauldron_far",
+   "upper_arm.L"
+  ],
+  [
+   "armor_pauldron_far_lame_1",
+   "pauldron_far",
+   "upper_arm.L"
+  ],
+  [
+   "armor_pauldron_far_lame_1_rivet_12",
+   "pauldron_far",
+   "upper_arm.L"
+  ],
+  [
+   "armor_pauldron_far_lame_1_rivet_20",
+   "pauldron_far",
+   "upper_arm.L"
+  ],
+  [
+   "armor_pauldron_far_lame_1_rivet_4",
+   "pauldron_far",
+   "upper_arm.L"
+  ],
+  [
+   "armor_pauldron_far_lame_1_trim",
+   "pauldron_far",
+   "upper_arm.L"
+  ],
+  [
+   "armor_pauldron_far_lame_2",
+   "pauldron_far",
+   "upper_arm.L"
+  ],
+  [
+   "armor_pauldron_far_lame_2_rivet_12",
+   "pauldron_far",
+   "upper_arm.L"
+  ],
+  [
+   "armor_pauldron_far_lame_2_rivet_20",
+   "pauldron_far",
+   "upper_arm.L"
+  ],
+  [
+   "armor_pauldron_far_lame_2_rivet_4",
+   "pauldron_far",
+   "upper_arm.L"
+  ],
+  [
+   "armor_pauldron_far_lame_2_trim",
+   "pauldron_far",
+   "upper_arm.L"
+  ],
+  [
+   "armor_pauldron_far_rim",
+   "pauldron_far",
+   "upper_arm.L"
+  ],
+  [
+   "armor_pauldron_near_crest",
+   "pauldron_near",
+   "upper_arm.R"
+  ],
+  [
+   "armor_pauldron_near_dome",
+   "pauldron_near",
+   "upper_arm.R"
+  ],
+  [
+   "armor_pauldron_near_lame_0",
+   "pauldron_near",
+   "upper_arm.R"
+  ],
+  [
+   "armor_pauldron_near_lame_0_rivet_12",
+   "pauldron_near",
+   "upper_arm.R"
+  ],
+  [
+   "armor_pauldron_near_lame_0_rivet_20",
+   "pauldron_near",
+   "upper_arm.R"
+  ],
+  [
+   "armor_pauldron_near_lame_0_rivet_4",
+   "pauldron_near",
+   "upper_arm.R"
+  ],
+  [
+   "armor_pauldron_near_lame_0_trim",
+   "pauldron_near",
+   "upper_arm.R"
+  ],
+  [
+   "armor_pauldron_near_lame_1",
+   "pauldron_near",
+   "upper_arm.R"
+  ],
+  [
+   "armor_pauldron_near_lame_1_rivet_12",
+   "pauldron_near",
+   "upper_arm.R"
+  ],
+  [
+   "armor_pauldron_near_lame_1_rivet_20",
+   "pauldron_near",
+   "upper_arm.R"
+  ],
+  [
+   "armor_pauldron_near_lame_1_rivet_4",
+   "pauldron_near",
+   "upper_arm.R"
+  ],
+  [
+   "armor_pauldron_near_lame_1_trim",
+   "pauldron_near",
+   "upper_arm.R"
+  ],
+  [
+   "armor_pauldron_near_lame_2",
+   "pauldron_near",
+   "upper_arm.R"
+  ],
+  [
+   "armor_pauldron_near_lame_2_rivet_12",
+   "pauldron_near",
+   "upper_arm.R"
+  ],
+  [
+   "armor_pauldron_near_lame_2_rivet_20",
+   "pauldron_near",
+   "upper_arm.R"
+  ],
+  [
+   "armor_pauldron_near_lame_2_rivet_4",
+   "pauldron_near",
+   "upper_arm.R"
+  ],
+  [
+   "armor_pauldron_near_lame_2_trim",
+   "pauldron_near",
+   "upper_arm.R"
+  ],
+  [
+   "armor_pauldron_near_rim",
+   "pauldron_near",
+   "upper_arm.R"
+  ],
+  [
+   "armor_tasset_far_front_0",
+   "far_low",
+   "thigh.L"
+  ],
+  [
+   "armor_tasset_far_front_0_trim",
+   "far_low",
+   "thigh.L"
+  ],
+  [
+   "armor_tasset_far_front_1",
+   "far_low",
+   "thigh.L"
+  ],
+  [
+   "armor_tasset_far_front_1_trim",
+   "far_low",
+   "thigh.L"
+  ],
+  [
+   "armor_tasset_far_side_0",
+   "far_low",
+   "thigh.L"
+  ],
+  [
+   "armor_tasset_far_side_0_trim",
+   "far_low",
+   "thigh.L"
+  ],
+  [
+   "armor_tasset_far_side_1",
+   "far_low",
+   "thigh.L"
+  ],
+  [
+   "armor_tasset_far_side_1_trim",
+   "far_low",
+   "thigh.L"
+  ],
+  [
+   "armor_tasset_near_front_0",
+   "torso",
+   "thigh.R"
+  ],
+  [
+   "armor_tasset_near_front_0_trim",
+   "torso",
+   "thigh.R"
+  ],
+  [
+   "armor_tasset_near_front_1",
+   "torso",
+   "thigh.R"
+  ],
+  [
+   "armor_tasset_near_front_1_trim",
+   "torso",
+   "thigh.R"
+  ],
+  [
+   "armor_tasset_near_side_0",
+   "torso",
+   "thigh.R"
+  ],
+  [
+   "armor_tasset_near_side_0_trim",
+   "torso",
+   "thigh.R"
+  ],
+  [
+   "armor_tasset_near_side_1",
+   "torso",
+   "thigh.R"
+  ],
+  [
+   "armor_tasset_near_side_1_trim",
+   "torso",
+   "thigh.R"
+  ]
+ ],
+ "idle_shoulders": {
+  "target_px": [
+   36.6875,
+   34.0625
+  ],
+  "R": {
+   "rot_x_deg": 10.5,
+   "rot_z_deg": -29.0,
+   "shoulder_px": [
+    36.71,
+    34.09
+   ]
+  },
+  "L": {
+   "rot_x_deg": -8.0,
+   "rot_z_deg": 29.0,
+   "shoulder_px": [
+    36.71,
+    34.06
+   ]
+  }
+ },
+ "poses": {
+  "idle": {
+   "action": "FIT03_idle",
+   "scale_px_per_m": 58.53349858713663,
+   "canvas": [
+    80,
+    128
+   ],
+   "pivot": [
+    40,
+    118
+   ]
+  },
+  "run_c1_0": {
+   "action": "FIT02B_run_c1_0",
+   "scale_px_per_m": 58.53349858713663,
+   "canvas": [
+    112,
+    128
+   ],
+   "pivot": [
+    56,
+    118
+   ]
+  },
+  "run_c1_2": {
+   "action": "FIT02B_run_c1_2",
+   "scale_px_per_m": 58.53349858713663,
+   "canvas": [
+    112,
+    128
+   ],
+   "pivot": [
+    56,
+    118
+   ]
+  },
+  "run_c1_4": {
+   "action": "FIT02B_run_c1_4",
+   "scale_px_per_m": 58.53349858713663,
+   "canvas": [
+    112,
+    128
+   ],
+   "pivot": [
+    56,
+    118
+   ]
+  }
+ }
+}
