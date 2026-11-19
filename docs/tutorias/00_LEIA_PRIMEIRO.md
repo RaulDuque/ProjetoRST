@@ -162,3 +162,4 @@ Veja o tutorial **17 — Erros comuns**.
 | 33 | [Fundos em parallax](33_CRIAR_FUNDOS_EM_PARALLAX.md) | Funciona (camadas geradas em código) |
 | 34 | [Atmosfera de uma região](34_CONFIGURAR_ATMOSFERA_DE_REGIAO.md) | Funciona (3 regiões) |
 | 35 | [Testar cenários visuais](35_TESTAR_CENARIOS_VISUAIS.md) | Funciona |
+| 36 | [Testar o novo protagonista (experimental)](36_TESTAR_PROTAGONISTA_EXPERIMENTAL.md) | Experimental (N3.8: só parado e correndo) |
