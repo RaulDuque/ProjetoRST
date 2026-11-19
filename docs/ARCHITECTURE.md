@@ -29,7 +29,7 @@ biblioteca (`src/lib.rs`), o que permite testes de integração e o exemplo
 | Módulo | Regras puras (sem Bevy) | Camada Bevy |
 |---|---|---|
 | `core` | `rng.rs`, `pixel_art.rs` (V2.2: rasterizador da arte provisória) | `constants.rs`, `events.rs`, `resources.rs` (carregador de dados), `time.rs`, `pixel_image.rs` (V2.2) |
-| `player` | `attributes.rs`, `progression.rs`, `state.rs`, `action_rules.rs` (V2.4), `visual/{manifest,playback,selection,sockets}.rs` (`sockets`: V2.2), `visual/vfx/rules.rs` | `components.rs`, `movement.rs`, `systems.rs`, `animation.rs`, `visual/{mod,systems}.rs`, `visual/vfx/{mod,systems}.rs` |
+| `player` | `attributes.rs`, `progression.rs`, `state.rs`, `action_rules.rs` (V2.4), `visual/{manifest,playback,selection,sockets}.rs` (`sockets`: V2.2), `visual/art_profile.rs` (N3.8), `visual/vfx/rules.rs` | `components.rs`, `movement.rs`, `systems.rs`, `animation.rs`, `visual/{mod,systems}.rs`, `visual/vfx/{mod,systems}.rs` |
 | `combat` | `damage.rs`, `command_buffer.rs`, `command_parser.rs`, `strike_timeline.rs`, `reaction.rs`, `simultaneous.rs` (V2.4) | `command_input.rs`, `hitboxes.rs`, `attacks.rs` |
 | `skills` | `definitions.rs`, `unlock.rs`, `cooldowns.rs`, `execution.rs` | `systems.rs` |
 | `magic` | `elements.rs` | `casting.rs`, `projectiles.rs` |
@@ -62,6 +62,15 @@ camadas e dos NPCs é gerada em código por `core::pixel_art`. A arte do
 jogador pode vir de um staging (`PlayerArtSource` +
 `app::build_with_candidate_art`) sem tocar em `assets/`. Detalhes:
 [`VISUAL_EQUIPMENT_V2_2.md`](VISUAL_EQUIPMENT_V2_2.md).
+
+**N3.8 — protagonista experimental:** `player::visual::art_profile` (puro)
+escolhe a arte pelo `DARK_CASTLE_PROTAGONIST` (padrão: produção V2.2).
+Com `n3`, `app::build_for_protagonist` lê a arte de
+`art-src/n3-8-production-run/stage/` pelo mesmo caminho de staging, insere
+`ExperimentalProtagonist` (selo `ui::art_badge`) e `NearestPlayerArt`
+(atlas com amostragem *nearest*). Estados sem clipe mostram o idle, e
+`VisualPlayback::placeholder_for` guarda o clipe que faltou. Detalhes:
+`docs/development/n3_8/N3_8_CORRIDA_PRODUCAO.md`.
 
 ## Ordem de um frame
 
