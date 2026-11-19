@@ -3,6 +3,8 @@
 //!
 //! - [`art_profile`] (pure, N3.8): production art or the experimental
 //!   N3 protagonist (`DARK_CASTLE_PROTAGONIST=n3`);
+//! - [`composition`] (pure, N4-A): data-driven layered characters (RON);
+//! - [`composite`] (Bevy, N4-A): layer sprites that follow `VisualPlayback`;
 //! - [`manifest`] (pure): atlases and clips of `assets/animations/player.ron`;
 //! - [`playback`] (pure): frame timing (loops, actions, per-frame durations);
 //! - [`selection`] (pure): which clip shows a gameplay state, and fallbacks;
@@ -17,6 +19,8 @@
 //! `player::animation` stays visible. Details: docs/PLAYER_VISUAL_ANIMATION_V1_3.md.
 
 pub mod art_profile;
+pub mod composite;
+pub mod composition;
 pub mod manifest;
 pub mod modular_lab;
 pub mod playback;
@@ -57,6 +61,11 @@ pub struct VisualPlayback {
     pub last_remaining: f32,
     /// Atlas index currently shown.
     pub index: usize,
+    /// N4-A: frame within the clip (`index - first`), the shared animation
+    /// state every composite layer reads.
+    pub frame: usize,
+    /// N4-A: the sprite is mirrored (facing left), shared with the layers.
+    pub flip: bool,
     /// `animation` key of the skill being performed (from `SkillStarted`).
     pub skill_clip: Option<String>,
     /// Time left of the landing clip (0 when not landing).
@@ -159,6 +168,7 @@ impl Plugin for PlayerVisualPlugin {
                 (
                     systems::attach_player_visual,
                     systems::animate_player_visual,
+                    composite::sync_composite_layers,
                     vfx::systems::spawn_skill_vfx,
                     vfx::systems::spawn_guard_vfx,
                     vfx::systems::spawn_revive_vfx,

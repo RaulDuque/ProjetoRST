@@ -340,8 +340,10 @@ pub fn animate_player_visual(
         playback.last_remaining = remaining;
         let index = clip.first as usize + frame;
         playback.index = index;
+        playback.frame = frame;
 
         let flip = facing.0 == Facing::Left;
+        playback.flip = flip;
         let (r, g, b) = tint.rgb();
         let alpha = if invulnerable.remaining > 0.0 && state != PlayerState::Dead && blink_on {
             BLINK_ALPHA
