@@ -1,6 +1,7 @@
 //! User interface: HUD, status screen and combat feedback. Each screen is
 //! its own module and each element is updated by a small dedicated system.
 
+pub mod art_badge;
 pub mod boss_hud;
 pub mod controls_screen;
 pub mod damage_numbers;
@@ -17,6 +18,7 @@ pub mod world_map;
 use bevy::prelude::*;
 
 use crate::app::states::{GameSet, GameState};
+use crate::player::visual::ExperimentalProtagonist;
 
 pub struct UiPlugin;
 
@@ -53,6 +55,18 @@ impl Plugin for UiPlugin {
                     .run_if(in_state(GameState::Shop)),
             )
             .add_systems(Startup, (hud::spawn_hud, boss_hud::spawn_boss_hud))
+            // N3.8: only with the experimental protagonist.
+            .add_systems(
+                Startup,
+                art_badge::spawn_art_badge.run_if(resource_exists::<ExperimentalProtagonist>),
+            )
+            .add_systems(
+                Update,
+                art_badge::update_art_badge
+                    .in_set(GameSet::Presentation)
+                    .after(crate::player::visual::PlayerVisualSystems)
+                    .run_if(resource_exists::<ExperimentalProtagonist>),
+            )
             .add_systems(
                 Update,
                 (
