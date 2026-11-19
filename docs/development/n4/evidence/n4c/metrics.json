@@ -1,0 +1,183 @@
+{
+  "run0": {
+    "opaque": 2219,
+    "original_per_layer": {
+      "body_back": 11,
+      "trousers_back": 455,
+      "boots_back": 228,
+      "sleeve_back": 46,
+      "bracers_back": 9,
+      "body": 93,
+      "trousers": 290,
+      "boots": 214,
+      "shirt_torso": 148,
+      "arm_front": 115,
+      "shirt": 188,
+      "bracers": 2,
+      "hair_back": 394,
+      "hair_front": 26
+    },
+    "painted": {
+      "body_back": 501,
+      "body": 842,
+      "arm_front": 106,
+      "shirt_torso": 18
+    },
+    "clipped": {
+      "body_back": 12,
+      "body": 98,
+      "arm_front": 0,
+      "shirt_torso": 0
+    },
+    "closed_cavities": 11,
+    "recomposition_differences": 0,
+    "enclosed_in_original": 0,
+    "new_enclosed_after_removal": {
+      "hair": 0,
+      "shirt": 0,
+      "trousers": 0,
+      "boots": 0,
+      "bracers": 0
+    },
+    "new_enclosed_in_base_body": 0,
+    "exposed_after_removal": {
+      "hair": 302,
+      "shirt": 88,
+      "trousers": 259,
+      "boots": 120,
+      "bracers": 0
+    },
+    "exposed_in_base_body": 769,
+    "silhouette_differences": 0,
+    "lowest_row_original": 118,
+    "lowest_row_modular": 118
+  },
+  "run2": {
+    "opaque": 2458,
+    "original_per_layer": {
+      "body_back": 80,
+      "trousers_back": 392,
+      "boots_back": 215,
+      "sleeve_back": 23,
+      "bracers_back": 4,
+      "body": 97,
+      "trousers": 379,
+      "boots": 277,
+      "shirt_torso": 232,
+      "arm_front": 138,
+      "shirt": 180,
+      "bracers": 1,
+      "hair_back": 421,
+      "hair_front": 19
+    },
+    "painted": {
+      "body_back": 491,
+      "body": 897,
+      "arm_front": 118,
+      "shirt_torso": 10
+    },
+    "clipped": {
+      "body_back": 17,
+      "body": 124,
+      "arm_front": 4,
+      "shirt_torso": 0
+    },
+    "closed_cavities": 14,
+    "recomposition_differences": 0,
+    "enclosed_in_original": 44,
+    "new_enclosed_after_removal": {
+      "hair": 0,
+      "shirt": 0,
+      "trousers": 0,
+      "boots": 0,
+      "bracers": 0
+    },
+    "new_enclosed_in_base_body": 0,
+    "exposed_after_removal": {
+      "hair": 331,
+      "shirt": 20,
+      "trousers": 202,
+      "boots": 204,
+      "bracers": 0
+    },
+    "exposed_in_base_body": 757,
+    "silhouette_differences": 0,
+    "lowest_row_original": 114,
+    "lowest_row_modular": 114
+  },
+  "run4": {
+    "opaque": 2487,
+    "original_per_layer": {
+      "body_back": 111,
+      "trousers_back": 426,
+      "boots_back": 216,
+      "sleeve_back": 74,
+      "bracers_back": 11,
+      "body": 100,
+      "trousers": 325,
+      "boots": 259,
+      "shirt_torso": 278,
+      "arm_front": 147,
+      "shirt": 95,
+      "bracers": 15,
+      "hair_back": 403,
+      "hair_front": 27
+    },
+    "painted": {
+      "body_back": 487,
+      "body": 927,
+      "arm_front": 68,
+      "shirt_torso": 16
+    },
+    "clipped": {
+      "body_back": 42,
+      "body": 165,
+      "arm_front": 29,
+      "shirt_torso": 0
+    },
+    "closed_cavities": 17,
+    "recomposition_differences": 0,
+    "enclosed_in_original": 53,
+    "new_enclosed_after_removal": {
+      "hair": 0,
+      "shirt": 0,
+      "trousers": 0,
+      "boots": 0,
+      "bracers": 0
+    },
+    "new_enclosed_in_base_body": 0,
+    "exposed_after_removal": {
+      "hair": 317,
+      "shirt": 60,
+      "trousers": 202,
+      "boots": 204,
+      "bracers": 0
+    },
+    "exposed_in_base_body": 783,
+    "silhouette_differences": 0,
+    "lowest_row_original": 118,
+    "lowest_row_modular": 118
+  },
+  "bevy_pixel_check": {
+    "bevy_n4c_f0_dressed": {
+      "pixels": 229376,
+      "figure_pixels": 35504,
+      "different": 0
+    },
+    "bevy_n4c_f2_dressed": {
+      "pixels": 229376,
+      "figure_pixels": 39328,
+      "different": 0
+    },
+    "bevy_n4c_f4_dressed": {
+      "pixels": 229376,
+      "figure_pixels": 39792,
+      "different": 0
+    },
+    "bevy_n4c_f2_mirrored": {
+      "pixels": 229376,
+      "figure_pixels": 39328,
+      "different": 0
+    }
+  }
+}
