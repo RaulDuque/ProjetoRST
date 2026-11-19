@@ -93,6 +93,17 @@ dados; a arte é gerada ou verificada offline por
 `art-src/n4-sprite-machine/scripts/build_equipment.py`. Não toca inventário
 nem save. Detalhes: `docs/development/n4/N41A_ARQUITETURA.md`.
 
+**N41-B — fábrica de equipamentos (autoria offline):** templates, materiais,
+detalhes e perfis de animação em JSON (`art-src/n4-sprite-machine/factory/`)
+e uma receita por item; `scripts/factory.py` gera os PNG (mapa de altura,
+luz, rampa do material, contorno seletivo, detalhes só no interior), com
+seed, proveniência e cache, e escreve os itens de tronco como manifestos
+`EquipmentVisual` da família `torso_plate` em `stage/factory/items/`. O jogo
+lê esses manifestos com o mesmo `equip` e os desenha com o mesmo compositor e
+`VisualPlayback`; nada é gerado em tempo de execução e nenhum código Rust
+mudou. Espadas, capas e ombreiras ficam isoladas (sem soquete/slot
+validado). Detalhes: `docs/development/n4/N41B_ARQUITETURA.md`.
+
 ## Ordem de um frame
 
 `GameSet` (`src/app/states.rs`), encadeados e executados só em `GameState::Playing`:

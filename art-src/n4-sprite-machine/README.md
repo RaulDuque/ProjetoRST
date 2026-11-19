@@ -22,6 +22,14 @@ N4-1-A (equipamento visual por dados, base vestida):
 - `equipment/families/*.json` (regras das máscaras) e `equipment/recipes/*.json` (paleta e padrão de cada item): receitas de autoria.
 - `scripts/build_equipment.py`: máscaras, folhas, verificação de cobertura (recusa HIDE que exponha algo), evidências, spritesheet composta e GIF em `docs/development/n4/evidence/n41a/`.
 
+N41-B (fábrica de equipamentos orientada por dados):
+
+- `factory/templates/`, `factory/materials/`, `factory/details/`, `factory/profiles/` (bibliotecas JSON) e `factory/recipes/<id>.json` (uma receita por item).
+- `scripts/factory.py`: valida, gera (relevo, luz, rampa do material, contorno seletivo, detalhes), grava `stage/factory/` (`items/*.ron` do tronco, `art/`, `preview/`, `isolated/`, `relief/`, `provenance/`) com seed, proveniência e cache; `--rebuild` para sobrescrever.
+- `scripts/factory_report.py`: QA técnico/artístico, diversidade, determinismo, desempenho, checagem das capturas do Bevy e evidências em `docs/development/n4/evidence/n41b/` (`--spotlight id ...` para uma folha de itens escolhidos).
+- `scripts/tests/test_factory.py`: `python3 -B -m unittest discover -s art-src/n4-sprite-machine/scripts/tests`.
+- Bevy: `cargo run --example n4_sprite_machine -- --factory [--run-c1]`.
+
 Ordem: `python3 -B scripts/build_idle_layers.py` → `python3 -B scripts/build_run_layers.py` → `python3 -B scripts/build_equipment.py` → `cargo run --example n4_sprite_machine` (e `-- --run-c1`, `-- --equipment [--run-c1]`) → `python3 -B scripts/check_bevy.py` → `python3 -B scripts/make_run_gifs.py` (todos a partir da raiz do projeto, com o caminho `art-src/n4-sprite-machine/scripts/...`).
 
 A arte aprovada (`art-src/n3-5-fidelity/`) só é lida. Documentação: `docs/development/n4/`.
