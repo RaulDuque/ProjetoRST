@@ -29,7 +29,7 @@ biblioteca (`src/lib.rs`), o que permite testes de integração e o exemplo
 | Módulo | Regras puras (sem Bevy) | Camada Bevy |
 |---|---|---|
 | `core` | `rng.rs`, `pixel_art.rs` (V2.2: rasterizador da arte provisória) | `constants.rs`, `events.rs`, `resources.rs` (carregador de dados), `time.rs`, `pixel_image.rs` (V2.2) |
-| `player` | `attributes.rs`, `progression.rs`, `state.rs`, `action_rules.rs` (V2.4), `visual/{manifest,playback,selection,sockets}.rs` (`sockets`: V2.2), `visual/art_profile.rs` (N3.8), `visual/composition.rs` (N4-A), `visual/vfx/rules.rs` | `components.rs`, `movement.rs`, `systems.rs`, `animation.rs`, `visual/{mod,systems,composite}.rs` (`composite`: N4-A), `visual/vfx/{mod,systems}.rs` |
+| `player` | `attributes.rs`, `progression.rs`, `state.rs`, `action_rules.rs` (V2.4), `visual/{manifest,playback,selection,sockets}.rs` (`sockets`: V2.2), `visual/art_profile.rs` (N3.8), `visual/composition.rs` (N4-A), `visual/equipment_visual.rs` (N4-1-A), `visual/vfx/rules.rs` | `components.rs`, `movement.rs`, `systems.rs`, `animation.rs`, `visual/{mod,systems,composite}.rs` (`composite`: N4-A), `visual/vfx/{mod,systems}.rs` |
 | `combat` | `damage.rs`, `command_buffer.rs`, `command_parser.rs`, `strike_timeline.rs`, `reaction.rs`, `simultaneous.rs` (V2.4) | `command_input.rs`, `hitboxes.rs`, `attacks.rs` |
 | `skills` | `definitions.rs`, `unlock.rs`, `cooldowns.rs`, `execution.rs` | `systems.rs` |
 | `magic` | `elements.rs` | `casting.rs`, `projectiles.rs` |
@@ -80,6 +80,18 @@ slot de camada e aponta todos para o mesmo `VisualPlayback` (`frame` e
 `flip`, preenchidos por `animate_player_visual`): um relógio só. Ainda não
 é usado pelo jogo; a prova é `cargo run --example n4_sprite_machine`.
 Detalhes: `docs/development/n4/N4A_ARQUITETURA.md`.
+
+**N4-1-A — equipamento visual por dados (prova isolada):** a base é o
+personagem **vestido** (a partição das camadas da N4-A/C1). Uma
+`VisualFamily` (slot, perfil de clipes, HIDE/REPLACE padrão, máscaras de
+autoria, ordem por quadro, regra de clipe ausente) e um `EquipmentVisual`
+(folhas por clipe, folhas espelhadas, variantes, sobrescritas) são lidos em
+RON e juntados à composição por `equipment_visual::equip`, que valida tudo e
+transforma cada item em peça comum. `resolve_facing` aplica OVERLAY (o slot),
+HIDE (`hide_layers` por clipe) e REPLACE (`replaces`). Itens novos são só
+dados; a arte é gerada ou verificada offline por
+`art-src/n4-sprite-machine/scripts/build_equipment.py`. Não toca inventário
+nem save. Detalhes: `docs/development/n4/N41A_ARQUITETURA.md`.
 
 ## Ordem de um frame
 
