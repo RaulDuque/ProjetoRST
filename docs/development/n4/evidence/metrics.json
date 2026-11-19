@@ -1,0 +1,47 @@
+{
+  "original_opaque": 1320,
+  "painted": {
+    "body": 874,
+    "arm_front": 126
+  },
+  "clipped": {
+    "body": 15,
+    "arm_front": 7
+  },
+  "recomposition_differences": 0,
+  "layers": {
+    "body": 917,
+    "trousers": 347,
+    "boots": 278,
+    "arm_front": 216,
+    "shirt": 297,
+    "bracers": 30,
+    "hair_back": 209,
+    "hair_front": 26
+  },
+  "holes_inside_body_after_removal": {
+    "hair": 0,
+    "shirt": 0,
+    "trousers": 0,
+    "boots": 0,
+    "bracers": 0
+  },
+  "holes_inside_base_body": 0,
+  "bevy_pixel_check": {
+    "bevy_n4a_original_vs_modular": {
+      "pixels": 163840,
+      "figure_pixels": 21120,
+      "different": 0
+    },
+    "bevy_n4a_light_background": {
+      "pixels": 163840,
+      "figure_pixels": 21120,
+      "different": 0
+    },
+    "bevy_n4a_mirrored": {
+      "pixels": 163840,
+      "figure_pixels": 21120,
+      "different": 0
+    }
+  }
+}
