@@ -163,3 +163,4 @@ Veja o tutorial **17 — Erros comuns**.
 | 34 | [Atmosfera de uma região](34_CONFIGURAR_ATMOSFERA_DE_REGIAO.md) | Funciona (3 regiões) |
 | 35 | [Testar cenários visuais](35_TESTAR_CENARIOS_VISUAIS.md) | Funciona |
 | 36 | [Testar o novo protagonista (experimental)](36_TESTAR_PROTAGONISTA_EXPERIMENTAL.md) | Experimental (N3.8: só parado e correndo) |
+| 37 | [Criar um equipamento novo sem alterar código](37_CRIAR_EQUIPAMENTO_SEM_CODIGO.md) | Experimental (N41-B: fábrica; só o tronco entra no personagem) |
