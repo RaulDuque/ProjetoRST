@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "id": "double_trim",
+  "op": "edge_band",
+  "description": "Friso duplo (2 texels): luz em cima, sombra embaixo.",
+  "width": 2,
+  "tones": [
+    "base",
+    "light",
+    "highlight"
+  ],
+  "second_row": "shadow"
+}

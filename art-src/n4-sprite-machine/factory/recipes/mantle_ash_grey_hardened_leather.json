@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "id": "mantle_ash_grey_hardened_leather",
+  "category": "shoulder",
+  "family": "shoulder",
+  "name": "Mantelete (ash_grey_cloth, gola hardened_leather)",
+  "template": "fur_mantle",
+  "materials": {
+    "main": "ash_grey_cloth",
+    "collar": "hardened_leather"
+  },
+  "details": [
+    {
+      "detail": "buckle",
+      "material": "bronze",
+      "place": {
+        "at": [
+          0.75,
+          0.3
+        ]
+      }
+    }
+  ],
+  "generation": {
+    "animation_profile": "humanoid_shoulder",
+    "seed": 1273
+  },
+  "covers": [
+    "Shoulder"
+  ],
+  "hides": "none",
+  "mirroring": "flip",
+  "fallback": {
+    "missing_clip": "hide"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "id": "trim_band",
+  "op": "edge_band",
+  "description": "Friso de borda: 1 texel do material do detalhe, gradiente de luz ao longo da borda.",
+  "width": 1,
+  "tones": [
+    "shadow",
+    "base",
+    "light",
+    "highlight"
+  ]
+}

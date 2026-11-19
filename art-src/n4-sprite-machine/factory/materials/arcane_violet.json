@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "id": "arcane_violet",
+  "kind": "magic",
+  "description": "Material mágico: runas e gemas violetas com brilho.",
+  "tones": {
+    "outline": [
+      30,
+      12,
+      46
+    ],
+    "deep": [
+      56,
+      24,
+      86
+    ],
+    "shadow": [
+      86,
+      40,
+      128
+    ],
+    "base": [
+      120,
+      64,
+      170
+    ],
+    "light": [
+      160,
+      104,
+      210
+    ],
+    "highlight": [
+      204,
+      160,
+      240
+    ],
+    "specular": [
+      240,
+      220,
+      255
+    ]
+  },
+  "gloss": 0.7,
+  "roughness": 0.1,
+  "contrast": 1.1,
+  "wear": 0.0
+}

@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "id": "ridged_breastplate_blackened_steel",
+  "category": "chest_armor",
+  "family": "torso_plate",
+  "name": "Peitoral de quilha de aço escurecido",
+  "template": "ridged_breastplate",
+  "materials": {
+    "main": "blackened_steel"
+  },
+  "details": [
+    {
+      "detail": "double_trim",
+      "material": "gold",
+      "place": {
+        "edge": "bottom"
+      }
+    },
+    {
+      "detail": "emblem_sun",
+      "material": "gold",
+      "place": {
+        "at": [
+          0.35,
+          0.45
+        ]
+      }
+    }
+  ],
+  "generation": {
+    "animation_profile": "humanoid_torso",
+    "seed": 1042
+  },
+  "covers": [
+    "Chest"
+  ],
+  "hides": "auto",
+  "mirroring": "flip",
+  "fallback": {
+    "missing_clip": "hide"
+  }
+}

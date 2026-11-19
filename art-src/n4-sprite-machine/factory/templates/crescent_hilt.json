@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "id": "crescent_hilt",
+  "kind": "hilt",
+  "description": "Guarda em crescente (braços curvos para a lâmina), cabo de fio trançado, pomo em disco.",
+  "profile": "weapon_main_hand",
+  "material_slots": [
+    "guard",
+    "grip",
+    "pommel"
+  ],
+  "guard": {
+    "slot": "guard",
+    "pattern": [
+      "oo.......oo",
+      "lho.....ohl",
+      ".sbhhhhhbs.",
+      "..ossssso.."
+    ]
+  },
+  "grip": {
+    "slot": "grip",
+    "length": 8,
+    "pattern": [
+      "ohbo",
+      "obso",
+      "osho"
+    ]
+  },
+  "pommel": {
+    "slot": "pommel",
+    "pattern": [
+      "oooooo",
+      "ohllbo",
+      "osssso",
+      ".oooo."
+    ]
+  }
+}

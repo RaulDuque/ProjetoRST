@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "id": "sword_arming_cross",
+  "category": "sword",
+  "family": "sword_main_hand",
+  "name": "Espada de armas (cross hilt, steel)",
+  "templates": {
+    "blade": "arming_blade",
+    "hilt": "cross_hilt"
+  },
+  "materials": {
+    "blade": "steel",
+    "guard": "iron",
+    "grip": "dark_leather",
+    "pommel": "iron"
+  },
+  "details": [],
+  "generation": {
+    "animation_profile": "weapon_main_hand",
+    "seed": 1119
+  },
+  "covers": [],
+  "hides": "none",
+  "mirroring": "flip",
+  "fallback": {
+    "missing_clip": "hide"
+  }
+}

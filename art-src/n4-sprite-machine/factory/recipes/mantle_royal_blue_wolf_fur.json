@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "mantle_royal_blue_wolf_fur",
+  "category": "shoulder",
+  "family": "shoulder",
+  "name": "Mantelete (royal_blue_cloth, gola wolf_fur)",
+  "template": "fur_mantle",
+  "materials": {
+    "main": "royal_blue_cloth",
+    "collar": "wolf_fur"
+  },
+  "details": [
+    {
+      "detail": "embroidery_band",
+      "material": "gold",
+      "place": {
+        "edge": "bottom"
+      }
+    }
+  ],
+  "generation": {
+    "animation_profile": "humanoid_shoulder",
+    "seed": 1266
+  },
+  "covers": [
+    "Shoulder"
+  ],
+  "hides": "none",
+  "mirroring": "flip",
+  "fallback": {
+    "missing_clip": "hide"
+  }
+}

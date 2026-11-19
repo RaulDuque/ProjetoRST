@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "cape_long_moss_green",
+  "category": "cape",
+  "family": "cape_back",
+  "name": "Capa longa (moss_green_cloth)",
+  "template": "long_cape",
+  "materials": {
+    "main": "moss_green_cloth",
+    "lining": "ash_grey_cloth"
+  },
+  "details": [
+    {
+      "detail": "trim_band",
+      "material": "bronze",
+      "place": {
+        "edge": "bottom"
+      }
+    }
+  ],
+  "generation": {
+    "animation_profile": "cape_back",
+    "seed": 1224
+  },
+  "covers": [
+    "Back"
+  ],
+  "hides": "none",
+  "mirroring": "flip",
+  "fallback": {
+    "missing_clip": "hide"
+  }
+}

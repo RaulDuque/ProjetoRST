@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "id": "emblem_cross",
+  "op": "stamp",
+  "description": "Cruz pátea 3x3.",
+  "pattern": [
+    ".h.",
+    "hlh",
+    ".s."
+  ],
+  "on_overflow": "skip"
+}

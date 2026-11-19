@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "id": "iron",
+  "kind": "metal",
+  "description": "Ferro forjado: cinza frio, contorno azul-aço muito escuro.",
+  "tones": {
+    "outline": [
+      30,
+      34,
+      46
+    ],
+    "deep": [
+      50,
+      54,
+      64
+    ],
+    "shadow": [
+      74,
+      79,
+      90
+    ],
+    "base": [
+      106,
+      111,
+      122
+    ],
+    "light": [
+      142,
+      147,
+      157
+    ],
+    "highlight": [
+      182,
+      187,
+      195
+    ],
+    "specular": [
+      224,
+      228,
+      232
+    ]
+  },
+  "gloss": 0.55,
+  "roughness": 0.25,
+  "contrast": 1.0,
+  "wear": 0.25
+}

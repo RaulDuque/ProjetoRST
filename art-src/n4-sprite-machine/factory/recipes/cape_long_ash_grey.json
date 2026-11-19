@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "id": "cape_long_ash_grey",
+  "category": "cape",
+  "family": "cape_back",
+  "name": "Capa longa (ash_grey_cloth)",
+  "template": "long_cape",
+  "materials": {
+    "main": "ash_grey_cloth",
+    "lining": "crimson_cloth"
+  },
+  "details": [
+    {
+      "detail": "emblem_wolf",
+      "material": "silver",
+      "place": {
+        "at": [
+          0.45,
+          0.35
+        ]
+      }
+    }
+  ],
+  "generation": {
+    "animation_profile": "cape_back",
+    "seed": 1217
+  },
+  "covers": [
+    "Back"
+  ],
+  "hides": "none",
+  "mirroring": "flip",
+  "fallback": {
+    "missing_clip": "hide"
+  }
+}

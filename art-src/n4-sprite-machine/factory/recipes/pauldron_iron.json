@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "id": "pauldron_iron",
+  "category": "shoulder",
+  "family": "shoulder",
+  "name": "Ombreira de placas (iron)",
+  "template": "plate_pauldron",
+  "materials": {
+    "main": "iron"
+  },
+  "details": [
+    {
+      "detail": "trim_band",
+      "material": "silver",
+      "place": {
+        "edge": "top"
+      }
+    },
+    {
+      "detail": "rivet",
+      "material": "silver",
+      "place": {
+        "along": "seams",
+        "u": [
+          0.2,
+          0.8
+        ],
+        "step": 6
+      }
+    },
+    {
+      "detail": "wear_scratches",
+      "material": "iron",
+      "place": {
+        "density": 0.05
+      }
+    }
+  ],
+  "generation": {
+    "animation_profile": "humanoid_shoulder",
+    "seed": 1231
+  },
+  "covers": [
+    "Shoulder"
+  ],
+  "hides": "none",
+  "mirroring": "flip",
+  "fallback": {
+    "missing_clip": "hide"
+  }
+}

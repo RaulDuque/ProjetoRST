@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "id": "ember_red",
+  "kind": "magic",
+  "description": "Gema/runa incandescente.",
+  "tones": {
+    "outline": [
+      50,
+      10,
+      8
+    ],
+    "deep": [
+      96,
+      20,
+      12
+    ],
+    "shadow": [
+      146,
+      34,
+      16
+    ],
+    "base": [
+      196,
+      62,
+      24
+    ],
+    "light": [
+      232,
+      110,
+      44
+    ],
+    "highlight": [
+      252,
+      170,
+      90
+    ],
+    "specular": [
+      255,
+      232,
+      180
+    ]
+  },
+  "gloss": 0.8,
+  "roughness": 0.05,
+  "contrast": 1.1,
+  "wear": 0.0
+}

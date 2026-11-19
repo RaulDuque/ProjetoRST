@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "id": "royal_blue_cloth",
+  "kind": "cloth",
+  "description": "Tecido azul-real profundo.",
+  "tones": {
+    "outline": [
+      14,
+      16,
+      40
+    ],
+    "deep": [
+      24,
+      28,
+      64
+    ],
+    "shadow": [
+      34,
+      42,
+      92
+    ],
+    "base": [
+      48,
+      60,
+      122
+    ],
+    "light": [
+      68,
+      84,
+      150
+    ],
+    "highlight": [
+      98,
+      114,
+      176
+    ]
+  },
+  "gloss": 0.05,
+  "roughness": 0.3,
+  "contrast": 0.9,
+  "wear": 0.0
+}

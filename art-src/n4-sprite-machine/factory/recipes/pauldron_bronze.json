@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "id": "pauldron_bronze",
+  "category": "shoulder",
+  "family": "shoulder",
+  "name": "Ombreira de placas (bronze)",
+  "template": "plate_pauldron",
+  "materials": {
+    "main": "bronze"
+  },
+  "details": [
+    {
+      "detail": "trim_band",
+      "material": "iron",
+      "place": {
+        "edge": "top"
+      }
+    },
+    {
+      "detail": "rivet",
+      "material": "iron",
+      "place": {
+        "along": "seams",
+        "u": [
+          0.2,
+          0.8
+        ],
+        "step": 6
+      }
+    }
+  ],
+  "generation": {
+    "animation_profile": "humanoid_shoulder",
+    "seed": 1245
+  },
+  "covers": [
+    "Shoulder"
+  ],
+  "hides": "none",
+  "mirroring": "flip",
+  "fallback": {
+    "missing_clip": "hide"
+  }
+}

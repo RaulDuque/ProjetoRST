@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "id": "sword_broad_falchion_ring",
+  "category": "sword",
+  "family": "sword_main_hand",
+  "name": "Falcão (ring hilt, blackened_steel)",
+  "templates": {
+    "blade": "broad_falchion",
+    "hilt": "ring_hilt"
+  },
+  "materials": {
+    "blade": "blackened_steel",
+    "guard": "silver",
+    "grip": "wood",
+    "pommel": "bronze"
+  },
+  "details": [
+    {
+      "detail": "gem",
+      "material": "arcane_violet",
+      "place": {
+        "part": "guard",
+        "at": [
+          0.42,
+          0.55
+        ]
+      }
+    }
+  ],
+  "generation": {
+    "animation_profile": "weapon_main_hand",
+    "seed": 1175
+  },
+  "covers": [],
+  "hides": "none",
+  "mirroring": "flip",
+  "fallback": {
+    "missing_clip": "hide"
+  }
+}

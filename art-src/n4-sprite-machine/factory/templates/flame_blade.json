@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "id": "flame_blade",
+  "kind": "blade",
+  "description": "Lâmina flamejante (ondulada) com ricasso liso perto da guarda.",
+  "profile": "weapon_main_hand",
+  "material_slots": [
+    "blade"
+  ],
+  "length": 38,
+  "half_width": [
+    [
+      0,
+      2.4
+    ],
+    [
+      0.85,
+      2.0
+    ],
+    [
+      0.95,
+      1.2
+    ],
+    [
+      1.0,
+      0.2
+    ]
+  ],
+  "curve": [
+    [
+      0,
+      0
+    ],
+    [
+      1,
+      0
+    ]
+  ],
+  "wave": {
+    "from": 0.15,
+    "amp": 1,
+    "period": 6
+  },
+  "relief": [
+    {
+      "op": "blade_bevel",
+      "amp": 110
+    }
+  ]
+}

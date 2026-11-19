@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "id": "wolf_fur",
+  "kind": "fur",
+  "description": "Pelagem cinza de lobo (mantos).",
+  "tones": {
+    "outline": [
+      30,
+      26,
+      24
+    ],
+    "deep": [
+      52,
+      46,
+      42
+    ],
+    "shadow": [
+      76,
+      70,
+      64
+    ],
+    "base": [
+      104,
+      98,
+      90
+    ],
+    "light": [
+      134,
+      128,
+      120
+    ],
+    "highlight": [
+      166,
+      160,
+      150
+    ]
+  },
+  "gloss": 0.0,
+  "roughness": 0.7,
+  "contrast": 0.9,
+  "wear": 0.0
+}

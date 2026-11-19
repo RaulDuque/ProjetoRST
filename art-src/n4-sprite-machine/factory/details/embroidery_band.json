@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "id": "embroidery_band",
+  "op": "edge_band",
+  "description": "Bordado: padrão alternado ao longo da barra.",
+  "width": 2,
+  "pattern": [
+    "hb",
+    "sh"
+  ]
+}

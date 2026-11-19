@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "id": "fuller_runes",
+  "op": "stamp",
+  "description": "Runas gravadas em coluna (repetidas pela receita).",
+  "pattern": [
+    "p",
+    ".",
+    "l"
+  ],
+  "on_overflow": "skip"
+}

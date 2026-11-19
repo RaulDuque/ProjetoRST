@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "id": "arming_blade",
+  "kind": "blade",
+  "description": "Lâmina reta de dois gumes com sulco central (fuller).",
+  "profile": "weapon_main_hand",
+  "material_slots": [
+    "blade"
+  ],
+  "length": 36,
+  "half_width": [
+    [
+      0,
+      2.6
+    ],
+    [
+      0.8,
+      2.2
+    ],
+    [
+      0.93,
+      1.4
+    ],
+    [
+      1.0,
+      0.2
+    ]
+  ],
+  "curve": [
+    [
+      0,
+      0
+    ],
+    [
+      1,
+      0
+    ]
+  ],
+  "wave": null,
+  "relief": [
+    {
+      "op": "blade_bevel",
+      "amp": 110
+    },
+    {
+      "op": "fuller",
+      "from": 0.04,
+      "to": 0.62,
+      "width": 1,
+      "depth": 90
+    }
+  ]
+}

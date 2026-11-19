@@ -1,0 +1,57 @@
+{
+  "schema": 1,
+  "id": "weapon_main_hand",
+  "category": "sword",
+  "description": "Arma na mão principal. Recurso isolado: canvas próprio, ponta para cima, pivô no centro do punho.",
+  "integration": "isolated",
+  "blocked_by": "soquetes da mão sem confirmação (N4C_SOQUETES.md) e sem ângulo/frente medidos",
+  "frames": [
+    {
+      "clip": "idle",
+      "frame": 0,
+      "socket": "main_hand",
+      "offset": null,
+      "status": "pendente",
+      "reason": "soquete candidato (N4C_SOQUETES.md), sem confirmação do proprietário"
+    },
+    {
+      "clip": "run_c1",
+      "frame": 0,
+      "source_frame": 0,
+      "socket": "main_hand",
+      "candidate": [
+        75,
+        55
+      ],
+      "angle": null,
+      "status": "pendente",
+      "reason": "soquete candidato (N4C_SOQUETES.md), sem confirmação do proprietário"
+    },
+    {
+      "clip": "run_c1",
+      "frame": 1,
+      "source_frame": 2,
+      "socket": "main_hand",
+      "candidate": [
+        81,
+        39
+      ],
+      "angle": null,
+      "status": "pendente",
+      "reason": "soquete candidato (N4C_SOQUETES.md), sem confirmação do proprietário"
+    },
+    {
+      "clip": "run_c1",
+      "frame": 2,
+      "source_frame": 4,
+      "socket": "main_hand",
+      "candidate": [
+        57,
+        58
+      ],
+      "angle": null,
+      "status": "pendente",
+      "reason": "soquete candidato (N4C_SOQUETES.md), sem confirmação do proprietário"
+    }
+  ]
+}

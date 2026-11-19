@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "id": "boss_rivet",
+  "op": "stamp",
+  "description": "Rebite grande 2x2 com sombra.",
+  "pattern": [
+    "hl",
+    "ls",
+    "SS"
+  ],
+  "on_overflow": "skip"
+}

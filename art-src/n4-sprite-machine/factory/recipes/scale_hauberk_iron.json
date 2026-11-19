@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "id": "scale_hauberk_iron",
+  "category": "chest_armor",
+  "family": "torso_plate",
+  "name": "Cota de escamas de ferro",
+  "template": "scale_hauberk",
+  "materials": {
+    "main": "iron"
+  },
+  "details": [
+    {
+      "detail": "trim_band",
+      "material": "silver",
+      "place": {
+        "edge": "top"
+      }
+    },
+    {
+      "detail": "gem",
+      "material": "ember_red",
+      "place": {
+        "at": [
+          0.6,
+          0.18
+        ]
+      }
+    },
+    {
+      "detail": "wear_scratches",
+      "material": "iron",
+      "place": {
+        "density": 0.05
+      }
+    }
+  ],
+  "generation": {
+    "animation_profile": "humanoid_torso",
+    "seed": 1091
+  },
+  "covers": [
+    "Chest"
+  ],
+  "hides": "auto",
+  "mirroring": "flip",
+  "fallback": {
+    "missing_clip": "hide"
+  }
+}

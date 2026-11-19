@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "cape_long_royal_blue",
+  "category": "cape",
+  "family": "cape_back",
+  "name": "Capa longa (royal_blue_cloth)",
+  "template": "long_cape",
+  "materials": {
+    "main": "royal_blue_cloth",
+    "lining": "ash_grey_cloth"
+  },
+  "details": [
+    {
+      "detail": "embroidery_band",
+      "material": "gold",
+      "place": {
+        "edge": "bottom"
+      }
+    }
+  ],
+  "generation": {
+    "animation_profile": "cape_back",
+    "seed": 1210
+  },
+  "covers": [
+    "Back"
+  ],
+  "hides": "none",
+  "mirroring": "flip",
+  "fallback": {
+    "missing_clip": "hide"
+  }
+}

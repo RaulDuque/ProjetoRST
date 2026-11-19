@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "id": "bronze",
+  "kind": "metal",
+  "description": "Bronze: marrom-dourado, contorno marrom queimado.",
+  "tones": {
+    "outline": [
+      46,
+      26,
+      16
+    ],
+    "deep": [
+      78,
+      46,
+      24
+    ],
+    "shadow": [
+      112,
+      70,
+      34
+    ],
+    "base": [
+      150,
+      100,
+      48
+    ],
+    "light": [
+      186,
+      136,
+      70
+    ],
+    "highlight": [
+      218,
+      176,
+      104
+    ],
+    "specular": [
+      244,
+      220,
+      160
+    ]
+  },
+  "gloss": 0.6,
+  "roughness": 0.2,
+  "contrast": 1.0,
+  "wear": 0.2
+}

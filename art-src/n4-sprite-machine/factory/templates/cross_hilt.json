@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "id": "cross_hilt",
+  "kind": "hilt",
+  "description": "Guarda em cruz reta, cabo enrolado em couro, pomo redondo.",
+  "profile": "weapon_main_hand",
+  "material_slots": [
+    "guard",
+    "grip",
+    "pommel"
+  ],
+  "guard": {
+    "slot": "guard",
+    "pattern": [
+      "o.........o",
+      "ohllllllllo",
+      "osbbbbbbbso",
+      ".ooooooooo."
+    ]
+  },
+  "grip": {
+    "slot": "grip",
+    "length": 9,
+    "pattern": [
+      "oblo",
+      "osbo"
+    ]
+  },
+  "pommel": {
+    "slot": "pommel",
+    "pattern": [
+      ".oo.",
+      "ohlo",
+      "olbo",
+      "osso",
+      ".oo."
+    ]
+  }
+}

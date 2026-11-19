@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "id": "steel",
+  "kind": "metal",
+  "description": "Aço polido: mais claro e brilhante que o ferro.",
+  "tones": {
+    "outline": [
+      28,
+      34,
+      48
+    ],
+    "deep": [
+      56,
+      62,
+      76
+    ],
+    "shadow": [
+      84,
+      92,
+      108
+    ],
+    "base": [
+      120,
+      129,
+      145
+    ],
+    "light": [
+      160,
+      168,
+      182
+    ],
+    "highlight": [
+      200,
+      207,
+      218
+    ],
+    "specular": [
+      240,
+      244,
+      248
+    ]
+  },
+  "gloss": 0.75,
+  "roughness": 0.12,
+  "contrast": 1.1,
+  "wear": 0.05
+}

@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "id": "brigandine_coat_bronze",
+  "category": "chest_armor",
+  "family": "torso_plate",
+  "name": "Brigantina de bronze",
+  "template": "brigandine_coat",
+  "materials": {
+    "main": "bronze"
+  },
+  "details": [
+    {
+      "detail": "rivet",
+      "material": "iron",
+      "place": {
+        "along": "grid"
+      }
+    },
+    {
+      "detail": "buckle",
+      "material": "iron",
+      "place": {
+        "at": [
+          0.65,
+          0.9
+        ]
+      }
+    }
+  ],
+  "generation": {
+    "animation_profile": "humanoid_torso",
+    "seed": 1077
+  },
+  "covers": [
+    "Chest"
+  ],
+  "hides": "auto",
+  "mirroring": "flip",
+  "fallback": {
+    "missing_clip": "hide"
+  }
+}

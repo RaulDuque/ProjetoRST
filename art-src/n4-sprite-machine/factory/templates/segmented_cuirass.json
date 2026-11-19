@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "id": "segmented_cuirass",
+  "kind": "torso",
+  "description": "Couraça inteira com gorjal e lâminas articuladas na barriga; peito abaulado.",
+  "profile": "humanoid_torso",
+  "clips": [
+    "idle",
+    "run_c1"
+  ],
+  "preview_pose": {
+    "clip": "run_c1",
+    "frame": 1
+  },
+  "material_slots": [
+    "main"
+  ],
+  "shape": {
+    "extent": 1.0,
+    "bottom": "straight",
+    "neck": "gorget",
+    "skirt": null
+  },
+  "relief": [
+    {
+      "op": "cylinder",
+      "amp": 120,
+      "power": 0.8
+    },
+    {
+      "op": "dome",
+      "u": 0.62,
+      "v": 0.3,
+      "r": 0.5,
+      "amp": 70
+    },
+    {
+      "op": "bands",
+      "from": 0.6,
+      "every": 3,
+      "depth": 80
+    },
+    {
+      "op": "rim",
+      "edge": "top",
+      "width": 1,
+      "amp": 50
+    }
+  ],
+  "known_issues": [
+    "torso: na pose de corrida o tronco visível é estreito (braço da frente e manga de trás por cima); a peça cobre só a faixa entre os braços"
+  ]
+}

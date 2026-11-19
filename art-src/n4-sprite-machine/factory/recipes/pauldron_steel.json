@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "id": "pauldron_steel",
+  "category": "shoulder",
+  "family": "shoulder",
+  "name": "Ombreira de placas (steel)",
+  "template": "plate_pauldron",
+  "materials": {
+    "main": "steel"
+  },
+  "details": [
+    {
+      "detail": "double_trim",
+      "material": "gold",
+      "place": {
+        "edge": "bottom"
+      }
+    },
+    {
+      "detail": "boss_rivet",
+      "material": "gold",
+      "place": {
+        "at": [
+          0.55,
+          0.22
+        ]
+      }
+    }
+  ],
+  "generation": {
+    "animation_profile": "humanoid_shoulder",
+    "seed": 1252
+  },
+  "covers": [
+    "Shoulder"
+  ],
+  "hides": "none",
+  "mirroring": "flip",
+  "fallback": {
+    "missing_clip": "hide"
+  }
+}

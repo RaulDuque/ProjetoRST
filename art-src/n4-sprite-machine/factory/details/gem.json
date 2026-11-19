@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "id": "gem",
+  "op": "stamp",
+  "description": "Gema 2x2 com reflexo.",
+  "pattern": [
+    "ph",
+    "bs"
+  ],
+  "on_overflow": "skip"
+}

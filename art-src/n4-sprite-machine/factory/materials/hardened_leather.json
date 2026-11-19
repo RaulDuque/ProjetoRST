@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "id": "hardened_leather",
+  "kind": "leather",
+  "description": "Couro endurecido: marrom profundo, quase sem brilho.",
+  "tones": {
+    "outline": [
+      36,
+      20,
+      14
+    ],
+    "deep": [
+      58,
+      34,
+      22
+    ],
+    "shadow": [
+      82,
+      50,
+      32
+    ],
+    "base": [
+      110,
+      70,
+      44
+    ],
+    "light": [
+      138,
+      94,
+      60
+    ],
+    "highlight": [
+      164,
+      120,
+      82
+    ]
+  },
+  "gloss": 0.15,
+  "roughness": 0.45,
+  "contrast": 0.9,
+  "wear": 0.3
+}

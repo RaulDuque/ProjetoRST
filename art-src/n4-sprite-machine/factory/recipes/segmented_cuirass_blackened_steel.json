@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "id": "segmented_cuirass_blackened_steel",
+  "category": "chest_armor",
+  "family": "torso_plate",
+  "name": "Couraça segmentada de aço escurecido",
+  "template": "segmented_cuirass",
+  "materials": {
+    "main": "blackened_steel"
+  },
+  "details": [
+    {
+      "detail": "rivet",
+      "material": "gold",
+      "place": {
+        "along": "seams",
+        "u": [
+          0.25,
+          0.25
+        ],
+        "step": 1
+      }
+    },
+    {
+      "detail": "trim_band",
+      "material": "gold",
+      "place": {
+        "edge": "top"
+      }
+    },
+    {
+      "detail": "emblem_wolf",
+      "material": "gold",
+      "place": {
+        "at": [
+          0.6,
+          0.28
+        ]
+      }
+    }
+  ],
+  "generation": {
+    "animation_profile": "humanoid_torso",
+    "seed": 1014
+  },
+  "covers": [
+    "Chest"
+  ],
+  "hides": "auto",
+  "mirroring": "flip",
+  "fallback": {
+    "missing_clip": "hide"
+  }
+}

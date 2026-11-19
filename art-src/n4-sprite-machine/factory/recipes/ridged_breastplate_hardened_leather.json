@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "id": "ridged_breastplate_hardened_leather",
+  "category": "chest_armor",
+  "family": "torso_plate",
+  "name": "Peitoral de quilha de couro endurecido",
+  "template": "ridged_breastplate",
+  "materials": {
+    "main": "hardened_leather"
+  },
+  "details": [
+    {
+      "detail": "double_trim",
+      "material": "bronze",
+      "place": {
+        "edge": "bottom"
+      }
+    },
+    {
+      "detail": "boss_rivet",
+      "material": "bronze",
+      "place": {
+        "at": [
+          0.25,
+          0.25
+        ]
+      }
+    },
+    {
+      "detail": "wear_scratches",
+      "material": "hardened_leather",
+      "place": {
+        "density": 0.05
+      }
+    }
+  ],
+  "generation": {
+    "animation_profile": "humanoid_torso",
+    "seed": 1056
+  },
+  "covers": [
+    "Chest"
+  ],
+  "hides": "auto",
+  "mirroring": "flip",
+  "fallback": {
+    "missing_clip": "hide"
+  }
+}

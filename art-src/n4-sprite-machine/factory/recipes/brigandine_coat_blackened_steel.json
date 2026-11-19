@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "id": "brigandine_coat_blackened_steel",
+  "category": "chest_armor",
+  "family": "torso_plate",
+  "name": "Brigantina de aço escurecido",
+  "template": "brigandine_coat",
+  "materials": {
+    "main": "blackened_steel"
+  },
+  "details": [
+    {
+      "detail": "rivet",
+      "material": "gold",
+      "place": {
+        "along": "grid"
+      }
+    },
+    {
+      "detail": "buckle",
+      "material": "gold",
+      "place": {
+        "at": [
+          0.65,
+          0.9
+        ]
+      }
+    }
+  ],
+  "generation": {
+    "animation_profile": "humanoid_torso",
+    "seed": 1070
+  },
+  "covers": [
+    "Chest"
+  ],
+  "hides": "auto",
+  "mirroring": "flip",
+  "fallback": {
+    "missing_clip": "hide"
+  }
+}

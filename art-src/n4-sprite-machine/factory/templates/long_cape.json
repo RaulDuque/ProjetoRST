@@ -1,0 +1,87 @@
+{
+  "schema": 1,
+  "id": "long_cape",
+  "kind": "shoulder",
+  "description": "Capa longa flexível vista de lado: cai das costas, alarga e ondula; barra rasgada; forro visível na borda da frente.",
+  "profile": "cape_back",
+  "rigid": false,
+  "canvas": [
+    40,
+    52
+  ],
+  "pivot": [
+    14,
+    4
+  ],
+  "material_slots": [
+    "main",
+    "lining"
+  ],
+  "polygon": [
+    [
+      10,
+      2
+    ],
+    [
+      17,
+      2
+    ],
+    [
+      19,
+      8
+    ],
+    [
+      22,
+      20
+    ],
+    [
+      27,
+      34
+    ],
+    [
+      33,
+      47
+    ],
+    [
+      4,
+      49
+    ],
+    [
+      5,
+      34
+    ],
+    [
+      6,
+      20
+    ],
+    [
+      7,
+      8
+    ]
+  ],
+  "relief": [
+    {
+      "op": "folds",
+      "count": 4,
+      "amp": 90,
+      "start": 0.15
+    },
+    {
+      "op": "drape",
+      "amp": 60
+    }
+  ],
+  "regions": {
+    "main": {
+      "all": true
+    },
+    "lining": {
+      "front_edge": 2,
+      "from": 0.25
+    }
+  },
+  "hem": {
+    "style": "tattered",
+    "depth": 3
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "id": "wood",
+  "kind": "wood",
+  "description": "Madeira para cabos.",
+  "tones": {
+    "outline": [
+      38,
+      24,
+      14
+    ],
+    "deep": [
+      62,
+      40,
+      24
+    ],
+    "shadow": [
+      86,
+      58,
+      34
+    ],
+    "base": [
+      112,
+      78,
+      46
+    ],
+    "light": [
+      138,
+      100,
+      62
+    ],
+    "highlight": [
+      160,
+      124,
+      82
+    ]
+  },
+  "gloss": 0.1,
+  "roughness": 0.5,
+  "contrast": 0.9,
+  "wear": 0.1
+}

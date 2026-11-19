@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "id": "sword_arming_crescent",
+  "category": "sword",
+  "family": "sword_main_hand",
+  "name": "Espada de armas (crescent hilt, iron)",
+  "templates": {
+    "blade": "arming_blade",
+    "hilt": "crescent_hilt"
+  },
+  "materials": {
+    "blade": "iron",
+    "guard": "gold",
+    "grip": "crimson_cloth",
+    "pommel": "gold"
+  },
+  "details": [
+    {
+      "detail": "gem",
+      "material": "ember_red",
+      "place": {
+        "part": "pommel",
+        "at": [
+          0.5,
+          1.0
+        ]
+      }
+    },
+    {
+      "detail": "fuller_runes",
+      "material": "arcane_violet",
+      "place": {
+        "part": "blade",
+        "along": "column",
+        "u": 0.5,
+        "v": [
+          0.1,
+          0.55
+        ],
+        "step": 3
+      }
+    },
+    {
+      "detail": "wear_scratches",
+      "material": "iron",
+      "place": {
+        "part": "blade",
+        "density": 0.06
+      }
+    }
+  ],
+  "generation": {
+    "animation_profile": "weapon_main_hand",
+    "seed": 1126
+  },
+  "covers": [],
+  "hides": "none",
+  "mirroring": "flip",
+  "fallback": {
+    "missing_clip": "hide"
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "schema": 1,
+  "id": "humanoid_torso",
+  "category": "chest_armor",
+  "description": "Tronco do protagonista vestido (N3.5/N3.6): mesmo canvas e pivô do corpo, offset (0,0), camada armor_torso.",
+  "family": "torso_plate",
+  "layer": "armor_torso",
+  "integration": "composer",
+  "frames": [
+    {
+      "clip": "idle",
+      "frame": 0,
+      "offset": [
+        0,
+        0
+      ],
+      "pivot": [
+        40,
+        118
+      ],
+      "draw_layer": "armor_torso",
+      "z_override": 12,
+      "hidden_regions": [],
+      "hide_candidates": [],
+      "sockets": {},
+      "confidence": "medido: canvas e pivô do idle N3.5"
+    },
+    {
+      "clip": "run_c1",
+      "frame": 0,
+      "source_frame": 0,
+      "offset": [
+        0,
+        0
+      ],
+      "pivot": [
+        56,
+        118
+      ],
+      "draw_layer": "armor_torso",
+      "z_override": null,
+      "hidden_regions": [
+        "shirt_torso (se o item cobrir todo o tronco)"
+      ],
+      "hide_candidates": [
+        "shirt_torso"
+      ],
+      "occluders": [
+        "arm_front",
+        "shirt",
+        "bracers",
+        "hair_back",
+        "hair_front"
+      ],
+      "sockets": {},
+      "confidence": "medido: canvas, pivô e polígono do tronco (run_poses.py, marcação manual)"
+    },
+    {
+      "clip": "run_c1",
+      "frame": 1,
+      "source_frame": 2,
+      "offset": [
+        0,
+        0
+      ],
+      "pivot": [
+        56,
+        118
+      ],
+      "draw_layer": "armor_torso",
+      "z_override": null,
+      "hidden_regions": [
+        "shirt_torso (se o item cobrir todo o tronco)"
+      ],
+      "hide_candidates": [
+        "shirt_torso"
+      ],
+      "occluders": [
+        "arm_front",
+        "shirt",
+        "bracers",
+        "hair_back",
+        "hair_front"
+      ],
+      "sockets": {},
+      "confidence": "medido: canvas, pivô e polígono do tronco (run_poses.py, marcação manual)"
+    },
+    {
+      "clip": "run_c1",
+      "frame": 2,
+      "source_frame": 4,
+      "offset": [
+        0,
+        0
+      ],
+      "pivot": [
+        56,
+        118
+      ],
+      "draw_layer": "armor_torso",
+      "z_override": null,
+      "hidden_regions": [
+        "shirt_torso (se o item cobrir todo o tronco)"
+      ],
+      "hide_candidates": [
+        "shirt_torso"
+      ],
+      "occluders": [
+        "arm_front",
+        "shirt",
+        "bracers",
+        "hair_back",
+        "hair_front"
+      ],
+      "sockets": {},
+      "confidence": "medido: canvas, pivô e polígono do tronco (run_poses.py, marcação manual)"
+    }
+  ]
+}

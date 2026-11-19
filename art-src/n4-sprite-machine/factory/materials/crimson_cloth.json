@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "id": "crimson_cloth",
+  "kind": "cloth",
+  "description": "Tecido vermelho: contorno vinho escuro.",
+  "tones": {
+    "outline": [
+      44,
+      10,
+      18
+    ],
+    "deep": [
+      70,
+      16,
+      26
+    ],
+    "shadow": [
+      98,
+      24,
+      34
+    ],
+    "base": [
+      128,
+      36,
+      44
+    ],
+    "light": [
+      156,
+      54,
+      58
+    ],
+    "highlight": [
+      184,
+      80,
+      78
+    ]
+  },
+  "gloss": 0.05,
+  "roughness": 0.3,
+  "contrast": 0.9,
+  "wear": 0.0
+}

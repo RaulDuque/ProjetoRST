@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "id": "scale_hauberk_hardened_leather",
+  "category": "chest_armor",
+  "family": "torso_plate",
+  "name": "Cota de escamas de couro endurecido",
+  "template": "scale_hauberk",
+  "materials": {
+    "main": "hardened_leather"
+  },
+  "details": [
+    {
+      "detail": "trim_band",
+      "material": "bronze",
+      "place": {
+        "edge": "top"
+      }
+    },
+    {
+      "detail": "wear_scratches",
+      "material": "hardened_leather",
+      "place": {
+        "density": 0.05
+      }
+    }
+  ],
+  "generation": {
+    "animation_profile": "humanoid_torso",
+    "seed": 1112
+  },
+  "covers": [
+    "Chest"
+  ],
+  "hides": "auto",
+  "mirroring": "flip",
+  "fallback": {
+    "missing_clip": "hide"
+  }
+}

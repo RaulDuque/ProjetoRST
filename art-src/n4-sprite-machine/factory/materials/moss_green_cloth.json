@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "id": "moss_green_cloth",
+  "kind": "cloth",
+  "description": "Tecido verde-musgo.",
+  "tones": {
+    "outline": [
+      16,
+      26,
+      18
+    ],
+    "deep": [
+      28,
+      42,
+      30
+    ],
+    "shadow": [
+      40,
+      58,
+      40
+    ],
+    "base": [
+      56,
+      78,
+      52
+    ],
+    "light": [
+      76,
+      100,
+      66
+    ],
+    "highlight": [
+      100,
+      124,
+      84
+    ]
+  },
+  "gloss": 0.05,
+  "roughness": 0.3,
+  "contrast": 0.9,
+  "wear": 0.0
+}

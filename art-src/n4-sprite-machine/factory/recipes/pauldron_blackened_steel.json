@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "id": "pauldron_blackened_steel",
+  "category": "shoulder",
+  "family": "shoulder",
+  "name": "Ombreira de placas (blackened_steel)",
+  "template": "plate_pauldron",
+  "materials": {
+    "main": "blackened_steel"
+  },
+  "details": [
+    {
+      "detail": "trim_band",
+      "material": "gold",
+      "place": {
+        "edge": "top"
+      }
+    },
+    {
+      "detail": "emblem_cross",
+      "material": "gold",
+      "place": {
+        "at": [
+          0.55,
+          0.25
+        ]
+      }
+    }
+  ],
+  "generation": {
+    "animation_profile": "humanoid_shoulder",
+    "seed": 1238
+  },
+  "covers": [
+    "Shoulder"
+  ],
+  "hides": "none",
+  "mirroring": "flip",
+  "fallback": {
+    "missing_clip": "hide"
+  }
+}

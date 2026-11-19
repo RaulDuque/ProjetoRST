@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "id": "rivet",
+  "op": "stamp",
+  "description": "Rebite 1x2: cabeça clara do material do detalhe e sombra do material hospedeiro abaixo.",
+  "pattern": [
+    "h",
+    "S"
+  ],
+  "on_overflow": "skip"
+}

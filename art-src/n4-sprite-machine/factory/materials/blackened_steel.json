@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "id": "blackened_steel",
+  "kind": "metal",
+  "description": "Aço escurecido: quase negro, reflexo frio arroxeado.",
+  "tones": {
+    "outline": [
+      18,
+      16,
+      26
+    ],
+    "deep": [
+      30,
+      28,
+      38
+    ],
+    "shadow": [
+      44,
+      42,
+      54
+    ],
+    "base": [
+      60,
+      58,
+      72
+    ],
+    "light": [
+      84,
+      82,
+      98
+    ],
+    "highlight": [
+      116,
+      114,
+      132
+    ],
+    "specular": [
+      160,
+      158,
+      178
+    ]
+  },
+  "gloss": 0.5,
+  "roughness": 0.18,
+  "contrast": 1.0,
+  "wear": 0.1
+}

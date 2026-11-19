@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "id": "estoc_blade",
+  "kind": "blade",
+  "description": "Estoque longo e estreito de seção em losango, sem gume largo.",
+  "profile": "weapon_main_hand",
+  "material_slots": [
+    "blade"
+  ],
+  "length": 40,
+  "half_width": [
+    [
+      0,
+      1.8
+    ],
+    [
+      0.5,
+      1.5
+    ],
+    [
+      0.9,
+      0.9
+    ],
+    [
+      1.0,
+      0.2
+    ]
+  ],
+  "curve": [
+    [
+      0,
+      0
+    ],
+    [
+      1,
+      0
+    ]
+  ],
+  "wave": null,
+  "relief": [
+    {
+      "op": "blade_bevel",
+      "amp": 140
+    }
+  ]
+}

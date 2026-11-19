@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "id": "cape_back",
+  "category": "cape",
+  "description": "Capa flexível nas costas. Recurso isolado: precisa de variantes por pose (o tecido se move), não de uma folha rígida.",
+  "integration": "isolated",
+  "blocked_by": "ponto das costas não marcado (N4C_SOQUETES.md) e sem variantes por pose",
+  "rigid": false,
+  "frames": [
+    {
+      "clip": "run_c1",
+      "frame": 0,
+      "source_frame": 0,
+      "socket": "back",
+      "candidate": null,
+      "status": "pendente",
+      "reason": "soquete candidato (N4C_SOQUETES.md), sem confirmação do proprietário"
+    },
+    {
+      "clip": "run_c1",
+      "frame": 1,
+      "source_frame": 2,
+      "socket": "back",
+      "candidate": null,
+      "status": "pendente",
+      "reason": "soquete candidato (N4C_SOQUETES.md), sem confirmação do proprietário"
+    },
+    {
+      "clip": "run_c1",
+      "frame": 2,
+      "source_frame": 4,
+      "socket": "back",
+      "candidate": null,
+      "status": "pendente",
+      "reason": "soquete candidato (N4C_SOQUETES.md), sem confirmação do proprietário"
+    }
+  ]
+}

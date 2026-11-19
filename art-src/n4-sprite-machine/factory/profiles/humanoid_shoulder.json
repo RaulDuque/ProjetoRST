@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "id": "humanoid_shoulder",
+  "category": "shoulder",
+  "description": "Ombreira rígida ou acessório de ombro. Recurso isolado: o protagonista não tem camada de ombro nem soquete de ombro no formato.",
+  "integration": "isolated",
+  "blocked_by": "sem camada 'shoulder' em protagonist.ron e sem soquete 'shoulder' (N4C_SOQUETES.md: extensão de formato pendente)",
+  "rigid": true,
+  "frames": [
+    {
+      "clip": "run_c1",
+      "frame": 0,
+      "source_frame": 0,
+      "socket": "shoulder_near",
+      "candidate": [
+        61,
+        39
+      ],
+      "status": "pendente",
+      "reason": "soquete candidato (N4C_SOQUETES.md), sem confirmação do proprietário"
+    },
+    {
+      "clip": "run_c1",
+      "frame": 1,
+      "source_frame": 2,
+      "socket": "shoulder_near",
+      "candidate": [
+        61,
+        38
+      ],
+      "status": "pendente",
+      "reason": "soquete candidato (N4C_SOQUETES.md), sem confirmação do proprietário"
+    },
+    {
+      "clip": "run_c1",
+      "frame": 2,
+      "source_frame": 4,
+      "socket": "shoulder_near",
+      "candidate": [
+        57,
+        38
+      ],
+      "status": "pendente",
+      "reason": "soquete candidato (N4C_SOQUETES.md), sem confirmação do proprietário"
+    }
+  ]
+}

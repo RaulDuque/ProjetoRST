@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "id": "stitch_line",
+  "op": "line",
+  "description": "Costura tracejada (1 aceso, 1 apagado).",
+  "dash": [
+    1,
+    1
+  ],
+  "tone": "light"
+}

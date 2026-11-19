@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "id": "buckle",
+  "op": "stamp",
+  "description": "Fivela 3x3 com pino.",
+  "pattern": [
+    "ooo",
+    "ohb",
+    "ooo"
+  ],
+  "on_overflow": "skip"
+}

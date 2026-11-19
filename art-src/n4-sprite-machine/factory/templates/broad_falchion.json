@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "id": "broad_falchion",
+  "kind": "blade",
+  "description": "Falcão: lâmina larga de um gume, dorso reto e gume curvo alargando perto da ponta.",
+  "profile": "weapon_main_hand",
+  "material_slots": [
+    "blade"
+  ],
+  "length": 30,
+  "half_width": [
+    [
+      0,
+      3.0
+    ],
+    [
+      0.55,
+      3.4
+    ],
+    [
+      0.85,
+      3.6
+    ],
+    [
+      0.95,
+      2.4
+    ],
+    [
+      1.0,
+      0.3
+    ]
+  ],
+  "curve": [
+    [
+      0,
+      0
+    ],
+    [
+      0.6,
+      0.6
+    ],
+    [
+      1,
+      2.2
+    ]
+  ],
+  "wave": null,
+  "relief": [
+    {
+      "op": "blade_bevel",
+      "amp": 90,
+      "spine": -1
+    }
+  ],
+  "known_issues": [
+    "broad_falchion: curvatura do gume discreta e ponta curta — revisar silhueta (agente)"
+  ]
+}

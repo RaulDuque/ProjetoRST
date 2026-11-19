@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "id": "ash_grey_cloth",
+  "kind": "cloth",
+  "description": "Tecido cinza-cinza de lã grossa.",
+  "tones": {
+    "outline": [
+      26,
+      24,
+      30
+    ],
+    "deep": [
+      44,
+      42,
+      50
+    ],
+    "shadow": [
+      62,
+      60,
+      70
+    ],
+    "base": [
+      84,
+      82,
+      92
+    ],
+    "light": [
+      108,
+      106,
+      116
+    ],
+    "highlight": [
+      134,
+      132,
+      142
+    ]
+  },
+  "gloss": 0.05,
+  "roughness": 0.3,
+  "contrast": 0.9,
+  "wear": 0.0
+}

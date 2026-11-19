@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "id": "silver",
+  "kind": "metal",
+  "description": "Prata para guarnições e rebites.",
+  "tones": {
+    "outline": [
+      40,
+      42,
+      58
+    ],
+    "deep": [
+      78,
+      82,
+      100
+    ],
+    "shadow": [
+      112,
+      118,
+      136
+    ],
+    "base": [
+      150,
+      156,
+      172
+    ],
+    "light": [
+      186,
+      192,
+      206
+    ],
+    "highlight": [
+      218,
+      222,
+      232
+    ],
+    "specular": [
+      248,
+      250,
+      252
+    ]
+  },
+  "gloss": 0.8,
+  "roughness": 0.1,
+  "contrast": 1.0,
+  "wear": 0.0
+}

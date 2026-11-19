@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "id": "rune_mark",
+  "op": "stamp",
+  "description": "Runa de 3x3 (traço de energia).",
+  "pattern": [
+    "h.l",
+    ".p.",
+    "l.h"
+  ],
+  "on_overflow": "skip"
+}

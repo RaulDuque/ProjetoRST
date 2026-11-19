@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "id": "brigandine_coat",
+  "kind": "torso",
+  "description": "Brigantina: casaco acolchoado de placas rebitadas com saia segmentada sobre o quadril.",
+  "profile": "humanoid_torso",
+  "clips": [
+    "idle"
+  ],
+  "preview_pose": {
+    "clip": "run_c1",
+    "frame": 1
+  },
+  "material_slots": [
+    "main"
+  ],
+  "shape": {
+    "extent": 1.0,
+    "bottom": "straight",
+    "neck": "cut",
+    "skirt": {
+      "rows": 6,
+      "segment": 4,
+      "flare": 1
+    }
+  },
+  "relief": [
+    {
+      "op": "cylinder",
+      "amp": 70,
+      "power": 1.0
+    },
+    {
+      "op": "grid",
+      "every_x": 5,
+      "every_y": 4,
+      "depth": 30
+    },
+    {
+      "op": "skirt_segments",
+      "depth": 70
+    }
+  ],
+  "known_issues": [
+    "torso: no idle a camisa e a manga são uma camada só; o peitoral aparece em duas faixas estreitas em volta da manga"
+  ]
+}

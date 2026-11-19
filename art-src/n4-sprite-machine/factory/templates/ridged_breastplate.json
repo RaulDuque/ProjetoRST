@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "id": "ridged_breastplate",
+  "kind": "torso",
+  "description": "Peitoral curto com quilha central e ponta em V; a camisa aparece abaixo.",
+  "profile": "humanoid_torso",
+  "clips": [
+    "idle"
+  ],
+  "preview_pose": {
+    "clip": "run_c1",
+    "frame": 1
+  },
+  "material_slots": [
+    "main"
+  ],
+  "shape": {
+    "extent": 0.74,
+    "bottom": "pointed",
+    "point_depth": 3,
+    "point_u": 0.6,
+    "neck": "cut",
+    "skirt": null
+  },
+  "relief": [
+    {
+      "op": "cylinder",
+      "amp": 100,
+      "power": 1.0
+    },
+    {
+      "op": "ridge",
+      "u": 0.6,
+      "amp": 90,
+      "from": 0.05,
+      "to": 1.0,
+      "width": 0.18
+    },
+    {
+      "op": "rim",
+      "edge": "all",
+      "width": 1,
+      "amp": 45
+    }
+  ],
+  "known_issues": [
+    "torso: no idle a camisa e a manga são uma camada só; o peitoral aparece em duas faixas estreitas em volta da manga"
+  ]
+}

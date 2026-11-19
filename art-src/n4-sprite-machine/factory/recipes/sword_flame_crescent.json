@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "id": "sword_flame_crescent",
+  "category": "sword",
+  "family": "sword_main_hand",
+  "name": "Flamberga (crescent hilt, steel)",
+  "templates": {
+    "blade": "flame_blade",
+    "hilt": "crescent_hilt"
+  },
+  "materials": {
+    "blade": "steel",
+    "guard": "gold",
+    "grip": "crimson_cloth",
+    "pommel": "gold"
+  },
+  "details": [
+    {
+      "detail": "gem",
+      "material": "ember_red",
+      "place": {
+        "part": "pommel",
+        "at": [
+          0.5,
+          1.0
+        ]
+      }
+    }
+  ],
+  "generation": {
+    "animation_profile": "weapon_main_hand",
+    "seed": 1189
+  },
+  "covers": [],
+  "hides": "none",
+  "mirroring": "flip",
+  "fallback": {
+    "missing_clip": "hide"
+  }
+}

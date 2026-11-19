@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "id": "mantle_moss_green_wolf_fur",
+  "category": "shoulder",
+  "family": "shoulder",
+  "name": "Mantelete (moss_green_cloth, gola wolf_fur)",
+  "template": "fur_mantle",
+  "materials": {
+    "main": "moss_green_cloth",
+    "collar": "wolf_fur"
+  },
+  "details": [
+    {
+      "detail": "stitch_line",
+      "material": "ash_grey_cloth",
+      "place": {
+        "axis": "horizontal",
+        "v": 0.8,
+        "u": [
+          0.08,
+          0.92
+        ]
+      }
+    }
+  ],
+  "generation": {
+    "animation_profile": "humanoid_shoulder",
+    "seed": 1280
+  },
+  "covers": [
+    "Shoulder"
+  ],
+  "hides": "none",
+  "mirroring": "flip",
+  "fallback": {
+    "missing_clip": "hide"
+  }
+}

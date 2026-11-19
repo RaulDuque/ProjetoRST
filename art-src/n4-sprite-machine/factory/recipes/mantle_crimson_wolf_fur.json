@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "id": "mantle_crimson_wolf_fur",
+  "category": "shoulder",
+  "family": "shoulder",
+  "name": "Mantelete (crimson_cloth, gola wolf_fur)",
+  "template": "fur_mantle",
+  "materials": {
+    "main": "crimson_cloth",
+    "collar": "wolf_fur"
+  },
+  "details": [],
+  "generation": {
+    "animation_profile": "humanoid_shoulder",
+    "seed": 1259
+  },
+  "covers": [
+    "Shoulder"
+  ],
+  "hides": "none",
+  "mirroring": "flip",
+  "fallback": {
+    "missing_clip": "hide"
+  }
+}

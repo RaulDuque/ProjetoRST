@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "id": "ring_hilt",
+  "kind": "hilt",
+  "description": "Guarda com anel lateral e quilhões curtos, cabo de madeira, pomo em espigão.",
+  "profile": "weapon_main_hand",
+  "material_slots": [
+    "guard",
+    "grip",
+    "pommel"
+  ],
+  "guard": {
+    "slot": "guard",
+    "pattern": [
+      "...ooo.....",
+      "..ohlbo....",
+      "oohbsbhllo.",
+      "osbbbbbbbo.",
+      ".ooooooooo."
+    ]
+  },
+  "grip": {
+    "slot": "grip",
+    "length": 8,
+    "pattern": [
+      "oblo",
+      "obso"
+    ]
+  },
+  "pommel": {
+    "slot": "pommel",
+    "pattern": [
+      ".oo.",
+      "ohlo",
+      "osbo",
+      ".ob.",
+      ".os.",
+      "..o."
+    ]
+  }
+}

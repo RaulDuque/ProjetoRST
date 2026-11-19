@@ -1,0 +1,94 @@
+{
+  "schema": 1,
+  "id": "fur_mantle",
+  "kind": "shoulder",
+  "description": "Acessório de ombro: mantelete curto de tecido com gola de pelagem.",
+  "profile": "humanoid_shoulder",
+  "rigid": false,
+  "canvas": [
+    40,
+    52
+  ],
+  "pivot": [
+    14,
+    4
+  ],
+  "material_slots": [
+    "main",
+    "collar"
+  ],
+  "polygon": [
+    [
+      8,
+      4
+    ],
+    [
+      26,
+      4
+    ],
+    [
+      31,
+      9
+    ],
+    [
+      34,
+      18
+    ],
+    [
+      33,
+      28
+    ],
+    [
+      27,
+      32
+    ],
+    [
+      20,
+      30
+    ],
+    [
+      13,
+      33
+    ],
+    [
+      6,
+      29
+    ],
+    [
+      4,
+      18
+    ],
+    [
+      5,
+      8
+    ]
+  ],
+  "relief": [
+    {
+      "op": "cylinder",
+      "amp": 70,
+      "power": 1.0
+    },
+    {
+      "op": "folds",
+      "count": 3,
+      "amp": 45,
+      "start": 0.45
+    }
+  ],
+  "regions": {
+    "main": {
+      "all": true
+    },
+    "collar": {
+      "top_rows": 6
+    }
+  },
+  "collar_texture": {
+    "op": "fur",
+    "density": 0.16
+  },
+  "known_issues": [
+    "fur_mantle: gola de pelagem lê como faixa de textura, sem tufos caindo sobre o ombro; silhueta ainda parecida com saia — revisar (agente)"
+  ]
+}

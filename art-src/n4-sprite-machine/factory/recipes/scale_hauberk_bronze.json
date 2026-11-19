@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "id": "scale_hauberk_bronze",
+  "category": "chest_armor",
+  "family": "torso_plate",
+  "name": "Cota de escamas de bronze",
+  "template": "scale_hauberk",
+  "materials": {
+    "main": "bronze"
+  },
+  "details": [
+    {
+      "detail": "trim_band",
+      "material": "iron",
+      "place": {
+        "edge": "top"
+      }
+    }
+  ],
+  "generation": {
+    "animation_profile": "humanoid_torso",
+    "seed": 1105
+  },
+  "covers": [
+    "Chest"
+  ],
+  "hides": "auto",
+  "mirroring": "flip",
+  "fallback": {
+    "missing_clip": "hide"
+  }
+}

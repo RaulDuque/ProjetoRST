@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "id": "wear_scratches",
+  "op": "scatter",
+  "description": "Desgaste: arranhões curtos semeados (claro) e mossas (escuro).",
+  "tones": [
+    "H",
+    "S"
+  ],
+  "length": 2
+}

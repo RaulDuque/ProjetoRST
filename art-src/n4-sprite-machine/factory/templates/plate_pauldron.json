@@ -1,0 +1,104 @@
+{
+  "schema": 1,
+  "id": "plate_pauldron",
+  "kind": "shoulder",
+  "description": "Ombreira rígida de placas: cúpula do ombro e três lâminas sobrepostas.",
+  "profile": "humanoid_shoulder",
+  "rigid": true,
+  "canvas": [
+    40,
+    52
+  ],
+  "pivot": [
+    14,
+    4
+  ],
+  "material_slots": [
+    "main"
+  ],
+  "polygon": [
+    [
+      11,
+      4
+    ],
+    [
+      24,
+      4
+    ],
+    [
+      29,
+      7
+    ],
+    [
+      32,
+      13
+    ],
+    [
+      33,
+      22
+    ],
+    [
+      31,
+      29
+    ],
+    [
+      26,
+      33
+    ],
+    [
+      17,
+      34
+    ],
+    [
+      9,
+      32
+    ],
+    [
+      5,
+      26
+    ],
+    [
+      5,
+      13
+    ],
+    [
+      8,
+      7
+    ]
+  ],
+  "relief": [
+    {
+      "op": "cylinder",
+      "amp": 90,
+      "power": 0.9
+    },
+    {
+      "op": "dome",
+      "u": 0.6,
+      "v": 0.2,
+      "r": 0.5,
+      "amp": 110
+    },
+    {
+      "op": "bands",
+      "from": 0.5,
+      "every": 4,
+      "depth": 60,
+      "curve": 2
+    },
+    {
+      "op": "rim",
+      "edge": "all",
+      "width": 1,
+      "amp": 35
+    }
+  ],
+  "regions": {
+    "main": {
+      "all": true
+    }
+  },
+  "known_issues": [
+    "plate_pauldron: vista isolada sem o ombro de referência e sem correia de fixação; com desgaste (wear) o ferro fica ruidoso — revisar (agente)"
+  ]
+}

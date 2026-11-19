@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "id": "emblem_wolf",
+  "op": "stamp",
+  "description": "Emblema de cabeça de lobo 5x4 (original).",
+  "pattern": [
+    "o...o",
+    "lhohl",
+    ".lhl.",
+    "..s.."
+  ],
+  "on_overflow": "skip"
+}

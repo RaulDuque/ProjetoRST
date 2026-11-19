@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "id": "gold",
+  "kind": "metal",
+  "description": "Ouro para guarnições: contorno marrom-dourado escuro.",
+  "tones": {
+    "outline": [
+      58,
+      36,
+      14
+    ],
+    "deep": [
+      104,
+      70,
+      22
+    ],
+    "shadow": [
+      146,
+      104,
+      32
+    ],
+    "base": [
+      190,
+      146,
+      48
+    ],
+    "light": [
+      222,
+      186,
+      80
+    ],
+    "highlight": [
+      244,
+      218,
+      128
+    ],
+    "specular": [
+      255,
+      244,
+      200
+    ]
+  },
+  "gloss": 0.8,
+  "roughness": 0.1,
+  "contrast": 1.0,
+  "wear": 0.0
+}

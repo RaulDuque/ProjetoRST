@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "id": "sword_estoc_cross",
+  "category": "sword",
+  "family": "sword_main_hand",
+  "name": "Estoque (cross hilt, steel)",
+  "templates": {
+    "blade": "estoc_blade",
+    "hilt": "cross_hilt"
+  },
+  "materials": {
+    "blade": "steel",
+    "guard": "iron",
+    "grip": "dark_leather",
+    "pommel": "iron"
+  },
+  "details": [],
+  "generation": {
+    "animation_profile": "weapon_main_hand",
+    "seed": 1140
+  },
+  "covers": [],
+  "hides": "none",
+  "mirroring": "flip",
+  "fallback": {
+    "missing_clip": "hide"
+  }
+}

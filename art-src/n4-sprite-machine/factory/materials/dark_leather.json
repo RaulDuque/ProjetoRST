@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "id": "dark_leather",
+  "kind": "leather",
+  "description": "Couro escuro de cabos e correias.",
+  "tones": {
+    "outline": [
+      26,
+      16,
+      14
+    ],
+    "deep": [
+      40,
+      26,
+      22
+    ],
+    "shadow": [
+      56,
+      38,
+      30
+    ],
+    "base": [
+      76,
+      52,
+      40
+    ],
+    "light": [
+      98,
+      70,
+      54
+    ],
+    "highlight": [
+      122,
+      92,
+      72
+    ]
+  },
+  "gloss": 0.1,
+  "roughness": 0.4,
+  "contrast": 0.9,
+  "wear": 0.2
+}

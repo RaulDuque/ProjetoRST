@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "id": "segmented_cuirass_hardened_leather",
+  "category": "chest_armor",
+  "family": "torso_plate",
+  "name": "Couraça segmentada de couro endurecido",
+  "template": "segmented_cuirass",
+  "materials": {
+    "main": "hardened_leather"
+  },
+  "details": [
+    {
+      "detail": "rivet",
+      "material": "bronze",
+      "place": {
+        "along": "seams",
+        "u": [
+          0.25,
+          0.25
+        ],
+        "step": 1
+      }
+    },
+    {
+      "detail": "trim_band",
+      "material": "bronze",
+      "place": {
+        "edge": "top"
+      }
+    },
+    {
+      "detail": "wear_scratches",
+      "material": "hardened_leather",
+      "place": {
+        "density": 0.05
+      }
+    }
+  ],
+  "generation": {
+    "animation_profile": "humanoid_torso",
+    "seed": 1028
+  },
+  "covers": [
+    "Chest"
+  ],
+  "hides": "auto",
+  "mirroring": "flip",
+  "fallback": {
+    "missing_clip": "hide"
+  }
+}

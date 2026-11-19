@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "id": "seam_line",
+  "op": "line",
+  "description": "Junta contínua escura com brilho ao lado.",
+  "dash": [
+    1,
+    0
+  ],
+  "tone": "shadow",
+  "glint": "highlight"
+}

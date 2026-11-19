@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "id": "segmented_cuirass_iron",
+  "category": "chest_armor",
+  "family": "torso_plate",
+  "name": "Couraça segmentada de ferro",
+  "template": "segmented_cuirass",
+  "materials": {
+    "main": "iron"
+  },
+  "details": [
+    {
+      "detail": "rivet",
+      "material": "silver",
+      "place": {
+        "along": "seams",
+        "u": [
+          0.25,
+          0.25
+        ],
+        "step": 1
+      }
+    },
+    {
+      "detail": "trim_band",
+      "material": "silver",
+      "place": {
+        "edge": "top"
+      }
+    },
+    {
+      "detail": "wear_scratches",
+      "material": "iron",
+      "place": {
+        "density": 0.05
+      }
+    }
+  ],
+  "generation": {
+    "animation_profile": "humanoid_torso",
+    "seed": 1007
+  },
+  "covers": [
+    "Chest"
+  ],
+  "hides": "auto",
+  "mirroring": "flip",
+  "fallback": {
+    "missing_clip": "hide"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "id": "emblem_sun",
+  "op": "stamp",
+  "description": "Sol raiado 3x3.",
+  "pattern": [
+    "l.l",
+    ".p.",
+    "l.l"
+  ],
+  "on_overflow": "skip"
+}

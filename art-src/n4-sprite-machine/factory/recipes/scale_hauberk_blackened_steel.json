@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "id": "scale_hauberk_blackened_steel",
+  "category": "chest_armor",
+  "family": "torso_plate",
+  "name": "Cota de escamas de aço escurecido",
+  "template": "scale_hauberk",
+  "materials": {
+    "main": "blackened_steel"
+  },
+  "details": [
+    {
+      "detail": "trim_band",
+      "material": "gold",
+      "place": {
+        "edge": "top"
+      }
+    },
+    {
+      "detail": "gem",
+      "material": "arcane_violet",
+      "place": {
+        "at": [
+          0.6,
+          0.18
+        ]
+      }
+    }
+  ],
+  "generation": {
+    "animation_profile": "humanoid_torso",
+    "seed": 1098
+  },
+  "covers": [
+    "Chest"
+  ],
+  "hides": "auto",
+  "mirroring": "flip",
+  "fallback": {
+    "missing_clip": "hide"
+  }
+}

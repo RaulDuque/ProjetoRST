@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "id": "ridged_breastplate_bronze",
+  "category": "chest_armor",
+  "family": "torso_plate",
+  "name": "Peitoral de quilha de bronze",
+  "template": "ridged_breastplate",
+  "materials": {
+    "main": "bronze"
+  },
+  "details": [
+    {
+      "detail": "double_trim",
+      "material": "iron",
+      "place": {
+        "edge": "bottom"
+      }
+    }
+  ],
+  "generation": {
+    "animation_profile": "humanoid_torso",
+    "seed": 1049
+  },
+  "covers": [
+    "Chest"
+  ],
+  "hides": "auto",
+  "mirroring": "flip",
+  "fallback": {
+    "missing_clip": "hide"
+  }
+}

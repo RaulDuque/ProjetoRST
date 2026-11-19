@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "id": "segmented_cuirass_bronze",
+  "category": "chest_armor",
+  "family": "torso_plate",
+  "name": "Couraça segmentada de bronze",
+  "template": "segmented_cuirass",
+  "materials": {
+    "main": "bronze"
+  },
+  "details": [
+    {
+      "detail": "rivet",
+      "material": "iron",
+      "place": {
+        "along": "seams",
+        "u": [
+          0.25,
+          0.25
+        ],
+        "step": 1
+      }
+    },
+    {
+      "detail": "trim_band",
+      "material": "iron",
+      "place": {
+        "edge": "top"
+      }
+    },
+    {
+      "detail": "emblem_sun",
+      "material": "iron",
+      "place": {
+        "at": [
+          0.6,
+          0.28
+        ]
+      }
+    }
+  ],
+  "generation": {
+    "animation_profile": "humanoid_torso",
+    "seed": 1021
+  },
+  "covers": [
+    "Chest"
+  ],
+  "hides": "auto",
+  "mirroring": "flip",
+  "fallback": {
+    "missing_clip": "hide"
+  }
+}

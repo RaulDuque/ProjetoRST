@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "id": "sword_broad_falchion_cross",
+  "category": "sword",
+  "family": "sword_main_hand",
+  "name": "Falcão (cross hilt, iron)",
+  "templates": {
+    "blade": "broad_falchion",
+    "hilt": "cross_hilt"
+  },
+  "materials": {
+    "blade": "iron",
+    "guard": "iron",
+    "grip": "dark_leather",
+    "pommel": "iron"
+  },
+  "details": [
+    {
+      "detail": "wear_scratches",
+      "material": "iron",
+      "place": {
+        "part": "blade",
+        "density": 0.06
+      }
+    }
+  ],
+  "generation": {
+    "animation_profile": "weapon_main_hand",
+    "seed": 1161
+  },
+  "covers": [],
+  "hides": "none",
+  "mirroring": "flip",
+  "fallback": {
+    "missing_clip": "hide"
+  }
+}

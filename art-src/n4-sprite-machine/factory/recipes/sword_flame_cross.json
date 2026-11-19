@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "id": "sword_flame_cross",
+  "category": "sword",
+  "family": "sword_main_hand",
+  "name": "Flamberga (cross hilt, blackened_steel)",
+  "templates": {
+    "blade": "flame_blade",
+    "hilt": "cross_hilt"
+  },
+  "materials": {
+    "blade": "blackened_steel",
+    "guard": "iron",
+    "grip": "dark_leather",
+    "pommel": "iron"
+  },
+  "details": [
+    {
+      "detail": "fuller_runes",
+      "material": "arcane_violet",
+      "place": {
+        "part": "blade",
+        "along": "column",
+        "u": 0.5,
+        "v": [
+          0.1,
+          0.55
+        ],
+        "step": 3
+      }
+    }
+  ],
+  "generation": {
+    "animation_profile": "weapon_main_hand",
+    "seed": 1182
+  },
+  "covers": [],
+  "hides": "none",
+  "mirroring": "flip",
+  "fallback": {
+    "missing_clip": "hide"
+  }
+}
