@@ -5,6 +5,8 @@
 //!   N3 protagonist (`DARK_CASTLE_PROTAGONIST=n3`);
 //! - [`composition`] (pure, N4-A): data-driven layered characters (RON);
 //! - [`composite`] (Bevy, N4-A): layer sprites that follow `VisualPlayback`;
+//! - [`equipment_visual`] (pure, N4-1-A): visual families and items added to
+//!   a composition by data (OVERLAY / HIDE / REPLACE);
 //! - [`manifest`] (pure): atlases and clips of `assets/animations/player.ron`;
 //! - [`playback`] (pure): frame timing (loops, actions, per-frame durations);
 //! - [`selection`] (pure): which clip shows a gameplay state, and fallbacks;
@@ -21,6 +23,7 @@
 pub mod art_profile;
 pub mod composite;
 pub mod composition;
+pub mod equipment_visual;
 pub mod manifest;
 pub mod modular_lab;
 pub mod playback;

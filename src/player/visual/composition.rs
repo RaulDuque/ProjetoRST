@@ -78,6 +78,10 @@ fn one() -> u32 {
 pub struct PieceDef {
     pub layer: String,
     pub sheets: BTreeMap<String, SheetRef>,
+    /// N4-1-A: hand-drawn sheets for the mirrored facing (an asymmetric
+    /// piece). Without one, the piece is flipped with the body.
+    #[serde(default)]
+    pub mirrored: BTreeMap<String, SheetRef>,
 }
 
 /// A removable (or base) visual part.
@@ -97,6 +101,15 @@ pub struct PartDef {
     /// (weapons and shields; see `sockets.rs`).
     #[serde(default)]
     pub socket: Option<String>,
+    /// N4-1-A HIDE: layer slots hidden per clip while this part is worn and
+    /// visible (a cuirass hides `shirt_torso` in the run but keeps the
+    /// sleeves). Finer than `hides`, which hides whole parts by region.
+    #[serde(default)]
+    pub hide_layers: BTreeMap<String, Vec<String>>,
+    /// N4-1-A REPLACE: parts not drawn while this part is worn and visible
+    /// (new boots replacing the base boots).
+    #[serde(default)]
+    pub replaces: Vec<String>,
 }
 
 fn yes() -> bool {
@@ -162,6 +175,10 @@ pub enum CompositionError {
     UnknownVariant { part: String, variant: String },
     #[error("order override: unknown clip {clip} or layer {layer}")]
     Override { clip: String, layer: String },
+    #[error("part {part}: hides unknown clip or layer {what}")]
+    HiddenLayer { part: String, what: String },
+    #[error("part {part}: cannot replace {target} (unknown, itself or the base body)")]
+    Replace { part: String, target: String },
 }
 
 impl CharacterComposition {
@@ -212,6 +229,37 @@ impl CharacterComposition {
             for piece in all {
                 self.check_piece(id, piece)?;
             }
+            let own: BTreeSet<&str> = part.pieces.iter().map(|p| p.layer.as_str()).collect();
+            for (clip, layers) in &part.hide_layers {
+                if !self.clips.contains_key(clip) {
+                    return Err(CompositionError::HiddenLayer {
+                        part: id.clone(),
+                        what: clip.clone(),
+                    });
+                }
+                if let Some(l) = layers
+                    .iter()
+                    .find(|l| !self.layers.contains(l) || own.contains(l.as_str()))
+                {
+                    return Err(CompositionError::HiddenLayer {
+                        part: id.clone(),
+                        what: l.clone(),
+                    });
+                }
+            }
+            for target in &part.replaces {
+                let valid = target != id
+                    && self
+                        .parts
+                        .get(target)
+                        .is_some_and(|t| t.removable || t.region != Region::Body);
+                if !valid {
+                    return Err(CompositionError::Replace {
+                        part: id.clone(),
+                        target: target.clone(),
+                    });
+                }
+            }
         }
         for id in &self.default_outfit {
             if !self.parts.contains_key(id) {
@@ -236,7 +284,7 @@ impl CharacterComposition {
                 layer: piece.layer.clone(),
             });
         }
-        for (clip_id, sheet) in &piece.sheets {
+        for (clip_id, sheet) in piece.sheets.iter().chain(&piece.mirrored) {
             let clip = self
                 .clips
                 .get(clip_id)
@@ -346,6 +394,8 @@ pub struct DrawLayer {
     /// Index in the sheet grid: `first + frame`.
     pub index: u32,
     pub visible: bool,
+    /// The texture is already drawn mirrored (do not flip the sprite).
+    pub mirrored: bool,
 }
 
 /// Resolves an outfit into the layers of one clip and frame, sorted back to
@@ -357,6 +407,20 @@ pub fn resolve(
     outfit: &Outfit,
     clip: &str,
     frame: u32,
+) -> Result<Vec<DrawLayer>, CompositionError> {
+    resolve_facing(c, outfit, clip, frame, false)
+}
+
+/// [`resolve`] for a facing: when the body is mirrored (`flip`), a piece
+/// with a hand-drawn mirrored sheet uses it (`DrawLayer::mirrored`) instead
+/// of being flipped. Also applies HIDE (`hide_layers`) and REPLACE
+/// (`replaces`) of the visible worn parts.
+pub fn resolve_facing(
+    c: &CharacterComposition,
+    outfit: &Outfit,
+    clip: &str,
+    frame: u32,
+    flip: bool,
 ) -> Result<Vec<DrawLayer>, CompositionError> {
     let Some(clip_def) = c.clips.get(clip) else {
         return Err(CompositionError::UnknownClip {
@@ -370,6 +434,8 @@ pub fn resolve(
         worn.entry(base.to_owned()).or_insert(None);
     }
     let mut hidden_regions = BTreeSet::new();
+    let mut hidden_layers: BTreeSet<&str> = BTreeSet::new();
+    let mut replaced: BTreeSet<&str> = BTreeSet::new();
     for id in worn.keys() {
         let part = c
             .parts
@@ -377,6 +443,10 @@ pub fn resolve(
             .ok_or_else(|| CompositionError::UnknownPart(id.clone()))?;
         if !outfit.hidden.contains(id) {
             hidden_regions.extend(part.hides.iter().copied());
+            if let Some(layers) = part.hide_layers.get(clip) {
+                hidden_layers.extend(layers.iter().map(String::as_str));
+            }
+            replaced.extend(part.replaces.iter().map(String::as_str));
         }
     }
     let mut out = Vec::new();
@@ -393,10 +463,15 @@ pub fn resolve(
                 })?,
         };
         let visible = !outfit.hidden.contains(id)
+            && !replaced.contains(id.as_str())
             && (part.region == Region::Body || !hidden_regions.contains(&part.region));
         for piece in pieces {
             let Some(sheet) = piece.sheets.get(clip) else {
                 continue;
+            };
+            let (sheet, mirrored) = match piece.mirrored.get(clip) {
+                Some(m) if flip => (m, true),
+                _ => (sheet, false),
             };
             let z = c.z_at(&piece.layer, clip, frame).unwrap_or(0);
             out.push(DrawLayer {
@@ -405,11 +480,23 @@ pub fn resolve(
                 z,
                 texture: sheet.texture.clone(),
                 index: sheet.first + frame,
-                visible,
+                visible: visible && !hidden_layers.contains(piece.layer.as_str()),
+                mirrored,
             });
         }
     }
-    out.sort_by(|a, b| a.z.cmp(&b.z).then_with(|| a.layer.cmp(&b.layer)));
+    // Ties (an override moved a slot onto another's z) keep the declared
+    // layer order, so the result never depends on the names.
+    let index = |layer: &str| {
+        c.layers
+            .iter()
+            .position(|l| l == layer)
+            .unwrap_or(usize::MAX)
+    };
+    out.sort_by(|a, b| {
+        a.z.cmp(&b.z)
+            .then_with(|| index(&a.layer).cmp(&index(&b.layer)))
+    });
     Ok(out)
 }
 

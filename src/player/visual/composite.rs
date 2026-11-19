@@ -18,7 +18,7 @@ use bevy::prelude::*;
 use bevy::sprite::Anchor;
 
 use super::VisualPlayback;
-use super::composition::{CharacterComposition, Outfit, resolve};
+use super::composition::{CharacterComposition, Outfit, resolve_facing};
 use super::manifest::{ROOT_CLIP, anchor_for};
 
 /// Depth between two layer slots (all inside the character's own depth).
@@ -119,7 +119,7 @@ pub fn sync_composite_layers(
         let c = &character.composition;
         let clip_id = playback.clip.as_deref().unwrap_or(ROOT_CLIP);
         let frame = u32::try_from(playback.frame).unwrap_or(u32::MAX);
-        let resolved = resolve(c, &character.outfit, clip_id, frame);
+        let resolved = resolve_facing(c, &character.outfit, clip_id, frame, playback.flip);
         let clip = c.clips.get(clip_id);
         for child in children.iter() {
             let Ok((slot, mut sprite, mut anchor, mut transform, mut visibility)) =
@@ -158,8 +158,10 @@ pub fn sync_composite_layers(
             if sprite.custom_size != Some(size) {
                 sprite.custom_size = Some(size);
             }
-            if sprite.flip_x != playback.flip {
-                sprite.flip_x = playback.flip;
+            // A hand-drawn mirrored sheet is already facing left.
+            let flip_x = playback.flip && !draw.mirrored;
+            if sprite.flip_x != flip_x {
+                sprite.flip_x = flip_x;
             }
             let (ax, ay) = anchor_for(clip.pivot, clip.cell, playback.flip);
             anchor.set_if_neq(Anchor(Vec2::new(ax, ay)));
