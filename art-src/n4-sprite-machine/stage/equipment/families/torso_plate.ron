@@ -1,0 +1,28 @@
+// N4-1-A visual family: rigid plate over the torso (format:
+// src/player/visual/equipment_visual.rs, docs/development/n4/N41A_CONTRATO_RON.md).
+// Shared by every item of the family: the slot, the animation profile, the
+// HIDE rule and the silhouette masks (derived from the dressed approved
+// shirt by art-src/n4-sprite-machine/scripts/build_equipment.py).
+(
+    version: 1,
+    id: "torso_plate",
+    region: Chest,
+    // Slot of stage/protagonist.ron: over the shirt torso, under the near arm,
+    // its sleeve, the bracers and the hair.
+    layer: "armor_torso",
+    clips: ["idle", "run_c1"],
+    // In the run the plate covers the whole shirt torso layer, so it is hidden
+    // (the sleeves stay). The idle shirt is one layer with the front sleeve:
+    // no HIDE there, the plate is drawn over it, around the sleeve.
+    hide_layers: { "run_c1": ["shirt_torso"] },
+    covers: [Chest],
+    masks: {
+        "idle": (texture: "equipment/families/torso_plate/idle_mask.png"),
+        "run_c1": (texture: "equipment/families/torso_plate/run_c1_mask.png", columns: 3),
+    },
+    missing_clip: Hide,
+    // The idle shirt is one layer that includes the front sleeve: the plate
+    // goes above it (z of "bracers"; ties keep the declared layer order, so
+    // it stays under the bracers and the hair). The masks leave the sleeve out.
+    frame_order: [(clip: "idle", z: 12)],
+)

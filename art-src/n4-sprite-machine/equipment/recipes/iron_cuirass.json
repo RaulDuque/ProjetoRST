@@ -1,0 +1,49 @@
+{
+  "id": "iron_cuirass",
+  "family": "torso_plate",
+  "name": "Iron cuirass with gorget (equipment A)",
+  "palette_name": "iron",
+  "outline": [
+    26,
+    20,
+    26
+  ],
+  "tones": [
+    [
+      52,
+      54,
+      62
+    ],
+    [
+      86,
+      90,
+      100
+    ],
+    [
+      126,
+      131,
+      142
+    ],
+    [
+      170,
+      175,
+      184
+    ],
+    [
+      218,
+      222,
+      228
+    ]
+  ],
+  "extent": 1.0,
+  "lames": {
+    "from": 0.62,
+    "every": 3
+  },
+  "rivets": {
+    "every": 4
+  },
+  "ridge": false,
+  "trim": null,
+  "gorget": true
+}

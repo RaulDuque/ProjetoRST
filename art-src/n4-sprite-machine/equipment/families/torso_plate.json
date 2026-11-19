@@ -1,0 +1,28 @@
+{
+  "family": "torso_plate",
+  "description": "Rigid plate over the torso, drawn on the dressed base (no anatomy). Run: the whole torso of the pose (torso polygon of run_poses.py inside the dressed silhouette, above the belt); the near arm and its sleeve are drawn over it. Idle: the visible shirt without the front sleeve, which stays in front. A neckline is cut around the neck of each pose (shared by every item).",
+  "masks": {
+    "idle": {
+      "strip": "parts/idle/shirt.txt",
+      "frames": 1,
+      "minus_upper_arm": true
+    },
+    "run_c1": {
+      "torso_of_pose": true,
+      "poses": [
+        0,
+        2,
+        4
+      ],
+      "frames": 3
+    }
+  },
+  "neckline": {
+    "radius": 4.5,
+    "idle_neck": [
+      41,
+      28
+    ],
+    "run_neck_from_pose": true
+  }
+}

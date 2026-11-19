@@ -1,0 +1,17 @@
+// N4-1-A equipment B: blackened breastplate with gold trim (same
+// torso_plate family, recipe
+// art-src/n4-sprite-machine/equipment/recipes/blackened_breastplate.json).
+// It is shorter than the shirt torso (the shirt shows below it), so it must
+// NOT hide the shirt: the override below drops the family HIDE (with it,
+// the lower torso would become a hole; see evidence/n41a/*_hide_check.png).
+(
+    version: 1,
+    id: "blackened_breastplate",
+    family: "torso_plate",
+    sheets: {
+        "idle": (texture: "equipment/art/blackened_breastplate/idle.png"),
+        "run_c1": (texture: "equipment/art/blackened_breastplate/run_c1.png", columns: 3),
+    },
+    hide_layers: Some({}),
+    palette: Some("blackened_gold"),
+)

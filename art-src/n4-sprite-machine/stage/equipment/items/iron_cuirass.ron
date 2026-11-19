@@ -1,0 +1,13 @@
+// N4-1-A equipment A: iron cuirass (torso_plate family, recipe
+// art-src/n4-sprite-machine/equipment/recipes/iron_cuirass.json).
+// Covers the whole torso silhouette, so it keeps the family HIDE.
+(
+    version: 1,
+    id: "iron_cuirass",
+    family: "torso_plate",
+    sheets: {
+        "idle": (texture: "equipment/art/iron_cuirass/idle.png"),
+        "run_c1": (texture: "equipment/art/iron_cuirass/run_c1.png", columns: 3),
+    },
+    palette: Some("iron"),
+)

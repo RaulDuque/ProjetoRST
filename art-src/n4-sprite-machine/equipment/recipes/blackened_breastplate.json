@@ -1,0 +1,62 @@
+{
+  "id": "blackened_breastplate",
+  "family": "torso_plate",
+  "name": "Blackened breastplate with gold trim (equipment B)",
+  "palette_name": "blackened_gold",
+  "outline": [
+    26,
+    20,
+    26
+  ],
+  "tones": [
+    [
+      30,
+      26,
+      32
+    ],
+    [
+      48,
+      44,
+      54
+    ],
+    [
+      70,
+      66,
+      80
+    ],
+    [
+      98,
+      94,
+      110
+    ],
+    [
+      140,
+      136,
+      154
+    ]
+  ],
+  "extent": 0.72,
+  "lames": null,
+  "rivets": null,
+  "ridge": true,
+  "trim": {
+    "tones": [
+      [
+        112,
+        78,
+        34
+      ],
+      [
+        176,
+        132,
+        58
+      ],
+      [
+        226,
+        190,
+        104
+      ]
+    ]
+  },
+  "gorget": false
+}

@@ -144,7 +144,8 @@ fn the_proof_composition_loads_with_the_n35_canvas_and_pivot() {
     assert_eq!(idle.density, 2);
     assert_eq!(idle.frames, 1);
     assert_eq!(c.base_part(), Some("body"));
-    // N4-1 added six run-only layers; the idle layers keep their order.
+    // N4-1 added six run-only layers and N4-1-A the empty armour slot; the
+    // idle layers keep their order.
     assert_eq!(
         c.layers,
         [
@@ -157,6 +158,7 @@ fn the_proof_composition_loads_with_the_n35_canvas_and_pivot() {
             "trousers",
             "boots",
             "shirt_torso",
+            "armor_torso",
             "arm_front",
             "shirt",
             "bracers",

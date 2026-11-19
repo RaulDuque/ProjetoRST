@@ -24,8 +24,13 @@
     // shirt behind the near arm); the idle layers keep their relative order.
     layers: [
         "body_back", "trousers_back", "boots_back", "sleeve_back", "bracers_back",
-        "body", "trousers", "boots", "shirt_torso", "arm_front", "shirt", "bracers",
-        "hair_back", "hair_front",
+        "body", "trousers", "boots", "shirt_torso",
+        // N4-1-A: slot of the torso_plate family (visual equipment), empty
+        // without an item: over the shirt torso and under the near arm and
+        // its sleeve in the run. In the idle (one shirt layer with the front
+        // sleeve) the family moves it above the shirt (frame_order).
+        "armor_torso",
+        "arm_front", "shirt", "bracers", "hair_back", "hair_front",
     ],
     parts: {
         // Neutral anatomical body: torso, head, legs and feet behind the
