@@ -52,7 +52,16 @@ fmt, check e clippy `-D warnings` limpos; `cargo test -j 2`: **53 suítes, 655 p
 
 ## 12. Commits e SHA
 
-Ver o registro de publicação abaixo.
+Push em `origin/art/v1.2-protagonist` (`2a2cc85..85c83db`), sem force, merge ou rebase:
+
+- `f645211` feat(player): add data-driven layered sprite composition
+- `ca5742e` feat(visual): add n4-a modular layers of the n3.5 idle
+- `531987e` test(player): validate the n4-a sprite machine
+- `cf8b4b6` feat(visual): add the n4-a sprite machine proof example
+- `a5c8791` docs(architecture): document the data-driven sprite composition
+- `85c83dbb4bb5d54e4fac2b59ebbf9ad97bea2a1b` docs(n4): record the n4-a phase report and evidence (SHA remoto confirmado igual ao local)
+
+O commit que grava este parágrafo é o registro da publicação; o hash remoto final é o HEAD depois do push dele. `Md-usario/` não foi commitado.
 
 ## 13. Bloqueios artísticos
 
