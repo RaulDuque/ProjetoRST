@@ -40,6 +40,18 @@ fmt, check e clippy `-D warnings` limpos; `cargo test -j 2`: **54 suítes, 660 p
 2. Perto e longe das pernas em #0 e #2 é interpretação (contralateral).
 3. Soquetes: ficha preparada, com mãos ocultas não marcadas (`N4C_SOQUETES.md`). Faltam ângulo e frente/trás das mãos, e a confirmação de qual é a mão principal.
 
+## 10. Commits e SHA
+
+Push em `origin/art/v1.2-protagonist` (`a5f7f1c..929ede2`), sem force, merge ou rebase:
+
+- `5905d06` feat(visual): add the n4-1 c1 modular run layers
+- `75690b3` test(player): validate the n4-1 c1 modular run
+- `fea9684` feat(visual): add the run c1 mode to the sprite machine proof
+- `c9cee5e` docs(claude): list the n4-1 c1 run tests
+- `929ede2dc16f87385b4dd91673acb3c357487f08` docs(n4): record the n4-1 c1 result and evidence (SHA remoto confirmado igual ao local)
+
+O commit que grava esta seção é o registro da publicação; o hash remoto final é o HEAD depois do push dele. `Md-usario/` não foi alterado: a referência N4-B veio do commit `a5f7f1c` do proprietário.
+
 ## Gate C1
 
 - [x] Três quadros modularizados
