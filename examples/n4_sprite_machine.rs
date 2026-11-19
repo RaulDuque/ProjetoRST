@@ -12,6 +12,11 @@
 //! N4_INTERACTIVE=1 cargo run --example n4_sprite_machine [-- --run-c1]   # free inspection
 //! ```
 //!
+//! `--equipment` (N4-1-A): the composition gets the visual families and
+//! items of `stage/equipment/` (data only); the tour shows no item, item A
+//! and item B over the dressed protagonist, in the idle or (with
+//! `--run-c1`) the run C1. E cycles the items in the interactive mode.
+//!
 //! `--run-c1` (N4-1): left, the approved run frame (`run6.png`, frame 2k);
 //! right, the `run_c1` clip of the same composition (frames #0, #2, #4).
 //! Left / Right step the frame, P plays the C1 cycle (2/15 s per frame,
@@ -28,6 +33,7 @@
 //! | M | mirror (facing left) |
 //! | Space | pause / resume the scripted tour |
 //! | Left Right P | run C1: previous / next frame, play |
+//! | E | equipment mode: no item / item A / item B |
 //!
 //! The tour writes `docs/development/n4/evidence/bevy_n4a_*.png` (idle) or
 //! `docs/development/n4/evidence/n4c/bevy_n4c_*.png` (run C1) and exits;
@@ -49,6 +55,7 @@ use dark_castle_rpg::player::visual::composite::{
     CompositeCharacter, CompositeLayer, sync_composite_layers,
 };
 use dark_castle_rpg::player::visual::composition::{CharacterComposition, Outfit};
+use dark_castle_rpg::player::visual::equipment_visual::{EquipmentVisual, VisualFamily, equip};
 use dark_castle_rpg::player::visual::manifest::anchor_for;
 use dark_castle_rpg::player::visual::playback::loop_frame;
 
@@ -94,6 +101,8 @@ enum Look {
 struct Shot {
     name: String,
     look: Look,
+    /// N4-1-A: the visual item worn (equipment mode).
+    item: Option<&'static str>,
     frame: usize,
     light: bool,
     mirror: bool,
@@ -104,6 +113,7 @@ fn shot(name: &str, look: Look) -> Shot {
     Shot {
         name: name.to_owned(),
         look,
+        item: None,
         frame: 0,
         light: false,
         mirror: false,
@@ -172,6 +182,60 @@ fn run_tour() -> Vec<Shot> {
     out
 }
 
+/// N4-1-A equipment items, by their RON ids (item A, item B).
+const ITEMS: [&str; 2] = ["iron_cuirass", "blackened_breastplate"];
+
+fn equipment_tour(run: bool) -> Vec<Shot> {
+    let mut out = Vec::new();
+    let frames = if run { 3 } else { 1 };
+    for frame in 0..frames {
+        let clip = if run {
+            format!("run_f{}", frame * 2)
+        } else {
+            "idle".to_owned()
+        };
+        for item in [None, Some(ITEMS[0]), Some(ITEMS[1])] {
+            out.push(Shot {
+                frame,
+                item,
+                ..shot(
+                    &format!("bevy_n41a_{clip}_{}", item.unwrap_or("none")),
+                    Look::Full,
+                )
+            });
+        }
+    }
+    let last = frames - 1;
+    out.push(Shot {
+        frame: last,
+        item: Some(ITEMS[0]),
+        mirror: true,
+        ..shot(
+            if run {
+                "bevy_n41a_run_mirrored_iron_cuirass"
+            } else {
+                "bevy_n41a_idle_mirrored_iron_cuirass"
+            },
+            Look::Full,
+        )
+    });
+    out.push(Shot {
+        frame: last,
+        item: Some(ITEMS[1]),
+        grid: true,
+        light: true,
+        ..shot(
+            if run {
+                "bevy_n41a_run_grid_blackened_breastplate"
+            } else {
+                "bevy_n41a_idle_grid_blackened_breastplate"
+            },
+            Look::Full,
+        )
+    });
+    out
+}
+
 fn idle_tour() -> Vec<Shot> {
     vec![
         shot("bevy_n4a_original_vs_modular", Look::Full),
@@ -206,6 +270,9 @@ struct Proof {
     composition: Arc<CharacterComposition>,
     /// N4-1: the run C1 proof instead of the idle.
     run: bool,
+    /// N4-1-A: visual equipment mode, and the item shown (interactive E).
+    equipment: bool,
+    item: usize,
     shots: Vec<Shot>,
     /// Run C1: playing (interactive) and the shared clock.
     playing: bool,
@@ -371,6 +438,15 @@ fn keys(
     if input.just_pressed(KeyCode::Space) {
         proof.paused = !proof.paused;
     }
+    if proof.equipment && input.just_pressed(KeyCode::KeyE) {
+        proof.item = (proof.item + 1) % (ITEMS.len() + 1);
+        for id in ITEMS {
+            character.outfit.remove(&c, id);
+        }
+        if proof.item > 0 {
+            character.outfit.wear(ITEMS[proof.item - 1], None);
+        }
+    }
     if proof.run {
         if input.just_pressed(KeyCode::ArrowRight) {
             proof.frame = (proof.frame + 1) % 3;
@@ -431,6 +507,9 @@ fn tour(
     match proof.wait {
         0 => {
             apply_look(&mut character, shot.look);
+            if let Some(item) = shot.item {
+                character.outfit.wear(item, None);
+            }
             proof.frame = shot.frame;
             proof.light = shot.light;
             proof.mirror = shot.mirror;
@@ -444,6 +523,10 @@ fn tour(
                 .count();
             // Idle: 8 layer slots in use; run C1: all 14 (the far limbs too).
             let expected = match (proof.run, shot.look) {
+                // Equipment: + the plate; item A also hides the run shirt torso.
+                (false, Look::Full) if shot.item.is_some() => 9,
+                (true, Look::Full) if shot.item == Some(ITEMS[0]) => 14,
+                (true, Look::Full) if shot.item.is_some() => 15,
                 (false, Look::Full) => 8,
                 (false, Look::Without("hair")) => 6,
                 (false, Look::Without(_)) => 7,
@@ -605,6 +688,35 @@ fn grid(proof: Res<Proof>, mut gizmos: Gizmos) {
     }
 }
 
+/// Every visual family and item of `stage/equipment/` (data only: a new
+/// item needs no code here), added to the composition.
+fn load_equipment(
+    stage: &std::path::Path,
+    base: &CharacterComposition,
+) -> Result<CharacterComposition, String> {
+    let read_dir = |dir: &str| -> Result<Vec<String>, String> {
+        let mut paths: Vec<PathBuf> = std::fs::read_dir(stage.join(dir))
+            .map_err(|e| format!("{dir}: {e}"))?
+            .filter_map(|e| e.ok().map(|e| e.path()))
+            .filter(|p| p.extension().is_some_and(|x| x == "ron"))
+            .collect();
+        paths.sort();
+        paths
+            .iter()
+            .map(|p| std::fs::read_to_string(p).map_err(|e| format!("{}: {e}", p.display())))
+            .collect()
+    };
+    let families = read_dir("equipment/families")?
+        .iter()
+        .map(|t| VisualFamily::from_ron(t).map_err(|e| e.to_string()))
+        .collect::<Result<Vec<_>, _>>()?;
+    let items = read_dir("equipment/items")?
+        .iter()
+        .map(|t| EquipmentVisual::from_ron(t).map_err(|e| e.to_string()))
+        .collect::<Result<Vec<_>, _>>()?;
+    equip(base, &families, &items).map_err(|e| e.to_string())
+}
+
 fn main() -> AppExit {
     let root = project_root();
     let interactive = std::env::var_os("N4_INTERACTIVE").is_some();
@@ -616,14 +728,29 @@ fn main() -> AppExit {
         }
     };
     let composition = match CharacterComposition::from_ron(&text) {
-        Ok(c) => Arc::new(c),
+        Ok(c) => c,
         Err(error) => {
             eprintln!("{TAG} invalid composition: {error}");
             return AppExit::error();
         }
     };
     let run = std::env::args().any(|a| a == "--run-c1");
-    let out = if run {
+    let equipment = std::env::args().any(|a| a == "--equipment");
+    let composition = if equipment {
+        match load_equipment(&root.join(STAGE), &composition) {
+            Ok(c) => c,
+            Err(error) => {
+                eprintln!("{TAG} {error}");
+                return AppExit::error();
+            }
+        }
+    } else {
+        composition
+    };
+    let composition = Arc::new(composition);
+    let out = if equipment {
+        root.join(EVIDENCE).join("n41a")
+    } else if run {
         root.join(EVIDENCE).join("n4c")
     } else {
         root.join(EVIDENCE)
@@ -668,7 +795,15 @@ fn main() -> AppExit {
     .insert_resource(Proof {
         composition,
         run,
-        shots: if run { run_tour() } else { idle_tour() },
+        shots: if equipment {
+            equipment_tour(run)
+        } else if run {
+            run_tour()
+        } else {
+            idle_tour()
+        },
+        equipment,
+        item: 0,
         playing: false,
         elapsed: 0.0,
         frame: 0,
