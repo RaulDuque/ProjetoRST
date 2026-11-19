@@ -1,0 +1,312 @@
+{
+ "idle_n35": {
+  "texels": {
+   "hair": 207,
+   "skin": 98,
+   "shirt": 278,
+   "trousers": 327,
+   "leather": 230,
+   "metal": 0,
+   "outline": 180
+  },
+  "top_y": 52.5,
+  "lowest_y": 0.0,
+  "head_face": {
+   "x": 1.8,
+   "y": 47.3
+  },
+  "chest_shirt_centre": {
+   "x": -0.9,
+   "y": 37.1
+  },
+  "hair_centre": {
+   "x": -2.2,
+   "y": 45.7
+  },
+  "hair_back_extent_x": -6.5,
+  "hands": [
+   {
+    "x": 1.3,
+    "y": 24.8,
+    "texels": 33,
+    "depth": "unknown"
+   },
+   {
+    "x": -0.7,
+    "y": 30.7,
+    "texels": 31,
+    "depth": "unknown"
+   }
+  ]
+ },
+ "run_0_video_48": {
+  "texels": {
+   "hair": 318,
+   "skin": 196,
+   "shirt": 289,
+   "trousers": 675,
+   "leather": 215,
+   "metal": 0,
+   "outline": 526
+  },
+  "top_y": 51.0,
+  "lowest_y": 0.0,
+  "head_face": {
+   "x": 6.7,
+   "y": 45.8
+  },
+  "chest_shirt_centre": {
+   "x": 0.8,
+   "y": 41.0
+  },
+  "hair_centre": {
+   "x": 0.3,
+   "y": 45.4
+  },
+  "hair_back_extent_x": -9.5,
+  "hands": [
+   {
+    "x": 9.3,
+    "y": 31.1,
+    "texels": 106,
+    "depth": "unknown"
+   },
+   {
+    "x": 5.2,
+    "y": 29.2,
+    "texels": 17,
+    "depth": "unknown"
+   }
+  ]
+ },
+ "run_1_video_50": {
+  "texels": {
+   "hair": 297,
+   "skin": 212,
+   "shirt": 347,
+   "trousers": 824,
+   "leather": 268,
+   "metal": 0,
+   "outline": 491
+  },
+  "top_y": 52.0,
+  "lowest_y": 0.5,
+  "head_face": {
+   "x": 6.4,
+   "y": 46.6
+  },
+  "chest_shirt_centre": {
+   "x": 1.1,
+   "y": 39.9
+  },
+  "hair_centre": {
+   "x": 1.0,
+   "y": 45.7
+  },
+  "hair_back_extent_x": -9.5,
+  "hands": [
+   {
+    "x": 8.8,
+    "y": 34.3,
+    "texels": 106,
+    "depth": "unknown"
+   },
+   {
+    "x": -4.3,
+    "y": 31.3,
+    "texels": 14,
+    "depth": "unknown"
+   },
+   {
+    "x": -5.2,
+    "y": 35.6,
+    "texels": 27,
+    "depth": "unknown"
+   }
+  ]
+ },
+ "run_2_video_52": {
+  "texels": {
+   "hair": 311,
+   "skin": 225,
+   "shirt": 331,
+   "trousers": 842,
+   "leather": 278,
+   "metal": 0,
+   "outline": 471
+  },
+  "top_y": 52.0,
+  "lowest_y": 2.0,
+  "head_face": {
+   "x": 6.5,
+   "y": 46.7
+  },
+  "chest_shirt_centre": {
+   "x": 1.1,
+   "y": 39.9
+  },
+  "hair_centre": {
+   "x": 1.0,
+   "y": 45.4
+  },
+  "hair_back_extent_x": -9.0,
+  "hands": [
+   {
+    "x": 8.5,
+    "y": 34.2,
+    "texels": 106,
+    "depth": "unknown"
+   },
+   {
+    "x": -4.3,
+    "y": 31.3,
+    "texels": 17,
+    "depth": "unknown"
+   },
+   {
+    "x": -5.3,
+    "y": 35.6,
+    "texels": 28,
+    "depth": "unknown"
+   }
+  ]
+ },
+ "run_3_video_54": {
+  "texels": {
+   "hair": 279,
+   "skin": 254,
+   "shirt": 337,
+   "trousers": 568,
+   "leather": 306,
+   "metal": 0,
+   "outline": 498
+  },
+  "top_y": 51.0,
+  "lowest_y": 0.0,
+  "head_face": {
+   "x": 6.6,
+   "y": 45.9
+  },
+  "chest_shirt_centre": {
+   "x": 0.5,
+   "y": 40.3
+  },
+  "hair_centre": {
+   "x": 0.4,
+   "y": 45.8
+  },
+  "hair_back_extent_x": -9.5,
+  "hands": [
+   {
+    "x": 11.8,
+    "y": 34.2,
+    "texels": 36,
+    "depth": "unknown"
+   },
+   {
+    "x": 6.9,
+    "y": 32.0,
+    "texels": 34,
+    "depth": "unknown"
+   },
+   {
+    "x": 2.8,
+    "y": 29.7,
+    "texels": 105,
+    "depth": "unknown"
+   }
+  ]
+ },
+ "run_4_video_56": {
+  "texels": {
+   "hair": 231,
+   "skin": 296,
+   "shirt": 357,
+   "trousers": 679,
+   "leather": 240,
+   "metal": 0,
+   "outline": 684
+  },
+  "top_y": 52.0,
+  "lowest_y": 0.0,
+  "head_face": {
+   "x": 6.2,
+   "y": 45.5
+  },
+  "chest_shirt_centre": {
+   "x": 0.9,
+   "y": 40.8
+  },
+  "hair_centre": {
+   "x": 1.3,
+   "y": 46.3
+  },
+  "hair_back_extent_x": -9.0,
+  "hands": [
+   {
+    "x": 12.4,
+    "y": 39.1,
+    "texels": 45,
+    "depth": "unknown"
+   },
+   {
+    "x": 10.1,
+    "y": 33.8,
+    "texels": 41,
+    "depth": "unknown"
+   },
+   {
+    "x": -3.5,
+    "y": 31.2,
+    "texels": 123,
+    "depth": "unknown"
+   }
+  ]
+ },
+ "run_5_video_58": {
+  "texels": {
+   "hair": 263,
+   "skin": 289,
+   "shirt": 375,
+   "trousers": 712,
+   "leather": 235,
+   "metal": 0,
+   "outline": 654
+  },
+  "top_y": 51.5,
+  "lowest_y": 0.0,
+  "head_face": {
+   "x": 6.2,
+   "y": 45.8
+  },
+  "chest_shirt_centre": {
+   "x": 0.7,
+   "y": 40.6
+  },
+  "hair_centre": {
+   "x": 0.8,
+   "y": 46.1
+  },
+  "hair_back_extent_x": -8.0,
+  "hands": [
+   {
+    "x": 12.6,
+    "y": 37.3,
+    "texels": 39,
+    "depth": "unknown"
+   },
+   {
+    "x": 9.1,
+    "y": 33.3,
+    "texels": 37,
+    "depth": "unknown"
+   },
+   {
+    "x": -2.2,
+    "y": 31.2,
+    "texels": 122,
+    "depth": "unknown"
+   }
+  ]
+ }
+}
