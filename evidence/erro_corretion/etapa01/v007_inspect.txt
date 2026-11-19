@@ -1,0 +1,94 @@
+00:02.914  blend            | Read blend: "/home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/player/blender/swordsman_rig_v007.blend"
+=== FILE /home/raul/Área de trabalho/Andvarion/ProjetoRST/art-src/player/blender/swordsman_rig_v007.blend missing libs: []
+images: [('Render Result', '', False), ('Viewer Node', '', False)]
+scene Scene fps 24 frames 1 250 res 1024 1024 100 engine BLENDER_EEVEE unit METRIC 1.0
+collections: [('Collection', 0), ('swordsman_v004', 132)]
+OBJ CAMERA cam_back loc (-10.0, 0.0, 1.085) rot (90.0, 0.0, -90.0) scale (1.0, 1.0, 1.0) parent None
+   cam ORTHO ortho 2.24 lens 50.0 clip 0.10000000149011612 1000.0
+OBJ CAMERA cam_close_boots loc (5.7, -8.112, 1.602) rot (82.0, -0.0, 35.0) scale (1.0, 1.0, 1.0) parent None
+   cam ORTHO ortho 0.6 lens 50.0 clip 0.10000000149011612 30.0
+OBJ CAMERA cam_close_cape loc (-7.553, 6.337, 3.299) rot (78.0, 0.0, -130.0) scale (1.0, 1.0, 1.0) parent None
+   cam ORTHO ortho 0.82 lens 50.0 clip 0.10000000149011612 30.0
+OBJ CAMERA cam_close_coat loc (8.49, -5.286, 1.698) rot (86.0, -0.0, 58.0) scale (1.0, 1.0, 1.0) parent None
+   cam ORTHO ortho 1.2 lens 50.0 clip 0.10000000149011612 30.0
+OBJ CAMERA cam_close_face loc (8.877, -4.688, 2.191) rot (87.0, 0.0, 62.0) scale (1.0, 1.0, 1.0) parent None
+   cam ORTHO ortho 0.3 lens 50.0 clip 0.10000000149011612 30.0
+OBJ CAMERA cam_close_face_front loc (10.054, 0.0, 2.009) rot (88.0, 0.0, 90.0) scale (1.0, 1.0, 1.0) parent None
+   cam ORTHO ortho 0.27 lens 50.0 clip 0.10000000149011612 30.0
+OBJ CAMERA cam_close_face_profile loc (0.03, -9.994, 2.009) rot (88.0, -0.0, 0.0) scale (1.0, 1.0, 1.0) parent None
+   cam ORTHO ortho 0.27 lens 50.0 clip 0.10000000149011612 30.0
+OBJ CAMERA cam_close_hair loc (-5.923, -7.575, 4.466) rot (74.0, 0.0, -38.0) scale (1.0, 1.0, 1.0) parent None
+   cam ORTHO ortho 0.36 lens 50.0 clip 0.10000000149011612 30.0
+OBJ CAMERA cam_close_sword loc (0.518, -10.224, 0.613) rot (90.0, -0.0, 0.0) scale (1.0, 1.0, 1.0) parent None
+   cam ORTHO ortho 1.08 lens 50.0 clip 0.10000000149011612 30.0
+OBJ CAMERA cam_close_torso loc (9.153, -4.057, 1.868) rot (86.0, -0.0, 66.0) scale (1.0, 1.0, 1.0) parent None
+   cam ORTHO ortho 0.62 lens 50.0 clip 0.10000000149011612 30.0
+OBJ CAMERA cam_front loc (10.0, 0.0, 1.085) rot (90.0, 0.0, 90.0) scale (1.0, 1.0, 1.0) parent None
+   cam ORTHO ortho 2.24 lens 50.0 clip 0.10000000149011612 1000.0
+OBJ CAMERA cam_side loc (0.0, -10.0, 1.085) rot (90.0, 0.0, 0.0) scale (1.0, 1.0, 1.0) parent None
+   cam ORTHO ortho 2.24 lens 50.0 clip 0.10000000149011612 1000.0
+OBJ CAMERA cam_three_quarter loc (3.615, -2.992, 1.584) rot (82.0, -0.0, 50.0) scale (1.0, 1.0, 1.0) parent None
+   cam PERSP ortho 6.0 lens 85.0 clip 0.10000000149011612 14.100000381469727
+OBJ EMPTY light_rig loc (0.0, 0.0, 0.0) rot (0.0, 0.0, 0.0) scale (1.0, 1.0, 1.0) parent None
+OBJ ARMATURE rig_v007 loc (0.0, 0.0, 0.0) rot (0.0, -0.0, 0.0) scale (1.0, 1.0, 1.0) parent None
+OBJ LIGHT v3_light_fill loc (0.0, 0.0, 0.0) rot (87.0, 0.0, -21.3) scale (1.0, 1.0, 1.0) parent light_rig
+OBJ LIGHT v3_light_key loc (0.0, 0.0, 0.0) rot (55.1, -0.0, 36.3) scale (1.0, 1.0, 1.0) parent light_rig
+OBJ LIGHT v3_light_rim_back loc (0.0, 0.0, 0.0) rot (64.9, 0.0, -128.7) scale (1.0, 1.0, 1.0) parent light_rig
+OBJ LIGHT v3_light_rim_front loc (0.0, 0.0, 0.0) rot (72.7, 0.0, 128.7) scale (1.0, 1.0, 1.0) parent light_rig
+scene camera: cam_back n cams 13
+ARM rig_v007 bones 43 deform 36 collections ['CTRL', 'DEF', 'SWORD', 'COAT', 'CAPE']
+  B root                   parent=-                def=0 head=(0.0, 0.0, 0.0) tail=(0.3, 0.0, 0.0) len=0.300
+  B pelvis                 parent=root             def=1 head=(0.0, 0.0, 0.95) tail=(0.0, 0.0, 1.06) len=0.110
+  B spine_01               parent=pelvis           def=1 head=(0.0, 0.0, 1.06) tail=(0.006, 0.0, 1.18) len=0.120
+  B spine_02               parent=spine_01         def=1 head=(0.006, 0.0, 1.18) tail=(0.01, 0.0, 1.31) len=0.130
+  B chest                  parent=spine_02         def=1 head=(0.01, 0.0, 1.31) tail=(0.002, 0.0, 1.445) len=0.135
+  B neck                   parent=chest            def=1 head=(-0.008, 0.0, 1.47) tail=(0.0, 0.0, 1.585) len=0.115
+  B head                   parent=neck             def=1 head=(0.0, 0.0, 1.585) tail=(0.012, 0.0, 1.81) len=0.225
+  B clavicle.R             parent=chest            def=1 head=(0.0, -0.035, 1.43) tail=(0.0, -0.165, 1.445) len=0.131
+  B upper_arm.R            parent=clavicle.R       def=1 head=(0.0, -0.165, 1.445) tail=(0.085, -0.215, 1.205) len=0.259
+  B forearm.R              parent=upper_arm.R      def=1 head=(0.085, -0.215, 1.205) tail=(0.255, -0.222, 1.035) len=0.241
+  B hand.R                 parent=forearm.R        def=1 head=(0.255, -0.222, 1.035) tail=(0.322, -0.225, 0.968) len=0.095
+  B sword                  parent=hand.R           def=1 head=(0.297, -0.224, 0.993) tail=(0.394, -0.224, 0.793) len=0.222
+  B clavicle.L             parent=chest            def=1 head=(0.0, 0.035, 1.43) tail=(0.0, 0.165, 1.445) len=0.131
+  B upper_arm.L            parent=clavicle.L       def=1 head=(0.0, 0.165, 1.445) tail=(-0.03, 0.212, 1.19) len=0.261
+  B forearm.L              parent=upper_arm.L      def=1 head=(-0.03, 0.212, 1.19) tail=(-0.012, 0.222, 0.955) len=0.236
+  B hand.L                 parent=forearm.L        def=1 head=(-0.012, 0.222, 0.955) tail=(-0.009, 0.222, 0.865) len=0.090
+  B cape_arm.L_01          parent=clavicle.L       def=1 head=(0.0, 0.165, 1.445) tail=(-0.021, 0.198, 1.266) len=0.184
+  B cape_arm.L_02          parent=cape_arm.L_01    def=1 head=(-0.021, 0.198, 1.266) tail=(-0.048, 0.24, 1.04) len=0.231
+  B collar_back            parent=chest            def=1 head=(-0.008, 0.0, 1.47) tail=(0.0, 0.0, 1.585) len=0.115
+  B cape_back_01           parent=spine_02         def=1 head=(-0.111, 0.04, 1.43) tail=(-0.126, 0.053, 1.281) len=0.151
+  B cape_back_02           parent=cape_back_01     def=1 head=(-0.126, 0.053, 1.281) tail=(-0.181, 0.075, 1.091) len=0.198
+  B thigh.R                parent=pelvis           def=1 head=(0.03, -0.088, 0.95) tail=(0.05, -0.092, 0.5) len=0.450
+  B shin.R                 parent=thigh.R          def=1 head=(0.05, -0.092, 0.5) tail=(0.035, -0.094, 0.095) len=0.405
+  B foot.R                 parent=shin.R           def=1 head=(0.035, -0.094, 0.095) tail=(0.165, -0.094, 0.03) len=0.145
+  B toe.R                  parent=foot.R           def=1 head=(0.165, -0.094, 0.03) tail=(0.235, -0.094, 0.026) len=0.070
+  B thigh.L                parent=pelvis           def=1 head=(-0.03, 0.088, 0.95) tail=(-0.035, 0.092, 0.5) len=0.450
+  B shin.L                 parent=thigh.L          def=1 head=(-0.035, 0.092, 0.5) tail=(-0.05, 0.094, 0.095) len=0.405
+  B foot.L                 parent=shin.L           def=1 head=(-0.05, 0.094, 0.095) tail=(0.08, 0.094, 0.03) len=0.145
+  B toe.L                  parent=foot.L           def=1 head=(0.08, 0.094, 0.03) tail=(0.15, 0.094, 0.026) len=0.070
+  B coat_front.R_01        parent=pelvis           def=1 head=(0.115, -0.078, 1.06) tail=(0.117, -0.099, 0.72) len=0.341
+  B coat_front.R_02        parent=coat_front.R_01  def=1 head=(0.117, -0.099, 0.72) tail=(0.099, -0.146, 0.455) len=0.270
+  B coat_back.R_01         parent=pelvis           def=1 head=(-0.099, -0.082, 1.06) tail=(-0.16, -0.135, 0.72) len=0.350
+  B coat_back.R_02         parent=coat_back.R_01   def=1 head=(-0.16, -0.135, 0.72) tail=(-0.202, -0.173, 0.38) len=0.345
+  B coat_front.L_01        parent=pelvis           def=1 head=(0.091, 0.066, 1.06) tail=(0.106, 0.098, 0.72) len=0.342
+  B coat_front.L_02        parent=coat_front.L_01  def=1 head=(0.106, 0.098, 0.72) tail=(0.097, 0.145, 0.455) len=0.269
+  B coat_back.L_01         parent=pelvis           def=1 head=(-0.113, 0.091, 1.06) tail=(-0.16, 0.135, 0.72) len=0.346
+  B coat_back.L_02         parent=coat_back.L_01   def=1 head=(-0.16, 0.135, 0.72) tail=(-0.211, 0.169, 0.38) len=0.346
+  B CTRL_foot_ik.R         parent=root             def=0 head=(0.035, -0.094, 0.095) tail=(0.165, -0.094, 0.03) len=0.145
+  B CTRL_knee_pole.R       parent=root             def=0 head=(0.45, -0.092, 0.5) tail=(0.5, -0.092, 0.5) len=0.050
+  B CTRL_foot_ik.L         parent=root             def=0 head=(-0.05, 0.094, 0.095) tail=(0.08, 0.094, 0.03) len=0.145
+  B CTRL_knee_pole.L       parent=root             def=0 head=(0.365, 0.092, 0.5) tail=(0.415, 0.092, 0.5) len=0.050
+  B CTRL_hand_ik.R         parent=root             def=0 head=(0.255, -0.222, 1.035) tail=(0.322, -0.225, 0.968) len=0.095
+  B CTRL_elbow_pole.R      parent=root             def=0 head=(-0.265, -0.315, 1.205) tail=(-0.315, -0.315, 1.205) len=0.050
+constraints: [('forearm.R', [('IK', 'IK', 0.0)]), ('hand.R', [('COPY_ROTATION', 'IK_hand', 0.0)]), ('cape_arm.L_01', [('TRANSFORM', 'follow_arm_back_out', 1.0), ('TRANSFORM', 'follow_arm_fwd_in', 1.0), ('TRANSFORM', 'counter_chest_twist', 1.0)]), ('collar_back', [('COPY_ROTATION', 'follow_neck', 0.8), ('COPY_ROTATION', 'follow_head', 0.6)]), ('shin.R', [('IK', 'IK', 0.0)]), ('foot.R', [('COPY_ROTATION', 'IK_foot', 0.0)]), ('shin.L', [('IK', 'IK', 0.0)]), ('foot.L', [('COPY_ROTATION', 'IK_foot', 0.0)]), ('coat_front.R_01', [('TRANSFORM', 'follow_thigh_fwd', 1.0), ('TRANSFORM', 'follow_thigh_back', 1.0), ('TRANSFORM', 'flare_thigh', 1.0)]), ('coat_back.R_01', [('TRANSFORM', 'follow_thigh_back', 1.0), ('TRANSFORM', 'follow_thigh_fwd', 1.0), ('TRANSFORM', 'release_thigh_fwd', 1.0)]), ('coat_back.R_02', [('TRANSFORM', 'follow_shin', 1.0)]), ('coat_front.L_01', [('TRANSFORM', 'follow_thigh_fwd', 1.0), ('TRANSFORM', 'follow_thigh_back', 1.0), ('TRANSFORM', 'flare_thigh', 1.0)]), ('coat_back.L_01', [('TRANSFORM', 'follow_thigh_back', 1.0), ('TRANSFORM', 'follow_thigh_fwd', 1.0), ('TRANSFORM', 'release_thigh_fwd', 1.0)]), ('coat_back.L_02', [('TRANSFORM', 'follow_shin', 1.0)])]
+anim action: None
+ACTIONS [('POSE_P01_neutral', (1.0, 1.0), True), ('POSE_P02_walk_contact', (1.0, 1.0), True), ('POSE_P03_run_extreme', (1.0, 1.0), True), ('POSE_P04_jump_rise', (1.0, 1.0), True), ('POSE_P05_jump_fall', (1.0, 1.0), True), ('POSE_P06_basic_attack', (1.0, 1.0), True), ('POSE_P07_crescent_slash', (1.0, 1.0), True), ('POSE_P08_rising_edge', (1.0, 1.0), True), ('POSE_P09_dodge', (1.0, 1.0), True), ('POSE_P10_guard', (1.0, 1.0), True), ('POSE_P11_hurt', (1.0, 1.0), True), ('POSE_P12_magic_cast', (1.0, 1.0), True), ('POSE_P13_death', (1.0, 1.0), True)]
+MESH count 132
+world bbox rest (-0.317, -0.272, -0.0) (0.693, 0.355, 1.811)
+mesh names ['belt', 'belt_buckle_bar_0', 'belt_buckle_bar_1', 'belt_buckle_bar_2', 'belt_buckle_bar_3', 'belt_hole_0', 'belt_hole_1', 'belt_keeper', 'belt_prong', 'belt_tongue', 'blade', 'blade_readable', 'boot_foot_far', 'boot_foot_near', 'boot_heel_far', 'boot_heel_near', 'boot_seam_far', 'boot_seam_near', 'boot_shaft_far', 'boot_shaft_near', 'boot_sole_far', 'boot_sole_near', 'boot_toe_seam_far', 'boot_toe_seam_near', 'boot_welt_far', 'boot_welt_near', 'brow_far', 'brow_near', 'cape_clasp', 'cape_cord', 'cape_stud', 'coat', 'collar', 'cuff_band_far', 'cuff_band_near', 'cuff_far', 'cuff_near', 'ear_far', 'ear_near', 'eye_iris_far', 'eye_iris_near', 'eye_ring_far', 'eye_ring_near', 'eye_sclera_far', 'eye_sclera_near', 'glove_far_finger_0', 'glove_far_finger_1', 'glove_far_finger_2', 'glove_far_finger_3', 'glove_far_palm', 'glove_far_thumb', 'glove_near_finger_0', 'glove_near_finger_1', 'glove_near_finger_2', 'glove_near_finger_3', 'glove_near_palm', 'glove_near_thumb', 'hair_back_0', 'hair_back_1', 'hair_back_2', 'hair_back_3', 'hair_back_4', 'hair_back_5', 'hair_back_6', 'hair_back_7', 'hair_back_8', 'hair_back_9', 'hair_back_over_0', 'hair_back_over_1', 'hair_back_over_2', 'hair_back_over_3', 'hair_fringe_0', 'hair_fringe_1', 'hair_fringe_10', 'hair_fringe_2', 'hair_fringe_3', 'hair_fringe_4', 'hair_fringe_5', 'hair_fringe_6', 'hair_fringe_7', 'hair_fringe_8', 'hair_fringe_9', 'hair_fringe_over_0', 'hair_fringe_over_1', 'hair_fringe_over_2', 'hair_fringe_over_3', 'hair_scalp', 'hair_side_far_0', 'hair_side_far_1', 'hair_side_far_2', 'hair_side_far_3', 'hair_side_far_4', 'hair_side_near_0', 'hair_side_near_1', 'hair_side_near_2', 'hair_side_near_3', 'hair_side_near_4', 'hair_top_0', 'hair_top_1', 'hair_top_2', 'hair_top_3', 'hair_top_4', 'hair_top_5', 'half_cape', 'head', 'leg_far', 'leg_near', 'lid_crease_far', 'lid_crease_near', 'lid_lower_far', 'lid_lower_near', 'lid_upper_far', 'lid_upper_near', 'mouth', 'neck', 'pauldron', 'pauldron_lame', 'sleeve_far', 'sleeve_near', 'sword_collar', 'sword_grip', 'sword_guard', 'sword_pommel', 'torso_trousers', 'torso_vest', 'trouser_fly', 'vest_button_0', 'vest_button_1', 'vest_button_2', 'vest_button_3', 'vest_hem_trim', 'vest_placket']
+materials ['v4_belt_leather', 'v4_blade', 'v4_blade_edge', 'v4_boot_cuff', 'v4_boot_leather', 'v4_brass', 'v4_brow', 'v4_cape_inner', 'v4_cape_wool', 'v4_coat_wool', 'v4_eye', 'v4_glove_leather', 'v4_hair', 'v4_hair_light', 'v4_lash', 'v4_lining_satin', 'v4_lip', 'v4_metal_dark', 'v4_sclera', 'v4_skin', 'v4_skin_shadow', 'v4_sole', 'v4_stitch', 'v4_trousers', 'v4_vest', 'v4_vest_trim']
+MESHMODS sample {'belt': ['ARMATURE', 'SOLIDIFY', 'SUBSURF'], 'belt_buckle_bar_0': ['ARMATURE'], 'belt_buckle_bar_1': ['ARMATURE'], 'belt_buckle_bar_2': ['ARMATURE'], 'belt_buckle_bar_3': ['ARMATURE'], 'belt_hole_0': ['ARMATURE']}
+ANCHOR? light_rig
+custom props scene []
+Blender 5.2.4 LTS (hash cd5dc428cce1 built 2026-11-10 01:31:47)
+
