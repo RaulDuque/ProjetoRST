@@ -7,9 +7,15 @@
 //! per texel, nearest sampling, same pivot line.
 //!
 //! ```text
-//! cargo run --example n4_sprite_machine                    # scripted tour + captures
-//! N4_INTERACTIVE=1 cargo run --example n4_sprite_machine   # free inspection
+//! cargo run --example n4_sprite_machine                    # idle tour + captures
+//! cargo run --example n4_sprite_machine -- --run-c1        # N4-1 C1 run tour + captures
+//! N4_INTERACTIVE=1 cargo run --example n4_sprite_machine [-- --run-c1]   # free inspection
 //! ```
+//!
+//! `--run-c1` (N4-1): left, the approved run frame (`run6.png`, frame 2k);
+//! right, the `run_c1` clip of the same composition (frames #0, #2, #4).
+//! Left / Right step the frame, P plays the C1 cycle (2/15 s per frame,
+//! 0.4 s per cycle, through the same `playback::loop_frame`).
 //!
 //! | Key | Effect |
 //! |---|---|
@@ -21,8 +27,10 @@
 //! | K | dark / light background |
 //! | M | mirror (facing left) |
 //! | Space | pause / resume the scripted tour |
+//! | Left Right P | run C1: previous / next frame, play |
 //!
-//! The tour writes `docs/development/n4/evidence/bevy_n4a_*.png` and exits;
+//! The tour writes `docs/development/n4/evidence/bevy_n4a_*.png` (idle) or
+//! `docs/development/n4/evidence/n4c/bevy_n4c_*.png` (run C1) and exits;
 //! exit code != 0 if the art does not load or a check fails.
 
 use std::path::PathBuf;
@@ -35,23 +43,29 @@ use bevy::render::view::screenshot::{Screenshot, save_to_disk};
 use bevy::sprite::Anchor;
 use bevy::window::WindowResolution;
 use dark_castle_rpg::core::resources::project_root;
+use dark_castle_rpg::core::time::clamp_delta;
 use dark_castle_rpg::player::visual::VisualPlayback;
 use dark_castle_rpg::player::visual::composite::{
     CompositeCharacter, CompositeLayer, sync_composite_layers,
 };
 use dark_castle_rpg::player::visual::composition::{CharacterComposition, Outfit};
 use dark_castle_rpg::player::visual::manifest::anchor_for;
+use dark_castle_rpg::player::visual::playback::loop_frame;
 
 const STAGE: &str = "art-src/n4-sprite-machine/stage";
 const ORIGINAL: &str = "art-src/n3-5-fidelity/generated";
+/// The approved run strip (read only).
+const RUN_ORIGINAL: &str = "art-src/n3-6-animation-proof/generated";
 const EVIDENCE: &str = "docs/development/n4/evidence";
 const TAG: &str = "[n4_sprite_machine]";
 /// Screen pixels per texel.
 const SCALE: f32 = 4.0;
-const CELL: (u32, u32) = (80, 128);
-const PIVOT: (f32, f32) = (40.0, 118.0);
-const LEFT_X: f32 = -220.0;
-const RIGHT_X: f32 = 220.0;
+const IDLE_CELL: (u32, u32) = (80, 128);
+const IDLE_PIVOT: (f32, f32) = (40.0, 118.0);
+const RUN_CELL: (u32, u32) = (112, 128);
+const RUN_PIVOT: (f32, f32) = (56.0, 118.0);
+/// C1 frame k shows run6 frame 2k; each lasts 2/15 s (cycle 0.4 s).
+const RUN_C1_FRAME_TIME: f32 = 2.0 / 15.0;
 const SOLE_Y: f32 = -230.0;
 const DARK: Color = Color::srgb(0.19, 0.17, 0.22);
 const LIGHT: Color = Color::srgb(0.84, 0.82, 0.78);
@@ -76,55 +90,127 @@ enum Look {
     Base,
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone)]
 struct Shot {
-    name: &'static str,
+    name: String,
     look: Look,
+    frame: usize,
     light: bool,
     mirror: bool,
     grid: bool,
 }
 
-const fn shot(name: &'static str, look: Look) -> Shot {
+fn shot(name: &str, look: Look) -> Shot {
     Shot {
-        name,
+        name: name.to_owned(),
         look,
+        frame: 0,
         light: false,
         mirror: false,
         grid: false,
     }
 }
 
-const TOUR: [Shot; 11] = [
-    shot("bevy_n4a_original_vs_modular", Look::Full),
-    shot("bevy_n4a_no_hair", Look::Without("hair")),
-    shot("bevy_n4a_no_shirt", Look::Without("shirt")),
-    shot("bevy_n4a_no_trousers", Look::Without("trousers")),
-    shot("bevy_n4a_no_boots", Look::Without("boots")),
-    shot("bevy_n4a_no_bracers", Look::Without("bracers")),
-    shot("bevy_n4a_base_body", Look::Base),
-    Shot {
-        light: true,
-        ..shot("bevy_n4a_light_background", Look::Full)
-    },
-    Shot {
-        mirror: true,
-        ..shot("bevy_n4a_mirrored", Look::Full)
-    },
-    Shot {
-        grid: true,
-        ..shot("bevy_n4a_grid_pivot", Look::Full)
-    },
-    Shot {
-        light: true,
-        grid: true,
-        ..shot("bevy_n4a_base_body_light_grid", Look::Base)
-    },
+/// Canvas, pivot and the two canvas centres of a mode.
+#[derive(Debug, Clone, Copy)]
+struct Layout {
+    cell: (u32, u32),
+    pivot: (f32, f32),
+    left_x: f32,
+    right_x: f32,
+}
+
+fn layout(run: bool) -> Layout {
+    if run {
+        Layout {
+            cell: RUN_CELL,
+            pivot: RUN_PIVOT,
+            left_x: -240.0,
+            right_x: 240.0,
+        }
+    } else {
+        Layout {
+            cell: IDLE_CELL,
+            pivot: IDLE_PIVOT,
+            left_x: -220.0,
+            right_x: 220.0,
+        }
+    }
+}
+
+const LOOKS: [(&str, Look); 7] = [
+    ("dressed", Look::Full),
+    ("no_hair", Look::Without("hair")),
+    ("no_shirt", Look::Without("shirt")),
+    ("no_trousers", Look::Without("trousers")),
+    ("no_boots", Look::Without("boots")),
+    ("no_bracers", Look::Without("bracers")),
+    ("base_body", Look::Base),
 ];
+
+fn run_tour() -> Vec<Shot> {
+    let mut out = Vec::new();
+    for frame in 0..3 {
+        for (label, look) in LOOKS {
+            out.push(Shot {
+                frame,
+                ..shot(&format!("bevy_n4c_f{}_{label}", frame * 2), look)
+            });
+        }
+    }
+    out.push(Shot {
+        frame: 1,
+        mirror: true,
+        ..shot("bevy_n4c_f2_mirrored", Look::Full)
+    });
+    out.push(Shot {
+        frame: 1,
+        light: true,
+        grid: true,
+        ..shot("bevy_n4c_f2_base_body_light_grid", Look::Base)
+    });
+    out
+}
+
+fn idle_tour() -> Vec<Shot> {
+    vec![
+        shot("bevy_n4a_original_vs_modular", Look::Full),
+        shot("bevy_n4a_no_hair", Look::Without("hair")),
+        shot("bevy_n4a_no_shirt", Look::Without("shirt")),
+        shot("bevy_n4a_no_trousers", Look::Without("trousers")),
+        shot("bevy_n4a_no_boots", Look::Without("boots")),
+        shot("bevy_n4a_no_bracers", Look::Without("bracers")),
+        shot("bevy_n4a_base_body", Look::Base),
+        Shot {
+            light: true,
+            ..shot("bevy_n4a_light_background", Look::Full)
+        },
+        Shot {
+            mirror: true,
+            ..shot("bevy_n4a_mirrored", Look::Full)
+        },
+        Shot {
+            grid: true,
+            ..shot("bevy_n4a_grid_pivot", Look::Full)
+        },
+        Shot {
+            light: true,
+            grid: true,
+            ..shot("bevy_n4a_base_body_light_grid", Look::Base)
+        },
+    ]
+}
 
 #[derive(Resource)]
 struct Proof {
     composition: Arc<CharacterComposition>,
+    /// N4-1: the run C1 proof instead of the idle.
+    run: bool,
+    shots: Vec<Shot>,
+    /// Run C1: playing (interactive) and the shared clock.
+    playing: bool,
+    elapsed: f32,
+    frame: usize,
     interactive: bool,
     paused: bool,
     show_original: bool,
@@ -155,16 +241,38 @@ fn setup(
     mut layouts: ResMut<Assets<TextureAtlasLayout>>,
 ) {
     commands.spawn(Camera2d);
-    let (ax, ay) = anchor_for(PIVOT, CELL, false);
-    commands.spawn((
-        OriginalSprite,
+    let l = layout(proof.run);
+    let (ax, ay) = anchor_for(l.pivot, l.cell, false);
+    let size = Vec2::new(l.cell.0 as f32 * SCALE, l.cell.1 as f32 * SCALE);
+    // The approved art: the N3.5 PNG, or the run6 strip (frame 2k).
+    let original = if proof.run {
+        Sprite {
+            image: server.load("run://run6.png"),
+            texture_atlas: Some(TextureAtlas {
+                layout: layouts.add(TextureAtlasLayout::from_grid(
+                    UVec2::new(RUN_CELL.0, RUN_CELL.1),
+                    6,
+                    1,
+                    None,
+                    None,
+                )),
+                index: 0,
+            }),
+            custom_size: Some(size),
+            ..default()
+        }
+    } else {
         Sprite {
             image: server.load("original://candidate_106.png"),
-            custom_size: Some(Vec2::new(CELL.0 as f32 * SCALE, CELL.1 as f32 * SCALE)),
+            custom_size: Some(size),
             ..default()
-        },
+        }
+    };
+    commands.spawn((
+        OriginalSprite,
+        original,
         Anchor(Vec2::new(ax, ay)),
-        Transform::from_xyz(LEFT_X, SOLE_Y, 0.0),
+        Transform::from_xyz(l.left_x, SOLE_Y, 0.0),
     ));
     let c = proof.composition.clone();
     let character = CompositeCharacter::load(
@@ -174,17 +282,18 @@ fn setup(
         &mut layouts,
         "n4://",
     );
-    let density = c.clips["idle"].density as f32;
+    let clip = if proof.run { "run_c1" } else { "idle" };
+    let density = c.clips[clip].density as f32;
     let root = commands
         .spawn((
             ModularRoot,
             VisualPlayback {
-                clip: Some("idle".into()),
+                clip: Some(clip.into()),
                 ..default()
             },
             // Layers are sized in world units (cell / density): scale them so
             // one texel is SCALE screen pixels, like the original.
-            Transform::from_xyz(RIGHT_X, SOLE_Y, 0.0).with_scale(Vec3::splat(SCALE * density)),
+            Transform::from_xyz(l.right_x, SOLE_Y, 0.0).with_scale(Vec3::splat(SCALE * density)),
             Visibility::default(),
         ))
         .id();
@@ -262,6 +371,19 @@ fn keys(
     if input.just_pressed(KeyCode::Space) {
         proof.paused = !proof.paused;
     }
+    if proof.run {
+        if input.just_pressed(KeyCode::ArrowRight) {
+            proof.frame = (proof.frame + 1) % 3;
+            proof.playing = false;
+        }
+        if input.just_pressed(KeyCode::ArrowLeft) {
+            proof.frame = (proof.frame + 2) % 3;
+            proof.playing = false;
+        }
+        if input.just_pressed(KeyCode::KeyP) {
+            proof.playing = !proof.playing;
+        }
+    }
 }
 
 /// The scripted tour: wait for the textures, set each look, capture.
@@ -299,7 +421,7 @@ fn tour(
         proof.warm -= 1;
         return;
     }
-    let Some(shot) = TOUR.get(proof.tour).copied() else {
+    let Some(shot) = proof.shots.get(proof.tour).cloned() else {
         proof.wait += 1;
         if proof.wait > 20 {
             finish(&mut proof, &mut exit);
@@ -309,6 +431,7 @@ fn tour(
     match proof.wait {
         0 => {
             apply_look(&mut character, shot.look);
+            proof.frame = shot.frame;
             proof.light = shot.light;
             proof.mirror = shot.mirror;
             proof.grid = shot.grid;
@@ -319,11 +442,16 @@ fn tour(
                 .iter()
                 .filter(|(_, v)| **v != Visibility::Hidden)
                 .count();
-            let expected = match shot.look {
-                Look::Full => 8,
-                Look::Without("hair") => 6,
-                Look::Without(_) => 7,
-                Look::Base => 2,
+            // Idle: 8 layer slots in use; run C1: all 14 (the far limbs too).
+            let expected = match (proof.run, shot.look) {
+                (false, Look::Full) => 8,
+                (false, Look::Without("hair")) => 6,
+                (false, Look::Without(_)) => 7,
+                (false, Look::Base) => 2,
+                (true, Look::Full) => 14,
+                (true, Look::Without("shirt")) => 11,
+                (true, Look::Without(_)) => 12,
+                (true, Look::Base) => 3,
             };
             if visible != expected {
                 proof.failures.push(format!(
@@ -361,7 +489,8 @@ fn finish(proof: &mut Proof, exit: &mut MessageWriter<AppExit>) {
 
 /// Background, facing, original visibility and HUD from the proof state.
 fn present(
-    proof: Res<Proof>,
+    time: Res<Time>,
+    mut proof: ResMut<Proof>,
     mut clear: ResMut<ClearColor>,
     mut original: Query<(&mut Sprite, &mut Anchor, &mut Visibility), With<OriginalSprite>>,
     mut roots: Query<(&mut VisualPlayback, &CompositeCharacter), With<ModularRoot>>,
@@ -369,9 +498,20 @@ fn present(
 ) {
     clear.0 = if proof.light { LIGHT } else { DARK };
     let flip = proof.mirror;
+    let l = layout(proof.run);
+    if proof.run && proof.playing {
+        // The same loop function as the player animation (one clock).
+        proof.elapsed += clamp_delta(time.delta_secs());
+        proof.frame = loop_frame(&[RUN_C1_FRAME_TIME; 3], proof.elapsed);
+    }
+    let frame = proof.frame;
     if let Ok((mut sprite, mut anchor, mut visibility)) = original.single_mut() {
         sprite.flip_x = flip;
-        let (ax, ay) = anchor_for(PIVOT, CELL, flip);
+        if let Some(atlas) = sprite.texture_atlas.as_mut() {
+            // run6 frame 2k next to C1 frame k.
+            atlas.index = frame * 2;
+        }
+        let (ax, ay) = anchor_for(l.pivot, l.cell, flip);
         anchor.set_if_neq(Anchor(Vec2::new(ax, ay)));
         visibility.set_if_neq(if proof.show_original {
             Visibility::Inherited
@@ -381,10 +521,13 @@ fn present(
     }
     let mut worn = String::new();
     if let Ok((mut playback, character)) = roots.single_mut() {
-        // The one animation state: the proof only sets the facing (the idle
-        // has one frame), the layers read it.
+        // The one animation state: the proof sets the frame and the facing,
+        // the layers only read them.
         if playback.flip != flip {
             playback.flip = flip;
+        }
+        if playback.frame != frame {
+            playback.frame = frame;
         }
         worn = character
             .outfit
@@ -396,9 +539,22 @@ fn present(
     }
     if let Ok(mut text) = hud.single_mut() {
         text.0 = format!(
-            "N4-A SPRITE MACHINE PROOF (NOT APPROVED)  left: N3.5 original  right: modular layers\n\
+            "{}\n\
              worn: {worn}\n\
-             1-5 hair/shirt/trousers/boots/bracers  0 base  9 outfit  O original  G grid  K background  M mirror  Space pause{}",
+             1-5 hair/shirt/trousers/boots/bracers  0 base  9 outfit  O original  G grid  K background  M mirror  Space pause{}{}",
+            if proof.run {
+                format!(
+                    "N4-1 C1 RUN PROOF (NOT APPROVED)  left: approved run6 #{}  right: modular run_c1 frame {frame}",
+                    frame * 2
+                )
+            } else {
+                "N4-A SPRITE MACHINE PROOF (NOT APPROVED)  left: N3.5 original  right: modular layers".to_owned()
+            },
+            if proof.run {
+                "  Left/Right frame  P play"
+            } else {
+                ""
+            },
             if proof.paused { "  [PAUSED]" } else { "" }
         );
     }
@@ -409,19 +565,21 @@ fn grid(proof: Res<Proof>, mut gizmos: Gizmos) {
     if !proof.grid {
         return;
     }
+    let l = layout(proof.run);
+    let (cell, pivot) = (l.cell, l.pivot);
     let line = Color::srgba(0.3, 0.7, 1.0, 0.45);
     let border = Color::srgb(0.3, 0.7, 1.0);
-    let pivot = Color::srgb(1.0, 0.2, 0.3);
-    for x0 in [LEFT_X, RIGHT_X] {
-        let left = x0 - PIVOT.0 * SCALE;
-        let top = SOLE_Y + PIVOT.1 * SCALE;
-        let w = CELL.0 as f32 * SCALE;
-        let h = CELL.1 as f32 * SCALE;
-        for i in (0..=CELL.0).step_by(8) {
+    let cross = Color::srgb(1.0, 0.2, 0.3);
+    for x0 in [l.left_x, l.right_x] {
+        let left = x0 - pivot.0 * SCALE;
+        let top = SOLE_Y + pivot.1 * SCALE;
+        let w = cell.0 as f32 * SCALE;
+        let h = cell.1 as f32 * SCALE;
+        for i in (0..=cell.0).step_by(8) {
             let x = left + i as f32 * SCALE;
             gizmos.line_2d(Vec2::new(x, top), Vec2::new(x, top - h), line);
         }
-        for j in (0..=CELL.1).step_by(8) {
+        for j in (0..=cell.1).step_by(8) {
             let y = top - j as f32 * SCALE;
             gizmos.line_2d(Vec2::new(left, y), Vec2::new(left + w, y), line);
         }
@@ -437,12 +595,12 @@ fn grid(proof: Res<Proof>, mut gizmos: Gizmos) {
         gizmos.line_2d(
             Vec2::new(x0 - 24.0, SOLE_Y),
             Vec2::new(x0 + 24.0, SOLE_Y),
-            pivot,
+            cross,
         );
         gizmos.line_2d(
             Vec2::new(x0, SOLE_Y - 24.0),
             Vec2::new(x0, SOLE_Y + 24.0),
-            pivot,
+            cross,
         );
     }
 }
@@ -464,7 +622,12 @@ fn main() -> AppExit {
             return AppExit::error();
         }
     };
-    let out = root.join(EVIDENCE);
+    let run = std::env::args().any(|a| a == "--run-c1");
+    let out = if run {
+        root.join(EVIDENCE).join("n4c")
+    } else {
+        root.join(EVIDENCE)
+    };
     if let Err(error) = std::fs::create_dir_all(&out) {
         eprintln!("{TAG} {}: {error}", out.display());
         return AppExit::error();
@@ -472,7 +635,12 @@ fn main() -> AppExit {
     let mut app = App::new();
     let stage = root.join(STAGE);
     let original = root.join(ORIGINAL);
+    let run_dir = root.join(RUN_ORIGINAL);
     app.register_asset_source(
+        "run",
+        AssetSourceBuilder::platform_default(&run_dir.to_string_lossy(), None),
+    )
+    .register_asset_source(
         "n4",
         AssetSourceBuilder::platform_default(&stage.to_string_lossy(), None),
     )
@@ -485,7 +653,11 @@ fn main() -> AppExit {
             .set(ImagePlugin::default_nearest())
             .set(WindowPlugin {
                 primary_window: Some(Window {
-                    title: "N4-A sprite machine proof".into(),
+                    title: if run {
+                        "N4-1 C1 modular run proof".into()
+                    } else {
+                        "N4-A sprite machine proof".into()
+                    },
                     resolution: WindowResolution::new(1280, 720),
                     ..default()
                 }),
@@ -495,6 +667,11 @@ fn main() -> AppExit {
     .insert_resource(ClearColor(DARK))
     .insert_resource(Proof {
         composition,
+        run,
+        shots: if run { run_tour() } else { idle_tour() },
+        playing: false,
+        elapsed: 0.0,
+        frame: 0,
         interactive,
         paused: false,
         show_original: true,
