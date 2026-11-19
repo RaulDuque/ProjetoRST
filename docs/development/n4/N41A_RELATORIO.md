@@ -52,7 +52,17 @@ fmt, check e clippy `-D warnings` limpos; `cargo test -j 2`: **55 suítes, 675 p
 
 ## 13. Commits e SHA
 
-Ver o registro de publicação abaixo.
+Push em `origin/art/v1.2-protagonist` (`bf12119..55a884c`), sem force, merge ou rebase:
+
+- `d3aef79` feat(player): add data-driven visual equipment to the sprite composition
+- `acf3f29` feat(visual): add the torso_plate family and equipment items a and b
+- `3dae0e6` test(player): validate data-driven visual equipment
+- `22254eb` feat(visual): add the equipment mode to the sprite machine proof
+- `8de1a8b` docs(architecture): document data-driven visual equipment
+- `1e85e93` docs(claude): list the n4-1-a equipment tests
+- `55a884c595d2d384d472ee25c0d7dcf88b888138` docs(n4): record the n4-1-a equipment review and evidence (SHA remoto confirmado igual ao local)
+
+O commit que grava esta seção é o registro da publicação; o hash remoto final é o HEAD depois do push dele. `Md-usario/` não foi alterado nem commitado.
 
 ## 14. Decisões pendentes
 
