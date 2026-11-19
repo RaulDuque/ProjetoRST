@@ -1,0 +1,70 @@
+{
+  "cache_key": "9da7598148a2e550fce5617fadf1cf9cb08f4c04a7ee2f84f0283bbe0e4763fd",
+  "generator_version": "n41b-1",
+  "id": "segmented_cuirass_hardened_leather",
+  "inputs": {
+    "art-src/n4-sprite-machine/equipment/families/torso_plate.json": "50c670b9677deeb2f33984d1eddeeed2fdb030d7738d80177bca137571f546a9",
+    "art-src/n4-sprite-machine/factory/details/rivet.json": "4cb442111aa83599d97d7eb058510f51a407c1a0ae7e37b650b3bae21a5b66d0",
+    "art-src/n4-sprite-machine/factory/details/trim_band.json": "768e2a70ba0140b5a539353e882b930f8354c666f05371017b341f17ba01719f",
+    "art-src/n4-sprite-machine/factory/details/wear_scratches.json": "b576354932f1dd5ff3c592667649c6b76f3bb0e9d13bdc1cea33dcc7aa48f00c",
+    "art-src/n4-sprite-machine/factory/materials/bronze.json": "07319fe712b5f533f486715b7f5a6c19a6cf9118ce76a8dd62c6c19d2313abdf",
+    "art-src/n4-sprite-machine/factory/materials/hardened_leather.json": "9520a48c7514332e441cb43e77a9499244eec666ffe63c64ab10ffa592aaba54",
+    "art-src/n4-sprite-machine/factory/profiles/humanoid_torso.json": "613ead3cc6a46c020e73196c81ec640505d2ca73ac0a34a588bac0401ea4ffd4",
+    "art-src/n4-sprite-machine/factory/recipes/segmented_cuirass_hardened_leather.json": "286406b2b9a350d5bff7199ffe6421289dad6a98edfa09bc1ebc90becee22d41",
+    "art-src/n4-sprite-machine/factory/templates/segmented_cuirass.json": "951db306448f9e958764ca9d6463d40a6f00414f5987e530dc18a2604df37619",
+    "art-src/n4-sprite-machine/scripts/build_equipment.py": "045c5310cb1ef48a4dca48c85e0ad9c4145a4d8226668c815ac57b56beef0c5e",
+    "art-src/n4-sprite-machine/scripts/factory.py": "71554906ef3d5f8a7fd56cb2a26e1670b50c5c667cc4945eeffc7e264f5255af",
+    "art-src/n4-sprite-machine/scripts/reconstruct.py": "89f7ffd8367f3a957fd6b89c886ec11827cbfd5f1725178aa9b2325f022fa612",
+    "art-src/n4-sprite-machine/scripts/run_poses.py": "850db0c427a56410b10b262ac319bba366c38f5cc25afce78e66c5c1258b163b",
+    "art-src/n4-sprite-machine/stage/equipment/families/torso_plate.ron": "5a69085560455be9ebf00ea944145a3d8af4cdce96768a684dd2ebf1fa05d710",
+    "art-src/n4-sprite-machine/stage/parts/idle/arm_front.txt": "04b8121c9d3147bcdd63360d196238c637642643cc135ed17233d73cdd3ab405",
+    "art-src/n4-sprite-machine/stage/parts/idle/body.txt": "69039584c8b4c55b897f9994c09b1d71efbd6474792635ca12980528f6cdd4e9",
+    "art-src/n4-sprite-machine/stage/parts/idle/boots.txt": "e5ba6e5c9eba4314d96cafe511db42c62f821382e440a38d21905693669fcfaa",
+    "art-src/n4-sprite-machine/stage/parts/idle/bracers.txt": "f945a52c16b228d99b52e7cc30374971c833db6c30288073e110b5707466e2b7",
+    "art-src/n4-sprite-machine/stage/parts/idle/hair_back.txt": "44209e700698aa626c724a678bfe36075fa0e324b0b97f532a851a1d3ddd3b17",
+    "art-src/n4-sprite-machine/stage/parts/idle/hair_front.txt": "5b3745198ce7bd91e3e27039bcb9c77a74b9da1d0798881707714d24af1c166b",
+    "art-src/n4-sprite-machine/stage/parts/idle/shirt.txt": "ba3994dd9c37d19696a492579be7e8869a7a31a78c3be94cb6c829e44f68bebe",
+    "art-src/n4-sprite-machine/stage/parts/idle/trousers.txt": "97aeec8bcf631eb1cd73ae3567d2d093c78604c26352b6aa6aba5276c865a513",
+    "art-src/n4-sprite-machine/stage/parts/run_c1/arm_front.txt": "d3f2811e3e9e591c67f15c66427570d6e9d5769236e7e0684c4c4acd105c4eaf",
+    "art-src/n4-sprite-machine/stage/parts/run_c1/body.txt": "c9fbaea466a9f64ed8121ca49cb129f46dabe1ba4ad8ff1f372cc9ea13d6f6cd",
+    "art-src/n4-sprite-machine/stage/parts/run_c1/body_back.txt": "43d89381b241e745a159e9ff7a714a9e589ac730c7438020fb359b5472a215ad",
+    "art-src/n4-sprite-machine/stage/parts/run_c1/boots.txt": "055a81966bbb072fcd66f10662b6c7adff98a4d79f96dfa6c5b028b9fedac7d1",
+    "art-src/n4-sprite-machine/stage/parts/run_c1/boots_back.txt": "8c0ffc03f6e4717ea60a9e99ade1fff0ae77681e82707a4a5c4ab86e5569af30",
+    "art-src/n4-sprite-machine/stage/parts/run_c1/bracers.txt": "9b3b3da50b3d5b861bfa65eaae54985d57bbf6d983e85470215d04f18d985615",
+    "art-src/n4-sprite-machine/stage/parts/run_c1/bracers_back.txt": "03a509461fc7f95aeccee079d607f66c80b20a4e8fdea33ccc251763fcf751f9",
+    "art-src/n4-sprite-machine/stage/parts/run_c1/hair_back.txt": "cec9c8bab9d4f5b68983bde3de68f40be76430539140db1aebb31ae2a55e15aa",
+    "art-src/n4-sprite-machine/stage/parts/run_c1/hair_front.txt": "39438df6d9c51b834948720acd5d82d84aac5fe188863a65d1fb6845d796f484",
+    "art-src/n4-sprite-machine/stage/parts/run_c1/shirt.txt": "2bddd5b9e42a53315d2521aa15fa822116295338522b1a71fae2475911127861",
+    "art-src/n4-sprite-machine/stage/parts/run_c1/shirt_torso.txt": "327b07e209eb8726ff5112109980743cf19ef41384b84bc2c7193657e6776889",
+    "art-src/n4-sprite-machine/stage/parts/run_c1/sleeve_back.txt": "52256296805572abc06a26115e46d367726112603e245d574cbddff3491923df",
+    "art-src/n4-sprite-machine/stage/parts/run_c1/trousers.txt": "7c1f0bdad059a10e25b1fd924f46fddeb9b428b5388f7cf198b1414056583bd6",
+    "art-src/n4-sprite-machine/stage/parts/run_c1/trousers_back.txt": "31fb0f72db2874530346aa331dd5c1c2281cdb6a3181cd84423c19825d7737b3",
+    "art-src/n4-sprite-machine/stage/protagonist.ron": "8cdcbf931330637572c185c2c1c067f7b62679514ee1f3da4ed575a94320db5f"
+  },
+  "outputs": {
+    "art/segmented_cuirass_hardened_leather/idle.png": "482498c1ca8834722b0cbacbbea9def43bc3228fe2d73a9048d6d934ac3dea6c",
+    "art/segmented_cuirass_hardened_leather/idle.txt": "9df4e7c6db28966e458b2ba2bdf51f3636cc478ed16c3da7f525ba90d99c2e83",
+    "art/segmented_cuirass_hardened_leather/run_c1.png": "8bd697b92b2867ecb11e3093b3bc25aa738fd6c42e47388fad00b988d5d30175",
+    "art/segmented_cuirass_hardened_leather/run_c1.txt": "353983f3ef2a6558a279a64c06b535d83a6bc3a9279f4c2778043d291f3ef175",
+    "items/segmented_cuirass_hardened_leather.ron": "3303d32b279a4a8f7237bec475c8ebec7c09407de9fceb46738cafaad7a80381",
+    "preview/segmented_cuirass_hardened_leather.png": "890b144da206f5f0e74ef90bfe427b8efccd334f36e758c89bb537b87b23cdd7",
+    "preview/segmented_cuirass_hardened_leather.txt": "b2904ee0504e136a6f9f01b6b73085bf2aa99677bc1af51571b4b28bbf64bbae"
+  },
+  "recipe": "art-src/n4-sprite-machine/factory/recipes/segmented_cuirass_hardened_leather.json",
+  "recipe_sha256": "e217594865337a51ecb0ddef8f684a0027f1c31c065a4ef223348f2d6f46a090",
+  "seed": 1028,
+  "summary": {
+    "integration": "composer",
+    "meta": {
+      "clips": [
+        "idle",
+        "run_c1"
+      ],
+      "hide_run_shirt_torso": true,
+      "integration": "composer"
+    },
+    "notes": [
+      "segmented_cuirass:idle:0: rivet: 2/2 stamp(s) skipped (do not fit inside the mask)"
+    ]
+  }
+}

@@ -1,0 +1,744 @@
+{
+ "failures": [],
+ "generator_version": "n41b-1",
+ "items": {
+  "brigandine_coat_blackened_steel": {
+   "category": "chest_armor",
+   "integration": "composer",
+   "meta": {
+    "clips": [
+     "idle"
+    ],
+    "hide_run_shirt_torso": false,
+    "integration": "composer"
+   },
+   "notes": [
+    "brigandine_coat:idle:0: buckle: 1/1 stamp(s) skipped (do not fit inside the mask)",
+    "brigandine_coat:idle:0: rivet: 3/6 stamp(s) skipped (do not fit inside the mask)",
+    "brigandine_coat:run_c1:1: buckle: 1/1 stamp(s) skipped (do not fit inside the mask)",
+    "brigandine_coat:run_c1:1: rivet: 8/21 stamp(s) skipped (do not fit inside the mask)"
+   ],
+   "seconds": 0.0718,
+   "status": "generated"
+  },
+  "brigandine_coat_bronze": {
+   "category": "chest_armor",
+   "integration": "composer",
+   "meta": {
+    "clips": [
+     "idle"
+    ],
+    "hide_run_shirt_torso": false,
+    "integration": "composer"
+   },
+   "notes": [
+    "brigandine_coat:idle:0: buckle: 1/1 stamp(s) skipped (do not fit inside the mask)",
+    "brigandine_coat:idle:0: rivet: 3/6 stamp(s) skipped (do not fit inside the mask)",
+    "brigandine_coat:run_c1:1: buckle: 1/1 stamp(s) skipped (do not fit inside the mask)",
+    "brigandine_coat:run_c1:1: rivet: 8/21 stamp(s) skipped (do not fit inside the mask)"
+   ],
+   "seconds": 0.0076,
+   "status": "generated"
+  },
+  "brigandine_coat_hardened_leather": {
+   "category": "chest_armor",
+   "integration": "composer",
+   "meta": {
+    "clips": [
+     "idle"
+    ],
+    "hide_run_shirt_torso": false,
+    "integration": "composer"
+   },
+   "notes": [
+    "brigandine_coat:idle:0: buckle: 1/1 stamp(s) skipped (do not fit inside the mask)",
+    "brigandine_coat:idle:0: rivet: 3/6 stamp(s) skipped (do not fit inside the mask)",
+    "brigandine_coat:run_c1:1: buckle: 1/1 stamp(s) skipped (do not fit inside the mask)",
+    "brigandine_coat:run_c1:1: rivet: 8/21 stamp(s) skipped (do not fit inside the mask)"
+   ],
+   "seconds": 0.0087,
+   "status": "generated"
+  },
+  "brigandine_coat_iron": {
+   "category": "chest_armor",
+   "integration": "composer",
+   "meta": {
+    "clips": [
+     "idle"
+    ],
+    "hide_run_shirt_torso": false,
+    "integration": "composer"
+   },
+   "notes": [
+    "brigandine_coat:idle:0: buckle: 1/1 stamp(s) skipped (do not fit inside the mask)",
+    "brigandine_coat:idle:0: rivet: 3/6 stamp(s) skipped (do not fit inside the mask)",
+    "brigandine_coat:run_c1:1: buckle: 1/1 stamp(s) skipped (do not fit inside the mask)",
+    "brigandine_coat:run_c1:1: rivet: 8/21 stamp(s) skipped (do not fit inside the mask)"
+   ],
+   "seconds": 0.0081,
+   "status": "generated"
+  },
+  "cape_long_ash_grey": {
+   "category": "cape",
+   "integration": "isolated",
+   "meta": {
+    "blocked_by": "ponto das costas n\u00e3o marcado (N4C_SOQUETES.md) e sem variantes por pose",
+    "canvas": [
+     40,
+     52
+    ],
+    "integration": "isolated",
+    "pivot": [
+     14,
+     4
+    ],
+    "rigid": false
+   },
+   "notes": [],
+   "seconds": 0.0078,
+   "status": "generated"
+  },
+  "cape_long_crimson": {
+   "category": "cape",
+   "integration": "isolated",
+   "meta": {
+    "blocked_by": "ponto das costas n\u00e3o marcado (N4C_SOQUETES.md) e sem variantes por pose",
+    "canvas": [
+     40,
+     52
+    ],
+    "integration": "isolated",
+    "pivot": [
+     14,
+     4
+    ],
+    "rigid": false
+   },
+   "notes": [],
+   "seconds": 0.0073,
+   "status": "generated"
+  },
+  "cape_long_moss_green": {
+   "category": "cape",
+   "integration": "isolated",
+   "meta": {
+    "blocked_by": "ponto das costas n\u00e3o marcado (N4C_SOQUETES.md) e sem variantes por pose",
+    "canvas": [
+     40,
+     52
+    ],
+    "integration": "isolated",
+    "pivot": [
+     14,
+     4
+    ],
+    "rigid": false
+   },
+   "notes": [],
+   "seconds": 0.0085,
+   "status": "generated"
+  },
+  "cape_long_royal_blue": {
+   "category": "cape",
+   "integration": "isolated",
+   "meta": {
+    "blocked_by": "ponto das costas n\u00e3o marcado (N4C_SOQUETES.md) e sem variantes por pose",
+    "canvas": [
+     40,
+     52
+    ],
+    "integration": "isolated",
+    "pivot": [
+     14,
+     4
+    ],
+    "rigid": false
+   },
+   "notes": [],
+   "seconds": 0.0079,
+   "status": "generated"
+  },
+  "mantle_ash_grey_hardened_leather": {
+   "category": "shoulder",
+   "integration": "isolated",
+   "meta": {
+    "blocked_by": "sem camada 'shoulder' em protagonist.ron e sem soquete 'shoulder' (N4C_SOQUETES.md: extens\u00e3o de formato pendente)",
+    "canvas": [
+     40,
+     52
+    ],
+    "integration": "isolated",
+    "pivot": [
+     14,
+     4
+    ],
+    "rigid": false
+   },
+   "notes": [],
+   "seconds": 0.0065,
+   "status": "generated"
+  },
+  "mantle_crimson_wolf_fur": {
+   "category": "shoulder",
+   "integration": "isolated",
+   "meta": {
+    "blocked_by": "sem camada 'shoulder' em protagonist.ron e sem soquete 'shoulder' (N4C_SOQUETES.md: extens\u00e3o de formato pendente)",
+    "canvas": [
+     40,
+     52
+    ],
+    "integration": "isolated",
+    "pivot": [
+     14,
+     4
+    ],
+    "rigid": false
+   },
+   "notes": [],
+   "seconds": 0.006,
+   "status": "generated"
+  },
+  "mantle_moss_green_wolf_fur": {
+   "category": "shoulder",
+   "integration": "isolated",
+   "meta": {
+    "blocked_by": "sem camada 'shoulder' em protagonist.ron e sem soquete 'shoulder' (N4C_SOQUETES.md: extens\u00e3o de formato pendente)",
+    "canvas": [
+     40,
+     52
+    ],
+    "integration": "isolated",
+    "pivot": [
+     14,
+     4
+    ],
+    "rigid": false
+   },
+   "notes": [],
+   "seconds": 0.0065,
+   "status": "generated"
+  },
+  "mantle_royal_blue_wolf_fur": {
+   "category": "shoulder",
+   "integration": "isolated",
+   "meta": {
+    "blocked_by": "sem camada 'shoulder' em protagonist.ron e sem soquete 'shoulder' (N4C_SOQUETES.md: extens\u00e3o de formato pendente)",
+    "canvas": [
+     40,
+     52
+    ],
+    "integration": "isolated",
+    "pivot": [
+     14,
+     4
+    ],
+    "rigid": false
+   },
+   "notes": [],
+   "seconds": 0.0064,
+   "status": "generated"
+  },
+  "pauldron_blackened_steel": {
+   "category": "shoulder",
+   "integration": "isolated",
+   "meta": {
+    "blocked_by": "sem camada 'shoulder' em protagonist.ron e sem soquete 'shoulder' (N4C_SOQUETES.md: extens\u00e3o de formato pendente)",
+    "canvas": [
+     40,
+     52
+    ],
+    "integration": "isolated",
+    "pivot": [
+     14,
+     4
+    ],
+    "rigid": true
+   },
+   "notes": [],
+   "seconds": 0.0124,
+   "status": "generated"
+  },
+  "pauldron_bronze": {
+   "category": "shoulder",
+   "integration": "isolated",
+   "meta": {
+    "blocked_by": "sem camada 'shoulder' em protagonist.ron e sem soquete 'shoulder' (N4C_SOQUETES.md: extens\u00e3o de formato pendente)",
+    "canvas": [
+     40,
+     52
+    ],
+    "integration": "isolated",
+    "pivot": [
+     14,
+     4
+    ],
+    "rigid": true
+   },
+   "notes": [
+    "plate_pauldron: rivet: 2/6 stamp(s) skipped (do not fit inside the mask)"
+   ],
+   "seconds": 0.0117,
+   "status": "generated"
+  },
+  "pauldron_iron": {
+   "category": "shoulder",
+   "integration": "isolated",
+   "meta": {
+    "blocked_by": "sem camada 'shoulder' em protagonist.ron e sem soquete 'shoulder' (N4C_SOQUETES.md: extens\u00e3o de formato pendente)",
+    "canvas": [
+     40,
+     52
+    ],
+    "integration": "isolated",
+    "pivot": [
+     14,
+     4
+    ],
+    "rigid": true
+   },
+   "notes": [
+    "plate_pauldron: rivet: 2/6 stamp(s) skipped (do not fit inside the mask)"
+   ],
+   "seconds": 0.0123,
+   "status": "generated"
+  },
+  "pauldron_steel": {
+   "category": "shoulder",
+   "integration": "isolated",
+   "meta": {
+    "blocked_by": "sem camada 'shoulder' em protagonist.ron e sem soquete 'shoulder' (N4C_SOQUETES.md: extens\u00e3o de formato pendente)",
+    "canvas": [
+     40,
+     52
+    ],
+    "integration": "isolated",
+    "pivot": [
+     14,
+     4
+    ],
+    "rigid": true
+   },
+   "notes": [],
+   "seconds": 0.0095,
+   "status": "generated"
+  },
+  "ridged_breastplate_blackened_steel": {
+   "category": "chest_armor",
+   "integration": "composer",
+   "meta": {
+    "clips": [
+     "idle"
+    ],
+    "hide_run_shirt_torso": false,
+    "integration": "composer"
+   },
+   "notes": [
+    "ridged_breastplate:idle:0: emblem_sun: 1/1 stamp(s) skipped (do not fit inside the mask)"
+   ],
+   "seconds": 0.0076,
+   "status": "generated"
+  },
+  "ridged_breastplate_bronze": {
+   "category": "chest_armor",
+   "integration": "composer",
+   "meta": {
+    "clips": [
+     "idle"
+    ],
+    "hide_run_shirt_torso": false,
+    "integration": "composer"
+   },
+   "notes": [],
+   "seconds": 0.0066,
+   "status": "generated"
+  },
+  "ridged_breastplate_hardened_leather": {
+   "category": "chest_armor",
+   "integration": "composer",
+   "meta": {
+    "clips": [
+     "idle"
+    ],
+    "hide_run_shirt_torso": false,
+    "integration": "composer"
+   },
+   "notes": [],
+   "seconds": 0.0071,
+   "status": "generated"
+  },
+  "ridged_breastplate_iron": {
+   "category": "chest_armor",
+   "integration": "composer",
+   "meta": {
+    "clips": [
+     "idle"
+    ],
+    "hide_run_shirt_torso": false,
+    "integration": "composer"
+   },
+   "notes": [],
+   "seconds": 0.0075,
+   "status": "generated"
+  },
+  "scale_hauberk_blackened_steel": {
+   "category": "chest_armor",
+   "integration": "composer",
+   "meta": {
+    "clips": [
+     "idle"
+    ],
+    "hide_run_shirt_torso": false,
+    "integration": "composer"
+   },
+   "notes": [
+    "scale_hauberk:idle:0: gem: 1/1 stamp(s) skipped (do not fit inside the mask)"
+   ],
+   "seconds": 0.0077,
+   "status": "generated"
+  },
+  "scale_hauberk_bronze": {
+   "category": "chest_armor",
+   "integration": "composer",
+   "meta": {
+    "clips": [
+     "idle"
+    ],
+    "hide_run_shirt_torso": false,
+    "integration": "composer"
+   },
+   "notes": [],
+   "seconds": 0.0076,
+   "status": "generated"
+  },
+  "scale_hauberk_hardened_leather": {
+   "category": "chest_armor",
+   "integration": "composer",
+   "meta": {
+    "clips": [
+     "idle"
+    ],
+    "hide_run_shirt_torso": false,
+    "integration": "composer"
+   },
+   "notes": [],
+   "seconds": 0.0095,
+   "status": "generated"
+  },
+  "scale_hauberk_iron": {
+   "category": "chest_armor",
+   "integration": "composer",
+   "meta": {
+    "clips": [
+     "idle"
+    ],
+    "hide_run_shirt_torso": false,
+    "integration": "composer"
+   },
+   "notes": [
+    "scale_hauberk:idle:0: gem: 1/1 stamp(s) skipped (do not fit inside the mask)"
+   ],
+   "seconds": 0.0079,
+   "status": "generated"
+  },
+  "segmented_cuirass_blackened_steel": {
+   "category": "chest_armor",
+   "integration": "composer",
+   "meta": {
+    "clips": [
+     "idle",
+     "run_c1"
+    ],
+    "hide_run_shirt_torso": true,
+    "integration": "composer"
+   },
+   "notes": [
+    "segmented_cuirass:idle:0: emblem_wolf: 1/1 stamp(s) skipped (do not fit inside the mask)",
+    "segmented_cuirass:idle:0: rivet: 2/2 stamp(s) skipped (do not fit inside the mask)"
+   ],
+   "seconds": 0.0366,
+   "status": "generated"
+  },
+  "segmented_cuirass_bronze": {
+   "category": "chest_armor",
+   "integration": "composer",
+   "meta": {
+    "clips": [
+     "idle",
+     "run_c1"
+    ],
+    "hide_run_shirt_torso": true,
+    "integration": "composer"
+   },
+   "notes": [
+    "segmented_cuirass:idle:0: emblem_sun: 1/1 stamp(s) skipped (do not fit inside the mask)",
+    "segmented_cuirass:idle:0: rivet: 2/2 stamp(s) skipped (do not fit inside the mask)"
+   ],
+   "seconds": 0.0378,
+   "status": "generated"
+  },
+  "segmented_cuirass_hardened_leather": {
+   "category": "chest_armor",
+   "integration": "composer",
+   "meta": {
+    "clips": [
+     "idle",
+     "run_c1"
+    ],
+    "hide_run_shirt_torso": true,
+    "integration": "composer"
+   },
+   "notes": [
+    "segmented_cuirass:idle:0: rivet: 2/2 stamp(s) skipped (do not fit inside the mask)"
+   ],
+   "seconds": 0.0326,
+   "status": "generated"
+  },
+  "segmented_cuirass_iron": {
+   "category": "chest_armor",
+   "integration": "composer",
+   "meta": {
+    "clips": [
+     "idle",
+     "run_c1"
+    ],
+    "hide_run_shirt_torso": true,
+    "integration": "composer"
+   },
+   "notes": [
+    "segmented_cuirass:idle:0: rivet: 2/2 stamp(s) skipped (do not fit inside the mask)"
+   ],
+   "seconds": 0.0331,
+   "status": "generated"
+  },
+  "sword_arming_crescent": {
+   "category": "sword",
+   "integration": "isolated",
+   "meta": {
+    "blocked_by": "soquetes da m\u00e3o sem confirma\u00e7\u00e3o (N4C_SOQUETES.md) e sem \u00e2ngulo/frente medidos",
+    "canvas": [
+     21,
+     64
+    ],
+    "grip_pivot": [
+     10,
+     55
+    ],
+    "integration": "isolated"
+   },
+   "notes": [],
+   "seconds": 0.0027,
+   "status": "generated"
+  },
+  "sword_arming_cross": {
+   "category": "sword",
+   "integration": "isolated",
+   "meta": {
+    "blocked_by": "soquetes da m\u00e3o sem confirma\u00e7\u00e3o (N4C_SOQUETES.md) e sem \u00e2ngulo/frente medidos",
+    "canvas": [
+     21,
+     64
+    ],
+    "grip_pivot": [
+     10,
+     53
+    ],
+    "integration": "isolated"
+   },
+   "notes": [],
+   "seconds": 0.0021,
+   "status": "generated"
+  },
+  "sword_arming_ring": {
+   "category": "sword",
+   "integration": "isolated",
+   "meta": {
+    "blocked_by": "soquetes da m\u00e3o sem confirma\u00e7\u00e3o (N4C_SOQUETES.md) e sem \u00e2ngulo/frente medidos",
+    "canvas": [
+     21,
+     64
+    ],
+    "grip_pivot": [
+     10,
+     53
+    ],
+    "integration": "isolated"
+   },
+   "notes": [],
+   "seconds": 0.0023,
+   "status": "generated"
+  },
+  "sword_broad_falchion_crescent": {
+   "category": "sword",
+   "integration": "isolated",
+   "meta": {
+    "blocked_by": "soquetes da m\u00e3o sem confirma\u00e7\u00e3o (N4C_SOQUETES.md) e sem \u00e2ngulo/frente medidos",
+    "canvas": [
+     21,
+     64
+    ],
+    "grip_pivot": [
+     10,
+     55
+    ],
+    "integration": "isolated"
+   },
+   "notes": [],
+   "seconds": 0.0023,
+   "status": "generated"
+  },
+  "sword_broad_falchion_cross": {
+   "category": "sword",
+   "integration": "isolated",
+   "meta": {
+    "blocked_by": "soquetes da m\u00e3o sem confirma\u00e7\u00e3o (N4C_SOQUETES.md) e sem \u00e2ngulo/frente medidos",
+    "canvas": [
+     21,
+     64
+    ],
+    "grip_pivot": [
+     10,
+     53
+    ],
+    "integration": "isolated"
+   },
+   "notes": [],
+   "seconds": 0.0024,
+   "status": "generated"
+  },
+  "sword_broad_falchion_ring": {
+   "category": "sword",
+   "integration": "isolated",
+   "meta": {
+    "blocked_by": "soquetes da m\u00e3o sem confirma\u00e7\u00e3o (N4C_SOQUETES.md) e sem \u00e2ngulo/frente medidos",
+    "canvas": [
+     21,
+     64
+    ],
+    "grip_pivot": [
+     10,
+     53
+    ],
+    "integration": "isolated"
+   },
+   "notes": [],
+   "seconds": 0.0023,
+   "status": "generated"
+  },
+  "sword_estoc_crescent": {
+   "category": "sword",
+   "integration": "isolated",
+   "meta": {
+    "blocked_by": "soquetes da m\u00e3o sem confirma\u00e7\u00e3o (N4C_SOQUETES.md) e sem \u00e2ngulo/frente medidos",
+    "canvas": [
+     21,
+     64
+    ],
+    "grip_pivot": [
+     10,
+     55
+    ],
+    "integration": "isolated"
+   },
+   "notes": [],
+   "seconds": 0.0022,
+   "status": "generated"
+  },
+  "sword_estoc_cross": {
+   "category": "sword",
+   "integration": "isolated",
+   "meta": {
+    "blocked_by": "soquetes da m\u00e3o sem confirma\u00e7\u00e3o (N4C_SOQUETES.md) e sem \u00e2ngulo/frente medidos",
+    "canvas": [
+     21,
+     64
+    ],
+    "grip_pivot": [
+     10,
+     53
+    ],
+    "integration": "isolated"
+   },
+   "notes": [],
+   "seconds": 0.0024,
+   "status": "generated"
+  },
+  "sword_estoc_ring": {
+   "category": "sword",
+   "integration": "isolated",
+   "meta": {
+    "blocked_by": "soquetes da m\u00e3o sem confirma\u00e7\u00e3o (N4C_SOQUETES.md) e sem \u00e2ngulo/frente medidos",
+    "canvas": [
+     21,
+     64
+    ],
+    "grip_pivot": [
+     10,
+     53
+    ],
+    "integration": "isolated"
+   },
+   "notes": [],
+   "seconds": 0.0026,
+   "status": "generated"
+  },
+  "sword_flame_crescent": {
+   "category": "sword",
+   "integration": "isolated",
+   "meta": {
+    "blocked_by": "soquetes da m\u00e3o sem confirma\u00e7\u00e3o (N4C_SOQUETES.md) e sem \u00e2ngulo/frente medidos",
+    "canvas": [
+     21,
+     64
+    ],
+    "grip_pivot": [
+     10,
+     55
+    ],
+    "integration": "isolated"
+   },
+   "notes": [],
+   "seconds": 0.0035,
+   "status": "generated"
+  },
+  "sword_flame_cross": {
+   "category": "sword",
+   "integration": "isolated",
+   "meta": {
+    "blocked_by": "soquetes da m\u00e3o sem confirma\u00e7\u00e3o (N4C_SOQUETES.md) e sem \u00e2ngulo/frente medidos",
+    "canvas": [
+     21,
+     64
+    ],
+    "grip_pivot": [
+     10,
+     53
+    ],
+    "integration": "isolated"
+   },
+   "notes": [],
+   "seconds": 0.0023,
+   "status": "generated"
+  },
+  "sword_flame_ring": {
+   "category": "sword",
+   "integration": "isolated",
+   "meta": {
+    "blocked_by": "soquetes da m\u00e3o sem confirma\u00e7\u00e3o (N4C_SOQUETES.md) e sem \u00e2ngulo/frente medidos",
+    "canvas": [
+     21,
+     64
+    ],
+    "grip_pivot": [
+     10,
+     53
+    ],
+    "integration": "isolated"
+   },
+   "notes": [],
+   "seconds": 0.0021,
+   "status": "generated"
+  }
+ },
+ "peak_rss_mib": 37.4,
+ "seconds": 0.437
+}

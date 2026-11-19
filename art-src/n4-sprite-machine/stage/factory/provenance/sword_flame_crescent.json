@@ -1,0 +1,41 @@
+{
+  "cache_key": "d92682d7a26c0c447cacc75922b3117292c5ca8e11a3481b7d5a7aa775f3465e",
+  "generator_version": "n41b-1",
+  "id": "sword_flame_crescent",
+  "inputs": {
+    "art-src/n4-sprite-machine/factory/details/gem.json": "a07dbfd1a524b37345c0800a96b57de9fb305afbbebeb0a1d40c3f0f514a62e0",
+    "art-src/n4-sprite-machine/factory/materials/crimson_cloth.json": "872b1cc1d7c2f84b3ef8f51bb369eaaa30fd246de69cdcfc1574be0a40a964bc",
+    "art-src/n4-sprite-machine/factory/materials/ember_red.json": "bc196700b80866686dc64e62f68f0b6132e0be42c2d98b9445edfbf3ca4c2ab4",
+    "art-src/n4-sprite-machine/factory/materials/gold.json": "f568e40b6aaf620565b092c3c673faec4ded09ad544b0b4b20298961641fc7a8",
+    "art-src/n4-sprite-machine/factory/materials/steel.json": "cdc136053bc27ad175ca664be0e29a91ae7ac192af87881484e4fadaa09ae8ea",
+    "art-src/n4-sprite-machine/factory/profiles/weapon_main_hand.json": "4ec45c1747303fd49db39dce78494c7bede3dbe6f9d80ac5a555c9ebe5e23644",
+    "art-src/n4-sprite-machine/factory/recipes/sword_flame_crescent.json": "9f310d4cee48b48a1de4ce5e23b1c0be3e3646b6e7eea42fa36498b184c8b717",
+    "art-src/n4-sprite-machine/factory/templates/crescent_hilt.json": "6309bd8383a3fb6fb5dbcd39f462ba621b71a28c04384b75f424d7d2b088f7e5",
+    "art-src/n4-sprite-machine/factory/templates/flame_blade.json": "12f8741f2e12cbf21ad227adb06bd8ed9f26a43fb085477f06bdb2e1c2030324",
+    "art-src/n4-sprite-machine/scripts/build_equipment.py": "045c5310cb1ef48a4dca48c85e0ad9c4145a4d8226668c815ac57b56beef0c5e",
+    "art-src/n4-sprite-machine/scripts/factory.py": "71554906ef3d5f8a7fd56cb2a26e1670b50c5c667cc4945eeffc7e264f5255af"
+  },
+  "outputs": {
+    "isolated/sword_flame_crescent.png": "3c78a838f8fbc88aaea62490c1db480c726ea066496f788d377ebc605bc6521e",
+    "isolated/sword_flame_crescent.txt": "58c350197f51b69f44b66533df78cb14965fec01b2981f8a6e985321bcdec828"
+  },
+  "recipe": "art-src/n4-sprite-machine/factory/recipes/sword_flame_crescent.json",
+  "recipe_sha256": "d0735cce90961de008d7003a7fcce807a6731b06fcf0abe514557f6c33a3b9ae",
+  "seed": 1189,
+  "summary": {
+    "integration": "isolated",
+    "meta": {
+      "blocked_by": "soquetes da m\u00e3o sem confirma\u00e7\u00e3o (N4C_SOQUETES.md) e sem \u00e2ngulo/frente medidos",
+      "canvas": [
+        21,
+        64
+      ],
+      "grip_pivot": [
+        10,
+        55
+      ],
+      "integration": "isolated"
+    },
+    "notes": []
+  }
+}

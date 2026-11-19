@@ -1,0 +1,69 @@
+{
+  "cache_key": "47dd17ce21c42b8bd92e4028f567993d70b697c203dea8c25aeee65682fd18e9",
+  "generator_version": "n41b-1",
+  "id": "brigandine_coat_blackened_steel",
+  "inputs": {
+    "art-src/n4-sprite-machine/equipment/families/torso_plate.json": "50c670b9677deeb2f33984d1eddeeed2fdb030d7738d80177bca137571f546a9",
+    "art-src/n4-sprite-machine/factory/details/buckle.json": "9b678278b2c1a9e444e2eb3200cc3cb88a0a56c91723097537cf8da071e652e5",
+    "art-src/n4-sprite-machine/factory/details/rivet.json": "4cb442111aa83599d97d7eb058510f51a407c1a0ae7e37b650b3bae21a5b66d0",
+    "art-src/n4-sprite-machine/factory/materials/blackened_steel.json": "c354b975e769b5ab4dd951fa26d758a0f1f5e89df788c371132fa7866375b727",
+    "art-src/n4-sprite-machine/factory/materials/gold.json": "f568e40b6aaf620565b092c3c673faec4ded09ad544b0b4b20298961641fc7a8",
+    "art-src/n4-sprite-machine/factory/profiles/humanoid_torso.json": "613ead3cc6a46c020e73196c81ec640505d2ca73ac0a34a588bac0401ea4ffd4",
+    "art-src/n4-sprite-machine/factory/recipes/brigandine_coat_blackened_steel.json": "bb8ee5e6f742fa72de7b5f3b70973f55b35e1fc293549457129f856742ad5500",
+    "art-src/n4-sprite-machine/factory/templates/brigandine_coat.json": "956fe679e49681b9763f3c9dc60b6f733d044f88bccdb27898e363f3845b24f8",
+    "art-src/n4-sprite-machine/scripts/build_equipment.py": "045c5310cb1ef48a4dca48c85e0ad9c4145a4d8226668c815ac57b56beef0c5e",
+    "art-src/n4-sprite-machine/scripts/factory.py": "71554906ef3d5f8a7fd56cb2a26e1670b50c5c667cc4945eeffc7e264f5255af",
+    "art-src/n4-sprite-machine/scripts/reconstruct.py": "89f7ffd8367f3a957fd6b89c886ec11827cbfd5f1725178aa9b2325f022fa612",
+    "art-src/n4-sprite-machine/scripts/run_poses.py": "850db0c427a56410b10b262ac319bba366c38f5cc25afce78e66c5c1258b163b",
+    "art-src/n4-sprite-machine/stage/equipment/families/torso_plate.ron": "5a69085560455be9ebf00ea944145a3d8af4cdce96768a684dd2ebf1fa05d710",
+    "art-src/n4-sprite-machine/stage/parts/idle/arm_front.txt": "04b8121c9d3147bcdd63360d196238c637642643cc135ed17233d73cdd3ab405",
+    "art-src/n4-sprite-machine/stage/parts/idle/body.txt": "69039584c8b4c55b897f9994c09b1d71efbd6474792635ca12980528f6cdd4e9",
+    "art-src/n4-sprite-machine/stage/parts/idle/boots.txt": "e5ba6e5c9eba4314d96cafe511db42c62f821382e440a38d21905693669fcfaa",
+    "art-src/n4-sprite-machine/stage/parts/idle/bracers.txt": "f945a52c16b228d99b52e7cc30374971c833db6c30288073e110b5707466e2b7",
+    "art-src/n4-sprite-machine/stage/parts/idle/hair_back.txt": "44209e700698aa626c724a678bfe36075fa0e324b0b97f532a851a1d3ddd3b17",
+    "art-src/n4-sprite-machine/stage/parts/idle/hair_front.txt": "5b3745198ce7bd91e3e27039bcb9c77a74b9da1d0798881707714d24af1c166b",
+    "art-src/n4-sprite-machine/stage/parts/idle/shirt.txt": "ba3994dd9c37d19696a492579be7e8869a7a31a78c3be94cb6c829e44f68bebe",
+    "art-src/n4-sprite-machine/stage/parts/idle/trousers.txt": "97aeec8bcf631eb1cd73ae3567d2d093c78604c26352b6aa6aba5276c865a513",
+    "art-src/n4-sprite-machine/stage/parts/run_c1/arm_front.txt": "d3f2811e3e9e591c67f15c66427570d6e9d5769236e7e0684c4c4acd105c4eaf",
+    "art-src/n4-sprite-machine/stage/parts/run_c1/body.txt": "c9fbaea466a9f64ed8121ca49cb129f46dabe1ba4ad8ff1f372cc9ea13d6f6cd",
+    "art-src/n4-sprite-machine/stage/parts/run_c1/body_back.txt": "43d89381b241e745a159e9ff7a714a9e589ac730c7438020fb359b5472a215ad",
+    "art-src/n4-sprite-machine/stage/parts/run_c1/boots.txt": "055a81966bbb072fcd66f10662b6c7adff98a4d79f96dfa6c5b028b9fedac7d1",
+    "art-src/n4-sprite-machine/stage/parts/run_c1/boots_back.txt": "8c0ffc03f6e4717ea60a9e99ade1fff0ae77681e82707a4a5c4ab86e5569af30",
+    "art-src/n4-sprite-machine/stage/parts/run_c1/bracers.txt": "9b3b3da50b3d5b861bfa65eaae54985d57bbf6d983e85470215d04f18d985615",
+    "art-src/n4-sprite-machine/stage/parts/run_c1/bracers_back.txt": "03a509461fc7f95aeccee079d607f66c80b20a4e8fdea33ccc251763fcf751f9",
+    "art-src/n4-sprite-machine/stage/parts/run_c1/hair_back.txt": "cec9c8bab9d4f5b68983bde3de68f40be76430539140db1aebb31ae2a55e15aa",
+    "art-src/n4-sprite-machine/stage/parts/run_c1/hair_front.txt": "39438df6d9c51b834948720acd5d82d84aac5fe188863a65d1fb6845d796f484",
+    "art-src/n4-sprite-machine/stage/parts/run_c1/shirt.txt": "2bddd5b9e42a53315d2521aa15fa822116295338522b1a71fae2475911127861",
+    "art-src/n4-sprite-machine/stage/parts/run_c1/shirt_torso.txt": "327b07e209eb8726ff5112109980743cf19ef41384b84bc2c7193657e6776889",
+    "art-src/n4-sprite-machine/stage/parts/run_c1/sleeve_back.txt": "52256296805572abc06a26115e46d367726112603e245d574cbddff3491923df",
+    "art-src/n4-sprite-machine/stage/parts/run_c1/trousers.txt": "7c1f0bdad059a10e25b1fd924f46fddeb9b428b5388f7cf198b1414056583bd6",
+    "art-src/n4-sprite-machine/stage/parts/run_c1/trousers_back.txt": "31fb0f72db2874530346aa331dd5c1c2281cdb6a3181cd84423c19825d7737b3",
+    "art-src/n4-sprite-machine/stage/protagonist.ron": "8cdcbf931330637572c185c2c1c067f7b62679514ee1f3da4ed575a94320db5f"
+  },
+  "outputs": {
+    "art/brigandine_coat_blackened_steel/idle.png": "c68c5ae34ffd11a37e6bf41e8e13b8e0562ab149e986127496742b98cf636e8e",
+    "art/brigandine_coat_blackened_steel/idle.txt": "9d4490c3d594effa30a5cd12387f63d699cd84c767aa220bd1b68acec5c01464",
+    "items/brigandine_coat_blackened_steel.ron": "db1ae1efc558a81264180cd3a8f1f9de1792857f440a5ecdb498e681eb0fc21d",
+    "preview/brigandine_coat_blackened_steel.png": "b285d05ac3e9d115634615214b86d877d3a11b69c3f95c94ac2764b8d4651ec7",
+    "preview/brigandine_coat_blackened_steel.txt": "11b0304f098ef8cf601d22ec052c9b900de56525e543ae1da5c3fc0dc0432ae0"
+  },
+  "recipe": "art-src/n4-sprite-machine/factory/recipes/brigandine_coat_blackened_steel.json",
+  "recipe_sha256": "a019c9d23675e729156fe009f8b2f218b814c3f8bb4f14f48d7ec0dcfa758b30",
+  "seed": 1070,
+  "summary": {
+    "integration": "composer",
+    "meta": {
+      "clips": [
+        "idle"
+      ],
+      "hide_run_shirt_torso": false,
+      "integration": "composer"
+    },
+    "notes": [
+      "brigandine_coat:idle:0: buckle: 1/1 stamp(s) skipped (do not fit inside the mask)",
+      "brigandine_coat:idle:0: rivet: 3/6 stamp(s) skipped (do not fit inside the mask)",
+      "brigandine_coat:run_c1:1: buckle: 1/1 stamp(s) skipped (do not fit inside the mask)",
+      "brigandine_coat:run_c1:1: rivet: 8/21 stamp(s) skipped (do not fit inside the mask)"
+    ]
+  }
+}

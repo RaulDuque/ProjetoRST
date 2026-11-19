@@ -1,0 +1,39 @@
+{
+  "cache_key": "45c537fdc914ee380a37736766bc040d986ce11c2ab752c087c428f649a599ea",
+  "generator_version": "n41b-1",
+  "id": "sword_broad_falchion_cross",
+  "inputs": {
+    "art-src/n4-sprite-machine/factory/details/wear_scratches.json": "b576354932f1dd5ff3c592667649c6b76f3bb0e9d13bdc1cea33dcc7aa48f00c",
+    "art-src/n4-sprite-machine/factory/materials/dark_leather.json": "4c8faaaf91741d534a0fc7ec71a7976c346c0dbf73905566b421b70adbe3b7ed",
+    "art-src/n4-sprite-machine/factory/materials/iron.json": "4e52340442957f370987252469620792ef18c82eee1e35a8068f121c4b6958fa",
+    "art-src/n4-sprite-machine/factory/profiles/weapon_main_hand.json": "4ec45c1747303fd49db39dce78494c7bede3dbe6f9d80ac5a555c9ebe5e23644",
+    "art-src/n4-sprite-machine/factory/recipes/sword_broad_falchion_cross.json": "6f1f1527d2243c6ef7b73fc8f4352af8af77f9026514aa68b5781c9c8c2f3042",
+    "art-src/n4-sprite-machine/factory/templates/broad_falchion.json": "69bd3690d20c3e0d44c3a18db3382d230ad5ef1cec9f1b201493cae2bbe66212",
+    "art-src/n4-sprite-machine/factory/templates/cross_hilt.json": "e89b162b68c4b88b60b2ecb4f9ac4f3674ac2898142355fc331b4bba2404e99c",
+    "art-src/n4-sprite-machine/scripts/build_equipment.py": "045c5310cb1ef48a4dca48c85e0ad9c4145a4d8226668c815ac57b56beef0c5e",
+    "art-src/n4-sprite-machine/scripts/factory.py": "71554906ef3d5f8a7fd56cb2a26e1670b50c5c667cc4945eeffc7e264f5255af"
+  },
+  "outputs": {
+    "isolated/sword_broad_falchion_cross.png": "b9a8d92b6f3fc4fbf1a66a0f67504d75866773bc89a2877dfe0c3f0916a4a3c3",
+    "isolated/sword_broad_falchion_cross.txt": "ba412cddfc5058a301ddffd0fb2f298d43bce323c744af7466ea122f146a9e0a"
+  },
+  "recipe": "art-src/n4-sprite-machine/factory/recipes/sword_broad_falchion_cross.json",
+  "recipe_sha256": "43956ecfb7b59b31c8c12cd81bca1c1176171c2975312fc90a72746301f42f60",
+  "seed": 1161,
+  "summary": {
+    "integration": "isolated",
+    "meta": {
+      "blocked_by": "soquetes da m\u00e3o sem confirma\u00e7\u00e3o (N4C_SOQUETES.md) e sem \u00e2ngulo/frente medidos",
+      "canvas": [
+        21,
+        64
+      ],
+      "grip_pivot": [
+        10,
+        53
+      ],
+      "integration": "isolated"
+    },
+    "notes": []
+  }
+}

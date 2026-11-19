@@ -1,0 +1,38 @@
+{
+  "cache_key": "f4f9cec1587b2a46ae58d2908672bddffde2e9a88a14eaa5f995ca92a014c772",
+  "generator_version": "n41b-1",
+  "id": "mantle_crimson_wolf_fur",
+  "inputs": {
+    "art-src/n4-sprite-machine/factory/materials/crimson_cloth.json": "872b1cc1d7c2f84b3ef8f51bb369eaaa30fd246de69cdcfc1574be0a40a964bc",
+    "art-src/n4-sprite-machine/factory/materials/wolf_fur.json": "66150a11851c334fbafcb061acce419aa1464cf6fb7ce4f47d81594646d74bc7",
+    "art-src/n4-sprite-machine/factory/profiles/humanoid_shoulder.json": "15174d39db7d75a79639b00146cfe1fb33797aa925a23379c436a2727b4124fb",
+    "art-src/n4-sprite-machine/factory/recipes/mantle_crimson_wolf_fur.json": "e261628cb21cc24cc46d04f0a1b6bd53799babf2d539cc4433fde9dd23521c4e",
+    "art-src/n4-sprite-machine/factory/templates/fur_mantle.json": "cc36ac006ab6da95d43eee42bd3d3f8767d9f012999c52cbe3fb81e2baaf7d17",
+    "art-src/n4-sprite-machine/scripts/build_equipment.py": "045c5310cb1ef48a4dca48c85e0ad9c4145a4d8226668c815ac57b56beef0c5e",
+    "art-src/n4-sprite-machine/scripts/factory.py": "71554906ef3d5f8a7fd56cb2a26e1670b50c5c667cc4945eeffc7e264f5255af"
+  },
+  "outputs": {
+    "isolated/mantle_crimson_wolf_fur.png": "822173f0c04a197e22e6526a657a0d7c88d995511c176d68fb418e3b9dbdad3c",
+    "isolated/mantle_crimson_wolf_fur.txt": "f2e94c8bb952f83afeb5146484bceb244157859c0df5fec40792a87740439190"
+  },
+  "recipe": "art-src/n4-sprite-machine/factory/recipes/mantle_crimson_wolf_fur.json",
+  "recipe_sha256": "48d1ca34e785c2c834fe125ecaa6a96be19392a979a6149e6c8e65a46a59fcc1",
+  "seed": 1259,
+  "summary": {
+    "integration": "isolated",
+    "meta": {
+      "blocked_by": "sem camada 'shoulder' em protagonist.ron e sem soquete 'shoulder' (N4C_SOQUETES.md: extens\u00e3o de formato pendente)",
+      "canvas": [
+        40,
+        52
+      ],
+      "integration": "isolated",
+      "pivot": [
+        14,
+        4
+      ],
+      "rigid": false
+    },
+    "notes": []
+  }
+}

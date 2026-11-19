@@ -1,0 +1,39 @@
+{
+  "cache_key": "c143a133c7ac6333f201cf4a45479828b66e05e30d290761a444bcb7c9b85e3a",
+  "generator_version": "n41b-1",
+  "id": "sword_estoc_cross",
+  "inputs": {
+    "art-src/n4-sprite-machine/factory/materials/dark_leather.json": "4c8faaaf91741d534a0fc7ec71a7976c346c0dbf73905566b421b70adbe3b7ed",
+    "art-src/n4-sprite-machine/factory/materials/iron.json": "4e52340442957f370987252469620792ef18c82eee1e35a8068f121c4b6958fa",
+    "art-src/n4-sprite-machine/factory/materials/steel.json": "cdc136053bc27ad175ca664be0e29a91ae7ac192af87881484e4fadaa09ae8ea",
+    "art-src/n4-sprite-machine/factory/profiles/weapon_main_hand.json": "4ec45c1747303fd49db39dce78494c7bede3dbe6f9d80ac5a555c9ebe5e23644",
+    "art-src/n4-sprite-machine/factory/recipes/sword_estoc_cross.json": "e873ef12968eaf34e8cd81d402be5c3c72790ca80efd81ea308fb94b46c110d6",
+    "art-src/n4-sprite-machine/factory/templates/cross_hilt.json": "e89b162b68c4b88b60b2ecb4f9ac4f3674ac2898142355fc331b4bba2404e99c",
+    "art-src/n4-sprite-machine/factory/templates/estoc_blade.json": "44bc62effde673c26bf5c397d96758f1301baf198ba83623b100ff87f8ec988e",
+    "art-src/n4-sprite-machine/scripts/build_equipment.py": "045c5310cb1ef48a4dca48c85e0ad9c4145a4d8226668c815ac57b56beef0c5e",
+    "art-src/n4-sprite-machine/scripts/factory.py": "71554906ef3d5f8a7fd56cb2a26e1670b50c5c667cc4945eeffc7e264f5255af"
+  },
+  "outputs": {
+    "isolated/sword_estoc_cross.png": "f7f047f140c705d229a089ab49ff49436c050142790087b3debd958006945342",
+    "isolated/sword_estoc_cross.txt": "50a9f72dd67699a26704c6d0426a8cb1e70bc732f5cece1d9c6749f99a0b5050"
+  },
+  "recipe": "art-src/n4-sprite-machine/factory/recipes/sword_estoc_cross.json",
+  "recipe_sha256": "c55e4a806f5911cda6426b19dbbb6396b4e2d581d21e3466d99bd00cfa356600",
+  "seed": 1140,
+  "summary": {
+    "integration": "isolated",
+    "meta": {
+      "blocked_by": "soquetes da m\u00e3o sem confirma\u00e7\u00e3o (N4C_SOQUETES.md) e sem \u00e2ngulo/frente medidos",
+      "canvas": [
+        21,
+        64
+      ],
+      "grip_pivot": [
+        10,
+        53
+      ],
+      "integration": "isolated"
+    },
+    "notes": []
+  }
+}

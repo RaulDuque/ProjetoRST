@@ -1,0 +1,40 @@
+{
+  "cache_key": "72afc393e0bcc736889e39df79af7e0db23489c10b4c32f890d7a29be9aa80be",
+  "generator_version": "n41b-1",
+  "id": "cape_long_ash_grey",
+  "inputs": {
+    "art-src/n4-sprite-machine/factory/details/emblem_wolf.json": "d130ab405a978e170ee166bc8bd839f4d11f99a783c659526bb78c919568bb37",
+    "art-src/n4-sprite-machine/factory/materials/ash_grey_cloth.json": "0bb5dc1eeeef11df27028675dac0da07579981818cb0c959e953d71b8434b7fd",
+    "art-src/n4-sprite-machine/factory/materials/crimson_cloth.json": "872b1cc1d7c2f84b3ef8f51bb369eaaa30fd246de69cdcfc1574be0a40a964bc",
+    "art-src/n4-sprite-machine/factory/materials/silver.json": "76d5dd257b29e8e588faed2baefbad1fb2ef92126dd740eb514ef1211bf80dd3",
+    "art-src/n4-sprite-machine/factory/profiles/cape_back.json": "78660614e5ede8412fc9b2e4d917a78cb1506cde80f2e4473f5a6b81c2b80f2a",
+    "art-src/n4-sprite-machine/factory/recipes/cape_long_ash_grey.json": "248a65790262053f7774b746cd232c4652d529fcfcabe5e6df6016323642baf6",
+    "art-src/n4-sprite-machine/factory/templates/long_cape.json": "d46c222de893fc12f590228567736256c96dca4b561a77d73ccc525225c8012d",
+    "art-src/n4-sprite-machine/scripts/build_equipment.py": "045c5310cb1ef48a4dca48c85e0ad9c4145a4d8226668c815ac57b56beef0c5e",
+    "art-src/n4-sprite-machine/scripts/factory.py": "71554906ef3d5f8a7fd56cb2a26e1670b50c5c667cc4945eeffc7e264f5255af"
+  },
+  "outputs": {
+    "isolated/cape_long_ash_grey.png": "41f712174b843a357764fb0e7391edb1db26c4138d256835b3b5899b3a2beb2c",
+    "isolated/cape_long_ash_grey.txt": "1bcc63c012e39e5ccae7ab5918952a4a61f107c36c456ed659da0eea79e9a57f"
+  },
+  "recipe": "art-src/n4-sprite-machine/factory/recipes/cape_long_ash_grey.json",
+  "recipe_sha256": "1b003199cf489555afc669f588500a49b417053ba0bcdf64f2bb97c2d17c84a9",
+  "seed": 1217,
+  "summary": {
+    "integration": "isolated",
+    "meta": {
+      "blocked_by": "ponto das costas n\u00e3o marcado (N4C_SOQUETES.md) e sem variantes por pose",
+      "canvas": [
+        40,
+        52
+      ],
+      "integration": "isolated",
+      "pivot": [
+        14,
+        4
+      ],
+      "rigid": false
+    },
+    "notes": []
+  }
+}

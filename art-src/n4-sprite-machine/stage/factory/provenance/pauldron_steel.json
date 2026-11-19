@@ -1,0 +1,40 @@
+{
+  "cache_key": "10ab028a6915dd9c5c5d6df2ad1990037a476b0ba0f7d6e1dda6d90003da6e5a",
+  "generator_version": "n41b-1",
+  "id": "pauldron_steel",
+  "inputs": {
+    "art-src/n4-sprite-machine/factory/details/boss_rivet.json": "b42c2faf3d688983f7d4967125d082f2522dac43acea0b1c7c2160b2ab01af82",
+    "art-src/n4-sprite-machine/factory/details/double_trim.json": "df761d198a75cc8e8c34264706ba5236d6eb72845028a37304b9536093396e8a",
+    "art-src/n4-sprite-machine/factory/materials/gold.json": "f568e40b6aaf620565b092c3c673faec4ded09ad544b0b4b20298961641fc7a8",
+    "art-src/n4-sprite-machine/factory/materials/steel.json": "cdc136053bc27ad175ca664be0e29a91ae7ac192af87881484e4fadaa09ae8ea",
+    "art-src/n4-sprite-machine/factory/profiles/humanoid_shoulder.json": "15174d39db7d75a79639b00146cfe1fb33797aa925a23379c436a2727b4124fb",
+    "art-src/n4-sprite-machine/factory/recipes/pauldron_steel.json": "9bac87fdf733ebad659965ec6411af075c232f459bdfeaa6e2dd57dbbf61100b",
+    "art-src/n4-sprite-machine/factory/templates/plate_pauldron.json": "8b02fba5a8eca3037fa3503b48407481bdfdd9bbd4f60323e62cfb55c1dc6fe3",
+    "art-src/n4-sprite-machine/scripts/build_equipment.py": "045c5310cb1ef48a4dca48c85e0ad9c4145a4d8226668c815ac57b56beef0c5e",
+    "art-src/n4-sprite-machine/scripts/factory.py": "71554906ef3d5f8a7fd56cb2a26e1670b50c5c667cc4945eeffc7e264f5255af"
+  },
+  "outputs": {
+    "isolated/pauldron_steel.png": "5ef5a372202d7b02a4e94a985cffc5ab3432e5f247a59b4a3fb8dc6b4befcd6c",
+    "isolated/pauldron_steel.txt": "9d6953c6ce042e5d21ce451c82c7292dde0bbfba9bf1373d0911f6ef27f52420"
+  },
+  "recipe": "art-src/n4-sprite-machine/factory/recipes/pauldron_steel.json",
+  "recipe_sha256": "03d07b1a163537114b8d5c228b24be30578b86adf719485a7d4a66494e07b37f",
+  "seed": 1252,
+  "summary": {
+    "integration": "isolated",
+    "meta": {
+      "blocked_by": "sem camada 'shoulder' em protagonist.ron e sem soquete 'shoulder' (N4C_SOQUETES.md: extens\u00e3o de formato pendente)",
+      "canvas": [
+        40,
+        52
+      ],
+      "integration": "isolated",
+      "pivot": [
+        14,
+        4
+      ],
+      "rigid": true
+    },
+    "notes": []
+  }
+}

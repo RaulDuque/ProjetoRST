@@ -1,0 +1,40 @@
+{
+  "cache_key": "ed42faa944d991ecb18956b546200b0a9ab4435719f36b61aeed73f548ad2d79",
+  "generator_version": "n41b-1",
+  "id": "mantle_royal_blue_wolf_fur",
+  "inputs": {
+    "art-src/n4-sprite-machine/factory/details/embroidery_band.json": "8af91b0379dee293ee1a01109fbb46f08c260796d1d42b3ec34bd0e980c8cf29",
+    "art-src/n4-sprite-machine/factory/materials/gold.json": "f568e40b6aaf620565b092c3c673faec4ded09ad544b0b4b20298961641fc7a8",
+    "art-src/n4-sprite-machine/factory/materials/royal_blue_cloth.json": "85238eb7caba43a7dce76e1151ae72efe89c9928b839d1f5d3827d77a70c8c40",
+    "art-src/n4-sprite-machine/factory/materials/wolf_fur.json": "66150a11851c334fbafcb061acce419aa1464cf6fb7ce4f47d81594646d74bc7",
+    "art-src/n4-sprite-machine/factory/profiles/humanoid_shoulder.json": "15174d39db7d75a79639b00146cfe1fb33797aa925a23379c436a2727b4124fb",
+    "art-src/n4-sprite-machine/factory/recipes/mantle_royal_blue_wolf_fur.json": "968158938b639a9202840007d1c752e50d10a560864e84de3c1c06ac0fd47676",
+    "art-src/n4-sprite-machine/factory/templates/fur_mantle.json": "cc36ac006ab6da95d43eee42bd3d3f8767d9f012999c52cbe3fb81e2baaf7d17",
+    "art-src/n4-sprite-machine/scripts/build_equipment.py": "045c5310cb1ef48a4dca48c85e0ad9c4145a4d8226668c815ac57b56beef0c5e",
+    "art-src/n4-sprite-machine/scripts/factory.py": "71554906ef3d5f8a7fd56cb2a26e1670b50c5c667cc4945eeffc7e264f5255af"
+  },
+  "outputs": {
+    "isolated/mantle_royal_blue_wolf_fur.png": "1811cae8bf91871c6ea2797a0dc34afcf6266f90973c345408ae405479818e39",
+    "isolated/mantle_royal_blue_wolf_fur.txt": "e451be560343af5882cc8db00e0c60fdd82b2a601bc4a6327df1762c328d1185"
+  },
+  "recipe": "art-src/n4-sprite-machine/factory/recipes/mantle_royal_blue_wolf_fur.json",
+  "recipe_sha256": "bfb1f383471ebe94f14f306ba6ebbc90369c9d55ca3e7643ea2589dc3fba6543",
+  "seed": 1266,
+  "summary": {
+    "integration": "isolated",
+    "meta": {
+      "blocked_by": "sem camada 'shoulder' em protagonist.ron e sem soquete 'shoulder' (N4C_SOQUETES.md: extens\u00e3o de formato pendente)",
+      "canvas": [
+        40,
+        52
+      ],
+      "integration": "isolated",
+      "pivot": [
+        14,
+        4
+      ],
+      "rigid": false
+    },
+    "notes": []
+  }
+}

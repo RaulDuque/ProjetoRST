@@ -1,0 +1,40 @@
+{
+  "cache_key": "0b57a634cef56195992011a5326b099d850b63562e3a7ff4db4f9531398803c7",
+  "generator_version": "n41b-1",
+  "id": "pauldron_blackened_steel",
+  "inputs": {
+    "art-src/n4-sprite-machine/factory/details/emblem_cross.json": "b3071c8dc3154e703c6920b776d6b06fc0815b64172c2f7b5c819a23837440de",
+    "art-src/n4-sprite-machine/factory/details/trim_band.json": "768e2a70ba0140b5a539353e882b930f8354c666f05371017b341f17ba01719f",
+    "art-src/n4-sprite-machine/factory/materials/blackened_steel.json": "c354b975e769b5ab4dd951fa26d758a0f1f5e89df788c371132fa7866375b727",
+    "art-src/n4-sprite-machine/factory/materials/gold.json": "f568e40b6aaf620565b092c3c673faec4ded09ad544b0b4b20298961641fc7a8",
+    "art-src/n4-sprite-machine/factory/profiles/humanoid_shoulder.json": "15174d39db7d75a79639b00146cfe1fb33797aa925a23379c436a2727b4124fb",
+    "art-src/n4-sprite-machine/factory/recipes/pauldron_blackened_steel.json": "c2120678cb7646ee7486c248f33ec728ae9c86204c25e79f4cc5a2a6d48d5c05",
+    "art-src/n4-sprite-machine/factory/templates/plate_pauldron.json": "8b02fba5a8eca3037fa3503b48407481bdfdd9bbd4f60323e62cfb55c1dc6fe3",
+    "art-src/n4-sprite-machine/scripts/build_equipment.py": "045c5310cb1ef48a4dca48c85e0ad9c4145a4d8226668c815ac57b56beef0c5e",
+    "art-src/n4-sprite-machine/scripts/factory.py": "71554906ef3d5f8a7fd56cb2a26e1670b50c5c667cc4945eeffc7e264f5255af"
+  },
+  "outputs": {
+    "isolated/pauldron_blackened_steel.png": "b6f8eb46f0f8589a0f17be778be88ec71cba74018716fa386943b7554d101b98",
+    "isolated/pauldron_blackened_steel.txt": "a797318443a4e7b59b7cf98cb216d6de88bb47ffca717a2debf95348f4ab7910"
+  },
+  "recipe": "art-src/n4-sprite-machine/factory/recipes/pauldron_blackened_steel.json",
+  "recipe_sha256": "47bb5ef08a349f14e20a78c84fda725aeb3d1ce6254329426793927dd29c2ce5",
+  "seed": 1238,
+  "summary": {
+    "integration": "isolated",
+    "meta": {
+      "blocked_by": "sem camada 'shoulder' em protagonist.ron e sem soquete 'shoulder' (N4C_SOQUETES.md: extens\u00e3o de formato pendente)",
+      "canvas": [
+        40,
+        52
+      ],
+      "integration": "isolated",
+      "pivot": [
+        14,
+        4
+      ],
+      "rigid": true
+    },
+    "notes": []
+  }
+}

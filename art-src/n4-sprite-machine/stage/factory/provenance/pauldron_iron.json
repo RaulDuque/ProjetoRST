@@ -1,0 +1,43 @@
+{
+  "cache_key": "80f8ec95fd0db905ad855f5be8efa9732873c1e16eab0b653e209690dc815970",
+  "generator_version": "n41b-1",
+  "id": "pauldron_iron",
+  "inputs": {
+    "art-src/n4-sprite-machine/factory/details/rivet.json": "4cb442111aa83599d97d7eb058510f51a407c1a0ae7e37b650b3bae21a5b66d0",
+    "art-src/n4-sprite-machine/factory/details/trim_band.json": "768e2a70ba0140b5a539353e882b930f8354c666f05371017b341f17ba01719f",
+    "art-src/n4-sprite-machine/factory/details/wear_scratches.json": "b576354932f1dd5ff3c592667649c6b76f3bb0e9d13bdc1cea33dcc7aa48f00c",
+    "art-src/n4-sprite-machine/factory/materials/iron.json": "4e52340442957f370987252469620792ef18c82eee1e35a8068f121c4b6958fa",
+    "art-src/n4-sprite-machine/factory/materials/silver.json": "76d5dd257b29e8e588faed2baefbad1fb2ef92126dd740eb514ef1211bf80dd3",
+    "art-src/n4-sprite-machine/factory/profiles/humanoid_shoulder.json": "15174d39db7d75a79639b00146cfe1fb33797aa925a23379c436a2727b4124fb",
+    "art-src/n4-sprite-machine/factory/recipes/pauldron_iron.json": "843b5660e769426abaaa57dc3ed5307540a0207323aa171d9c2b8e6ca36e49a4",
+    "art-src/n4-sprite-machine/factory/templates/plate_pauldron.json": "8b02fba5a8eca3037fa3503b48407481bdfdd9bbd4f60323e62cfb55c1dc6fe3",
+    "art-src/n4-sprite-machine/scripts/build_equipment.py": "045c5310cb1ef48a4dca48c85e0ad9c4145a4d8226668c815ac57b56beef0c5e",
+    "art-src/n4-sprite-machine/scripts/factory.py": "71554906ef3d5f8a7fd56cb2a26e1670b50c5c667cc4945eeffc7e264f5255af"
+  },
+  "outputs": {
+    "isolated/pauldron_iron.png": "cadad5304db5aa6de3eccd494ba485eb6fbc36fd408baef57c3cc88cda70d86f",
+    "isolated/pauldron_iron.txt": "833a623f92b67d2500c6e2095dc9719e1233adb31627fa8f33f7afcb7df47671"
+  },
+  "recipe": "art-src/n4-sprite-machine/factory/recipes/pauldron_iron.json",
+  "recipe_sha256": "58867e9d4f7d403308c1dea92d02f8245dc3799c7dfc1cdf815e3fdad9b63d74",
+  "seed": 1231,
+  "summary": {
+    "integration": "isolated",
+    "meta": {
+      "blocked_by": "sem camada 'shoulder' em protagonist.ron e sem soquete 'shoulder' (N4C_SOQUETES.md: extens\u00e3o de formato pendente)",
+      "canvas": [
+        40,
+        52
+      ],
+      "integration": "isolated",
+      "pivot": [
+        14,
+        4
+      ],
+      "rigid": true
+    },
+    "notes": [
+      "plate_pauldron: rivet: 2/6 stamp(s) skipped (do not fit inside the mask)"
+    ]
+  }
+}

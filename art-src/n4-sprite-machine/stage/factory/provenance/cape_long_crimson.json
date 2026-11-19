@@ -1,0 +1,38 @@
+{
+  "cache_key": "88b37b2f96c7ceb1da170a9ca6a05bd1e094d5a3e8c04814d421ad6f38fe79c7",
+  "generator_version": "n41b-1",
+  "id": "cape_long_crimson",
+  "inputs": {
+    "art-src/n4-sprite-machine/factory/materials/ash_grey_cloth.json": "0bb5dc1eeeef11df27028675dac0da07579981818cb0c959e953d71b8434b7fd",
+    "art-src/n4-sprite-machine/factory/materials/crimson_cloth.json": "872b1cc1d7c2f84b3ef8f51bb369eaaa30fd246de69cdcfc1574be0a40a964bc",
+    "art-src/n4-sprite-machine/factory/profiles/cape_back.json": "78660614e5ede8412fc9b2e4d917a78cb1506cde80f2e4473f5a6b81c2b80f2a",
+    "art-src/n4-sprite-machine/factory/recipes/cape_long_crimson.json": "865d182eb0e9b872c57b4fb81b7e749433eda77d0fd5a32e9ef1c21d111ccb2e",
+    "art-src/n4-sprite-machine/factory/templates/long_cape.json": "d46c222de893fc12f590228567736256c96dca4b561a77d73ccc525225c8012d",
+    "art-src/n4-sprite-machine/scripts/build_equipment.py": "045c5310cb1ef48a4dca48c85e0ad9c4145a4d8226668c815ac57b56beef0c5e",
+    "art-src/n4-sprite-machine/scripts/factory.py": "71554906ef3d5f8a7fd56cb2a26e1670b50c5c667cc4945eeffc7e264f5255af"
+  },
+  "outputs": {
+    "isolated/cape_long_crimson.png": "3fc98257a9b4fc12be184df26aa3848c0526c24b65ff13a624b7ba2f09074691",
+    "isolated/cape_long_crimson.txt": "14e8eb3d00f967a2a04a221f189ef579455bfc0d51522fb6c37ca440b482b7fb"
+  },
+  "recipe": "art-src/n4-sprite-machine/factory/recipes/cape_long_crimson.json",
+  "recipe_sha256": "7c133dcfe13b37a03a756b676072ca4fc85f0e3e9af7727f1b2b3deb253bc627",
+  "seed": 1203,
+  "summary": {
+    "integration": "isolated",
+    "meta": {
+      "blocked_by": "ponto das costas n\u00e3o marcado (N4C_SOQUETES.md) e sem variantes por pose",
+      "canvas": [
+        40,
+        52
+      ],
+      "integration": "isolated",
+      "pivot": [
+        14,
+        4
+      ],
+      "rigid": false
+    },
+    "notes": []
+  }
+}

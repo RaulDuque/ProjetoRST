@@ -1,0 +1,40 @@
+{
+  "cache_key": "c7cce9d0f5ccc9ae33f6d76a655b99226cc47ad61c3977aa1921cf6eea4728d4",
+  "generator_version": "n41b-1",
+  "id": "mantle_ash_grey_hardened_leather",
+  "inputs": {
+    "art-src/n4-sprite-machine/factory/details/buckle.json": "9b678278b2c1a9e444e2eb3200cc3cb88a0a56c91723097537cf8da071e652e5",
+    "art-src/n4-sprite-machine/factory/materials/ash_grey_cloth.json": "0bb5dc1eeeef11df27028675dac0da07579981818cb0c959e953d71b8434b7fd",
+    "art-src/n4-sprite-machine/factory/materials/bronze.json": "07319fe712b5f533f486715b7f5a6c19a6cf9118ce76a8dd62c6c19d2313abdf",
+    "art-src/n4-sprite-machine/factory/materials/hardened_leather.json": "9520a48c7514332e441cb43e77a9499244eec666ffe63c64ab10ffa592aaba54",
+    "art-src/n4-sprite-machine/factory/profiles/humanoid_shoulder.json": "15174d39db7d75a79639b00146cfe1fb33797aa925a23379c436a2727b4124fb",
+    "art-src/n4-sprite-machine/factory/recipes/mantle_ash_grey_hardened_leather.json": "acbbb37ff4d01766fe611abf92e888d5cecc5c78d665e2e4e31966396a5646f3",
+    "art-src/n4-sprite-machine/factory/templates/fur_mantle.json": "cc36ac006ab6da95d43eee42bd3d3f8767d9f012999c52cbe3fb81e2baaf7d17",
+    "art-src/n4-sprite-machine/scripts/build_equipment.py": "045c5310cb1ef48a4dca48c85e0ad9c4145a4d8226668c815ac57b56beef0c5e",
+    "art-src/n4-sprite-machine/scripts/factory.py": "71554906ef3d5f8a7fd56cb2a26e1670b50c5c667cc4945eeffc7e264f5255af"
+  },
+  "outputs": {
+    "isolated/mantle_ash_grey_hardened_leather.png": "db07de95e419a0a66d1c807134d075621221e2847a234be3f7ec85e777df0a41",
+    "isolated/mantle_ash_grey_hardened_leather.txt": "e6e5f80d832944a0602eaea65c2fea9c13dfda2a001f34ad0d8dfda09ac197e4"
+  },
+  "recipe": "art-src/n4-sprite-machine/factory/recipes/mantle_ash_grey_hardened_leather.json",
+  "recipe_sha256": "ca66eb76a4b04af04393b6fb1583593b67df092b2091e664d99312836396824e",
+  "seed": 1273,
+  "summary": {
+    "integration": "isolated",
+    "meta": {
+      "blocked_by": "sem camada 'shoulder' em protagonist.ron e sem soquete 'shoulder' (N4C_SOQUETES.md: extens\u00e3o de formato pendente)",
+      "canvas": [
+        40,
+        52
+      ],
+      "integration": "isolated",
+      "pivot": [
+        14,
+        4
+      ],
+      "rigid": false
+    },
+    "notes": []
+  }
+}

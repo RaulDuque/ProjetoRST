@@ -1,0 +1,41 @@
+{
+  "cache_key": "577d9cab67282155e8e9af4c7a831a3fb2c70ff46d6b7416284aaa682117a632",
+  "generator_version": "n41b-1",
+  "id": "sword_broad_falchion_crescent",
+  "inputs": {
+    "art-src/n4-sprite-machine/factory/details/gem.json": "a07dbfd1a524b37345c0800a96b57de9fb305afbbebeb0a1d40c3f0f514a62e0",
+    "art-src/n4-sprite-machine/factory/materials/crimson_cloth.json": "872b1cc1d7c2f84b3ef8f51bb369eaaa30fd246de69cdcfc1574be0a40a964bc",
+    "art-src/n4-sprite-machine/factory/materials/ember_red.json": "bc196700b80866686dc64e62f68f0b6132e0be42c2d98b9445edfbf3ca4c2ab4",
+    "art-src/n4-sprite-machine/factory/materials/gold.json": "f568e40b6aaf620565b092c3c673faec4ded09ad544b0b4b20298961641fc7a8",
+    "art-src/n4-sprite-machine/factory/materials/steel.json": "cdc136053bc27ad175ca664be0e29a91ae7ac192af87881484e4fadaa09ae8ea",
+    "art-src/n4-sprite-machine/factory/profiles/weapon_main_hand.json": "4ec45c1747303fd49db39dce78494c7bede3dbe6f9d80ac5a555c9ebe5e23644",
+    "art-src/n4-sprite-machine/factory/recipes/sword_broad_falchion_crescent.json": "052604723f2abf974890c488ac49525deee7f697fb7a7999cf442dbd6e0644ea",
+    "art-src/n4-sprite-machine/factory/templates/broad_falchion.json": "69bd3690d20c3e0d44c3a18db3382d230ad5ef1cec9f1b201493cae2bbe66212",
+    "art-src/n4-sprite-machine/factory/templates/crescent_hilt.json": "6309bd8383a3fb6fb5dbcd39f462ba621b71a28c04384b75f424d7d2b088f7e5",
+    "art-src/n4-sprite-machine/scripts/build_equipment.py": "045c5310cb1ef48a4dca48c85e0ad9c4145a4d8226668c815ac57b56beef0c5e",
+    "art-src/n4-sprite-machine/scripts/factory.py": "71554906ef3d5f8a7fd56cb2a26e1670b50c5c667cc4945eeffc7e264f5255af"
+  },
+  "outputs": {
+    "isolated/sword_broad_falchion_crescent.png": "86f9f4d894b118a2f6e33152193c3e2b176ffa930043d4f8a50a9500c2c26163",
+    "isolated/sword_broad_falchion_crescent.txt": "628dcd958ceaecec1f960e2368711b224f4b6ea7f75eab9106f93b6e885ff4ac"
+  },
+  "recipe": "art-src/n4-sprite-machine/factory/recipes/sword_broad_falchion_crescent.json",
+  "recipe_sha256": "b90ff9fcfc60d9efdc9dc8fe3b2956c955eb83b317add37ef3d6dbd4f35af93a",
+  "seed": 1168,
+  "summary": {
+    "integration": "isolated",
+    "meta": {
+      "blocked_by": "soquetes da m\u00e3o sem confirma\u00e7\u00e3o (N4C_SOQUETES.md) e sem \u00e2ngulo/frente medidos",
+      "canvas": [
+        21,
+        64
+      ],
+      "grip_pivot": [
+        10,
+        55
+      ],
+      "integration": "isolated"
+    },
+    "notes": []
+  }
+}

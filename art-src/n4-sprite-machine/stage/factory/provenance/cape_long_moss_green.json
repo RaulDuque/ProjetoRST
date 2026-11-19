@@ -1,0 +1,40 @@
+{
+  "cache_key": "17ce3d94de5f838d1906ff4a8973a3ff6eef056cf23a9643af1100c8ad88d5c0",
+  "generator_version": "n41b-1",
+  "id": "cape_long_moss_green",
+  "inputs": {
+    "art-src/n4-sprite-machine/factory/details/trim_band.json": "768e2a70ba0140b5a539353e882b930f8354c666f05371017b341f17ba01719f",
+    "art-src/n4-sprite-machine/factory/materials/ash_grey_cloth.json": "0bb5dc1eeeef11df27028675dac0da07579981818cb0c959e953d71b8434b7fd",
+    "art-src/n4-sprite-machine/factory/materials/bronze.json": "07319fe712b5f533f486715b7f5a6c19a6cf9118ce76a8dd62c6c19d2313abdf",
+    "art-src/n4-sprite-machine/factory/materials/moss_green_cloth.json": "3d3b0e6829ea5188d8dc581907368d2a6d43abe52d969a2009737a2a9da28360",
+    "art-src/n4-sprite-machine/factory/profiles/cape_back.json": "78660614e5ede8412fc9b2e4d917a78cb1506cde80f2e4473f5a6b81c2b80f2a",
+    "art-src/n4-sprite-machine/factory/recipes/cape_long_moss_green.json": "aeeaad6aa6f06972621360caaecbdaa00732d4aec6aa703ce2aaa14253bffae6",
+    "art-src/n4-sprite-machine/factory/templates/long_cape.json": "d46c222de893fc12f590228567736256c96dca4b561a77d73ccc525225c8012d",
+    "art-src/n4-sprite-machine/scripts/build_equipment.py": "045c5310cb1ef48a4dca48c85e0ad9c4145a4d8226668c815ac57b56beef0c5e",
+    "art-src/n4-sprite-machine/scripts/factory.py": "71554906ef3d5f8a7fd56cb2a26e1670b50c5c667cc4945eeffc7e264f5255af"
+  },
+  "outputs": {
+    "isolated/cape_long_moss_green.png": "396a130305e67adb25751c97a447de466882940758b50ded0a401b577b301d2a",
+    "isolated/cape_long_moss_green.txt": "1087444e51effdbac3c24f21fb4aa3edfcba2938fab8462b3b8d19f692c7a539"
+  },
+  "recipe": "art-src/n4-sprite-machine/factory/recipes/cape_long_moss_green.json",
+  "recipe_sha256": "6ce315e09e1e81d464838abeb85af47fc090600424b519fb51c4eee9b350daad",
+  "seed": 1224,
+  "summary": {
+    "integration": "isolated",
+    "meta": {
+      "blocked_by": "ponto das costas n\u00e3o marcado (N4C_SOQUETES.md) e sem variantes por pose",
+      "canvas": [
+        40,
+        52
+      ],
+      "integration": "isolated",
+      "pivot": [
+        14,
+        4
+      ],
+      "rigid": false
+    },
+    "notes": []
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "cache_key": "ca31092ea4a9a894263826409a98b5481420b7cbee090cde76b971912660a0b6",
+  "generator_version": "n41b-1",
+  "id": "pauldron_bronze",
+  "inputs": {
+    "art-src/n4-sprite-machine/factory/details/rivet.json": "4cb442111aa83599d97d7eb058510f51a407c1a0ae7e37b650b3bae21a5b66d0",
+    "art-src/n4-sprite-machine/factory/details/trim_band.json": "768e2a70ba0140b5a539353e882b930f8354c666f05371017b341f17ba01719f",
+    "art-src/n4-sprite-machine/factory/materials/bronze.json": "07319fe712b5f533f486715b7f5a6c19a6cf9118ce76a8dd62c6c19d2313abdf",
+    "art-src/n4-sprite-machine/factory/materials/iron.json": "4e52340442957f370987252469620792ef18c82eee1e35a8068f121c4b6958fa",
+    "art-src/n4-sprite-machine/factory/profiles/humanoid_shoulder.json": "15174d39db7d75a79639b00146cfe1fb33797aa925a23379c436a2727b4124fb",
+    "art-src/n4-sprite-machine/factory/recipes/pauldron_bronze.json": "5307d82547478d2e8908f3eb5f807e75dbe8579651f31d85500d6d3085b0d565",
+    "art-src/n4-sprite-machine/factory/templates/plate_pauldron.json": "8b02fba5a8eca3037fa3503b48407481bdfdd9bbd4f60323e62cfb55c1dc6fe3",
+    "art-src/n4-sprite-machine/scripts/build_equipment.py": "045c5310cb1ef48a4dca48c85e0ad9c4145a4d8226668c815ac57b56beef0c5e",
+    "art-src/n4-sprite-machine/scripts/factory.py": "71554906ef3d5f8a7fd56cb2a26e1670b50c5c667cc4945eeffc7e264f5255af"
+  },
+  "outputs": {
+    "isolated/pauldron_bronze.png": "0de6477afd5db95842662cf4db5e0217c5a47e682ef9b26b3495fba7ad761efb",
+    "isolated/pauldron_bronze.txt": "b9c847c627230863da1e23d161b319c645d657e5ecb2e0d7a3de3c50e536a3ff"
+  },
+  "recipe": "art-src/n4-sprite-machine/factory/recipes/pauldron_bronze.json",
+  "recipe_sha256": "61a64a7d345c68301d951ee9b926ccf730380125e297bd067e74bc1ae3d7694e",
+  "seed": 1245,
+  "summary": {
+    "integration": "isolated",
+    "meta": {
+      "blocked_by": "sem camada 'shoulder' em protagonist.ron e sem soquete 'shoulder' (N4C_SOQUETES.md: extens\u00e3o de formato pendente)",
+      "canvas": [
+        40,
+        52
+      ],
+      "integration": "isolated",
+      "pivot": [
+        14,
+        4
+      ],
+      "rigid": true
+    },
+    "notes": [
+      "plate_pauldron: rivet: 2/6 stamp(s) skipped (do not fit inside the mask)"
+    ]
+  }
+}

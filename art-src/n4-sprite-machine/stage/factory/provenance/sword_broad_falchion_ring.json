@@ -1,0 +1,42 @@
+{
+  "cache_key": "99b0fb307c9454c760380aa5c53de7a53f17d4d9b2a04ccad5c4039583e33e80",
+  "generator_version": "n41b-1",
+  "id": "sword_broad_falchion_ring",
+  "inputs": {
+    "art-src/n4-sprite-machine/factory/details/gem.json": "a07dbfd1a524b37345c0800a96b57de9fb305afbbebeb0a1d40c3f0f514a62e0",
+    "art-src/n4-sprite-machine/factory/materials/arcane_violet.json": "fa27291c7a364c0384bb0fe5416cb9ec56f1e63347ab6349c4b4b67a73fef0c6",
+    "art-src/n4-sprite-machine/factory/materials/blackened_steel.json": "c354b975e769b5ab4dd951fa26d758a0f1f5e89df788c371132fa7866375b727",
+    "art-src/n4-sprite-machine/factory/materials/bronze.json": "07319fe712b5f533f486715b7f5a6c19a6cf9118ce76a8dd62c6c19d2313abdf",
+    "art-src/n4-sprite-machine/factory/materials/silver.json": "76d5dd257b29e8e588faed2baefbad1fb2ef92126dd740eb514ef1211bf80dd3",
+    "art-src/n4-sprite-machine/factory/materials/wood.json": "ac0c07740adda8f8dfbb3d07627482bec1c673aee7952015e4f8ce3e5b91df0c",
+    "art-src/n4-sprite-machine/factory/profiles/weapon_main_hand.json": "4ec45c1747303fd49db39dce78494c7bede3dbe6f9d80ac5a555c9ebe5e23644",
+    "art-src/n4-sprite-machine/factory/recipes/sword_broad_falchion_ring.json": "cf0b01b5e065db006144726a8dd68845fd8af84b315cd2c66fc552d86a685a88",
+    "art-src/n4-sprite-machine/factory/templates/broad_falchion.json": "69bd3690d20c3e0d44c3a18db3382d230ad5ef1cec9f1b201493cae2bbe66212",
+    "art-src/n4-sprite-machine/factory/templates/ring_hilt.json": "be4e47ebeafa5a415f2bc93d752ce9408ba63894aa63c9de0233e3b2a20d42e5",
+    "art-src/n4-sprite-machine/scripts/build_equipment.py": "045c5310cb1ef48a4dca48c85e0ad9c4145a4d8226668c815ac57b56beef0c5e",
+    "art-src/n4-sprite-machine/scripts/factory.py": "71554906ef3d5f8a7fd56cb2a26e1670b50c5c667cc4945eeffc7e264f5255af"
+  },
+  "outputs": {
+    "isolated/sword_broad_falchion_ring.png": "76adbff5bd213d4b8447579059651d52b55cd6b693d44930fd73717b661727e9",
+    "isolated/sword_broad_falchion_ring.txt": "de57fd2253359ef65263a4ee57cd5a7a07a878960e83eea98cccb7602e59bc47"
+  },
+  "recipe": "art-src/n4-sprite-machine/factory/recipes/sword_broad_falchion_ring.json",
+  "recipe_sha256": "dae9a7140fc88e13ef1b98a5e87283cd52d301ee9d5da75234cd6bbb87065cb1",
+  "seed": 1175,
+  "summary": {
+    "integration": "isolated",
+    "meta": {
+      "blocked_by": "soquetes da m\u00e3o sem confirma\u00e7\u00e3o (N4C_SOQUETES.md) e sem \u00e2ngulo/frente medidos",
+      "canvas": [
+        21,
+        64
+      ],
+      "grip_pivot": [
+        10,
+        53
+      ],
+      "integration": "isolated"
+    },
+    "notes": []
+  }
+}
