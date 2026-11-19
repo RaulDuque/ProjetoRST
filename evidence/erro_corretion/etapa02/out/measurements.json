@@ -1,0 +1,1060 @@
+{
+ "idle": {
+  "fit": {
+   "errors": {
+    "head": {
+     "sprite": [
+      40.041666666666664,
+      20.5
+     ],
+     "rig": [
+      40.043,
+      18.015
+     ],
+     "dx": 0.0,
+     "dy": -2.48,
+     "err": 2.49
+    },
+    "neck": {
+     "sprite": [
+      40.0,
+      28.5
+     ],
+     "rig": [
+      40.066,
+      27.981
+     ],
+     "dx": 0.07,
+     "dy": -0.52,
+     "err": 0.52
+    },
+    "near_shoulder": {
+     "sprite": [
+      40.5,
+      33.0
+     ],
+     "rig": [
+      40.424,
+      32.691
+     ],
+     "dx": -0.08,
+     "dy": -0.31,
+     "err": 0.32
+    },
+    "near_elbow": {
+     "sprite": [
+      38.5,
+      51.0
+     ],
+     "rig": [
+      38.868,
+      47.496
+     ],
+     "dx": 0.37,
+     "dy": -3.5,
+     "err": 3.52
+    },
+    "near_wrist": {
+     "sprite": [
+      40.5,
+      61.0
+     ],
+     "rig": [
+      40.557,
+      61.468
+     ],
+     "dx": 0.06,
+     "dy": 0.47,
+     "err": 0.47
+    },
+    "near_fist": {
+     "sprite": [
+      42.5,
+      67.5
+     ],
+     "rig": [
+      42.261,
+      66.758
+     ],
+     "dx": -0.24,
+     "dy": -0.74,
+     "err": 0.78
+    },
+    "near_hip": {
+     "sprite": [
+      39.5,
+      61.0
+     ],
+     "rig": [
+      39.164,
+      61.778
+     ],
+     "dx": -0.34,
+     "dy": 0.78,
+     "err": 0.85
+    },
+    "near_knee": {
+     "sprite": [
+      39.0,
+      82.0
+     ],
+     "rig": [
+      38.95,
+      88.137
+     ],
+     "dx": -0.05,
+     "dy": 6.14,
+     "err": 6.14
+    },
+    "near_ankle": {
+     "sprite": [
+      36.5,
+      112.0
+     ],
+     "rig": [
+      36.527,
+      111.735
+     ],
+     "dx": 0.03,
+     "dy": -0.27,
+     "err": 0.27
+    },
+    "near_toe": {
+     "sprite": [
+      46,
+      117.0
+     ],
+     "rig": [
+      46.829,
+      117.461
+     ],
+     "dx": 0.83,
+     "dy": 0.46,
+     "err": 0.95
+    },
+    "waist": {
+     "sprite_y": 51,
+     "rig_y": 55.339,
+     "dy": 4.34
+    }
+   },
+   "mean": 1.63,
+   "max": 6.14,
+   "within_2px": 7,
+   "within_4px": 9,
+   "count": 10,
+   "guide_rows": [
+    13,
+    118
+   ],
+   "sprite_box": [
+    26,
+    13,
+    49,
+    119
+   ]
+  },
+  "occlusion": {
+   "sprite_near_arm_texels": 226,
+   "rig_near_arm_visible_texels": 174,
+   "near_arm_iou": 0.633,
+   "stray_hair_in_arm_layers": 0,
+   "rig_arm_inside_sprite_arm": 0.891,
+   "sprite_arm_covered_by_rig": 0.686,
+   "sprite_arm_over_torso_texels": 106,
+   "rig_arm_over_torso_texels": 170,
+   "torso_texels": 191,
+   "grown2_texels": 391,
+   "grown2_outside_body": 53,
+   "grown2_visible_after_occluders": 263,
+   "grown2_hidden_by_occluders": 128,
+   "rig_torso_texels": 472,
+   "rig_torso_outside_sprite_body": 23
+  }
+ },
+ "run_c1_0": {
+  "fit": {
+   "errors": {
+    "head": {
+     "sprite": [
+      66,
+      26
+     ],
+     "rig": [
+      66.852,
+      24.946
+     ],
+     "dx": 0.85,
+     "dy": -1.05,
+     "err": 1.36
+    },
+    "neck": {
+     "sprite": [
+      63,
+      34
+     ],
+     "rig": [
+      60.79,
+      32.485
+     ],
+     "dx": -2.21,
+     "dy": -1.52,
+     "err": 2.68
+    },
+    "near_shoulder": {
+     "sprite": [
+      61,
+      39
+     ],
+     "rig": [
+      61.221,
+      36.157
+     ],
+     "dx": 0.22,
+     "dy": -2.84,
+     "err": 2.85
+    },
+    "near_elbow": {
+     "sprite": [
+      57,
+      55
+     ],
+     "rig": [
+      58.056,
+      50.288
+     ],
+     "dx": 1.06,
+     "dy": -4.71,
+     "err": 4.83
+    },
+    "near_wrist": {
+     "sprite": [
+      71,
+      56
+     ],
+     "rig": [
+      70.935,
+      55.971
+     ],
+     "dx": -0.06,
+     "dy": -0.03,
+     "err": 0.07
+    },
+    "near_fist": {
+     "sprite": [
+      75,
+      55
+     ],
+     "rig": [
+      76.325,
+      54.683
+     ],
+     "dx": 1.33,
+     "dy": -0.32,
+     "err": 1.36
+    },
+    "near_hip": {
+     "sprite": [
+      56,
+      64
+     ],
+     "rig": [
+      57.991,
+      65.417
+     ],
+     "dx": 1.99,
+     "dy": 1.42,
+     "err": 2.44
+    },
+    "near_knee": {
+     "sprite": [
+      50,
+      87
+     ],
+     "rig": [
+      48.846,
+      90.117
+     ],
+     "dx": -1.15,
+     "dy": 3.12,
+     "err": 3.32
+    },
+    "near_ankle": {
+     "sprite": [
+      33,
+      85
+     ],
+     "rig": [
+      26.275,
+      82.828
+     ],
+     "dx": -6.73,
+     "dy": -2.17,
+     "err": 7.07
+    },
+    "near_toe": {
+     "sprite": [
+      23,
+      91
+     ],
+     "rig": [
+      22.792,
+      91.519
+     ],
+     "dx": -0.21,
+     "dy": 0.52,
+     "err": 0.56
+    },
+    "far_shoulder": {
+     "sprite": [
+      57,
+      39
+     ],
+     "rig": [
+      57.228,
+      36.77
+     ],
+     "dx": 0.23,
+     "dy": -2.23,
+     "err": 2.24
+    },
+    "far_elbow": {
+     "sprite": [
+      55,
+      52
+     ],
+     "rig": [
+      55.089,
+      51.393
+     ],
+     "dx": 0.09,
+     "dy": -0.61,
+     "err": 0.61
+    },
+    "far_wrist": {
+     "sprite": [
+      64,
+      60
+     ],
+     "rig": [
+      64.689,
+      60.666
+     ],
+     "dx": 0.69,
+     "dy": 0.67,
+     "err": 0.96
+    },
+    "far_fist": {
+     "sprite": [
+      67,
+      62
+     ],
+     "rig": [
+      68.866,
+      63.078
+     ],
+     "dx": 1.87,
+     "dy": 1.08,
+     "err": 2.16
+    },
+    "far_hip": {
+     "sprite": [
+      60,
+      64
+     ],
+     "rig": [
+      61.99,
+      65.417
+     ],
+     "dx": 1.99,
+     "dy": 1.42,
+     "err": 2.44
+    },
+    "far_knee": {
+     "sprite": [
+      60,
+      89
+     ],
+     "rig": [
+      59.775,
+      91.664
+     ],
+     "dx": -0.23,
+     "dy": 2.66,
+     "err": 2.67
+    },
+    "far_ankle": {
+     "sprite": [
+      59,
+      111
+     ],
+     "rig": [
+      58.825,
+      115.359
+     ],
+     "dx": -0.17,
+     "dy": 4.36,
+     "err": 4.36
+    },
+    "far_toe": {
+     "sprite": [
+      72,
+      117
+     ],
+     "rig": [
+      68.56,
+      116.572
+     ],
+     "dx": -3.44,
+     "dy": -0.43,
+     "err": 3.47
+    },
+    "waist": {
+     "sprite_y": 59,
+     "rig_y": 58.978,
+     "dy": -0.02
+    }
+   },
+   "mean": 2.53,
+   "max": 7.07,
+   "within_2px": 6,
+   "within_4px": 15,
+   "count": 18,
+   "guide_rows": [
+    20,
+    121
+   ],
+   "sprite_box": [
+    23,
+    16,
+    79,
+    119
+   ]
+  },
+  "occlusion": {
+   "sprite_near_arm_texels": 307,
+   "rig_near_arm_visible_texels": 163,
+   "near_arm_iou": 0.443,
+   "stray_hair_in_arm_layers": 53,
+   "rig_arm_inside_sprite_arm": 0.785,
+   "sprite_arm_covered_by_rig": 0.504,
+   "sprite_arm_over_torso_texels": 201,
+   "rig_arm_over_torso_texels": 136,
+   "torso_texels": 166,
+   "grown2_texels": 375,
+   "grown2_outside_body": 42,
+   "grown2_visible_after_occluders": 225,
+   "grown2_hidden_by_occluders": 150,
+   "rig_torso_texels": 527,
+   "rig_torso_outside_sprite_body": 29
+  }
+ },
+ "run_c1_2": {
+  "fit": {
+   "errors": {
+    "head": {
+     "sprite": [
+      66,
+      25
+     ],
+     "rig": [
+      67.713,
+      23.438
+     ],
+     "dx": 1.71,
+     "dy": -1.56,
+     "err": 2.32
+    },
+    "neck": {
+     "sprite": [
+      63,
+      33
+     ],
+     "rig": [
+      60.436,
+      30.109
+     ],
+     "dx": -2.56,
+     "dy": -2.89,
+     "err": 3.86
+    },
+    "near_shoulder": {
+     "sprite": [
+      61,
+      38
+     ],
+     "rig": [
+      61.003,
+      33.369
+     ],
+     "dx": 0.0,
+     "dy": -4.63,
+     "err": 4.63
+    },
+    "near_elbow": {
+     "sprite": [
+      63,
+      51
+     ],
+     "rig": [
+      62.605,
+      47.515
+     ],
+     "dx": -0.4,
+     "dy": -3.48,
+     "err": 3.51
+    },
+    "near_wrist": {
+     "sprite": [
+      77,
+      42
+     ],
+     "rig": [
+      75.725,
+      42.488
+     ],
+     "dx": -1.28,
+     "dy": 0.49,
+     "err": 1.37
+    },
+    "near_fist": {
+     "sprite": [
+      81,
+      39
+     ],
+     "rig": [
+      80.354,
+      39.427
+     ],
+     "dx": -0.65,
+     "dy": 0.43,
+     "err": 0.77
+    },
+    "near_hip": {
+     "sprite": [
+      56,
+      64
+     ],
+     "rig": [
+      58.56,
+      62.651
+     ],
+     "dx": 2.56,
+     "dy": -1.35,
+     "err": 2.89
+    },
+    "near_knee": {
+     "sprite": [
+      45,
+      82
+     ],
+     "rig": [
+      43.453,
+      84.207
+     ],
+     "dx": -1.55,
+     "dy": 2.21,
+     "err": 2.7
+    },
+    "near_ankle": {
+     "sprite": [
+      25,
+      88
+     ],
+     "rig": [
+      20.221,
+      88.982
+     ],
+     "dx": -4.78,
+     "dy": 0.98,
+     "err": 4.88
+    },
+    "near_toe": {
+     "sprite": [
+      18,
+      93
+     ],
+     "rig": [
+      15.642,
+      97.265
+     ],
+     "dx": -2.36,
+     "dy": 4.27,
+     "err": 4.87
+    },
+    "far_shoulder": {
+     "sprite": [
+      56,
+      38
+     ],
+     "rig": [
+      56.038,
+      34.16
+     ],
+     "dx": 0.04,
+     "dy": -3.84,
+     "err": 3.84
+    },
+    "far_elbow": {
+     "sprite": [
+      45,
+      45
+     ],
+     "rig": [
+      45.14,
+      44.862
+     ],
+     "dx": 0.14,
+     "dy": -0.14,
+     "err": 0.2
+    },
+    "far_wrist": {
+     "sprite": [
+      47,
+      55
+     ],
+     "rig": [
+      47.334,
+      56.819
+     ],
+     "dx": 0.33,
+     "dy": 1.82,
+     "err": 1.85
+    },
+    "far_fist": {
+     "sprite": [
+      48,
+      58
+     ],
+     "rig": [
+      49.43,
+      60.535
+     ],
+     "dx": 1.43,
+     "dy": 2.53,
+     "err": 2.91
+    },
+    "far_hip": {
+     "sprite": [
+      60,
+      64
+     ],
+     "rig": [
+      62.559,
+      62.651
+     ],
+     "dx": 2.56,
+     "dy": -1.35,
+     "err": 2.89
+    },
+    "far_knee": {
+     "sprite": [
+      73,
+      80
+     ],
+     "rig": [
+      76.131,
+      85.203
+     ],
+     "dx": 3.13,
+     "dy": 5.2,
+     "err": 6.07
+    },
+    "far_ankle": {
+     "sprite": [
+      79,
+      106
+     ],
+     "rig": [
+      79.371,
+      108.69
+     ],
+     "dx": 0.37,
+     "dy": 2.69,
+     "err": 2.72
+    },
+    "far_toe": {
+     "sprite": [
+      92,
+      111
+     ],
+     "rig": [
+      89.022,
+      110.455
+     ],
+     "dx": -2.98,
+     "dy": -0.55,
+     "err": 3.03
+    },
+    "waist": {
+     "sprite_y": 59,
+     "rig_y": 56.212,
+     "dy": -2.79
+    }
+   },
+   "mean": 3.07,
+   "max": 6.07,
+   "within_2px": 4,
+   "within_4px": 14,
+   "count": 18,
+   "guide_rows": [
+    18,
+    114
+   ],
+   "sprite_box": [
+    10,
+    14,
+    95,
+    115
+   ]
+  },
+  "occlusion": {
+   "sprite_near_arm_texels": 320,
+   "rig_near_arm_visible_texels": 168,
+   "near_arm_iou": 0.382,
+   "stray_hair_in_arm_layers": 47,
+   "rig_arm_inside_sprite_arm": 0.726,
+   "sprite_arm_covered_by_rig": 0.447,
+   "sprite_arm_over_torso_texels": 164,
+   "rig_arm_over_torso_texels": 107,
+   "torso_texels": 242,
+   "grown2_texels": 480,
+   "grown2_outside_body": 61,
+   "grown2_visible_after_occluders": 326,
+   "grown2_hidden_by_occluders": 154,
+   "rig_torso_texels": 531,
+   "rig_torso_outside_sprite_body": 45
+  }
+ },
+ "run_c1_4": {
+  "fit": {
+   "errors": {
+    "head": {
+     "sprite": [
+      67,
+      24
+     ],
+     "rig": [
+      66.921,
+      24.12
+     ],
+     "dx": -0.08,
+     "dy": 0.12,
+     "err": 0.14
+    },
+    "neck": {
+     "sprite": [
+      64,
+      33
+     ],
+     "rig": [
+      61.477,
+      32.451
+     ],
+     "dx": -2.52,
+     "dy": -0.55,
+     "err": 2.58
+    },
+    "near_shoulder": {
+     "sprite": [
+      57,
+      38
+     ],
+     "rig": [
+      56.776,
+      36.561
+     ],
+     "dx": -0.22,
+     "dy": -1.44,
+     "err": 1.46
+    },
+    "near_elbow": {
+     "sprite": [
+      44,
+      46
+     ],
+     "rig": [
+      44.95,
+      45.298
+     ],
+     "dx": 0.95,
+     "dy": -0.7,
+     "err": 1.18
+    },
+    "near_wrist": {
+     "sprite": [
+      54,
+      55
+     ],
+     "rig": [
+      54.316,
+      55.339
+     ],
+     "dx": 0.32,
+     "dy": 0.34,
+     "err": 0.46
+    },
+    "near_fist": {
+     "sprite": [
+      57,
+      58
+     ],
+     "rig": [
+      58.168,
+      59.158
+     ],
+     "dx": 1.17,
+     "dy": 1.16,
+     "err": 1.64
+    },
+    "near_hip": {
+     "sprite": [
+      60,
+      64
+     ],
+     "rig": [
+      57.544,
+      65.347
+     ],
+     "dx": -2.46,
+     "dy": 1.35,
+     "err": 2.8
+    },
+    "near_knee": {
+     "sprite": [
+      77,
+      79
+     ],
+     "rig": [
+      79.126,
+      80.492
+     ],
+     "dx": 2.13,
+     "dy": 1.49,
+     "err": 2.6
+    },
+    "near_ankle": {
+     "sprite": [
+      57,
+      100
+     ],
+     "rig": [
+      61.332,
+      96.18
+     ],
+     "dx": 4.33,
+     "dy": -3.82,
+     "err": 5.78
+    },
+    "near_toe": {
+     "sprite": [
+      61,
+      109
+     ],
+     "rig": [
+      61.012,
+      108.546
+     ],
+     "dx": 0.01,
+     "dy": -0.45,
+     "err": 0.45
+    },
+    "far_shoulder": {
+     "sprite": [
+      63,
+      38
+     ],
+     "rig": [
+      62.776,
+      36.992
+     ],
+     "dx": -0.22,
+     "dy": -1.01,
+     "err": 1.03
+    },
+    "far_elbow": {
+     "sprite": [
+      70,
+      50
+     ],
+     "rig": [
+      69.973,
+      49.952
+     ],
+     "dx": -0.03,
+     "dy": -0.05,
+     "err": 0.06
+    },
+    "far_wrist": {
+     "sprite": [
+      78,
+      44
+     ],
+     "rig": [
+      81.049,
+      41.739
+     ],
+     "dx": 3.05,
+     "dy": -2.26,
+     "err": 3.8
+    },
+    "far_fist": {
+     "sprite": [
+      82,
+      40
+     ],
+     "rig": [
+      83.575,
+      37.118
+     ],
+     "dx": 1.58,
+     "dy": -2.88,
+     "err": 3.28
+    },
+    "far_hip": {
+     "sprite": [
+      56,
+      64
+     ],
+     "rig": [
+      53.544,
+      65.347
+     ],
+     "dx": -2.46,
+     "dy": 1.35,
+     "err": 2.8
+    },
+    "far_knee": {
+     "sprite": [
+      48,
+      87
+     ],
+     "rig": [
+      47.01,
+      90.865
+     ],
+     "dx": -0.99,
+     "dy": 3.86,
+     "err": 3.99
+    },
+    "far_ankle": {
+     "sprite": [
+      35,
+      109
+     ],
+     "rig": [
+      33.912,
+      110.643
+     ],
+     "dx": -1.09,
+     "dy": 1.64,
+     "err": 1.97
+    },
+    "far_toe": {
+     "sprite": [
+      42,
+      117
+     ],
+     "rig": [
+      43.638,
+      118.287
+     ],
+     "dx": 1.64,
+     "dy": 1.29,
+     "err": 2.08
+    },
+    "waist": {
+     "sprite_y": 59,
+     "rig_y": 58.908,
+     "dy": -0.09
+    }
+   },
+   "mean": 2.12,
+   "max": 5.78,
+   "within_2px": 9,
+   "within_4px": 17,
+   "count": 18,
+   "guide_rows": [
+    19,
+    119
+   ],
+   "sprite_box": [
+    24,
+    14,
+    84,
+    119
+   ]
+  },
+  "occlusion": {
+   "sprite_near_arm_texels": 257,
+   "rig_near_arm_visible_texels": 170,
+   "near_arm_iou": 0.391,
+   "stray_hair_in_arm_layers": 0,
+   "rig_arm_inside_sprite_arm": 0.706,
+   "sprite_arm_covered_by_rig": 0.467,
+   "sprite_arm_over_torso_texels": 144,
+   "rig_arm_over_torso_texels": 64,
+   "torso_texels": 294,
+   "grown2_texels": 502,
+   "grown2_outside_body": 42,
+   "grown2_visible_after_occluders": 369,
+   "grown2_hidden_by_occluders": 133,
+   "rig_torso_texels": 486,
+   "rig_torso_outside_sprite_body": 0
+  }
+ },
+ "segments": {
+  "upper_arm": {
+   "rig_px": 15.2,
+   "sprite_projected_px": [
+    18.1,
+    16.5,
+    13.2,
+    13.2,
+    13.0,
+    15.3,
+    13.9
+   ],
+   "sprite_max_px": 18.1
+  },
+  "forearm": {
+   "rig_px": 14.1,
+   "sprite_projected_px": [
+    10.2,
+    14.0,
+    12.0,
+    16.6,
+    10.2,
+    13.5,
+    10.0
+   ],
+   "sprite_max_px": 16.6
+  },
+  "thigh": {
+   "rig_px": 26.4,
+   "sprite_projected_px": [
+    21.0,
+    23.8,
+    25.0,
+    21.1,
+    20.6,
+    22.7,
+    24.4
+   ],
+   "sprite_max_px": 25.0
+  },
+  "shin": {
+   "rig_px": 23.7,
+   "sprite_projected_px": [
+    30.1,
+    17.1,
+    22.0,
+    20.9,
+    26.7,
+    29.0,
+    25.6
+   ],
+   "sprite_max_px": 30.1
+  }
+ }
+}

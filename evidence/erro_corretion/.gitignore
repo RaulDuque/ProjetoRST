@@ -1,0 +1,4 @@
+# Work copies of the rig (reproducible, like art-src/player/blender) and Python caches
+*.blend
+*.blend1
+__pycache__/

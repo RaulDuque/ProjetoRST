@@ -1,0 +1,419 @@
+{
+ "idle": {
+  "canvas": [
+   80,
+   128
+  ],
+  "pivot": [
+   40,
+   118
+  ],
+  "sprite": "art-src/n3-5-fidelity/generated/candidate_106.png",
+  "head": [
+   40.041666666666664,
+   20.5
+  ],
+  "neck": [
+   40.0,
+   28.5
+  ],
+  "hip": [
+   39.5,
+   61.0
+  ],
+  "belt_y": 51,
+  "near_arm": [
+   [
+    40.5,
+    33.0
+   ],
+   [
+    38.5,
+    51.0
+   ],
+   [
+    40.5,
+    61.0
+   ],
+   [
+    42.5,
+    67.5
+   ]
+  ],
+  "near_leg": [
+   [
+    39.5,
+    61.0
+   ],
+   [
+    39.0,
+    82.0
+   ],
+   [
+    36.5,
+    112.0
+   ],
+   [
+    46,
+    117.0
+   ]
+  ],
+  "far_arm": [
+   [
+    40.5,
+    33.0
+   ],
+   [
+    38.5,
+    51.0
+   ],
+   [
+    40.5,
+    61.0
+   ],
+   [
+    42.5,
+    67.5
+   ]
+  ],
+  "far_leg": [
+   [
+    39.5,
+    61.0
+   ],
+   [
+    39.0,
+    82.0
+   ],
+   [
+    36.5,
+    112.0
+   ],
+   [
+    46,
+    117.0
+   ]
+  ],
+  "far_hidden": true,
+  "derivation": {
+   "head": "centre of reconstruct.SKULL rows 15..26",
+   "neck": "centre of reconstruct.NECK rows 27..30",
+   "shoulder": "centre of reconstruct.UPPER_ARM rows 31..35",
+   "elbow": "last row (51) of reconstruct.UPPER_ARM, above the visible forearm",
+   "wrist": "centre of reconstruct.WRIST rows 59..63 (under the bracer)",
+   "fist": "centre of partition.HAND box",
+   "hip": "first row (61) of reconstruct.LEGS (legs separate from the hips)",
+   "knee": "reconstruct.LEGS rows 80..84 ('knee at rows 80..84')",
+   "ankle": "last shin row (112) of reconstruct.LEGS",
+   "toe": "front of reconstruct.FEET, row 117",
+   "waist": "partition.TROUSERS_FROM_ROW (belt)",
+   "far limbs": "hidden in profile: same targets as the near limbs (not measured)"
+  }
+ },
+ "run_c1_0": {
+  "canvas": [
+   112,
+   128
+  ],
+  "pivot": [
+   56,
+   118
+  ],
+  "frame": 0,
+  "sprite": "art-src/n3-6-animation-proof/generated/run6.png",
+  "sprite_cell": 0,
+  "head": [
+   66,
+   26
+  ],
+  "neck": [
+   63,
+   34
+  ],
+  "hip": [
+   58,
+   62
+  ],
+  "belt_y": 59,
+  "near_arm": [
+   [
+    61,
+    39
+   ],
+   [
+    57,
+    55
+   ],
+   [
+    71,
+    56
+   ],
+   [
+    75,
+    55
+   ]
+  ],
+  "far_arm": [
+   [
+    57,
+    39
+   ],
+   [
+    55,
+    52
+   ],
+   [
+    64,
+    60
+   ],
+   [
+    67,
+    62
+   ]
+  ],
+  "near_leg": [
+   [
+    56,
+    64
+   ],
+   [
+    50,
+    87
+   ],
+   [
+    33,
+    85
+   ],
+   [
+    23,
+    91
+   ]
+  ],
+  "far_leg": [
+   [
+    60,
+    64
+   ],
+   [
+    60,
+    89
+   ],
+   [
+    59,
+    111
+   ],
+   [
+    72,
+    117
+   ]
+  ],
+  "far_hidden": false,
+  "derivation": {
+   "all": "run_poses.FRAMES[0] (video_048)"
+  }
+ },
+ "run_c1_2": {
+  "canvas": [
+   112,
+   128
+  ],
+  "pivot": [
+   56,
+   118
+  ],
+  "frame": 2,
+  "sprite": "art-src/n3-6-animation-proof/generated/run6.png",
+  "sprite_cell": 2,
+  "head": [
+   66,
+   25
+  ],
+  "neck": [
+   63,
+   33
+  ],
+  "hip": [
+   58,
+   62
+  ],
+  "belt_y": 59,
+  "near_arm": [
+   [
+    61,
+    38
+   ],
+   [
+    63,
+    51
+   ],
+   [
+    77,
+    42
+   ],
+   [
+    81,
+    39
+   ]
+  ],
+  "far_arm": [
+   [
+    56,
+    38
+   ],
+   [
+    45,
+    45
+   ],
+   [
+    47,
+    55
+   ],
+   [
+    48,
+    58
+   ]
+  ],
+  "near_leg": [
+   [
+    56,
+    64
+   ],
+   [
+    45,
+    82
+   ],
+   [
+    25,
+    88
+   ],
+   [
+    18,
+    93
+   ]
+  ],
+  "far_leg": [
+   [
+    60,
+    64
+   ],
+   [
+    73,
+    80
+   ],
+   [
+    79,
+    106
+   ],
+   [
+    92,
+    111
+   ]
+  ],
+  "far_hidden": false,
+  "derivation": {
+   "all": "run_poses.FRAMES[2] (video_052)"
+  }
+ },
+ "run_c1_4": {
+  "canvas": [
+   112,
+   128
+  ],
+  "pivot": [
+   56,
+   118
+  ],
+  "frame": 4,
+  "sprite": "art-src/n3-6-animation-proof/generated/run6.png",
+  "sprite_cell": 4,
+  "head": [
+   67,
+   24
+  ],
+  "neck": [
+   64,
+   33
+  ],
+  "hip": [
+   58,
+   62
+  ],
+  "belt_y": 59,
+  "near_arm": [
+   [
+    57,
+    38
+   ],
+   [
+    44,
+    46
+   ],
+   [
+    54,
+    55
+   ],
+   [
+    57,
+    58
+   ]
+  ],
+  "far_arm": [
+   [
+    63,
+    38
+   ],
+   [
+    70,
+    50
+   ],
+   [
+    78,
+    44
+   ],
+   [
+    82,
+    40
+   ]
+  ],
+  "near_leg": [
+   [
+    60,
+    64
+   ],
+   [
+    77,
+    79
+   ],
+   [
+    57,
+    100
+   ],
+   [
+    61,
+    109
+   ]
+  ],
+  "far_leg": [
+   [
+    56,
+    64
+   ],
+   [
+    48,
+    87
+   ],
+   [
+    35,
+    109
+   ],
+   [
+    42,
+    117
+   ]
+  ],
+  "far_hidden": false,
+  "derivation": {
+   "all": "run_poses.FRAMES[4] (video_056)"
+  }
+ }
+}

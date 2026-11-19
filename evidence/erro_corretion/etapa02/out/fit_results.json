@@ -1,0 +1,846 @@
+{
+ "idle": {
+  "pose": "idle",
+  "scale_px_per_m": 58.53349858713663,
+  "pivot": [
+   40,
+   118
+  ],
+  "canvas": [
+   80,
+   128
+  ],
+  "far_hidden": true,
+  "chest_twist_deg": 0.0,
+  "pelvis_twist_deg": 0.0,
+  "root_offset_from_hip_lock_px": [
+   -0.34,
+   0.78
+  ],
+  "rig": {
+   "head": [
+    40.043,
+    18.015
+   ],
+   "neck": [
+    40.066,
+    27.981
+   ],
+   "waist": [
+    39.164,
+    55.339
+   ],
+   "near_shoulder": [
+    40.424,
+    32.691
+   ],
+   "near_elbow": [
+    38.868,
+    47.496
+   ],
+   "near_wrist": [
+    40.557,
+    61.468
+   ],
+   "near_fist": [
+    42.261,
+    66.758
+   ],
+   "near_hip": [
+    39.164,
+    61.778
+   ],
+   "near_knee": [
+    38.95,
+    88.137
+   ],
+   "near_ankle": [
+    36.527,
+    111.735
+   ],
+   "near_toe": [
+    46.829,
+    117.461
+   ],
+   "far_shoulder": [
+    40.424,
+    32.992
+   ],
+   "far_elbow": [
+    38.823,
+    47.981
+   ],
+   "far_wrist": [
+    40.586,
+    61.671
+   ],
+   "far_fist": [
+    42.229,
+    66.675
+   ],
+   "far_hip": [
+    39.164,
+    61.778
+   ],
+   "far_knee": [
+    38.95,
+    88.118
+   ],
+   "far_ankle": [
+    36.529,
+    111.714
+   ],
+   "far_toe": [
+    46.821,
+    117.458
+   ]
+  },
+  "sprite": {
+   "head": [
+    40.041666666666664,
+    20.5
+   ],
+   "neck": [
+    40.0,
+    28.5
+   ],
+   "near_shoulder": [
+    40.5,
+    33.0
+   ],
+   "near_elbow": [
+    38.5,
+    51.0
+   ],
+   "near_wrist": [
+    40.5,
+    61.0
+   ],
+   "near_fist": [
+    42.5,
+    67.5
+   ],
+   "near_hip": [
+    39.5,
+    61.0
+   ],
+   "near_knee": [
+    39.0,
+    82.0
+   ],
+   "near_ankle": [
+    36.5,
+    112.0
+   ],
+   "near_toe": [
+    46,
+    117.0
+   ],
+   "far_shoulder": [
+    40.5,
+    33.0
+   ],
+   "far_elbow": [
+    38.5,
+    51.0
+   ],
+   "far_wrist": [
+    40.5,
+    61.0
+   ],
+   "far_fist": [
+    42.5,
+    67.5
+   ],
+   "far_hip": [
+    39.5,
+    61.0
+   ],
+   "far_knee": [
+    39.0,
+    82.0
+   ],
+   "far_ankle": [
+    36.5,
+    112.0
+   ],
+   "far_toe": [
+    46,
+    117.0
+   ]
+  },
+  "belt_y": 51,
+  "bone_lengths_px": {
+   "pelvis": 6.44,
+   "spine_01": 7.03,
+   "spine_02": 7.61,
+   "chest": 7.92,
+   "neck": 6.75,
+   "head": 13.19,
+   "clavicle.R": 7.66,
+   "upper_arm.R": 15.19,
+   "forearm.R": 14.08,
+   "hand.R": 5.56,
+   "sword": 12.99,
+   "clavicle.L": 7.66,
+   "upper_arm.L": 15.28,
+   "forearm.L": 13.81,
+   "hand.L": 5.27,
+   "cape_arm.L_01": 10.75,
+   "cape_arm.L_02": 13.5,
+   "collar_back": 6.75,
+   "cape_back_01": 8.82,
+   "cape_back_02": 11.6,
+   "thigh.R": 26.37,
+   "shin.R": 23.72,
+   "foot.R": 8.51,
+   "toe.R": 4.1,
+   "thigh.L": 26.34,
+   "shin.L": 23.72,
+   "foot.L": 8.51,
+   "toe.L": 4.1,
+   "coat_front.R_01": 19.94,
+   "coat_front.R_02": 15.79,
+   "coat_back.R_01": 20.46,
+   "coat_back.R_02": 20.17,
+   "coat_front.L_01": 20.01,
+   "coat_front.L_02": 15.77,
+   "coat_back.L_01": 20.26,
+   "coat_back.L_02": 20.22
+  },
+  "rest_height_m": 1.8109288280829783
+ },
+ "run_c1_0": {
+  "pose": "run_c1_0",
+  "scale_px_per_m": 58.53349858713663,
+  "pivot": [
+   56,
+   118
+  ],
+  "canvas": [
+   112,
+   128
+  ],
+  "far_hidden": false,
+  "chest_twist_deg": -12.26,
+  "pelvis_twist_deg": 23.28,
+  "root_offset_from_hip_lock_px": [
+   1.99,
+   1.42
+  ],
+  "rig": {
+   "head": [
+    66.852,
+    24.946
+   ],
+   "neck": [
+    60.79,
+    32.485
+   ],
+   "waist": [
+    59.99,
+    58.978
+   ],
+   "near_shoulder": [
+    61.221,
+    36.157
+   ],
+   "near_elbow": [
+    58.056,
+    50.288
+   ],
+   "near_wrist": [
+    70.935,
+    55.971
+   ],
+   "near_fist": [
+    76.325,
+    54.683
+   ],
+   "near_hip": [
+    57.991,
+    65.417
+   ],
+   "near_knee": [
+    48.846,
+    90.117
+   ],
+   "near_ankle": [
+    26.275,
+    82.828
+   ],
+   "near_toe": [
+    22.792,
+    91.519
+   ],
+   "far_shoulder": [
+    57.228,
+    36.77
+   ],
+   "far_elbow": [
+    55.089,
+    51.393
+   ],
+   "far_wrist": [
+    64.689,
+    60.666
+   ],
+   "far_fist": [
+    68.866,
+    63.078
+   ],
+   "far_hip": [
+    61.99,
+    65.417
+   ],
+   "far_knee": [
+    59.775,
+    91.664
+   ],
+   "far_ankle": [
+    58.825,
+    115.359
+   ],
+   "far_toe": [
+    68.56,
+    116.572
+   ]
+  },
+  "sprite": {
+   "head": [
+    66,
+    26
+   ],
+   "neck": [
+    63,
+    34
+   ],
+   "near_shoulder": [
+    61,
+    39
+   ],
+   "near_elbow": [
+    57,
+    55
+   ],
+   "near_wrist": [
+    71,
+    56
+   ],
+   "near_fist": [
+    75,
+    55
+   ],
+   "near_hip": [
+    56,
+    64
+   ],
+   "near_knee": [
+    50,
+    87
+   ],
+   "near_ankle": [
+    33,
+    85
+   ],
+   "near_toe": [
+    23,
+    91
+   ],
+   "far_shoulder": [
+    57,
+    39
+   ],
+   "far_elbow": [
+    55,
+    52
+   ],
+   "far_wrist": [
+    64,
+    60
+   ],
+   "far_fist": [
+    67,
+    62
+   ],
+   "far_hip": [
+    60,
+    64
+   ],
+   "far_knee": [
+    60,
+    89
+   ],
+   "far_ankle": [
+    59,
+    111
+   ],
+   "far_toe": [
+    72,
+    117
+   ]
+  },
+  "belt_y": 59,
+  "bone_lengths_px": {
+   "pelvis": 6.44,
+   "spine_01": 7.03,
+   "spine_02": 7.61,
+   "chest": 7.92,
+   "neck": 6.75,
+   "head": 13.19,
+   "clavicle.R": 7.66,
+   "upper_arm.R": 15.19,
+   "forearm.R": 14.08,
+   "hand.R": 5.56,
+   "sword": 12.99,
+   "clavicle.L": 7.66,
+   "upper_arm.L": 15.28,
+   "forearm.L": 13.81,
+   "hand.L": 5.27,
+   "cape_arm.L_01": 10.75,
+   "cape_arm.L_02": 13.5,
+   "collar_back": 6.75,
+   "cape_back_01": 8.82,
+   "cape_back_02": 11.6,
+   "thigh.R": 26.37,
+   "shin.R": 23.72,
+   "foot.R": 8.51,
+   "toe.R": 4.1,
+   "thigh.L": 26.34,
+   "shin.L": 23.72,
+   "foot.L": 8.51,
+   "toe.L": 4.1,
+   "coat_front.R_01": 19.94,
+   "coat_front.R_02": 15.79,
+   "coat_back.R_01": 20.46,
+   "coat_back.R_02": 20.17,
+   "coat_front.L_01": 20.01,
+   "coat_front.L_02": 15.77,
+   "coat_back.L_01": 20.26,
+   "coat_back.L_02": 20.22
+  },
+  "rest_height_m": 1.8109288280829783
+ },
+ "run_c1_2": {
+  "pose": "run_c1_2",
+  "scale_px_per_m": 58.53349858713663,
+  "pivot": [
+   56,
+   118
+  ],
+  "canvas": [
+   112,
+   128
+  ],
+  "far_hidden": false,
+  "chest_twist_deg": -15.73,
+  "pelvis_twist_deg": 23.28,
+  "root_offset_from_hip_lock_px": [
+   2.56,
+   -1.35
+  ],
+  "rig": {
+   "head": [
+    67.713,
+    23.438
+   ],
+   "neck": [
+    60.436,
+    30.109
+   ],
+   "waist": [
+    60.559,
+    56.212
+   ],
+   "near_shoulder": [
+    61.003,
+    33.369
+   ],
+   "near_elbow": [
+    62.605,
+    47.515
+   ],
+   "near_wrist": [
+    75.725,
+    42.488
+   ],
+   "near_fist": [
+    80.354,
+    39.427
+   ],
+   "near_hip": [
+    58.56,
+    62.651
+   ],
+   "near_knee": [
+    43.453,
+    84.207
+   ],
+   "near_ankle": [
+    20.221,
+    88.982
+   ],
+   "near_toe": [
+    15.642,
+    97.265
+   ],
+   "far_shoulder": [
+    56.038,
+    34.16
+   ],
+   "far_elbow": [
+    45.14,
+    44.862
+   ],
+   "far_wrist": [
+    47.334,
+    56.819
+   ],
+   "far_fist": [
+    49.43,
+    60.535
+   ],
+   "far_hip": [
+    62.559,
+    62.651
+   ],
+   "far_knee": [
+    76.131,
+    85.203
+   ],
+   "far_ankle": [
+    79.371,
+    108.69
+   ],
+   "far_toe": [
+    89.022,
+    110.455
+   ]
+  },
+  "sprite": {
+   "head": [
+    66,
+    25
+   ],
+   "neck": [
+    63,
+    33
+   ],
+   "near_shoulder": [
+    61,
+    38
+   ],
+   "near_elbow": [
+    63,
+    51
+   ],
+   "near_wrist": [
+    77,
+    42
+   ],
+   "near_fist": [
+    81,
+    39
+   ],
+   "near_hip": [
+    56,
+    64
+   ],
+   "near_knee": [
+    45,
+    82
+   ],
+   "near_ankle": [
+    25,
+    88
+   ],
+   "near_toe": [
+    18,
+    93
+   ],
+   "far_shoulder": [
+    56,
+    38
+   ],
+   "far_elbow": [
+    45,
+    45
+   ],
+   "far_wrist": [
+    47,
+    55
+   ],
+   "far_fist": [
+    48,
+    58
+   ],
+   "far_hip": [
+    60,
+    64
+   ],
+   "far_knee": [
+    73,
+    80
+   ],
+   "far_ankle": [
+    79,
+    106
+   ],
+   "far_toe": [
+    92,
+    111
+   ]
+  },
+  "belt_y": 59,
+  "bone_lengths_px": {
+   "pelvis": 6.44,
+   "spine_01": 7.03,
+   "spine_02": 7.61,
+   "chest": 7.92,
+   "neck": 6.75,
+   "head": 13.19,
+   "clavicle.R": 7.66,
+   "upper_arm.R": 15.19,
+   "forearm.R": 14.08,
+   "hand.R": 5.56,
+   "sword": 12.99,
+   "clavicle.L": 7.66,
+   "upper_arm.L": 15.28,
+   "forearm.L": 13.81,
+   "hand.L": 5.27,
+   "cape_arm.L_01": 10.75,
+   "cape_arm.L_02": 13.5,
+   "collar_back": 6.75,
+   "cape_back_01": 8.82,
+   "cape_back_02": 11.6,
+   "thigh.R": 26.37,
+   "shin.R": 23.72,
+   "foot.R": 8.51,
+   "toe.R": 4.1,
+   "thigh.L": 26.34,
+   "shin.L": 23.72,
+   "foot.L": 8.51,
+   "toe.L": 4.1,
+   "coat_front.R_01": 19.94,
+   "coat_front.R_02": 15.79,
+   "coat_back.R_01": 20.46,
+   "coat_back.R_02": 20.17,
+   "coat_front.L_01": 20.01,
+   "coat_front.L_02": 15.77,
+   "coat_back.L_01": 20.26,
+   "coat_back.L_02": 20.22
+  },
+  "rest_height_m": 1.8109288280829783
+ },
+ "run_c1_4": {
+  "pose": "run_c1_4",
+  "scale_px_per_m": 58.53349858713663,
+  "pivot": [
+   56,
+   118
+  ],
+  "canvas": [
+   112,
+   128
+  ],
+  "far_hidden": false,
+  "chest_twist_deg": 19.08,
+  "pelvis_twist_deg": -23.28,
+  "root_offset_from_hip_lock_px": [
+   -2.46,
+   1.35
+  ],
+  "rig": {
+   "head": [
+    66.921,
+    24.12
+   ],
+   "neck": [
+    61.477,
+    32.451
+   ],
+   "waist": [
+    55.544,
+    58.908
+   ],
+   "near_shoulder": [
+    56.776,
+    36.561
+   ],
+   "near_elbow": [
+    44.95,
+    45.298
+   ],
+   "near_wrist": [
+    54.316,
+    55.339
+   ],
+   "near_fist": [
+    58.168,
+    59.158
+   ],
+   "near_hip": [
+    57.544,
+    65.347
+   ],
+   "near_knee": [
+    79.126,
+    80.492
+   ],
+   "near_ankle": [
+    61.332,
+    96.18
+   ],
+   "near_toe": [
+    61.012,
+    108.546
+   ],
+   "far_shoulder": [
+    62.776,
+    36.992
+   ],
+   "far_elbow": [
+    69.973,
+    49.952
+   ],
+   "far_wrist": [
+    81.049,
+    41.739
+   ],
+   "far_fist": [
+    83.575,
+    37.118
+   ],
+   "far_hip": [
+    53.544,
+    65.347
+   ],
+   "far_knee": [
+    47.01,
+    90.865
+   ],
+   "far_ankle": [
+    33.912,
+    110.643
+   ],
+   "far_toe": [
+    43.638,
+    118.287
+   ]
+  },
+  "sprite": {
+   "head": [
+    67,
+    24
+   ],
+   "neck": [
+    64,
+    33
+   ],
+   "near_shoulder": [
+    57,
+    38
+   ],
+   "near_elbow": [
+    44,
+    46
+   ],
+   "near_wrist": [
+    54,
+    55
+   ],
+   "near_fist": [
+    57,
+    58
+   ],
+   "near_hip": [
+    60,
+    64
+   ],
+   "near_knee": [
+    77,
+    79
+   ],
+   "near_ankle": [
+    57,
+    100
+   ],
+   "near_toe": [
+    61,
+    109
+   ],
+   "far_shoulder": [
+    63,
+    38
+   ],
+   "far_elbow": [
+    70,
+    50
+   ],
+   "far_wrist": [
+    78,
+    44
+   ],
+   "far_fist": [
+    82,
+    40
+   ],
+   "far_hip": [
+    56,
+    64
+   ],
+   "far_knee": [
+    48,
+    87
+   ],
+   "far_ankle": [
+    35,
+    109
+   ],
+   "far_toe": [
+    42,
+    117
+   ]
+  },
+  "belt_y": 59,
+  "bone_lengths_px": {
+   "pelvis": 6.44,
+   "spine_01": 7.03,
+   "spine_02": 7.61,
+   "chest": 7.92,
+   "neck": 6.75,
+   "head": 13.19,
+   "clavicle.R": 7.66,
+   "upper_arm.R": 15.19,
+   "forearm.R": 14.08,
+   "hand.R": 5.56,
+   "sword": 12.99,
+   "clavicle.L": 7.66,
+   "upper_arm.L": 15.28,
+   "forearm.L": 13.81,
+   "hand.L": 5.27,
+   "cape_arm.L_01": 10.75,
+   "cape_arm.L_02": 13.5,
+   "collar_back": 6.75,
+   "cape_back_01": 8.82,
+   "cape_back_02": 11.6,
+   "thigh.R": 26.37,
+   "shin.R": 23.72,
+   "foot.R": 8.51,
+   "toe.R": 4.1,
+   "thigh.L": 26.34,
+   "shin.L": 23.72,
+   "foot.L": 8.51,
+   "toe.L": 4.1,
+   "coat_front.R_01": 19.94,
+   "coat_front.R_02": 15.79,
+   "coat_back.R_01": 20.46,
+   "coat_back.R_02": 20.17,
+   "coat_front.L_01": 20.01,
+   "coat_front.L_02": 15.77,
+   "coat_back.L_01": 20.26,
+   "coat_back.L_02": 20.22
+  },
+  "rest_height_m": 1.8109288280829783
+ }
+}
