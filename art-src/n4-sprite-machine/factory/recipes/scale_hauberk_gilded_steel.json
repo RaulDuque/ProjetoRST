@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "id": "scale_hauberk_gilded_steel",
+  "category": "chest_armor",
+  "family": "torso_plate",
+  "name": "Cota de escamas douradas com torre (prova de automação)",
+  "template": "scale_hauberk",
+  "materials": {"main": "gilded_steel"},
+  "details": [
+    {"detail": "trim_band", "material": "crimson_cloth", "place": {"edge": "top"}},
+    {"detail": "emblem_tower", "material": "silver", "place": {"at": [0.55, 0.3]}},
+    {"detail": "wear_scratches", "material": "gilded_steel", "place": {"density": 0.04}}
+  ],
+  "generation": {"seed": 2008, "animation_profile": "humanoid_torso"},
+  "covers": ["Chest"],
+  "hides": "auto",
+  "mirroring": "flip",
+  "fallback": {"missing_clip": "hide"}
+}

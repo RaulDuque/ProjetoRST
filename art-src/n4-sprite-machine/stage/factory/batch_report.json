@@ -18,8 +18,7 @@
     "brigandine_coat:run_c1:1: buckle: 1/1 stamp(s) skipped (do not fit inside the mask)",
     "brigandine_coat:run_c1:1: rivet: 8/21 stamp(s) skipped (do not fit inside the mask)"
    ],
-   "seconds": 0.0718,
-   "status": "generated"
+   "status": "cached"
   },
   "brigandine_coat_bronze": {
    "category": "chest_armor",
@@ -37,8 +36,7 @@
     "brigandine_coat:run_c1:1: buckle: 1/1 stamp(s) skipped (do not fit inside the mask)",
     "brigandine_coat:run_c1:1: rivet: 8/21 stamp(s) skipped (do not fit inside the mask)"
    ],
-   "seconds": 0.0076,
-   "status": "generated"
+   "status": "cached"
   },
   "brigandine_coat_hardened_leather": {
    "category": "chest_armor",
@@ -56,8 +54,7 @@
     "brigandine_coat:run_c1:1: buckle: 1/1 stamp(s) skipped (do not fit inside the mask)",
     "brigandine_coat:run_c1:1: rivet: 8/21 stamp(s) skipped (do not fit inside the mask)"
    ],
-   "seconds": 0.0087,
-   "status": "generated"
+   "status": "cached"
   },
   "brigandine_coat_iron": {
    "category": "chest_armor",
@@ -75,8 +72,7 @@
     "brigandine_coat:run_c1:1: buckle: 1/1 stamp(s) skipped (do not fit inside the mask)",
     "brigandine_coat:run_c1:1: rivet: 8/21 stamp(s) skipped (do not fit inside the mask)"
    ],
-   "seconds": 0.0081,
-   "status": "generated"
+   "status": "cached"
   },
   "cape_long_ash_grey": {
    "category": "cape",
@@ -95,8 +91,7 @@
     "rigid": false
    },
    "notes": [],
-   "seconds": 0.0078,
-   "status": "generated"
+   "status": "cached"
   },
   "cape_long_crimson": {
    "category": "cape",
@@ -115,8 +110,7 @@
     "rigid": false
    },
    "notes": [],
-   "seconds": 0.0073,
-   "status": "generated"
+   "status": "cached"
   },
   "cape_long_moss_green": {
    "category": "cape",
@@ -135,8 +129,7 @@
     "rigid": false
    },
    "notes": [],
-   "seconds": 0.0085,
-   "status": "generated"
+   "status": "cached"
   },
   "cape_long_royal_blue": {
    "category": "cape",
@@ -155,8 +148,7 @@
     "rigid": false
    },
    "notes": [],
-   "seconds": 0.0079,
-   "status": "generated"
+   "status": "cached"
   },
   "mantle_ash_grey_hardened_leather": {
    "category": "shoulder",
@@ -175,8 +167,7 @@
     "rigid": false
    },
    "notes": [],
-   "seconds": 0.0065,
-   "status": "generated"
+   "status": "cached"
   },
   "mantle_crimson_wolf_fur": {
    "category": "shoulder",
@@ -195,8 +186,7 @@
     "rigid": false
    },
    "notes": [],
-   "seconds": 0.006,
-   "status": "generated"
+   "status": "cached"
   },
   "mantle_moss_green_wolf_fur": {
    "category": "shoulder",
@@ -215,8 +205,7 @@
     "rigid": false
    },
    "notes": [],
-   "seconds": 0.0065,
-   "status": "generated"
+   "status": "cached"
   },
   "mantle_royal_blue_wolf_fur": {
    "category": "shoulder",
@@ -235,8 +224,7 @@
     "rigid": false
    },
    "notes": [],
-   "seconds": 0.0064,
-   "status": "generated"
+   "status": "cached"
   },
   "pauldron_blackened_steel": {
    "category": "shoulder",
@@ -255,8 +243,7 @@
     "rigid": true
    },
    "notes": [],
-   "seconds": 0.0124,
-   "status": "generated"
+   "status": "cached"
   },
   "pauldron_bronze": {
    "category": "shoulder",
@@ -277,8 +264,7 @@
    "notes": [
     "plate_pauldron: rivet: 2/6 stamp(s) skipped (do not fit inside the mask)"
    ],
-   "seconds": 0.0117,
-   "status": "generated"
+   "status": "cached"
   },
   "pauldron_iron": {
    "category": "shoulder",
@@ -299,8 +285,7 @@
    "notes": [
     "plate_pauldron: rivet: 2/6 stamp(s) skipped (do not fit inside the mask)"
    ],
-   "seconds": 0.0123,
-   "status": "generated"
+   "status": "cached"
   },
   "pauldron_steel": {
    "category": "shoulder",
@@ -319,8 +304,7 @@
     "rigid": true
    },
    "notes": [],
-   "seconds": 0.0095,
-   "status": "generated"
+   "status": "cached"
   },
   "ridged_breastplate_blackened_steel": {
    "category": "chest_armor",
@@ -335,8 +319,7 @@
    "notes": [
     "ridged_breastplate:idle:0: emblem_sun: 1/1 stamp(s) skipped (do not fit inside the mask)"
    ],
-   "seconds": 0.0076,
-   "status": "generated"
+   "status": "cached"
   },
   "ridged_breastplate_bronze": {
    "category": "chest_armor",
@@ -349,7 +332,22 @@
     "integration": "composer"
    },
    "notes": [],
-   "seconds": 0.0066,
+   "status": "cached"
+  },
+  "ridged_breastplate_gilded_steel": {
+   "category": "chest_armor",
+   "integration": "composer",
+   "meta": {
+    "clips": [
+     "idle"
+    ],
+    "hide_run_shirt_torso": false,
+    "integration": "composer"
+   },
+   "notes": [
+    "ridged_breastplate:idle:0: emblem_tower: 1/1 stamp(s) skipped (do not fit inside the mask)"
+   ],
+   "seconds": 0.0562,
    "status": "generated"
   },
   "ridged_breastplate_hardened_leather": {
@@ -363,8 +361,7 @@
     "integration": "composer"
    },
    "notes": [],
-   "seconds": 0.0071,
-   "status": "generated"
+   "status": "cached"
   },
   "ridged_breastplate_iron": {
    "category": "chest_armor",
@@ -377,8 +374,7 @@
     "integration": "composer"
    },
    "notes": [],
-   "seconds": 0.0075,
-   "status": "generated"
+   "status": "cached"
   },
   "scale_hauberk_blackened_steel": {
    "category": "chest_armor",
@@ -393,8 +389,7 @@
    "notes": [
     "scale_hauberk:idle:0: gem: 1/1 stamp(s) skipped (do not fit inside the mask)"
    ],
-   "seconds": 0.0077,
-   "status": "generated"
+   "status": "cached"
   },
   "scale_hauberk_bronze": {
    "category": "chest_armor",
@@ -407,7 +402,22 @@
     "integration": "composer"
    },
    "notes": [],
-   "seconds": 0.0076,
+   "status": "cached"
+  },
+  "scale_hauberk_gilded_steel": {
+   "category": "chest_armor",
+   "integration": "composer",
+   "meta": {
+    "clips": [
+     "idle"
+    ],
+    "hide_run_shirt_torso": false,
+    "integration": "composer"
+   },
+   "notes": [
+    "scale_hauberk:idle:0: emblem_tower: 1/1 stamp(s) skipped (do not fit inside the mask)"
+   ],
+   "seconds": 0.0243,
    "status": "generated"
   },
   "scale_hauberk_hardened_leather": {
@@ -421,8 +431,7 @@
     "integration": "composer"
    },
    "notes": [],
-   "seconds": 0.0095,
-   "status": "generated"
+   "status": "cached"
   },
   "scale_hauberk_iron": {
    "category": "chest_armor",
@@ -437,8 +446,7 @@
    "notes": [
     "scale_hauberk:idle:0: gem: 1/1 stamp(s) skipped (do not fit inside the mask)"
    ],
-   "seconds": 0.0079,
-   "status": "generated"
+   "status": "cached"
   },
   "segmented_cuirass_blackened_steel": {
    "category": "chest_armor",
@@ -455,8 +463,7 @@
     "segmented_cuirass:idle:0: emblem_wolf: 1/1 stamp(s) skipped (do not fit inside the mask)",
     "segmented_cuirass:idle:0: rivet: 2/2 stamp(s) skipped (do not fit inside the mask)"
    ],
-   "seconds": 0.0366,
-   "status": "generated"
+   "status": "cached"
   },
   "segmented_cuirass_bronze": {
    "category": "chest_armor",
@@ -473,8 +480,7 @@
     "segmented_cuirass:idle:0: emblem_sun: 1/1 stamp(s) skipped (do not fit inside the mask)",
     "segmented_cuirass:idle:0: rivet: 2/2 stamp(s) skipped (do not fit inside the mask)"
    ],
-   "seconds": 0.0378,
-   "status": "generated"
+   "status": "cached"
   },
   "segmented_cuirass_hardened_leather": {
    "category": "chest_armor",
@@ -490,8 +496,7 @@
    "notes": [
     "segmented_cuirass:idle:0: rivet: 2/2 stamp(s) skipped (do not fit inside the mask)"
    ],
-   "seconds": 0.0326,
-   "status": "generated"
+   "status": "cached"
   },
   "segmented_cuirass_iron": {
    "category": "chest_armor",
@@ -507,8 +512,7 @@
    "notes": [
     "segmented_cuirass:idle:0: rivet: 2/2 stamp(s) skipped (do not fit inside the mask)"
    ],
-   "seconds": 0.0331,
-   "status": "generated"
+   "status": "cached"
   },
   "sword_arming_crescent": {
    "category": "sword",
@@ -526,8 +530,7 @@
     "integration": "isolated"
    },
    "notes": [],
-   "seconds": 0.0027,
-   "status": "generated"
+   "status": "cached"
   },
   "sword_arming_cross": {
    "category": "sword",
@@ -545,8 +548,7 @@
     "integration": "isolated"
    },
    "notes": [],
-   "seconds": 0.0021,
-   "status": "generated"
+   "status": "cached"
   },
   "sword_arming_ring": {
    "category": "sword",
@@ -564,8 +566,7 @@
     "integration": "isolated"
    },
    "notes": [],
-   "seconds": 0.0023,
-   "status": "generated"
+   "status": "cached"
   },
   "sword_broad_falchion_crescent": {
    "category": "sword",
@@ -583,8 +584,7 @@
     "integration": "isolated"
    },
    "notes": [],
-   "seconds": 0.0023,
-   "status": "generated"
+   "status": "cached"
   },
   "sword_broad_falchion_cross": {
    "category": "sword",
@@ -602,8 +602,7 @@
     "integration": "isolated"
    },
    "notes": [],
-   "seconds": 0.0024,
-   "status": "generated"
+   "status": "cached"
   },
   "sword_broad_falchion_ring": {
    "category": "sword",
@@ -621,8 +620,7 @@
     "integration": "isolated"
    },
    "notes": [],
-   "seconds": 0.0023,
-   "status": "generated"
+   "status": "cached"
   },
   "sword_estoc_crescent": {
    "category": "sword",
@@ -640,8 +638,7 @@
     "integration": "isolated"
    },
    "notes": [],
-   "seconds": 0.0022,
-   "status": "generated"
+   "status": "cached"
   },
   "sword_estoc_cross": {
    "category": "sword",
@@ -659,8 +656,7 @@
     "integration": "isolated"
    },
    "notes": [],
-   "seconds": 0.0024,
-   "status": "generated"
+   "status": "cached"
   },
   "sword_estoc_ring": {
    "category": "sword",
@@ -678,8 +674,7 @@
     "integration": "isolated"
    },
    "notes": [],
-   "seconds": 0.0026,
-   "status": "generated"
+   "status": "cached"
   },
   "sword_flame_crescent": {
    "category": "sword",
@@ -697,8 +692,7 @@
     "integration": "isolated"
    },
    "notes": [],
-   "seconds": 0.0035,
-   "status": "generated"
+   "status": "cached"
   },
   "sword_flame_cross": {
    "category": "sword",
@@ -716,8 +710,7 @@
     "integration": "isolated"
    },
    "notes": [],
-   "seconds": 0.0023,
-   "status": "generated"
+   "status": "cached"
   },
   "sword_flame_ring": {
    "category": "sword",
@@ -735,10 +728,9 @@
     "integration": "isolated"
    },
    "notes": [],
-   "seconds": 0.0021,
-   "status": "generated"
+   "status": "cached"
   }
  },
- "peak_rss_mib": 37.4,
- "seconds": 0.437
+ "peak_rss_mib": 36.3,
+ "seconds": 0.125
 }

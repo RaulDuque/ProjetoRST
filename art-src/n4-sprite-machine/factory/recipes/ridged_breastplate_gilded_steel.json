@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "id": "ridged_breastplate_gilded_steel",
+  "category": "chest_armor",
+  "family": "torso_plate",
+  "name": "Peitoral de quilha de aço dourado (prova de automação)",
+  "template": "ridged_breastplate",
+  "materials": {"main": "gilded_steel"},
+  "details": [
+    {"detail": "double_trim", "material": "blackened_steel", "place": {"edge": "bottom"}},
+    {"detail": "emblem_tower", "material": "blackened_steel", "place": {"at": [0.35, 0.4]}}
+  ],
+  "generation": {"seed": 2001, "animation_profile": "humanoid_torso"},
+  "covers": ["Chest"],
+  "hides": "auto",
+  "mirroring": "flip",
+  "fallback": {"missing_clip": "hide"}
+}

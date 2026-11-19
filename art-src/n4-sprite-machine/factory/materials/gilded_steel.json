@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "id": "gilded_steel",
+  "kind": "metal",
+  "description": "Aço com douração gasta (N41-B, prova de automação: material novo só por dados).",
+  "tones": {
+    "outline": [44, 30, 22],
+    "deep": [72, 58, 44],
+    "shadow": [108, 92, 66],
+    "base": [150, 132, 92],
+    "light": [192, 172, 118],
+    "highlight": [226, 208, 150],
+    "specular": [250, 240, 200]
+  },
+  "gloss": 0.7,
+  "roughness": 0.15,
+  "contrast": 1.0,
+  "wear": 0.1
+}

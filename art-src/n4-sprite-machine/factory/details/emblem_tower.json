@@ -1,0 +1,8 @@
+{
+  "schema": 1,
+  "id": "emblem_tower",
+  "op": "stamp",
+  "description": "Torre ameada 3x4 (N41-B, prova de automação: detalhe novo só por dados).",
+  "pattern": ["h.h", "hlh", "lsl", "bsb"],
+  "on_overflow": "skip"
+}
