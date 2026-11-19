@@ -55,13 +55,17 @@ class Validation(unittest.TestCase):
     def test_library_and_catalogue_are_valid(self) -> None:
         recipes, failures = fx.load_recipes(self.lib)
         self.assertEqual(failures, [])
-        self.assertEqual(len(recipes), 40)
+        # The 40-item proof (16 torso, 12 swords, 12 capes/shoulders) is a
+        # floor: new items are added by data alone.
+        self.assertGreaterEqual(len(recipes), 40)
         cats = {}
         for r in recipes:
             cats[r["category"]] = cats.get(r["category"], 0) + 1
-        self.assertEqual(cats, {"chest_armor": 16, "sword": 12, "cape": 4, "shoulder": 8})
-        self.assertEqual(len({r["id"] for r in recipes}), 40)
-        self.assertEqual(len({r["generation"]["seed"] for r in recipes}), 40)
+        self.assertGreaterEqual(cats.get("chest_armor", 0), 16)
+        self.assertGreaterEqual(cats.get("sword", 0), 12)
+        self.assertGreaterEqual(cats.get("cape", 0) + cats.get("shoulder", 0), 12)
+        self.assertEqual(len({r["id"] for r in recipes}), len(recipes))
+        self.assertEqual(len({r["generation"]["seed"] for r in recipes}), len(recipes))
 
     def test_every_material_has_the_four_minimum_tones_and_no_black_outline(self) -> None:
         for mid, m in self.lib.materials.items():
