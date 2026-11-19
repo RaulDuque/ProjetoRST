@@ -79,4 +79,4 @@ Gerado por `art-src/n3-8-production-run/scripts/make_evidence.py` a partir de `t
 - [x] Física, combate e save preservados
 - [x] Testes executados (641/641)
 - [x] Evidências reais
-- [ ] GitHub publicado (marcado no registro de publicação, `N3_8_RELATORIO_FINAL.md` §Y)
+- [x] GitHub publicado (`N3_8_RELATORIO_FINAL.md` §Y)

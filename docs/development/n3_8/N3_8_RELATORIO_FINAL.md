@@ -100,7 +100,18 @@ fmt, check e clippy `-D warnings` limpos. `cargo test -j 2`: **52 suítes, 641 p
 
 ## Y. GitHub
 
-Ver o registro de publicação abaixo (preenchido depois do push).
+Push em `origin/art/v1.2-protagonist` (`a44beab..6545fa9`), sem force, merge ou rebase:
+
+- `649cd38` feat(player): integrate approved 15 fps run as experimental protagonist
+- `12aa1b7` feat(ui): show the experimental protagonist badge and placeholders
+- `6987e21` test(player): validate the experimental production run animation
+- `d6f679a` feat(visual): add n3.8 production run evidence example
+- `ad6fd03` docs(architecture): document the experimental protagonist art profile
+- `368c1e1` docs(tutorials): add the experimental protagonist tutorial
+- `d053d58` docs(n3): prepare terraria-style modular architecture for n4
+- `6545fa9a00a1534e4c9bc7ef8f4d3c652a70d01e` docs(n3): record n3.8 integration evidence (SHA remoto confirmado igual ao local)
+
+O commit que grava este parágrafo é o registro da publicação. O hash remoto final é o HEAD depois do push dele. `Md-usario/` não foi commitado. Tutorial novo para o proprietário copiar em `Md-usario/tutorias/`: `docs/tutorias/36_TESTAR_PROTAGONISTA_EXPERIMENTAL.md` e o índice `00_LEIA_PRIMEIRO.md`.
 
 ## Z. Próxima decisão
 
