@@ -17,6 +17,13 @@
 //! and item B over the dressed protagonist, in the idle or (with
 //! `--run-c1`) the run C1. E cycles the items in the interactive mode.
 //!
+//! `--factory` (N41-B): like `--equipment`, plus every generated item of
+//! `stage/factory/items/` (written by `scripts/factory.py`, data only). The
+//! tour is built from the loaded data: every factory item with an idle
+//! sheet (idle) or a `run_c1` sheet (`--run-c1`), one mirrored shot, and the
+//! visible layer count is checked against `resolve_facing`. Captures go to
+//! `docs/development/n4/evidence/n41b/`. E cycles the factory items.
+//!
 //! `--run-c1` (N4-1): left, the approved run frame (`run6.png`, frame 2k);
 //! right, the `run_c1` clip of the same composition (frames #0, #2, #4).
 //! Left / Right step the frame, P plays the C1 cycle (2/15 s per frame,
@@ -54,7 +61,7 @@ use dark_castle_rpg::player::visual::VisualPlayback;
 use dark_castle_rpg::player::visual::composite::{
     CompositeCharacter, CompositeLayer, sync_composite_layers,
 };
-use dark_castle_rpg::player::visual::composition::{CharacterComposition, Outfit};
+use dark_castle_rpg::player::visual::composition::{CharacterComposition, Outfit, resolve_facing};
 use dark_castle_rpg::player::visual::equipment_visual::{EquipmentVisual, VisualFamily, equip};
 use dark_castle_rpg::player::visual::manifest::anchor_for;
 use dark_castle_rpg::player::visual::playback::loop_frame;
@@ -102,7 +109,7 @@ struct Shot {
     name: String,
     look: Look,
     /// N4-1-A: the visual item worn (equipment mode).
-    item: Option<&'static str>,
+    item: Option<String>,
     frame: usize,
     light: bool,
     mirror: bool,
@@ -197,7 +204,7 @@ fn equipment_tour(run: bool) -> Vec<Shot> {
         for item in [None, Some(ITEMS[0]), Some(ITEMS[1])] {
             out.push(Shot {
                 frame,
-                item,
+                item: item.map(str::to_owned),
                 ..shot(
                     &format!("bevy_n41a_{clip}_{}", item.unwrap_or("none")),
                     Look::Full,
@@ -208,7 +215,7 @@ fn equipment_tour(run: bool) -> Vec<Shot> {
     let last = frames - 1;
     out.push(Shot {
         frame: last,
-        item: Some(ITEMS[0]),
+        item: Some(ITEMS[0].to_owned()),
         mirror: true,
         ..shot(
             if run {
@@ -221,7 +228,7 @@ fn equipment_tour(run: bool) -> Vec<Shot> {
     });
     out.push(Shot {
         frame: last,
-        item: Some(ITEMS[1]),
+        item: Some(ITEMS[1].to_owned()),
         grid: true,
         light: true,
         ..shot(
@@ -233,6 +240,51 @@ fn equipment_tour(run: bool) -> Vec<Shot> {
             Look::Full,
         )
     });
+    out
+}
+
+/// N41-B: the tour comes from the loaded data (no item id in code): the
+/// bare character, every factory item that has a sheet for the clip (each
+/// frame of the run C1), and the first such item mirrored.
+fn factory_tour(composition: &CharacterComposition, factory: &[String], run: bool) -> Vec<Shot> {
+    let clip = if run { "run_c1" } else { "idle" };
+    let with_clip: Vec<&String> = factory
+        .iter()
+        .filter(|id| {
+            composition
+                .parts
+                .get(*id)
+                .is_some_and(|p| p.pieces.iter().any(|piece| piece.sheets.contains_key(clip)))
+        })
+        .collect();
+    let frames = if run { 3 } else { 1 };
+    let mut out = Vec::new();
+    for frame in 0..frames {
+        let tag = if run {
+            format!("run_f{}", frame * 2)
+        } else {
+            "idle".to_owned()
+        };
+        out.push(Shot {
+            frame,
+            ..shot(&format!("bevy_n41b_{tag}_none"), Look::Full)
+        });
+        for id in &with_clip {
+            out.push(Shot {
+                frame,
+                item: Some((*id).clone()),
+                ..shot(&format!("bevy_n41b_{tag}_{id}"), Look::Full)
+            });
+        }
+    }
+    if let Some(first) = with_clip.first() {
+        out.push(Shot {
+            frame: frames - 1,
+            item: Some((*first).clone()),
+            mirror: true,
+            ..shot(&format!("bevy_n41b_{clip}_mirrored_{first}"), Look::Full)
+        });
+    }
     out
 }
 
@@ -273,6 +325,10 @@ struct Proof {
     /// N4-1-A: visual equipment mode, and the item shown (interactive E).
     equipment: bool,
     item: usize,
+    /// Items cycled by E: the N4-1-A pair, or the N41-B factory items.
+    items: Vec<String>,
+    /// N41-B: the visible layer count comes from `resolve_facing`.
+    factory: bool,
     shots: Vec<Shot>,
     /// Run C1: playing (interactive) and the shared clock.
     playing: bool,
@@ -439,12 +495,13 @@ fn keys(
         proof.paused = !proof.paused;
     }
     if proof.equipment && input.just_pressed(KeyCode::KeyE) {
-        proof.item = (proof.item + 1) % (ITEMS.len() + 1);
-        for id in ITEMS {
+        proof.item = (proof.item + 1) % (proof.items.len() + 1);
+        for id in &proof.items {
             character.outfit.remove(&c, id);
         }
         if proof.item > 0 {
-            character.outfit.wear(ITEMS[proof.item - 1], None);
+            let id = proof.items[proof.item - 1].clone();
+            character.outfit.wear(&id, None);
         }
     }
     if proof.run {
@@ -507,7 +564,7 @@ fn tour(
     match proof.wait {
         0 => {
             apply_look(&mut character, shot.look);
-            if let Some(item) = shot.item {
+            if let Some(item) = &shot.item {
                 character.outfit.wear(item, None);
             }
             proof.frame = shot.frame;
@@ -522,10 +579,21 @@ fn tour(
                 .filter(|(_, v)| **v != Visibility::Hidden)
                 .count();
             // Idle: 8 layer slots in use; run C1: all 14 (the far limbs too).
+            let clip = if proof.run { "run_c1" } else { "idle" };
+            let resolved = resolve_facing(
+                &character.composition,
+                &character.outfit,
+                clip,
+                proof.frame as u32,
+                proof.mirror,
+            )
+            .map(|d| d.iter().filter(|l| l.visible).count());
             let expected = match (proof.run, shot.look) {
+                // N41-B: whatever the data says the compositor must show.
+                _ if proof.factory => resolved.unwrap_or(usize::MAX),
                 // Equipment: + the plate; item A also hides the run shirt torso.
                 (false, Look::Full) if shot.item.is_some() => 9,
-                (true, Look::Full) if shot.item == Some(ITEMS[0]) => 14,
+                (true, Look::Full) if shot.item.as_deref() == Some(ITEMS[0]) => 14,
                 (true, Look::Full) if shot.item.is_some() => 15,
                 (false, Look::Full) => 8,
                 (false, Look::Without("hair")) => 6,
@@ -693,7 +761,8 @@ fn grid(proof: Res<Proof>, mut gizmos: Gizmos) {
 fn load_equipment(
     stage: &std::path::Path,
     base: &CharacterComposition,
-) -> Result<CharacterComposition, String> {
+    factory: bool,
+) -> Result<(CharacterComposition, Vec<String>), String> {
     let read_dir = |dir: &str| -> Result<Vec<String>, String> {
         let mut paths: Vec<PathBuf> = std::fs::read_dir(stage.join(dir))
             .map_err(|e| format!("{dir}: {e}"))?
@@ -710,11 +779,23 @@ fn load_equipment(
         .iter()
         .map(|t| VisualFamily::from_ron(t).map_err(|e| e.to_string()))
         .collect::<Result<Vec<_>, _>>()?;
-    let items = read_dir("equipment/items")?
-        .iter()
-        .map(|t| EquipmentVisual::from_ron(t).map_err(|e| e.to_string()))
-        .collect::<Result<Vec<_>, _>>()?;
-    equip(base, &families, &items).map_err(|e| e.to_string())
+    let parse = |texts: Vec<String>| {
+        texts
+            .iter()
+            .map(|t| EquipmentVisual::from_ron(t).map_err(|e| e.to_string()))
+            .collect::<Result<Vec<_>, _>>()
+    };
+    let mut items = parse(read_dir("equipment/items")?)?;
+    // N41-B: the generated items (same families, same loader, same rules).
+    let generated = if factory {
+        parse(read_dir("factory/items")?)?
+    } else {
+        Vec::new()
+    };
+    let ids = generated.iter().map(|i| i.id.clone()).collect();
+    items.extend(generated);
+    let composition = equip(base, &families, &items).map_err(|e| e.to_string())?;
+    Ok((composition, ids))
 }
 
 fn main() -> AppExit {
@@ -735,10 +816,15 @@ fn main() -> AppExit {
         }
     };
     let run = std::env::args().any(|a| a == "--run-c1");
-    let equipment = std::env::args().any(|a| a == "--equipment");
+    let factory = std::env::args().any(|a| a == "--factory");
+    let equipment = factory || std::env::args().any(|a| a == "--equipment");
+    let mut factory_ids = Vec::new();
     let composition = if equipment {
-        match load_equipment(&root.join(STAGE), &composition) {
-            Ok(c) => c,
+        match load_equipment(&root.join(STAGE), &composition, factory) {
+            Ok((c, ids)) => {
+                factory_ids = ids;
+                c
+            }
             Err(error) => {
                 eprintln!("{TAG} {error}");
                 return AppExit::error();
@@ -748,7 +834,9 @@ fn main() -> AppExit {
         composition
     };
     let composition = Arc::new(composition);
-    let out = if equipment {
+    let out = if factory {
+        root.join(EVIDENCE).join("n41b")
+    } else if equipment {
         root.join(EVIDENCE).join("n41a")
     } else if run {
         root.join(EVIDENCE).join("n4c")
@@ -793,9 +881,11 @@ fn main() -> AppExit {
     )
     .insert_resource(ClearColor(DARK))
     .insert_resource(Proof {
-        composition,
+        composition: Arc::clone(&composition),
         run,
-        shots: if equipment {
+        shots: if factory {
+            factory_tour(&composition, &factory_ids, run)
+        } else if equipment {
             equipment_tour(run)
         } else if run {
             run_tour()
@@ -804,6 +894,12 @@ fn main() -> AppExit {
         },
         equipment,
         item: 0,
+        items: if factory {
+            factory_ids
+        } else {
+            ITEMS.iter().map(|s| (*s).to_owned()).collect()
+        },
+        factory,
         playing: false,
         elapsed: 0.0,
         frame: 0,
