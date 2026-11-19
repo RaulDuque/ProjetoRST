@@ -1,0 +1,1136 @@
+{
+ "order": [
+  "sleeve_far",
+  "hand_far",
+  "bracer_far",
+  "trousers_far",
+  "boots_far",
+  "ARMOR_SHOULDER_FAR",
+  "trousers",
+  "boots",
+  "shirt_torso",
+  "ARMOR_TORSO",
+  "sleeve_near",
+  "ARMOR_SHOULDER_NEAR",
+  "hand_near",
+  "bracer_near",
+  "face_skin",
+  "hair_back",
+  "hair_front"
+ ],
+ "poses": {
+  "idle": {
+   "grid_vs_png_diff": 0,
+   "opaque_texels": 1320,
+   "layer_texels": 1320,
+   "overlapping_texels": 0,
+   "reconstruction_diff_pixels": 0,
+   "layers": {
+    "boots": 278,
+    "bracer_near": 30,
+    "face_skin": 43,
+    "hair_back": 209,
+    "hair_front": 26,
+    "hand_near": 90,
+    "shirt_torso": 105,
+    "sleeve_near": 192,
+    "trousers": 347
+   },
+   "hair_face_fixed": [],
+   "zones": {
+    "cover_shirt_torso": 105,
+    "grow_outside_silhouette": 69,
+    "grow_visible": 69,
+    "pauldron_near": 111,
+    "pauldron_near_over_sleeve": 96,
+    "pauldron_far": 0,
+    "always_front": 398,
+    "sleeve_near_front_of_torso_armor": 96,
+    "behind_far_limbs": 0
+   },
+   "anchors": {
+    "near": [
+     36.6875,
+     35.0625
+    ],
+    "far": null
+   }
+  },
+  "run_c1_0": {
+   "grid_vs_png_diff": 0,
+   "opaque_texels": 2219,
+   "layer_texels": 2219,
+   "overlapping_texels": 0,
+   "reconstruction_diff_pixels": 0,
+   "layers": {
+    "boots": 214,
+    "boots_far": 228,
+    "bracer_far": 9,
+    "bracer_near": 2,
+    "face_skin": 107,
+    "hair_back": 394,
+    "hair_front": 65,
+    "hand_far": 11,
+    "hand_near": 101,
+    "shirt_torso": 148,
+    "sleeve_far": 46,
+    "sleeve_near": 149,
+    "trousers": 290,
+    "trousers_far": 455
+   },
+   "hair_face_fixed": [
+    {
+     "x": 70,
+     "y": 16,
+     "key": "w",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 71,
+     "y": 16,
+     "key": "w",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 72,
+     "y": 16,
+     "key": "w",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 70,
+     "y": 17,
+     "key": "w",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 71,
+     "y": 17,
+     "key": "w",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 72,
+     "y": 17,
+     "key": "w",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 73,
+     "y": 17,
+     "key": "h",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 70,
+     "y": 18,
+     "key": "w",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 71,
+     "y": 18,
+     "key": "w",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 72,
+     "y": 18,
+     "key": "w",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 73,
+     "y": 18,
+     "key": "w",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 74,
+     "y": 18,
+     "key": "w",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 70,
+     "y": 19,
+     "key": "w",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 71,
+     "y": 19,
+     "key": "w",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 72,
+     "y": 19,
+     "key": "w",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 73,
+     "y": 19,
+     "key": "w",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 74,
+     "y": 19,
+     "key": "G",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 75,
+     "y": 19,
+     "key": "w",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 76,
+     "y": 19,
+     "key": "w",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 70,
+     "y": 20,
+     "key": "w",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 71,
+     "y": 20,
+     "key": "w",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 72,
+     "y": 20,
+     "key": "w",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 73,
+     "y": 20,
+     "key": "h",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 74,
+     "y": 20,
+     "key": "G",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 75,
+     "y": 20,
+     "key": "G",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 76,
+     "y": 20,
+     "key": "h",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 71,
+     "y": 21,
+     "key": "S",
+     "from": "hand_near",
+     "to": "face_skin"
+    },
+    {
+     "x": 72,
+     "y": 21,
+     "key": "s",
+     "from": "hand_near",
+     "to": "face_skin"
+    },
+    {
+     "x": 73,
+     "y": 21,
+     "key": "s",
+     "from": "hand_near",
+     "to": "face_skin"
+    },
+    {
+     "x": 74,
+     "y": 21,
+     "key": "G",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 75,
+     "y": 21,
+     "key": "G",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 76,
+     "y": 21,
+     "key": "G",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 72,
+     "y": 22,
+     "key": "z",
+     "from": "hand_near",
+     "to": "face_skin"
+    },
+    {
+     "x": 73,
+     "y": 22,
+     "key": "S",
+     "from": "hand_near",
+     "to": "face_skin"
+    },
+    {
+     "x": 74,
+     "y": 22,
+     "key": "s",
+     "from": "hand_near",
+     "to": "face_skin"
+    },
+    {
+     "x": 75,
+     "y": 22,
+     "key": "G",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 76,
+     "y": 22,
+     "key": "G",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 77,
+     "y": 22,
+     "key": "H",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 73,
+     "y": 23,
+     "key": "L",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 74,
+     "y": 23,
+     "key": "G",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 75,
+     "y": 23,
+     "key": "G",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 76,
+     "y": 23,
+     "key": "G",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 77,
+     "y": 23,
+     "key": "H",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 73,
+     "y": 24,
+     "key": "s",
+     "from": "hand_near",
+     "to": "face_skin"
+    },
+    {
+     "x": 74,
+     "y": 24,
+     "key": "G",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 75,
+     "y": 24,
+     "key": "H",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 73,
+     "y": 25,
+     "key": "S",
+     "from": "hand_near",
+     "to": "face_skin"
+    },
+    {
+     "x": 74,
+     "y": 25,
+     "key": "s",
+     "from": "hand_near",
+     "to": "face_skin"
+    },
+    {
+     "x": 74,
+     "y": 26,
+     "key": "S",
+     "from": "hand_near",
+     "to": "face_skin"
+    },
+    {
+     "x": 73,
+     "y": 27,
+     "key": "S",
+     "from": "hand_near",
+     "to": "face_skin"
+    },
+    {
+     "x": 73,
+     "y": 28,
+     "key": "s",
+     "from": "hand_near",
+     "to": "face_skin"
+    },
+    {
+     "x": 73,
+     "y": 29,
+     "key": "s",
+     "from": "hand_near",
+     "to": "face_skin"
+    },
+    {
+     "x": 72,
+     "y": 30,
+     "key": "s",
+     "from": "hand_near",
+     "to": "face_skin"
+    }
+   ],
+   "zones": {
+    "cover_shirt_torso": 148,
+    "grow_outside_silhouette": 68,
+    "grow_visible": 68,
+    "pauldron_near": 111,
+    "pauldron_near_over_sleeve": 44,
+    "pauldron_far": 111,
+    "always_front": 669,
+    "sleeve_near_front_of_torso_armor": 105,
+    "behind_far_limbs": 749
+   },
+   "anchors": {
+    "near": [
+     61.03,
+     38.986
+    ],
+    "far": [
+     56.974,
+     39.011
+    ]
+   }
+  },
+  "run_c1_2": {
+   "grid_vs_png_diff": 0,
+   "opaque_texels": 2458,
+   "layer_texels": 2458,
+   "overlapping_texels": 0,
+   "reconstruction_diff_pixels": 0,
+   "layers": {
+    "boots": 277,
+    "boots_far": 215,
+    "bracer_far": 4,
+    "bracer_near": 1,
+    "face_skin": 106,
+    "hair_back": 421,
+    "hair_front": 57,
+    "hand_far": 80,
+    "hand_near": 107,
+    "shirt_torso": 232,
+    "sleeve_far": 23,
+    "sleeve_near": 164,
+    "trousers": 379,
+    "trousers_far": 392
+   },
+   "hair_face_fixed": [
+    {
+     "x": 70,
+     "y": 14,
+     "key": "h",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 70,
+     "y": 15,
+     "key": "w",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 71,
+     "y": 15,
+     "key": "w",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 72,
+     "y": 15,
+     "key": "w",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 70,
+     "y": 16,
+     "key": "w",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 71,
+     "y": 16,
+     "key": "w",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 72,
+     "y": 16,
+     "key": "w",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 73,
+     "y": 16,
+     "key": "w",
+     "from": "hand_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 74,
+     "y": 16,
+     "key": "w",
+     "from": "hand_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 70,
+     "y": 17,
+     "key": "w",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 71,
+     "y": 17,
+     "key": "w",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 72,
+     "y": 17,
+     "key": "w",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 73,
+     "y": 17,
+     "key": "w",
+     "from": "hand_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 74,
+     "y": 17,
+     "key": "G",
+     "from": "hand_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 75,
+     "y": 17,
+     "key": "w",
+     "from": "hand_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 70,
+     "y": 18,
+     "key": "w",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 71,
+     "y": 18,
+     "key": "w",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 72,
+     "y": 18,
+     "key": "W",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 73,
+     "y": 18,
+     "key": "h",
+     "from": "hand_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 74,
+     "y": 18,
+     "key": "G",
+     "from": "hand_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 75,
+     "y": 18,
+     "key": "G",
+     "from": "hand_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 70,
+     "y": 19,
+     "key": "h",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 71,
+     "y": 19,
+     "key": "w",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 72,
+     "y": 19,
+     "key": "S",
+     "from": "hand_near",
+     "to": "face_skin"
+    },
+    {
+     "x": 73,
+     "y": 19,
+     "key": "s",
+     "from": "hand_near",
+     "to": "face_skin"
+    },
+    {
+     "x": 74,
+     "y": 19,
+     "key": "G",
+     "from": "hand_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 75,
+     "y": 19,
+     "key": "G",
+     "from": "hand_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 76,
+     "y": 19,
+     "key": "w",
+     "from": "hand_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 71,
+     "y": 20,
+     "key": "S",
+     "from": "hand_near",
+     "to": "face_skin"
+    },
+    {
+     "x": 72,
+     "y": 20,
+     "key": "s",
+     "from": "hand_near",
+     "to": "face_skin"
+    },
+    {
+     "x": 73,
+     "y": 20,
+     "key": "S",
+     "from": "hand_near",
+     "to": "face_skin"
+    },
+    {
+     "x": 74,
+     "y": 20,
+     "key": "G",
+     "from": "hand_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 75,
+     "y": 20,
+     "key": "G",
+     "from": "hand_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 76,
+     "y": 20,
+     "key": "h",
+     "from": "hand_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 72,
+     "y": 21,
+     "key": "l",
+     "from": "sleeve_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 73,
+     "y": 21,
+     "key": "s",
+     "from": "hand_near",
+     "to": "face_skin"
+    },
+    {
+     "x": 74,
+     "y": 21,
+     "key": "h",
+     "from": "hand_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 75,
+     "y": 21,
+     "key": "G",
+     "from": "hand_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 76,
+     "y": 21,
+     "key": "G",
+     "from": "hand_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 73,
+     "y": 22,
+     "key": "G",
+     "from": "hand_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 74,
+     "y": 22,
+     "key": "G",
+     "from": "hand_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 75,
+     "y": 22,
+     "key": "G",
+     "from": "hand_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 76,
+     "y": 22,
+     "key": "G",
+     "from": "hand_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 73,
+     "y": 23,
+     "key": "S",
+     "from": "hand_near",
+     "to": "face_skin"
+    },
+    {
+     "x": 74,
+     "y": 23,
+     "key": "G",
+     "from": "hand_near",
+     "to": "hair_front"
+    },
+    {
+     "x": 73,
+     "y": 24,
+     "key": "S",
+     "from": "hand_near",
+     "to": "face_skin"
+    },
+    {
+     "x": 74,
+     "y": 24,
+     "key": "s",
+     "from": "hand_near",
+     "to": "face_skin"
+    }
+   ],
+   "zones": {
+    "cover_shirt_torso": 232,
+    "grow_outside_silhouette": 95,
+    "grow_visible": 95,
+    "pauldron_near": 111,
+    "pauldron_near_over_sleeve": 54,
+    "pauldron_far": 111,
+    "always_front": 692,
+    "sleeve_near_front_of_torso_armor": 110,
+    "behind_far_limbs": 714
+   },
+   "anchors": {
+    "near": [
+     61.003,
+     37.991
+    ],
+    "far": [
+     55.981,
+     38.005
+    ]
+   }
+  },
+  "run_c1_4": {
+   "grid_vs_png_diff": 0,
+   "opaque_texels": 2487,
+   "layer_texels": 2487,
+   "overlapping_texels": 0,
+   "reconstruction_diff_pixels": 0,
+   "layers": {
+    "boots": 259,
+    "boots_far": 216,
+    "bracer_far": 11,
+    "bracer_near": 15,
+    "face_skin": 103,
+    "hair_back": 403,
+    "hair_front": 58,
+    "hand_far": 97,
+    "hand_near": 147,
+    "shirt_torso": 278,
+    "sleeve_far": 54,
+    "sleeve_near": 95,
+    "trousers": 325,
+    "trousers_far": 426
+   },
+   "hair_face_fixed": [
+    {
+     "x": 71,
+     "y": 15,
+     "key": "w",
+     "from": "sleeve_far",
+     "to": "hair_front"
+    },
+    {
+     "x": 72,
+     "y": 15,
+     "key": "W",
+     "from": "sleeve_far",
+     "to": "hair_front"
+    },
+    {
+     "x": 71,
+     "y": 16,
+     "key": "w",
+     "from": "sleeve_far",
+     "to": "hair_front"
+    },
+    {
+     "x": 72,
+     "y": 16,
+     "key": "h",
+     "from": "sleeve_far",
+     "to": "hair_front"
+    },
+    {
+     "x": 73,
+     "y": 16,
+     "key": "h",
+     "from": "sleeve_far",
+     "to": "hair_front"
+    },
+    {
+     "x": 71,
+     "y": 17,
+     "key": "w",
+     "from": "sleeve_far",
+     "to": "hair_front"
+    },
+    {
+     "x": 72,
+     "y": 17,
+     "key": "w",
+     "from": "sleeve_far",
+     "to": "hair_front"
+    },
+    {
+     "x": 73,
+     "y": 17,
+     "key": "w",
+     "from": "sleeve_far",
+     "to": "hair_front"
+    },
+    {
+     "x": 74,
+     "y": 17,
+     "key": "h",
+     "from": "sleeve_far",
+     "to": "hair_front"
+    },
+    {
+     "x": 71,
+     "y": 18,
+     "key": "w",
+     "from": "sleeve_far",
+     "to": "hair_front"
+    },
+    {
+     "x": 72,
+     "y": 18,
+     "key": "w",
+     "from": "sleeve_far",
+     "to": "hair_front"
+    },
+    {
+     "x": 73,
+     "y": 18,
+     "key": "w",
+     "from": "sleeve_far",
+     "to": "hair_front"
+    },
+    {
+     "x": 74,
+     "y": 18,
+     "key": "G",
+     "from": "sleeve_far",
+     "to": "hair_front"
+    },
+    {
+     "x": 75,
+     "y": 18,
+     "key": "h",
+     "from": "hand_far",
+     "to": "hair_front"
+    },
+    {
+     "x": 72,
+     "y": 19,
+     "key": "w",
+     "from": "sleeve_far",
+     "to": "hair_front"
+    },
+    {
+     "x": 73,
+     "y": 19,
+     "key": "G",
+     "from": "sleeve_far",
+     "to": "hair_front"
+    },
+    {
+     "x": 74,
+     "y": 19,
+     "key": "G",
+     "from": "sleeve_far",
+     "to": "hair_front"
+    },
+    {
+     "x": 75,
+     "y": 19,
+     "key": "G",
+     "from": "hand_far",
+     "to": "hair_front"
+    },
+    {
+     "x": 76,
+     "y": 19,
+     "key": "w",
+     "from": "hand_far",
+     "to": "hair_front"
+    },
+    {
+     "x": 73,
+     "y": 20,
+     "key": "s",
+     "from": "hand_far",
+     "to": "face_skin"
+    },
+    {
+     "x": 74,
+     "y": 20,
+     "key": "G",
+     "from": "sleeve_far",
+     "to": "hair_front"
+    },
+    {
+     "x": 75,
+     "y": 20,
+     "key": "G",
+     "from": "hand_far",
+     "to": "hair_front"
+    },
+    {
+     "x": 76,
+     "y": 20,
+     "key": "h",
+     "from": "hand_far",
+     "to": "hair_front"
+    },
+    {
+     "x": 74,
+     "y": 21,
+     "key": "G",
+     "from": "sleeve_far",
+     "to": "hair_front"
+    },
+    {
+     "x": 75,
+     "y": 21,
+     "key": "G",
+     "from": "hand_far",
+     "to": "hair_front"
+    },
+    {
+     "x": 76,
+     "y": 21,
+     "key": "G",
+     "from": "hand_far",
+     "to": "hair_front"
+    },
+    {
+     "x": 74,
+     "y": 22,
+     "key": "G",
+     "from": "sleeve_far",
+     "to": "hair_front"
+    },
+    {
+     "x": 75,
+     "y": 22,
+     "key": "G",
+     "from": "hand_far",
+     "to": "hair_front"
+    },
+    {
+     "x": 76,
+     "y": 22,
+     "key": "G",
+     "from": "hand_far",
+     "to": "hair_front"
+    },
+    {
+     "x": 74,
+     "y": 23,
+     "key": "g",
+     "from": "sleeve_far",
+     "to": "hair_front"
+    },
+    {
+     "x": 75,
+     "y": 23,
+     "key": "H",
+     "from": "hand_far",
+     "to": "hair_front"
+    },
+    {
+     "x": 76,
+     "y": 23,
+     "key": "H",
+     "from": "hand_far",
+     "to": "hair_front"
+    },
+    {
+     "x": 74,
+     "y": 25,
+     "key": "s",
+     "from": "hand_far",
+     "to": "face_skin"
+    },
+    {
+     "x": 72,
+     "y": 29,
+     "key": "S",
+     "from": "hand_far",
+     "to": "face_skin"
+    }
+   ],
+   "zones": {
+    "cover_shirt_torso": 278,
+    "grow_outside_silhouette": 72,
+    "grow_visible": 72,
+    "pauldron_near": 116,
+    "pauldron_near_over_sleeve": 54,
+    "pauldron_far": 111,
+    "always_front": 726,
+    "sleeve_near_front_of_torso_armor": 41,
+    "behind_far_limbs": 804
+   },
+   "anchors": {
+    "near": [
+     56.776,
+     36.561
+    ],
+    "far": [
+     62.776,
+     36.992
+    ]
+   }
+  }
+ }
+}
