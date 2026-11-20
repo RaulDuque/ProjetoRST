@@ -50,3 +50,42 @@ Com a rota pronta, os passos são:
 4. Parar e esperar a sua aprovação.
 
 Nenhuma animação será gerada antes disso.
+
+## Atualização: rota externa (imagem do ChatGPT), sem API
+
+O proprietário vai gerar a imagem fora do projeto, no ChatGPT, e enviá-la para cá. O
+Agent Sprite Forge **não gera nada** nesta rota: ele só lê a imagem recebida.
+
+- **Onde colocar a imagem:** `evidence/erro_corretion/etapa03d/inbox/armour_master.png`
+  (instruções em `inbox/LEIA.md`).
+- **O que mandar ao ChatGPT:** `request_pose/reference.png` mais o texto de `request_pose/prompt.txt`.
+- **Processamento:**
+
+  ```bash
+  python3 -I -B evidence/erro_corretion/etapa03d/scripts/import_external.py \
+    --image evidence/erro_corretion/etapa03d/inbox/armour_master.png --run take01
+  ```
+
+  - **1. Leitura da imagem:** `pixel_look.py pose` (generate2dsprite) lê a imagem
+    sobre a grade do próprio sprite N3.5 (célula de 9 px, master na célula
+    (45, 5)). Só as células que mudaram são aproveitadas; o resto continua sendo o
+    pixel aprovado.
+  - **2. Posicionamento:** o resultado é colocado no canvas 80×128 (pivô 40, 118).
+  - **3. Medição:** o script mede os texels alterados por material da grade N3.4:
+    cabelo, rosto, calça, couro e botas (que devem ficar intactos), além de pele,
+    camisa e contorno. Também conta a silhueta nova e as cores novas.
+  - **4. Saídas, em `runs/<take>/`:**
+    - `comparison.png`;
+    - `preview_1x_2x.png`;
+    - `armour_on_canvas_80x128.png`;
+    - `metrics.json`;
+    - uma cópia da imagem-fonte e o log.
+- **Autoteste da montagem, que não é arte:**
+  - **Imagem sem nenhuma mudança:** `runs/selftest_unchanged_reference/` usa a
+    própria `reference.png`, sem alterações. O `pose` recusa corretamente com
+    "the picture shows no change".
+  - **Posicionamento:** recolocar o master no canvas reproduz o sprite aprovado
+    sem nenhuma diferença.
+- **Limite conhecido:** se a imagem do ChatGPT não mantiver a grade, o `pose` pode
+  recusá-la ou aproveitar pouco. Nesse caso o recomendado é pedir uma nova versão.
+  Não haverá conserto à mão nem desenho por código.
