@@ -94,3 +94,19 @@ mantém a cor e a massa, mas não as linhas finas.
 | `pose/armour.png`, `armour.json`, `armour-review.png` | Saída oficial do `pixel_look pose` |
 | `metrics.json`, `zone_metrics.json` | Métricas |
 | `variants/` | As 3 variações de opções do `pose` |
+
+## Correção (Take 02): restauração do cabelo e a contagem "43"
+
+- **Cabelo real:** pelas camadas aprovadas da N4
+  (`art-src/n4-sprite-machine/stage/parts/idle/hair_back.png` e `hair_front.png`: 235
+  texels, todos iguais ao sprite aprovado), o take01 trocou **24 texels de cabelo**.
+- **De onde vinha o "43":** a contagem usava as chaves de paleta W, w, h e H. Desses 43,
+  só 16 são cabelo nas camadas N4; os outros 27 são sombreado da camisa que usa as mesmas
+  cores.
+- **Restauração:** feita por `scripts/restore_hair.py`, que compõe as duas camadas N4 por
+  cima da armadura, como na ordem de camadas aprovada.
+  - Resultado: **0 texels de cabelo diferentes**.
+  - 24 texels de armadura voltaram a ser cabelo.
+  - Nenhum pixel foi redesenhado.
+- **Arquivos:** `hair_restore/armour_hair_restored_80x128.png`,
+  `hair_restore/hair_restore_comparison.png` e `hair_restore/hair_restore.json`.

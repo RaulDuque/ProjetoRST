@@ -1,0 +1,9 @@
+Create exactly ONE square image.
+
+One image is attached: a pixel-art game sprite on a flat green (#00FF00) background, shown enlarged. Every square of 9 px in it is one pixel of the sprite.
+
+Reproduce the attached image: the same single figure at exactly the same size and in the same place on the canvas, the same pixel art on the same coarse, regular square pixel grid, every pixel exactly as large as in the attached image, one flat colour per pixel, hard edges, the same dark outline one pixel wide, the same colours.
+
+THE ONLY CHANGE: he now wears a gothic medieval fantasy armour in deep purple and gold over the torso and arms only, drawn with LARGE simple shapes on this same coarse pixel grid: (1) a breastplate with a clearly visible central keel ridge running from the collar to the waist, shown by one bright purple column of pixels next to one dark purple column; (2) angular pauldrons made of three overlapping plates stepping down the upper arm, flat plates with straight edges, not round; (3) plate vambraces on the forearms; (4) a short plated waist with two tassets over the hips. Every gold edge band is at least 2 grid pixels thick, flat gold with no thin lines; use few details, no parallel stripes, no tiny rivets. The long silver hair stays EXACTLY as in the attached image and lies OVER the pauldron and the back plate (hair in front of the armour). The face, neck line, trousers, boots, hands, proportions, position and the side view facing right are unchanged pixel for pixel. Every pixel is one flat colour on the same square grid with a 1-pixel dark outline; no anti-aliasing, no blur, no gradients, no soft edges.
+
+Everything that the change does not name is NOT redrawn: it stays exactly as it is, pixel for pixel, in the same place. The background stays the same flat pure green (#00FF00) everywhere, with no shadow and nothing else in the picture.

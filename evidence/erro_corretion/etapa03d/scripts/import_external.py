@@ -121,6 +121,7 @@ def main() -> None:
     parser.add_argument("--run", required=True, help="name of a new folder under etapa03d/runs/")
     parser.add_argument("--new-colours", type=int, default=12, help="most colours the armour may add")
     parser.add_argument("--smallest", type=int, default=10, help="smallest changed group kept (cells)")
+    parser.add_argument("--request", type=Path, default=REQUEST, help="the ask-pose folder (same lattice)")
     args = parser.parse_args()
     run = STAGE / "runs" / args.run
     if run.exists():
@@ -132,7 +133,7 @@ def main() -> None:
     env = dict(os.environ, PATH=f"{VENV / 'bin'}:{os.environ.get('PATH', '')}")
     result = subprocess.run(
         [str(VENV / "bin/python"), str(ASF / "generate2dsprite/scripts/pixel_look.py"), "pose", "--image", str(source),
-         "--request", str(REQUEST), "--name", "armour", "--new-colours", str(args.new_colours),
+         "--request", str(args.request), "--name", "armour", "--new-colours", str(args.new_colours),
          "--smallest", str(args.smallest), "--output-dir", str(run / "pose")],
         capture_output=True, text=True, env=env, check=False)
     (run / "pixel_look_pose.log").write_text(result.stdout + result.stderr)

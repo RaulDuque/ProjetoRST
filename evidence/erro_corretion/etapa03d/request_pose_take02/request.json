@@ -1,0 +1,30 @@
+{
+ "schema": "generate2dsprite.pixel_look_request.v1",
+ "tool": "pixel_look",
+ "kind": "pose",
+ "key": "green",
+ "cell": 9,
+ "canvas": [
+  1024,
+  1024
+ ],
+ "masterAt": [
+  45,
+  5
+ ],
+ "master": {
+  "file": "master.png",
+  "sha256": "09968163f23528b03feb4e7ed17fa4e2bc116edc9372b67c4133ef19a7dce091",
+  "size": [
+   23,
+   106
+  ]
+ },
+ "references": [
+  "reference.png"
+ ],
+ "size": "1024x1024",
+ "next": "route_media.py image --prompt-file prompt.txt --reference reference.png --size 1024x1024 --out-dir <take>; then pixel_look.py pose --image <take>/generated.png --request <this folder>",
+ "change": "he now wears a gothic medieval fantasy armour in deep purple and gold over the torso and arms only, drawn with LARGE simple shapes on this same coarse pixel grid: (1) a breastplate with a clearly visible central keel ridge running from the collar to the waist, shown by one bright purple column of pixels next to one dark purple column; (2) angular pauldrons made of three overlapping plates stepping down the upper arm, flat plates with straight edges, not round; (3) plate vambraces on the forearms; (4) a short plated waist with two tassets over the hips. Every gold edge band is at least 2 grid pixels thick, flat gold with no thin lines; use few details, no parallel stripes, no tiny rivets. The long silver hair stays EXACTLY as in the attached image and lies OVER the pauldron and the back plate (hair in front of the armour). The face, neck line, trousers, boots, hands, proportions, position and the side view facing right are unchanged pixel for pixel. Every pixel is one flat colour on the same square grid with a 1-pixel dark outline; no anti-aliasing, no blur, no gradients, no soft edges",
+ "outline": "rule"
+}
