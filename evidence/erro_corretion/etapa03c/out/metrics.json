@@ -1,0 +1,211 @@
+{
+ "A1_video2dsprite": {
+  "loop": {
+   "start": 127,
+   "endExclusive": 139,
+   "frames": 12,
+   "source": "clean frames of the run video from 1.5 s (24 fps)"
+  },
+  "n36_run6": {
+   "frames": 6,
+   "colours_per_frame": [
+    17,
+    17,
+    17,
+    17,
+    17,
+    17
+   ],
+   "feet_x": [
+    86.29411764705883,
+    51.5,
+    102.0,
+    81.5625,
+    61.5,
+    101.0
+   ]
+  },
+  "asf_pixel": {
+   "frames": 12,
+   "colours_per_frame": [
+    22,
+    22,
+    22,
+    22,
+    22,
+    22,
+    22,
+    22,
+    22,
+    22,
+    22,
+    22
+   ],
+   "colours_total": 22,
+   "feet_x": [
+    79.0,
+    80.0,
+    74.0,
+    52.4,
+    42.5,
+    31.0,
+    77.0,
+    74.5,
+    70.5,
+    53.5,
+    35.5,
+    52.55555555555556
+   ]
+  },
+  "asf_hibit": {
+   "frames": 12,
+   "colours_per_frame": [
+    17,
+    17,
+    17,
+    17,
+    17,
+    17,
+    17,
+    17,
+    17,
+    17,
+    17,
+    17
+   ],
+   "colours_total": 17,
+   "feet_x": [
+    79.0,
+    80.0,
+    71.0,
+    52.4,
+    42.5,
+    30.5,
+    77.0,
+    74.5,
+    70.5,
+    60.5,
+    35.5,
+    52.111111111111114
+   ]
+  }
+ },
+ "A3_pixel_motion_roundtrip": {
+  "picked_video_frames": [
+   18,
+   20,
+   22,
+   24,
+   26,
+   28
+  ],
+  "cycle": {
+   "mode": "cycle",
+   "period": 12,
+   "start": 18,
+   "closure": 49,
+   "cycleSeconds": 0.5
+  },
+  "drawings": [
+   {
+    "drawing": 3,
+    "same_box": true,
+    "changed_px": 116,
+    "opaque_px": 2242,
+    "kept_pct": 94.83
+   },
+   {
+    "drawing": 4,
+    "same_box": true,
+    "changed_px": 134,
+    "opaque_px": 2487,
+    "kept_pct": 94.61
+   },
+   {
+    "drawing": 5,
+    "same_box": true,
+    "changed_px": 134,
+    "opaque_px": 2528,
+    "kept_pct": 94.7
+   },
+   {
+    "drawing": 0,
+    "same_box": true,
+    "changed_px": 139,
+    "opaque_px": 2219,
+    "kept_pct": 93.74
+   },
+   {
+    "drawing": 1,
+    "same_box": true,
+    "changed_px": 173,
+    "opaque_px": 2439,
+    "kept_pct": 92.91
+   },
+   {
+    "drawing": 2,
+    "same_box": true,
+    "changed_px": 203,
+    "opaque_px": 2458,
+    "kept_pct": 91.74
+   }
+  ]
+ },
+ "A4_pixel_look_master": {
+  "original_size": [
+   23,
+   106
+  ],
+  "master_size": [
+   23,
+   107
+  ],
+  "colours_master": 48,
+  "colours_original": 17,
+  "texels_close_pct": 78.89,
+  "row_offset": 1,
+  "tolerance": "sum |dRGB| <= 36"
+ },
+ "B_pixelfx": {
+  "sword-slash": {
+   "frames": 24,
+   "frame_size": [
+    136,
+    104
+   ],
+   "fps": 30,
+   "loop": false,
+   "pivot": [
+    44,
+    92
+   ],
+   "duration_s": 0.792,
+   "colours": 4883,
+   "act": [
+    {
+     "t": 0.06,
+     "freeze": 0.14,
+     "shake": 0.18,
+     "amp": 2,
+     "push": 2.8
+    }
+   ]
+  },
+  "magic-circle-cast": {
+   "frames": 118,
+   "frame_size": [
+    200,
+    220
+   ],
+   "fps": 30,
+   "loop": false,
+   "pivot": [
+    100,
+    192
+   ],
+   "duration_s": 3.894,
+   "colours": 53574,
+   "act": null
+  }
+ }
+}

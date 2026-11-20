@@ -1,0 +1,9 @@
+// PROPOSAL (Etapa 03C) - not loaded by the game. Atlas lines go in `atlases`, clip lines in
+// `clips` of assets/animations/player.ron; the PNGs would go to assets/sprites/player/.
+// A skill uses one by setting vfx: "<key>" in assets/data/skills|spells/*.ron.
+
+        "effects_pixelfx_slash_gothic": (texture: "sprites/player/effects_pixelfx_slash_gothic.png", cell: (136, 104), columns: 8, rows: 2, padding: 2, density: 2),
+        "vfx_pixelfx_slash_gothic": (atlas: "effects_pixelfx_slash_gothic", first: 0, count: 12, mode: Once(fps: 15.151515), pivot: (44.0, 92.0), fallback: None, durations: [0.066, 0.066, 0.066, 0.066, 0.066, 0.066, 0.066, 0.066, 0.066, 0.066, 0.066, 0.066], speed_reference: None),
+
+        "effects_pixelfx_circle_gothic": (texture: "sprites/player/effects_pixelfx_circle_gothic.png", cell: (200, 220), columns: 8, rows: 5, padding: 2, density: 2),
+        "vfx_pixelfx_circle_gothic": (atlas: "effects_pixelfx_circle_gothic", first: 0, count: 40, mode: Once(fps: 10.272214), pivot: (100.0, 192.0), fallback: None, durations: [0.099, 0.099, 0.099, 0.099, 0.099, 0.099, 0.099, 0.099, 0.099, 0.099, 0.099, 0.099, 0.099, 0.099, 0.099, 0.099, 0.099, 0.099, 0.099, 0.099, 0.099, 0.099, 0.099, 0.099, 0.099, 0.099, 0.099, 0.099, 0.099, 0.099, 0.099, 0.099, 0.099, 0.099, 0.099, 0.099, 0.099, 0.099, 0.099, 0.033], speed_reference: None),

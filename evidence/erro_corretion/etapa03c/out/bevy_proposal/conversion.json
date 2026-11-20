@@ -1,0 +1,48 @@
+[
+ {
+  "pixelfx": "melee/sword-slash",
+  "vfx_key": "pixelfx_slash_gothic",
+  "frames_in": 24,
+  "frames_out": 12,
+  "duration_s": 0.792,
+  "cell": [
+   136,
+   104
+  ],
+  "atlas_size": [
+   1102,
+   210
+  ],
+  "colours_before": 4883,
+  "colours_after": 7,
+  "density": 2,
+  "act_hits": [
+   {
+    "t": 0.06,
+    "freeze": 0.14,
+    "shake": 0.18,
+    "amp": 2,
+    "push": 2.8
+   }
+  ]
+ },
+ {
+  "pixelfx": "arcane/magic-circle-cast",
+  "vfx_key": "pixelfx_circle_gothic",
+  "frames_in": 118,
+  "frames_out": 40,
+  "duration_s": 3.894,
+  "cell": [
+   200,
+   220
+  ],
+  "atlas_size": [
+   1614,
+   1108
+  ],
+  "colours_before": 53574,
+  "colours_after": 5,
+  "density": 2,
+  "act_hits": null
+ }
+]

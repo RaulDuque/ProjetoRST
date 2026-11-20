@@ -1,0 +1,1 @@
+{"ffmpeg": "/home/raul/.local/share/dc-art-tools/asf-venv/bin/ffmpeg", "ffprobe": "/home/raul/.local/share/dc-art-tools/asf-venv/bin/ffprobe", "version": "n8.0.1-48-g0592be14ff-20260116", "functional": {"vp9_alpha": true, "libx264": true}, "errors": {}, "webm": true, "packed": true, "png": true}
