@@ -2,3 +2,6 @@
 *.blend
 *.blend1
 __pycache__/
+# Etapa 03B: the refined armour model is versioned (1.5 MB) so the stage stays reproducible
+# even without Blender; the work copy and .blend1 backups stay ignored.
+!etapa03b/work/armor_refined_v002.blend

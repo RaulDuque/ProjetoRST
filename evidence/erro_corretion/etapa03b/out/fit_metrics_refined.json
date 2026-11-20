@@ -1,0 +1,86 @@
+{
+ "idle": {
+  "before_etapa03": {
+   "shirt_torso_texels": 105,
+   "shirt_covered": 105,
+   "shirt_exposed": 0,
+   "armour_texels": 762,
+   "armour_visible_after_front_layers": 467,
+   "silhouette_growth_texels": 239
+  },
+  "after_etapa03b": {
+   "shirt_torso_texels": 105,
+   "shirt_covered": 105,
+   "shirt_exposed": 0,
+   "armour_texels": 822,
+   "armour_visible_after_front_layers": 513,
+   "silhouette_growth_texels": 285,
+   "gorget_texels": 127,
+   "gorget_visible_after_front_layers": 78,
+   "bare_reconstruction_diff_px_at_preview": 0
+  }
+ },
+ "run_c1_0": {
+  "before_etapa03": {
+   "shirt_torso_texels": 148,
+   "shirt_covered": 147,
+   "shirt_exposed": 1,
+   "armour_texels": 796,
+   "armour_visible_after_front_layers": 509,
+   "silhouette_growth_texels": 158
+  },
+  "after_etapa03b": {
+   "shirt_torso_texels": 148,
+   "shirt_covered": 148,
+   "shirt_exposed": 0,
+   "armour_texels": 868,
+   "armour_visible_after_front_layers": 544,
+   "silhouette_growth_texels": 182,
+   "gorget_texels": 126,
+   "gorget_visible_after_front_layers": 22,
+   "bare_reconstruction_diff_px_at_preview": 0
+  }
+ },
+ "run_c1_2": {
+  "before_etapa03": {
+   "shirt_torso_texels": 232,
+   "shirt_covered": 231,
+   "shirt_exposed": 1,
+   "armour_texels": 837,
+   "armour_visible_after_front_layers": 513,
+   "silhouette_growth_texels": 132
+  },
+  "after_etapa03b": {
+   "shirt_torso_texels": 232,
+   "shirt_covered": 231,
+   "shirt_exposed": 1,
+   "armour_texels": 930,
+   "armour_visible_after_front_layers": 565,
+   "silhouette_growth_texels": 167,
+   "gorget_texels": 131,
+   "gorget_visible_after_front_layers": 7,
+   "bare_reconstruction_diff_px_at_preview": 0
+  }
+ },
+ "run_c1_4": {
+  "before_etapa03": {
+   "shirt_torso_texels": 278,
+   "shirt_covered": 249,
+   "shirt_exposed": 29,
+   "armour_texels": 883,
+   "armour_visible_after_front_layers": 586,
+   "silhouette_growth_texels": 108
+  },
+  "after_etapa03b": {
+   "shirt_torso_texels": 278,
+   "shirt_covered": 277,
+   "shirt_exposed": 1,
+   "armour_texels": 964,
+   "armour_visible_after_front_layers": 648,
+   "silhouette_growth_texels": 145,
+   "gorget_texels": 130,
+   "gorget_visible_after_front_layers": 43,
+   "bare_reconstruction_diff_px_at_preview": 0
+  }
+ }
+}

@@ -1,0 +1,550 @@
+{
+ "engine": "BLENDER_EEVEE",
+ "params": {
+  "segments": 72,
+  "plate_standoff": 0.056,
+  "plate_side": 0.032,
+  "plate_thickness": 0.014,
+  "keel": 0.034,
+  "keel_power": 24,
+  "plate_top": 1.465,
+  "neck_dip": 0.012,
+  "armhole": 0.07,
+  "plate_bottom": 1.13,
+  "plackart_point": 0.055,
+  "lames": 3,
+  "lame_step": 0.034,
+  "lame_height": 0.046,
+  "lame_grow": 0.005,
+  "tasset_top": 1.03,
+  "tasset_flare": 0.022,
+  "tasset_height": 0.072,
+  "tasset_step": 0.058,
+  "gorget_bottom": 1.425,
+  "gorget_back": 1.55,
+  "gorget_front": 1.545,
+  "gorget_flare": 0.05,
+  "pauldron_radius": 0.11,
+  "pauldron_flatten": 0.34,
+  "pauldron_segments": 12,
+  "pauldron_rows": 4,
+  "pauldron_ridge": 0.016,
+  "pauldron_point_deg": 28,
+  "pauldron_lames": 3,
+  "pauldron_thickness": 0.012,
+  "lame_out_step": 0.01,
+  "crest_height": 0.026,
+  "rim_inner_cut": 0.3,
+  "band_main": 0.03,
+  "band_minor": 0.02,
+  "band_thickness": 0.005,
+  "rivet": 0.012,
+  "sharp_deg": 24
+ },
+ "torso_sections": [
+  [
+   0.96,
+   -0.097,
+   0.092,
+   0.141
+  ],
+  [
+   1.02,
+   -0.091,
+   0.09,
+   0.133
+  ],
+  [
+   1.08,
+   -0.081,
+   0.093,
+   0.126
+  ],
+  [
+   1.14,
+   -0.079,
+   0.097,
+   0.124
+  ],
+  [
+   1.2,
+   -0.076,
+   0.106,
+   0.136
+  ],
+  [
+   1.26,
+   -0.079,
+   0.115,
+   0.148
+  ],
+  [
+   1.32,
+   -0.082,
+   0.117,
+   0.157
+  ],
+  [
+   1.38,
+   -0.084,
+   0.108,
+   0.164
+  ],
+  [
+   1.44,
+   -0.085,
+   0.085,
+   0.167
+  ]
+ ],
+ "pieces": [
+  [
+   "armor_breastplate",
+   "torso",
+   "breastplate",
+   "chest"
+  ],
+  [
+   "armor_breastplate_band_bottom",
+   "torso",
+   "breastplate",
+   "chest"
+  ],
+  [
+   "armor_breastplate_band_top",
+   "torso",
+   "breastplate",
+   "chest"
+  ],
+  [
+   "armor_breastplate_keel",
+   "torso",
+   "breastplate",
+   "chest"
+  ],
+  [
+   "armor_breastplate_rib_far",
+   "torso",
+   "breastplate",
+   "chest"
+  ],
+  [
+   "armor_breastplate_rib_near",
+   "torso",
+   "breastplate",
+   "chest"
+  ],
+  [
+   "armor_gorget",
+   "torso",
+   "gorget",
+   "chest"
+  ],
+  [
+   "armor_gorget_band",
+   "torso",
+   "gorget",
+   "chest"
+  ],
+  [
+   "armor_lame_0",
+   "torso",
+   "abdomen",
+   "spine_01"
+  ],
+  [
+   "armor_lame_1",
+   "torso",
+   "abdomen",
+   "spine_01"
+  ],
+  [
+   "armor_lame_1_rivet_0",
+   "torso",
+   "abdomen",
+   "spine_01"
+  ],
+  [
+   "armor_lame_1_rivet_65",
+   "torso",
+   "abdomen",
+   "spine_01"
+  ],
+  [
+   "armor_lame_1_rivet_7",
+   "torso",
+   "abdomen",
+   "spine_01"
+  ],
+  [
+   "armor_lame_2",
+   "torso",
+   "abdomen",
+   "pelvis"
+  ],
+  [
+   "armor_lame_2_band",
+   "torso",
+   "abdomen",
+   "pelvis"
+  ],
+  [
+   "armor_pauldron_far_cop",
+   "pauldron_far",
+   "pauldron_far",
+   "upper_arm.L"
+  ],
+  [
+   "armor_pauldron_far_crest",
+   "pauldron_far",
+   "pauldron_far",
+   "upper_arm.L"
+  ],
+  [
+   "armor_pauldron_far_lame_0",
+   "pauldron_far",
+   "pauldron_far",
+   "upper_arm.L"
+  ],
+  [
+   "armor_pauldron_far_lame_0_rivet",
+   "pauldron_far",
+   "pauldron_far",
+   "upper_arm.L"
+  ],
+  [
+   "armor_pauldron_far_lame_1",
+   "pauldron_far",
+   "pauldron_far",
+   "upper_arm.L"
+  ],
+  [
+   "armor_pauldron_far_lame_1_rivet",
+   "pauldron_far",
+   "pauldron_far",
+   "upper_arm.L"
+  ],
+  [
+   "armor_pauldron_far_lame_2",
+   "pauldron_far",
+   "pauldron_far",
+   "upper_arm.L"
+  ],
+  [
+   "armor_pauldron_far_lame_2_band",
+   "pauldron_far",
+   "pauldron_far",
+   "upper_arm.L"
+  ],
+  [
+   "armor_pauldron_far_lame_2_rivet",
+   "pauldron_far",
+   "pauldron_far",
+   "upper_arm.L"
+  ],
+  [
+   "armor_pauldron_far_rim",
+   "pauldron_far",
+   "pauldron_far",
+   "upper_arm.L"
+  ],
+  [
+   "armor_pauldron_near_cop",
+   "pauldron_near",
+   "pauldron_near",
+   "upper_arm.R"
+  ],
+  [
+   "armor_pauldron_near_crest",
+   "pauldron_near",
+   "pauldron_near",
+   "upper_arm.R"
+  ],
+  [
+   "armor_pauldron_near_lame_0",
+   "pauldron_near",
+   "pauldron_near",
+   "upper_arm.R"
+  ],
+  [
+   "armor_pauldron_near_lame_0_rivet",
+   "pauldron_near",
+   "pauldron_near",
+   "upper_arm.R"
+  ],
+  [
+   "armor_pauldron_near_lame_1",
+   "pauldron_near",
+   "pauldron_near",
+   "upper_arm.R"
+  ],
+  [
+   "armor_pauldron_near_lame_1_rivet",
+   "pauldron_near",
+   "pauldron_near",
+   "upper_arm.R"
+  ],
+  [
+   "armor_pauldron_near_lame_2",
+   "pauldron_near",
+   "pauldron_near",
+   "upper_arm.R"
+  ],
+  [
+   "armor_pauldron_near_lame_2_band",
+   "pauldron_near",
+   "pauldron_near",
+   "upper_arm.R"
+  ],
+  [
+   "armor_pauldron_near_lame_2_rivet",
+   "pauldron_near",
+   "pauldron_near",
+   "upper_arm.R"
+  ],
+  [
+   "armor_pauldron_near_rim",
+   "pauldron_near",
+   "pauldron_near",
+   "upper_arm.R"
+  ],
+  [
+   "armor_tasset_far_front_0",
+   "far_low",
+   "tasset",
+   "thigh.L"
+  ],
+  [
+   "armor_tasset_far_front_1",
+   "far_low",
+   "tasset",
+   "thigh.L"
+  ],
+  [
+   "armor_tasset_far_front_1_band",
+   "far_low",
+   "tasset",
+   "thigh.L"
+  ],
+  [
+   "armor_tasset_far_side_0",
+   "far_low",
+   "tasset",
+   "thigh.L"
+  ],
+  [
+   "armor_tasset_far_side_1",
+   "far_low",
+   "tasset",
+   "thigh.L"
+  ],
+  [
+   "armor_tasset_far_side_1_band",
+   "far_low",
+   "tasset",
+   "thigh.L"
+  ],
+  [
+   "armor_tasset_near_front_0",
+   "torso",
+   "tasset",
+   "thigh.R"
+  ],
+  [
+   "armor_tasset_near_front_1",
+   "torso",
+   "tasset",
+   "thigh.R"
+  ],
+  [
+   "armor_tasset_near_front_1_band",
+   "torso",
+   "tasset",
+   "thigh.R"
+  ],
+  [
+   "armor_tasset_near_side_0",
+   "torso",
+   "tasset",
+   "thigh.R"
+  ],
+  [
+   "armor_tasset_near_side_1",
+   "torso",
+   "tasset",
+   "thigh.R"
+  ],
+  [
+   "armor_tasset_near_side_1_band",
+   "torso",
+   "tasset",
+   "thigh.R"
+  ]
+ ],
+ "idle_shoulders": {
+  "R": {
+   "rot_x_deg": 10.5,
+   "rot_z_deg": -29.0,
+   "shoulder_px": [
+    36.71,
+    34.091
+   ]
+  },
+  "L": {
+   "rot_x_deg": -8.0,
+   "rot_z_deg": 29.0,
+   "shoulder_px": [
+    36.708,
+    34.06
+   ]
+  }
+ },
+ "run_c1_4_lean": {
+  "spine_01_deg": 10.0,
+  "spine_02_deg": -7.0,
+  "before": {
+   "exposed_proxy": 22,
+   "neck_px": [
+    61.477,
+    32.451
+   ]
+  },
+  "after": {
+   "exposed_proxy": 3,
+   "neck_err_px": 0.354,
+   "search_exposed_proxy": 3
+  },
+  "sprite_neck": [
+   64,
+   33
+  ],
+  "clavicles": {
+   "R": {
+    "rot_x_deg": 8.25,
+    "rot_z_deg": -14.5,
+    "residual_px": 0.024
+   },
+   "L": {
+    "rot_x_deg": -2.5,
+    "rot_z_deg": 13.0,
+    "residual_px": 0.032
+   }
+  },
+  "landmarks_after": {
+   "neck": [
+    63.659,
+    33.095
+   ],
+   "near_shoulder": [
+    56.977,
+    38.007
+   ],
+   "far_shoulder": [
+    63.03,
+    38.012
+   ],
+   "near_elbow": [
+    44.054,
+    45.967
+   ],
+   "near_wrist": [
+    54.104,
+    55.095
+   ],
+   "far_elbow": [
+    70.369,
+    50.635
+   ],
+   "far_wrist": [
+    80.425,
+    41.892
+   ],
+   "waist": [
+    55.544,
+    58.908
+   ]
+  }
+ },
+ "poses": {
+  "idle": {
+   "action": "FIT03B_idle",
+   "scale_px_per_m": 58.53349858713663,
+   "canvas": [
+    80,
+    128
+   ],
+   "pivot": [
+    40,
+    118
+   ]
+  },
+  "run_c1_0": {
+   "action": "FIT02B_run_c1_0",
+   "scale_px_per_m": 58.53349858713663,
+   "canvas": [
+    112,
+    128
+   ],
+   "pivot": [
+    56,
+    118
+   ]
+  },
+  "run_c1_2": {
+   "action": "FIT02B_run_c1_2",
+   "scale_px_per_m": 58.53349858713663,
+   "canvas": [
+    112,
+    128
+   ],
+   "pivot": [
+    56,
+    118
+   ]
+  },
+  "run_c1_4": {
+   "action": "FIT03B_run_c1_4",
+   "scale_px_per_m": 58.53349858713663,
+   "canvas": [
+    112,
+    128
+   ],
+   "pivot": [
+    56,
+    118
+   ]
+  }
+ },
+ "intersections_triangle_pairs": {
+  "idle": {
+   "pauldron_near_vs_torso": 520,
+   "pauldron_far_vs_torso": 513,
+   "breastplate_vs_abdomen": 318,
+   "tassets_vs_abdomen": 338
+  },
+  "run_c1_0": {
+   "pauldron_near_vs_torso": 761,
+   "pauldron_far_vs_torso": 523,
+   "breastplate_vs_abdomen": 328,
+   "tassets_vs_abdomen": 556
+  },
+  "run_c1_2": {
+   "pauldron_near_vs_torso": 534,
+   "pauldron_far_vs_torso": 440,
+   "breastplate_vs_abdomen": 386,
+   "tassets_vs_abdomen": 1218
+  },
+  "run_c1_4_before_lean": {
+   "pauldron_near_vs_torso": 299,
+   "pauldron_far_vs_torso": 264,
+   "breastplate_vs_abdomen": 414,
+   "tassets_vs_abdomen": 807
+  },
+  "run_c1_4": {
+   "pauldron_near_vs_torso": 263,
+   "pauldron_far_vs_torso": 293,
+   "breastplate_vs_abdomen": 316,
+   "tassets_vs_abdomen": 835
+  }
+ }
+}

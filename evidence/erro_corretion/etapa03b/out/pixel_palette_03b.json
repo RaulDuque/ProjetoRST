@@ -1,0 +1,53 @@
+{
+ "status": "experimental proposal, not approved",
+ "purple": {
+  "V1": [
+   150,
+   108,
+   178
+  ],
+  "V2": [
+   114,
+   74,
+   146
+  ],
+  "V3": [
+   84,
+   50,
+   114
+  ],
+  "V4": [
+   58,
+   32,
+   82
+  ],
+  "V5": [
+   38,
+   20,
+   54
+  ]
+ },
+ "gold": {
+  "Y1": [
+   238,
+   208,
+   122
+  ],
+  "Y2": [
+   196,
+   148,
+   66
+  ],
+  "Y3": [
+   124,
+   84,
+   40
+  ]
+ },
+ "outline": [
+  26,
+  20,
+  26
+ ],
+ "base_palette": "N3.4 (art-src/n3-4-original-protagonist/scripts/n34_palette.py)"
+}
