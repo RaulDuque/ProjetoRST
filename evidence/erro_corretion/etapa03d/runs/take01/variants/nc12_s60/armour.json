@@ -1,0 +1,116 @@
+{
+ "schema": "generate2dsprite.pixel_look.v2",
+ "tool": "pixel_look",
+ "kind": "pose",
+ "name": "armour",
+ "size": [
+  24,
+  106
+ ],
+ "cells": 1415,
+ "colours": 29,
+ "palette": [
+  "#1a141a",
+  "#2c2226",
+  "#2e2424",
+  "#394020",
+  "#3e3032",
+  "#411a3e",
+  "#463632",
+  "#48444e",
+  "#4b1f48",
+  "#584646",
+  "#60342e",
+  "#622a62",
+  "#644522",
+  "#682f58",
+  "#68544a",
+  "#68646c",
+  "#686c82",
+  "#7e5d26",
+  "#8a868c",
+  "#926256",
+  "#9ca0b4",
+  "#9e7330",
+  "#b48632",
+  "#cc9a7e",
+  "#ccceda",
+  "#ce9f3b",
+  "#d7a841",
+  "#ecc8ac",
+  "#eeeef4"
+ ],
+ "feet": {
+  "middle": 14.0,
+  "row": 105
+ },
+ "anchor": [
+  14.5,
+  106
+ ],
+ "change": "he now wears an original gothic medieval fantasy armour over his grey shirt, dark trousers and boots: a structured enamelled deep-purple breastplate with a raised central ridge and broad flat gold edge bands, angular layered plate pauldrons (flat planes, not round), purple plate vambraces over the forearms with gold rims, and a plated waist with short tassets over the hips; the shirt is hidden where the armour covers it; trousers, boots, face, long silver hair and the side view facing right stay exactly the same; bold readable shapes, no thin wires, no glossy plastic shine",
+ "masterAt": [
+  0,
+  0
+ ],
+ "lattice": {
+  "cell": 11.021,
+  "offset": [
+   -0.0,
+   -0.0
+  ],
+  "equal": 799,
+  "cells": 1320,
+  "share": 0.6053
+ },
+ "taken": {
+  "how": "the differing groups of 60 cells or more (nothing new lies outside the silhouette)",
+  "pictureEqual": 853,
+  "cellsTaken": 552,
+  "newCells": 86,
+  "cellsEmptied": 4
+ },
+ "masterCellsKept": 854,
+ "masterCells": 1320,
+ "masterKeptShare": 0.647,
+ "newColours": 12,
+ "edge": {
+  "keyMixed": {
+   "removed": 0,
+   "darkened": 9
+  },
+  "keyTinted": 4,
+  "keyNear": 0,
+  "keyHoles": 0,
+  "keyInked": 1,
+  "keySpill": {
+   "removed": 0,
+   "recoloured": 0
+  },
+  "islandCells": 0
+ },
+ "outline": {
+  "line": [
+   26,
+   20,
+   26
+  ],
+  "specks": 1,
+  "bareCells": 15,
+  "lineCellsAdded": 15,
+  "closed": true,
+  "offset": [
+   0,
+   0
+  ],
+  "mode": "rule"
+ },
+ "source": {
+  "image": "/home/raul/\u00c1rea de trabalho/Andvarion/ProjetoRST/evidence/erro_corretion/etapa03d/runs/take01/source.png",
+  "sha256": "d5aed573380b521e1293c79bc45e2507a584133cda14ab4b64869ccfda2a7d9c"
+ },
+ "files": {
+  "sprite": "armour.png",
+  "review": "armour-review.png"
+ }
+}
