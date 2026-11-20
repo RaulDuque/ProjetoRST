@@ -1,0 +1,30 @@
+{
+ "schema": "generate2dsprite.pixel_look_request.v1",
+ "tool": "pixel_look",
+ "kind": "pose",
+ "key": "green",
+ "cell": 9,
+ "canvas": [
+  1024,
+  1024
+ ],
+ "masterAt": [
+  45,
+  5
+ ],
+ "master": {
+  "file": "master.png",
+  "sha256": "09968163f23528b03feb4e7ed17fa4e2bc116edc9372b67c4133ef19a7dce091",
+  "size": [
+   23,
+   106
+  ]
+ },
+ "references": [
+  "reference.png"
+ ],
+ "size": "1024x1024",
+ "next": "route_media.py image --prompt-file prompt.txt --reference reference.png --size 1024x1024 --out-dir <take>; then pixel_look.py pose --image <take>/generated.png --request <this folder>",
+ "change": "he now wears an original gothic medieval fantasy armour over his grey shirt, dark trousers and boots: a structured enamelled deep-purple breastplate with a raised central ridge and broad flat gold edge bands, angular layered plate pauldrons (flat planes, not round), purple plate vambraces over the forearms with gold rims, and a plated waist with short tassets over the hips; the shirt is hidden where the armour covers it; trousers, boots, face, long silver hair and the side view facing right stay exactly the same; bold readable shapes, no thin wires, no glossy plastic shine",
+ "outline": "rule"
+}

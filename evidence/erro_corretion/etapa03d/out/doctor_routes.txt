@@ -1,0 +1,40 @@
+[OK     ] python.version                 Python 3.11.18 at ~/.local/share/dc-art-tools/asf-venv/bin/python
+[OK     ] deps.numpy                     2.4.6
+[OK     ] deps.Pillow                    13.0.0
+[OK     ] deps.scipy                     1.17.1
+[MISSING] deps.resvg-py                  not installed; needed for codeart2d SVG rendering (PixelSpec needs only numpy and Pillow)
+           -> "/home/raul/.local/share/dc-art-tools/asf-venv/bin/python" -m pip install "resvg-py>=0.5,<0.6"
+[OK     ] encoding.stdout                stdout=utf-8
+[WARN   ] paths.cwd                      the working folder has spaces or non-ASCII characters
+           -> quote every path; prefer ASCII output folder names for ffmpeg frame patterns
+[OK     ] skills.present                 ~/.claude/plugins/cache/agent-sprite-forge/agent-sprite-forge/0.6.0/skills: all 5 skills
+[OK     ] skills.vendored                vendored shared files agree across skills
+[OK     ] ffmpeg                         n8.0.1-48-g0592be14ff-20260116 at ~/.local/share/dc-art-tools/asf-venv/bin/ffmpeg
+[OK     ] media.host-tools               declared: none
+[OK     ] media.config                   no user config file at ~/.config/agent-sprite-forge/config.json (optional: API keys may also come from the environment)
+[MISSING] media.api.openai               OPENAI_API_KEY is not configured
+           -> optional: set OPENAI_API_KEY in the environment or in the user config file to make the OpenAI API an image route (GPT Image)
+[MISSING] media.api.gemini               GOOGLE_API_KEY or GEMINI_API_KEY is not configured
+           -> optional: set GOOGLE_API_KEY or GEMINI_API_KEY in the environment or in the user config file to make the Google Gemini API an image route (Gemini image models)
+[MISSING] media.api.xai                  XAI_API_KEY is not configured
+           -> optional: set XAI_API_KEY in the environment or in the user config file to make the xAI API an image and video route (Grok Imagine)
+[MISSING] media.api.byteplus             ARK_API_KEY is not configured
+           -> optional: set ARK_API_KEY in the environment or in the user config file to make the BytePlus ModelArk API an image and video route (Seedream, Seedance)
+[MISSING] media.api.fal                  FAL_KEY is not configured
+           -> optional: set FAL_KEY in the environment or in the user config file to make the fal.ai API a reference-edit and video route (Kling, Veo, Luma, MiniMax, Wan, Vidu, LTX)
+[MISSING] cli.codex                      Codex CLI not found on PATH
+           -> optional: install the Codex CLI and sign in, then verify a route
+[MISSING] cli.grok                       Grok Build CLI not found on PATH or in $GROK_HOME/bin
+           -> optional: install the Grok Build CLI and sign in, then verify a route
+ROUTES (API when a key is configured, then local, then codeart2d only when asked or nothing else exists)
+  api keys    openai=no  gemini=no  xai=no  byteplus=no  fal=no  (environment or user config file; values are never shown)
+  image       none            none      no image generation route: codeart2d is the last resort (disclose it as code-drawn), or report the missing capability
+  image_edit  none            none      no reference-edit route: describe the edit and report the missing capability
+  video       none            none      no video generation route: write a motion brief and report the missing capability (supplied clips can still be processed)
+  clip        ffmpeg          ready     supplied clips decode and encode with ffmpeg n8.0.1-48-g0592be14ff-20260116
+  code_art    codeart2d       fallback  explicit-only last resort: only when the user asks for code-drawn art or no image or video route exists; codeart2d PixelSpec; SVG needs resvg-py
+  order       image: codeart2d
+  order       image_edit: codeart2d
+  order       video: codeart2d
+overall WARN: 0 FAIL, 1 WARN, 8 MISSING (12 ms)
+saved: doctor_routes.json
