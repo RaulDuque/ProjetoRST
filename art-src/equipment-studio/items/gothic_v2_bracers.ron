@@ -1,0 +1,39 @@
+// Gothic set v2 (Engine 05) — refined bracers. Bone space of the near
+// forearm (+x elbow -> wrist, +y front): an elbow cop, a main plate that
+// tapers from the elbow to the wrist and a flared gold-trimmed cuff that
+// stops before the hand (the hand stays in front, NearHand). The far
+// bracer is bound to the far forearm (FarHandGear). Original design.
+(
+    version: 1,
+    id: "gothic_v2_bracers",
+    name: "Gothic set v2: bracers",
+    slot: Bracers,
+    space: Bone(bone: forearm_near, at: Start, follow: 1.0),
+    depth: BracerGear,
+    light: (0.5, 0.8),
+    materials: [
+        (id: "purple_steel", ramp: ((14, 10, 22), (34, 22, 52), (58, 38, 86), (88, 60, 124), (136, 106, 176), (210, 196, 236)), finish: Metal),
+        (id: "dark_steel", ramp: ((10, 8, 16), (24, 18, 36), (40, 30, 58), (62, 48, 86), (96, 80, 124), (160, 148, 190)), finish: Metal),
+        (id: "gold", ramp: ((40, 24, 10), (96, 60, 20), (150, 100, 34), (200, 150, 56), (236, 200, 100), (255, 240, 170)), finish: Flat),
+    ],
+    parts: [
+        (id: "near_bracer", source: Group, material: "purple_steel", layer: 0, outline: None),
+        (id: "near_plate", parent: Some("near_bracer"),
+         source: Polygon(points: [(2.0, -3.7), (7.0, -3.5), (11.0, -2.9), (11.5, 0.0), (11.0, 3.0), (7.0, 3.6), (2.0, 4.0), (1.5, 0.0)], smooth: 1),
+         material: "purple_steel", layer: 1, outline: Selective, bevel: 1.5, hides: [NearForearm],
+         ornaments: [Line(points: [(3.0, 0.8), (10.5, 0.6)], tone: 5, dashed: false)]),
+        (id: "near_cuff", parent: Some("near_bracer"),
+         source: Polygon(points: [(10.0, -3.4), (12.2, -3.9), (12.8, 0.0), (12.2, 3.9), (10.0, 3.4), (10.6, 0.0)], smooth: 0),
+         material: "gold", layer: 2, outline: Selective, bevel: 1.0),
+        (id: "near_cop", parent: Some("near_bracer"),
+         source: Polygon(points: [(-1.5, -3.0), (2.5, -3.6), (3.5, 0.0), (2.5, 3.6), (-1.5, 3.2), (-2.5, 0.0)], smooth: 1),
+         material: "purple_steel", layer: 3, outline: Selective, bevel: 1.5,
+         ornaments: [Rivet(at: (0.5, 0.0))]),
+        (id: "far_plate", bind: Some(Bone(bone: forearm_far, at: Start, follow: 1.0)), depth: Some(FarHandGear),
+         source: Polygon(points: [(2.0, -3.3), (11.0, -2.6), (11.5, 0.0), (11.0, 2.7), (2.0, 3.5), (1.5, 0.0)], smooth: 1),
+         material: "purple_steel", layer: 1, outline: Selective, bevel: 1.5,
+         regions: [(points: [(10.0, -4.0), (13.0, -4.0), (13.0, 4.0), (10.0, 4.0)], material: Some("gold"))]),
+    ],
+    provisional: true,
+    source: "Equipment Studio data, Engine 05 gothic set v2 (original design)",
+)

@@ -1,0 +1,38 @@
+// Gothic set v2 (Engine 05) — refined pauldron. Bone space of the near upper
+// arm (+x shoulder -> elbow, +y front), half of the arm's swing. A domed
+// spaulder wider than the arm (it changes the silhouette) over two crescent
+// lames that step down the arm; a raised ridge on the dome. Depth
+// ShoulderGear (under the hair, Engine 04 order kept). Original design.
+(
+    version: 1,
+    id: "gothic_v2_pauldron",
+    name: "Gothic set v2: pauldron",
+    slot: Shoulder,
+    space: Bone(bone: upper_arm_near, at: Start, follow: 0.5),
+    depth: ShoulderGear,
+    light: (0.5, 0.8),
+    materials: [
+        (id: "purple_steel", ramp: ((14, 10, 22), (34, 22, 52), (58, 38, 86), (88, 60, 124), (136, 106, 176), (210, 196, 236)), finish: Metal),
+        (id: "dark_steel", ramp: ((10, 8, 16), (24, 18, 36), (40, 30, 58), (62, 48, 86), (96, 80, 124), (160, 148, 190)), finish: Metal),
+        (id: "gold", ramp: ((40, 24, 10), (96, 60, 20), (150, 100, 34), (200, 150, 56), (236, 200, 100), (255, 240, 170)), finish: Flat),
+    ],
+    parts: [
+        (id: "pauldron", source: Group, material: "purple_steel", layer: 0, outline: None),
+        (id: "lame_low", parent: Some("pauldron"),
+         source: Polygon(points: [(6.0, -5.0), (9.0, -4.5), (10.0, 0.0), (9.0, 4.5), (6.0, 5.0), (7.5, 0.0)], smooth: 1),
+         material: "dark_steel", layer: 1, outline: Selective, bevel: 1.0, hides: [NearUpperArm]),
+        (id: "lame_mid", parent: Some("pauldron"),
+         source: Polygon(points: [(3.0, -6.5), (6.5, -6.0), (7.8, 0.0), (6.5, 6.0), (3.0, 6.0), (4.8, 0.0)], smooth: 1),
+         material: "purple_steel", layer: 2, outline: Selective, bevel: 1.5, hides: [NearUpperArm]),
+        (id: "spaulder", parent: Some("pauldron"),
+         source: Polygon(points: [(-5.0, -5.5), (-2.0, -7.5), (2.5, -7.8), (4.8, -6.5), (5.5, 0.0), (4.8, 6.2), (2.0, 7.4), (-2.0, 7.0), (-5.0, 4.5), (-6.0, 0.0)], smooth: 2),
+         material: "purple_steel", layer: 3, outline: Selective, bevel: 2.5, hides: [NearUpperArm],
+         ornaments: [
+            Line(points: [(-4.0, 1.0), (3.5, 1.2)], tone: 5, dashed: false),
+            Line(points: [(-4.0, 0.0), (3.5, 0.2)], tone: 1, dashed: false),
+            Line(points: [(3.2, -5.5), (4.0, 0.0), (3.2, 5.3)], tone: 4, dashed: false, material: Some("gold")),
+         ]),
+    ],
+    provisional: true,
+    source: "Equipment Studio data, Engine 05 gothic set v2 (original design)",
+)

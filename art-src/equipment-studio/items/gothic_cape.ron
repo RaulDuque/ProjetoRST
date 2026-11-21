@@ -1,0 +1,53 @@
+// Gothic cape (Engine 05) — the first flexible item. A chain of 8 segments
+// hangs from the back of the shoulders (torso cage u 0.14, v 0.02) and is
+// simulated by rig::flex: gravity, the drag of the run, the start and stop
+// of the body, angle limits (never forward of the back line). The cloth is
+// drawn in the chain's space: x texels along the chain, y texels across it
+// (+ towards the body). Depth BackGear: behind the body, the hair and the
+// sword. The clasp at the throat is a rigid part in the torso cage.
+// Original design (not approved art).
+(
+    version: 1,
+    id: "gothic_cape",
+    name: "Gothic cape",
+    slot: Cape,
+    space: Torso,
+    depth: BackGear,
+    light: (0.45, 0.8),
+    materials: [
+        (id: "cape_cloth", ramp: ((14, 8, 22), (32, 18, 48), (52, 30, 76), (74, 44, 104), (100, 64, 136), (134, 96, 170)), finish: Cloth),
+        (id: "lining", ramp: ((20, 6, 14), (52, 14, 30), (80, 24, 44), (108, 34, 58), (138, 52, 74), (170, 80, 96)), finish: Cloth),
+        (id: "gold", ramp: ((40, 24, 10), (96, 60, 20), (150, 100, 34), (200, 150, 56), (236, 200, 100), (255, 240, 170)), finish: Flat),
+    ],
+    flex: [
+        (id: "cape", anchor: (0.14, 0.02), segments: 8, length: 50.0,
+         stiffness: 0.6, damping: 0.9, influence: 4.0, gravity: 260.0,
+         rest_deg: 4.0, limits: (0.0, 92.0), bend: 28.0, flutter: 0.6, flutter_hz: 2.5, shelter: 0.4),
+    ],
+    parts: [
+        (id: "cape", bind: Some(Flex(chain: 0)), source: Group, material: "cape_cloth", layer: 0, outline: None),
+        // The inside of the cloth shows where the cape turns towards the body.
+        (id: "lining", parent: Some("cape"),
+         source: Polygon(points: [(-1.0, 2.0), (12.0, 3.5), (28.0, 6.0), (44.0, 8.5), (50.0, 8.0), (50.0, 2.0), (30.0, 0.0), (10.0, -0.5), (-1.0, -0.5)], smooth: 1),
+         material: "lining", layer: 1, outline: Selective, bevel: 1.0),
+        (id: "cloth", parent: Some("cape"),
+         source: Polygon(points: [(-1.5, 0.5), (8.0, 1.0), (20.0, 2.5), (34.0, 4.5), (46.0, 6.0), (51.0, 5.0), (50.0, 1.0), (52.0, -3.0), (50.5, -7.0), (52.0, -10.5), (49.0, -12.0), (36.0, -9.0), (22.0, -6.5), (10.0, -4.5), (2.0, -3.5), (-1.5, -2.5)], smooth: 1),
+         material: "cape_cloth", layer: 2, outline: Selective, bevel: 2.0,
+         regions: [
+            (points: [(47.5, -14.0), (54.0, -14.0), (54.0, 8.0), (48.5, 8.0)], material: Some("gold")),
+            (points: [(4.0, -1.5), (48.0, -3.0), (48.0, -5.0), (4.0, -2.6)], tone: -1),
+            (points: [(14.0, -6.0), (47.0, -9.0), (47.0, -10.5), (14.0, -7.0)], tone: -1),
+         ],
+         ornaments: [Line(points: [(6.0, 0.0), (46.0, 3.0)], tone: 4, dashed: false)]),
+        // The clasp at the throat (rigid, torso cage, in front of the chest).
+        (id: "clasp", bind: Some(Torso), depth: Some(ChestGear),
+         source: Polygon(points: [(0.86, -0.04), (1.02, -0.04), (1.04, 0.07), (0.88, 0.08)], smooth: 0),
+         material: "gold", layer: 3, outline: Selective, bevel: 1.0,
+         ornaments: [Rivet(at: (0.95, 0.02))]),
+        (id: "collar", bind: Some(Torso), depth: Some(ChestGear),
+         source: Polygon(points: [(0.0, -0.06), (0.88, -0.04), (0.88, 0.07), (0.1, 0.12), (-0.08, 0.06)], smooth: 1),
+         material: "cape_cloth", layer: 2, outline: Selective, bevel: 1.0),
+    ],
+    provisional: true,
+    source: "Equipment Studio data, Engine 05 (original design)",
+)

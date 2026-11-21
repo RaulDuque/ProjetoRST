@@ -1,0 +1,41 @@
+// Gothic short cape (Engine 05) — the second flexible item, made only with
+// data: the same rig::flex chain code with other numbers (6 segments, 32
+// texels, stiffer, less drag, faster ripple) and another silhouette (a
+// shoulder mantle over a ragged hem). No Rust changed for it.
+// Original design (not approved art).
+(
+    version: 1,
+    id: "gothic_cape_short",
+    name: "Gothic short cape",
+    slot: Cape,
+    space: Torso,
+    depth: BackGear,
+    light: (0.45, 0.8),
+    materials: [
+        (id: "cape_cloth", ramp: ((12, 8, 20), (28, 18, 44), (46, 28, 70), (68, 42, 98), (94, 62, 128), (128, 94, 162)), finish: Cloth),
+        (id: "gold", ramp: ((40, 24, 10), (96, 60, 20), (150, 100, 34), (200, 150, 56), (236, 200, 100), (255, 240, 170)), finish: Flat),
+    ],
+    flex: [
+        (id: "mantle", anchor: (0.18, 0.0), segments: 6, length: 32.0,
+         stiffness: 0.8, damping: 0.9, influence: 3.5, gravity: 260.0,
+         rest_deg: 6.0, limits: (0.0, 95.0), bend: 34.0, flutter: 0.5, flutter_hz: 5.0, shelter: 0.3),
+    ],
+    parts: [
+        (id: "cape", bind: Some(Flex(chain: 0)), source: Group, material: "cape_cloth", layer: 0, outline: None),
+        (id: "cloth", parent: Some("cape"),
+         source: Polygon(points: [(-1.5, 1.0), (10.0, 2.0), (22.0, 3.5), (31.0, 4.0), (29.0, 1.0), (32.5, -1.5), (28.5, -3.5), (32.0, -6.0), (27.0, -7.0), (30.0, -9.5), (24.0, -9.0), (14.0, -6.5), (4.0, -4.5), (-1.5, -3.0)], smooth: 0),
+         material: "cape_cloth", layer: 1, outline: Selective, bevel: 2.0,
+         regions: [(points: [(6.0, -1.5), (30.0, -3.0), (30.0, -4.3), (6.0, -2.6)], tone: -1)],
+         ornaments: [Line(points: [(4.0, 0.5), (28.0, 2.0)], tone: 4, dashed: false)]),
+        // A short mantle over the shoulders: a second layer on the same chain.
+        (id: "mantle", parent: Some("cape"),
+         source: Polygon(points: [(-2.0, 2.0), (9.0, 3.0), (12.0, 0.0), (10.5, -4.0), (12.5, -7.0), (6.0, -6.5), (-2.0, -4.0)], smooth: 1),
+         material: "cape_cloth", layer: 2, outline: Selective, bevel: 1.5,
+         ornaments: [Line(points: [(1.0, -3.0), (9.0, -4.5)], tone: 4, dashed: false, material: Some("gold"))]),
+        (id: "clasp", bind: Some(Torso), depth: Some(ChestGear),
+         source: Polygon(points: [(0.86, -0.04), (1.02, -0.04), (1.04, 0.07), (0.88, 0.08)], smooth: 0),
+         material: "gold", layer: 3, outline: Selective, bevel: 1.0),
+    ],
+    provisional: true,
+    source: "Equipment Studio data, Engine 05 (original design)",
+)

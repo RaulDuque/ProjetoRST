@@ -1,0 +1,50 @@
+// Gothic set v2 (Engine 05) — refined cuirass. Torso cage (u back -> front,
+// v shoulder -> waist). Anatomical profile: the breastplate swells over the
+// chest (to u 1.15) and tucks under it, an angular lower edge overlaps the
+// plackart, which narrows into the waist; a keel runs down the front. The
+// backplate sits behind. Depth ChestGear: behind the near arm and the hair.
+// Original design (not approved art). The Engine 04 file stays unchanged.
+(
+    version: 1,
+    id: "gothic_v2_cuirass",
+    name: "Gothic set v2: cuirass",
+    slot: Chest,
+    space: Torso,
+    depth: ChestGear,
+    light: (0.5, 0.8),
+    materials: [
+        (id: "purple_steel", ramp: ((14, 10, 22), (34, 22, 52), (58, 38, 86), (88, 60, 124), (136, 106, 176), (210, 196, 236)), finish: Metal),
+        (id: "dark_steel", ramp: ((10, 8, 16), (24, 18, 36), (40, 30, 58), (62, 48, 86), (96, 80, 124), (160, 148, 190)), finish: Metal),
+        (id: "gold", ramp: ((40, 24, 10), (96, 60, 20), (150, 100, 34), (200, 150, 56), (236, 200, 100), (255, 240, 170)), finish: Flat),
+    ],
+    parts: [
+        (id: "cuirass", source: Group, material: "purple_steel", layer: 0, outline: None),
+        (id: "backplate", parent: Some("cuirass"),
+         source: Polygon(points: [(-0.1, 0.06), (0.32, 0.0), (0.38, 0.95), (-0.02, 0.98), (-0.12, 0.5)], smooth: 1),
+         material: "dark_steel", layer: 1, outline: Selective, bevel: 1.5),
+        (id: "plackart", parent: Some("cuirass"),
+         source: Polygon(points: [(0.14, 0.5), (1.06, 0.48), (1.08, 0.64), (1.0, 0.84), (0.9, 0.98), (0.56, 1.01), (0.22, 0.98), (0.12, 0.75)], smooth: 1),
+         material: "purple_steel", layer: 2, outline: Selective, bevel: 2.0,
+         regions: [(points: [(0.0, 0.4), (0.36, 0.4), (0.36, 1.1), (0.0, 1.1)], tone: -1)],
+         ornaments: [
+            Line(points: [(1.02, 0.6), (0.98, 0.88)], tone: 5, dashed: false),
+         ]),
+        (id: "breastplate", parent: Some("cuirass"),
+         source: Polygon(points: [(0.28, 0.03), (0.6, 0.09), (0.92, 0.04), (1.08, 0.14), (1.15, 0.28), (1.14, 0.42), (1.07, 0.55), (0.94, 0.62), (0.68, 0.68), (0.4, 0.63), (0.15, 0.58), (0.1, 0.3), (0.16, 0.08)], smooth: 1),
+         material: "purple_steel", layer: 3, outline: Selective, bevel: 3.0,
+         regions: [
+            (points: [(0.0, 0.0), (0.4, 0.0), (0.42, 0.7), (0.0, 0.7)], tone: -1),
+         ],
+         ornaments: [
+            Line(points: [(1.0, 0.12), (1.06, 0.28), (1.04, 0.46)], tone: 5, dashed: false),
+            Line(points: [(0.95, 0.14), (1.0, 0.3), (0.98, 0.46)], tone: 1, dashed: false),
+            Line(points: [(0.18, 0.5), (0.4, 0.55), (0.68, 0.6), (0.92, 0.54), (1.04, 0.47)], tone: 4, dashed: false, material: Some("gold")),
+         ]),
+        (id: "gorget", parent: Some("cuirass"),
+         source: Polygon(points: [(0.2, -0.06), (0.6, 0.0), (0.94, -0.05), (1.0, 0.06), (0.62, 0.13), (0.24, 0.09)], smooth: 1),
+         material: "dark_steel", layer: 4, outline: Selective, bevel: 1.0,
+         ornaments: [Line(points: [(0.28, 0.035), (0.62, 0.065), (0.94, 0.01)], tone: 4, dashed: false, material: Some("gold"))]),
+    ],
+    provisional: true,
+    source: "Equipment Studio data, Engine 05 gothic set v2 (original design)",
+)
