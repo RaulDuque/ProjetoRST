@@ -130,3 +130,7 @@ Rust, e os créditos estão nos comentários de `ik.rs`, `equipment.rs` e `artic
 4. Paletas e materiais por item (recoloração por rampa, como na N41-B).
 5. Efeitos visuais sincronizados por eventos de quadro (`act.js`/`rig_anim.v1` têm o modelo).
 6. Marcação assistida dos marcos (as medidas `pixel_motion.py` e as poses do Blender v007).
+
+## Atualização (02)
+
+A etapa 02 estendeu este desenho: empunhadura por perfil, contrato de 10 slots, peitoral na gaiola do tronco, camadas da N4-C e marcos refinados. Ver [`02_EQUIPAMENTOS.md`](02_EQUIPAMENTOS.md).

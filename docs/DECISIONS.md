@@ -870,3 +870,24 @@ O probe não é um playtest humano.
 - FK e IK foram reescritos em Rust a partir do Agent Sprite Forge e do pixelfx (ambos MIT), com créditos no código e em `docs/development/modular_character_engine/01_ARQUITETURA.md`. JavaScript e Python não entram no jogo.
 
 **Consequências:** um item novo é só dados (RON) e uma imagem. Poses novas do corpo ainda exigem arte. A integração ao `CompositeCharacter`, um osso de pulso e os equipamentos articulados e flexíveis ficam para depois da avaliação do proprietário.
+
+## D-047 — Empunhadura por perfil, peitoral projetado na gaiola do tronco (Modular Character Engine 02)
+
+**Contexto:** O proprietário aprovou a abordagem híbrida (D-046) e pediu, no briefing `Md-usario/engine/Engine-02.md`:
+- esqueleto refinado;
+- empunhadura independente do antebraço;
+- camadas melhores;
+- um contrato de equipamentos completo;
+- um peitoral único que acompanhe todas as poses.
+
+**Decisão:**
+- A rotação da mão vem de um `GripProfile` reutilizável por estado de animação: ângulo da lâmina no referencial do corpo, fração do balanço do antebraço e profundidade por quadro. É o modelo de arma do pixelfx (MIT). Os quadros só dão a posição do punho.
+- O peitoral é um **modelo vetorial em coordenadas da gaiola do tronco** (4 juntas novas), rasterizado direto na grade de texels de cada pose. As abordagens rígida e de deformação por malha ficam no laboratório como comparação.
+- Os mapas de camadas da N4-C são reaproveitados onde existem. Nos demais quadros, regras portadas do `classify` da N4-C.
+- Pixelfx e Agent Sprite Forge rodam só como ferramentas offline de verificação e QA. O `rig_animate.py` confere o nosso FK.
+- Nenhuma dependência nova. O jogo não muda.
+
+**Consequências:**
+- Itens novos de qualquer um dos 10 slots são só dados.
+- Capas e calças flexíveis ainda precisam de gaiolas próprias, e as variantes de perspectiva de sprites não foram implementadas.
+- A integração ao jogador espera a aprovação visual.

@@ -113,6 +113,15 @@ ossos (`RigItem`: osso, ponta, deslocamento, ângulo, fração de giro,
 exemplo `modular_character_engine` usa: o jogo não muda. Detalhes:
 `docs/development/modular_character_engine/01_ARQUITETURA.md`.
 
+**Modular Character Engine 02 — equipamentos independentes (laboratório):**
+a abordagem híbrida foi aprovada como base experimental. O contrato de
+`player::visual::rig::equipment` cobre 10 slots, itens rígidos, articulados e
+flexíveis, e montagem em osso, na mão (`rig::grip`: perfil de empunhadura por
+clipe, independente do antebraço) ou na gaiola do tronco (`rig::chest`: um
+modelo de peitoral desenhado em cada pose). As camadas usam os mapas da N4-C
+onde existem e regras portadas da N4-C nos demais quadros. O jogo continua
+sem mudança. Detalhes: `docs/development/modular_character_engine/02_EQUIPAMENTOS.md`.
+
 ## Ordem de um frame
 
 `GameSet` (`src/app/states.rs`), encadeados e executados só em `GameState::Playing`:
