@@ -1,0 +1,30 @@
+{
+ "schema": "generate2dsprite.pixel_look_request.v1",
+ "tool": "pixel_look",
+ "kind": "pose",
+ "key": "green",
+ "cell": 9,
+ "canvas": [
+  1024,
+  1024
+ ],
+ "masterAt": [
+  45,
+  5
+ ],
+ "master": {
+  "file": "master.png",
+  "sha256": "09968163f23528b03feb4e7ed17fa4e2bc116edc9372b67c4133ef19a7dce091",
+  "size": [
+   23,
+   106
+  ]
+ },
+ "references": [
+  "reference.png"
+ ],
+ "size": "1024x1024",
+ "next": "route_media.py image --prompt-file prompt.txt --reference reference.png --size 1024x1024 --out-dir <take>; then pixel_look.py pose --image <take>/generated.png --request <this folder>",
+ "change": "he now wears a gothic medieval fantasy armour in deep purple and gold over the torso and arms only. Draw the armour with squares EXACTLY as big as the squares of his hair and boots: every armour pixel is one full 9 px square of the attached grid, never smaller, never half squares, never thin lines. Keep it very simple, readable at the tiny game size: (1) a breastplate with a central keel ridge from the collar to the belt, drawn as one column of light purple squares beside one column of dark purple squares; (2) a pauldron of only TWO big flat plates with straight edges on the upper arm, each plate at least 4 squares tall, not round; (3) plain purple vambraces on the forearms; (4) two short tassets over the hips. Gold appears ONLY as a few solid bands, each at least 2 squares thick: the collar rim, the lower edge of each pauldron plate, the belt and the lower edge of the tassets; nothing else is gold, no parallel stripes, no rivets, no engraving. Use at most four purples and two golds, all flat. The long silver hair stays EXACTLY as in the attached image and lies OVER the pauldron and the back plate. Face, neck line, hands, trousers, boots, proportions, position and the side view facing right stay pixel for pixel identical; repaint nothing outside the armour. The output image is 1024x1024, the same size as the attached image, with the figure in the same place; every square is one flat colour, with a 1-square dark outline, no anti-aliasing, no blur, no gradients, no soft edges",
+ "outline": "rule"
+}

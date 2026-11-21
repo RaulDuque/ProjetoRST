@@ -28,3 +28,14 @@ Processamento (eu executo): `scripts/import_external.py --image inbox/<arquivo> 
       python3 -I -B evidence/erro_corretion/etapa03d/scripts/take_report.py --run take02
       python3 -I -B evidence/erro_corretion/etapa03d/scripts/restore_hair.py --run take02
       python3 -I -B evidence/erro_corretion/etapa03d/scripts/compare_takes.py --takes take01 take02 --out take02
+
+## Take 03
+
+- **Imagem esperada:** `evidence/erro_corretion/etapa03d/inbox/armour_master_03.png`.
+- **O que enviar ao ChatGPT:**
+  - a imagem `request_pose_take03/reference.png`, idêntica à dos takes 01 e 02;
+  - o texto de `request_pose_take03/prompt.txt`, gerado por `ask-pose`.
+- **Passo a passo completo:** `prompts/PROMPT_03D_take03.md`, que inclui o texto a colar no
+  Claude Code.
+- **Observação:** o take02 usou por engano a mesma imagem do take01 e foi rejeitado. Por
+  isso o arquivo agora tem outro nome: `armour_master_03.png`.

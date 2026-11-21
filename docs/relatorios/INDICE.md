@@ -14,6 +14,7 @@ marcadas com "(commit)" são a hora do commit, porque a hora da execução não 
 | 7 | 2026-11-20 00:21 (commit) | Erro-Corretion 03D Take 01 | CONCLUÍDO COM RESSALVAS | [03D_TAKE01](erro-corretion/03D_TAKE01.md) | Bloqueio inicial, depois imagem do ChatGPT lida pelo `pose`; dourado fino e quilha ilegível em 1×; arte não aprovada |
 | 8 | 2026-11-21 14:41 | Erro-Corretion 03D Take 02 | REJEITADO | [03D_TAKE02](erro-corretion/03D_TAKE02.md) | Usou a mesma imagem do Take 01 (resultado idêntico, 0 px). Não vale como segunda tentativa artística |
 | 9 | 2026-11-21 15:10 | Processo: estrutura de relatórios | CONCLUÍDO COM RESSALVAS | [2026-11-21_ESTRUTURA_RELATORIOS](processo/2026-11-21_ESTRUTURA_RELATORIOS.md) | Criação de `docs/relatorios/`, regra permanente e histórico; prompts de `Md-usario/` dependem do proprietário |
+| 10 | 2026-11-21 15:30 | Erro-Corretion 03D Take 03, pedido | CONCLUÍDO | [03D_TAKE03_PEDIDO](erro-corretion/03D_TAKE03_PEDIDO.md) | Pedido `ask-pose` do Take 03 (pixels inteiros, ombreira de 2 placas, dourado só em faixas grossas) e prompt para o Claude; aguarda a imagem do ChatGPT |
 
 ## Correções registradas
 

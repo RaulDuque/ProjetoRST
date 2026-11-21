@@ -2,29 +2,30 @@
 
 | | |
 |---|---|
-| **Tarefa** | Processo: estrutura de relatórios e regra permanente de documentação |
+| **Tarefa** | Erro-Corretion 03D, Take 03: preparação do pedido |
 | **Data** | 2026-11-21 |
-| **Status** | CONCLUÍDO COM RESSALVAS |
-| **Relatório completo** | [`docs/relatorios/processo/2026-11-21_ESTRUTURA_RELATORIOS.md`](processo/2026-11-21_ESTRUTURA_RELATORIOS.md) |
+| **Status** | CONCLUÍDO (sem imagem ainda; não há aprovação artística a dar) |
+| **Relatório completo** | [`docs/relatorios/erro-corretion/03D_TAKE03_PEDIDO.md`](erro-corretion/03D_TAKE03_PEDIDO.md) |
 | **Branch** | `art/v1.2-protagonist` |
 
 ## Resumo
 
-- **Estrutura:** criada a pasta `docs/relatorios/` com README, padrão de 27 itens e 6
-  estados, índice e este arquivo.
-- **Regra permanente:** registrada no `CLAUDE.md` e em `.claude/rules/relatorios.md`.
-- **Histórico:** recuperados os relatórios das etapas 01, 02, 02B, 03, 03B, 03C, 03D Take 01
-  e 03D Take 02.
-- **Lacunas marcadas:** a 01 não tem relatório original e a 03C não tem prompt versionado.
-- **03D Take 02:** marcado como **REJEITADO**, porque usou a mesma imagem do Take 01.
+- **Pedido do Take 03:** gerado com o `ask-pose` do ASF, em
+  `evidence/erro_corretion/etapa03d/request_pose_take03/`. A referência é idêntica à dos
+  takes anteriores.
+- **Mudanças em relação ao Take 02:**
+  - pixels da armadura do tamanho dos quadrados do cabelo;
+  - ombreira de 2 placas;
+  - dourado só em faixas com 2 quadrados ou mais;
+  - no máximo 4 roxos e 2 dourados;
+  - saída de 1024×1024 com nada repintado fora da armadura.
+- **Passo a passo:** `evidence/erro_corretion/etapa03d/prompts/PROMPT_03D_take03.md`, com o
+  ChatGPT na Parte A e o texto para o Claude Code na Parte B.
 
-**Ressalva:** os prompts de `Md-usario/Erro-Corretion/` não foram editados, porque a pasta é
-bloqueada para o Claude. O proprietário aplica o bloco de
-[`BLOCO_PARA_PROMPTS.md`](BLOCO_PARA_PROMPTS.md).
+## Próximo passo
 
-## Estado do trabalho artístico (Erro-Corretion)
+O proprietário gera a imagem no ChatGPT e a salva em
+`evidence/erro_corretion/etapa03d/inbox/armour_master_03.png`. Depois cola a Parte B no
+Claude Code.
 
-- **Última etapa artística:** 03D Take 02, REJEITADO.
-- **Próximo passo:** gerar no ChatGPT a imagem real do novo take, com
-  `request_pose/reference.png` e `request_pose/take02_prompt.txt`.
-- **Prompt 04:** não iniciado.
+O Prompt 04 não foi iniciado.
