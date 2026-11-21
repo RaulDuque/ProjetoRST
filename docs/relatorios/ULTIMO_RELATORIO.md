@@ -2,36 +2,49 @@
 
 | | |
 |---|---|
-| **Tarefa** | Erro-Corretion 03D, Take 03 |
+| **Tarefa** | Modular Character Engine 01, primeiro protótipo |
 | **Data** | 2026-11-21 |
-| **Status** | AGUARDANDO APROVAÇÃO VISUAL. Técnica OK; avaliação do Claude: melhor que o Take 01, mas insuficiente |
-| **Relatório completo** | [`docs/relatorios/erro-corretion/03D_TAKE03.md`](erro-corretion/03D_TAKE03.md) |
+| **Status** | AGUARDANDO APROVAÇÃO VISUAL. Parte técnica validada; arte e abordagem dependem do proprietário |
+| **Relatório completo** | [`docs/relatorios/modular-character-engine/01_PROTOTIPO.md`](modular-character-engine/01_PROTOTIPO.md) |
 | **Branch** | `art/v1.2-protagonist` |
 
 ## Resumo
 
-- **Fluxo:** a imagem nova do ChatGPT foi lida pelo `pose` e encaixada em 80×128 (pivô
-  40,118). A imagem estava em `request_pose_take03/` e foi movida para `inbox/`.
-- **Preservação:** cabeça, rosto e pernas ficaram 100 % idênticos. O cabelo teve 3 texels
-  trocados, que voltaram a 0 com a N4.
-- **Ganhos:** a armadura ficou muito mais limpa e legível em 1× que a do Take 01.
-- **Falhas:**
-  - lê como túnica ou gibão;
-  - a ombreira não tem volume de placa (silhueta +46 texels);
-  - a quilha parece borda;
-  - cerca de 60 % das faixas douradas têm só 1 px.
+- **O que foi feito:** um laboratório Rust/Bevy isolado (`cargo run --example
+  modular_character_engine`) com um esqueleto 2D. São 15 marcos e 12 ossos, com FK e IK de dois
+  ossos, marcados à mão no idle N3.5 e nos 6 quadros da corrida N3.6. O jogo não muda.
+- **Como funciona:** cada quadro aprovado é cortado em 5 camadas de profundidade, e a
+  recomposição dá 0 texels diferentes. A espada e a ombreira, desenhadas uma vez, ficam presas
+  aos ossos. A troca A/B e o equipar e desequipar acontecem durante a corrida sem reiniciar o
+  quadro, e o espelhamento funciona.
+- **Comparação:** a versão totalmente articulada (peças do idle + FK/IK) fica bem abaixo da
+  arte aprovada:
+  - juntas abertas;
+  - cabelo caído;
+  - perspectiva fixa;
+  - texels girados.
+
+  A proposta é a abordagem **híbrida**: corpo aprovado + equipamento preso a ossos.
+- **Validação:** fmt, clippy `-D warnings`, `cargo test` (57 suítes, 718 testes, 0 falhas) e
+  check passaram, e o exemplo deu `RESULT: PASS`.
+- **Ressalvas:**
+  - no idle a espada aponta para a frente (falta osso de pulso);
+  - os marcos são estimados (cerca de ±2 texels);
+  - as ombreiras foram reduzidas da N41-B e são provisórias.
 
 ## Imagens principais
 
-- `evidence/erro_corretion/etapa03d/runs/take03/takes_01_vs_03_comparison.png`
-- `evidence/erro_corretion/etapa03d/runs/take03/takes_dark_preview.png`
-- `evidence/erro_corretion/etapa03d/runs/take03/take03_torso_source_vs_1x.png`
+- `evidence/modular_character_engine/01_prototipo/06_comparison_original_hybrid_articulated.gif`
+- `evidence/modular_character_engine/01_prototipo/04_swap_during_run.gif`
+- `evidence/modular_character_engine/01_prototipo/05_turn_around.gif`
+- `evidence/modular_character_engine/01_prototipo/08_depth_layers.png`
+- `evidence/modular_character_engine/01_prototipo/01_skeleton_overlay.png`
 
 ## Próxima decisão
 
-Escolher entre três caminhos:
-- aprovar o Take 03;
-- pedir um Take 04 (recomendações na seção 25 do relatório);
-- voltar à rota Blender da 03B.
+1. Aprovar ou não a abordagem híbrida.
+2. Definir como a espada deve ser empunhada no idle e na corrida.
+3. Aceitar as peças provisórias ou pedir arte própria.
+4. Autorizar a integração experimental ao jogador.
 
-O Prompt 04 não foi iniciado.
+Nenhuma armadura foi produzida em quantidade.
