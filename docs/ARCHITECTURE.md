@@ -143,6 +143,16 @@ monta o quadro final único que todas as vistas do editor mostram.
 Bevy UI e roteiros isolados numa cópia em `target/`. O jogo continua sem
 mudança. Detalhes: `docs/development/modular_character_engine/04_STUDIO_V2.md`.
 
+**Modular Character Engine 05 — equipamentos flexíveis (ferramenta):**
+`player::visual::rig::flex` (puro) simula cadeias de pano descritas em dados
+(`EquipmentDesign.flex`: fixação, segmentos, comprimento, rigidez,
+amortecimento, arrasto, limites, ondulação). Cada segmento é um pêndulo
+amortecido. `settle` dá a pose determinística de cada quadro, e
+`SpaceMap::Chain` desenha partes no espaço da cadeia. O editor simula o pano
+ao vivo (partida, parada, virada), e `examples/equipment_preview.rs` compõe
+itens sem janela para iterar a arte. O jogo continua sem mudança. Detalhes:
+`docs/development/modular_character_engine/05_ART_AND_FLEXIBLE_EQUIPMENT.md`.
+
 ## Ordem de um frame
 
 `GameSet` (`src/app/states.rs`), encadeados e executados só em `GameState::Playing`:

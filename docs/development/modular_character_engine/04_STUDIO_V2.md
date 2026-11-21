@@ -160,3 +160,7 @@ Nenhuma chamada paga. ASF e pixelfx são MIT. Nenhuma linha deles foi copiada pa
 - Parte de pixels no tronco é um decalque sem rotação; na mão ou no osso ela gira.
 - A árvore mostra até 20 linhas.
 - Capa: fora do escopo desta etapa (restrição do briefing).
+
+## Atualização (05)
+
+A etapa 05 acrescentou equipamentos flexíveis (`rig::flex`, cadeias em dados, espaço da cadeia no pintor), o conjunto gótico refinado, capas, edição do pano e de material/tom de regiões no editor e a ferramenta `equipment_preview`. Ver [`05_ART_AND_FLEXIBLE_EQUIPMENT.md`](05_ART_AND_FLEXIBLE_EQUIPMENT.md).

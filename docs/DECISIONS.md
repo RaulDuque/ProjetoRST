@@ -931,3 +931,23 @@ O probe não é um playtest humano.
 - A ordem de profundidade é fixa por região; exceções por pose exigiriam outra regra.
 - Não há campo de texto nem seletor de arquivo no editor.
 - A integração ao jogo espera a aprovação visual.
+
+## D-050 — Equipamento flexível como cadeia de pêndulos descrita em dados (Modular Character Engine 05)
+
+**Contexto:** O briefing `Md-usario/engine/Engine-05.md` pediu a primeira capa real (cadeia ou malha, fixação, comprimento, limites, material, profundidade; parado, respiração, corrida, partida, parada, virada, espelho) reutilizável por dados, além de um conjunto gótico refinado.
+
+**Decisão:**
+- **`rig::flex`:** a `FlexChain` em dados e uma simulação por ângulos. Cada segmento é um pêndulo amortecido em torno de um alvo (repouso + ar da corrida, abrigado perto da fixação), acoplado ao de cima, com ondulação forçada e inércia da aceleração do corpo e dos saltos da fixação. Uma primeira versão com partículas Verlet e follow-the-leader foi descartada: ela oscilava caoticamente nos saltos de pose.
+- **Pose determinística (`settle`)** para o pintor, os testes e as prévias; simulação ao vivo no editor (`paint_on_frame_with`).
+- **Espaço da cadeia no pintor (`SpaceMap::Chain`):** projeção na curva suavizada, então todas as fontes (polígono, regiões, ornamentos, pixels) servem para pano.
+- **Profundidade:** a capa usa `BackGear` e o fecho, `ChestGear`. Nenhuma exceção à ordem global foi necessária.
+- **`RigClip.ground_speed`** (opcional) traz a velocidade do clipe, que é o que arrasta o pano.
+- **Arte refinada como itens novos (`gothic_v2_*`, `leather_v2_jerkin`):** os da Engine 04 ficam intactos. As linhas de ornamento ganharam `material` opcional, para frisos contínuos.
+- **`examples/equipment_preview.rs`:** compõe sem janela, pelas mesmas funções do editor, para iterar a arte.
+- Nenhuma dependência nova. O jogo não muda.
+
+**Consequências:**
+- Outras capas, mantos e tecidos são só dados (provado pela `gothic_cape_short`).
+- A capa fica sempre atrás do corpo. Uma capa envolvente exigiria regra de profundidade por pose.
+- A velocidade da corrida é uma estimativa e não há clipe de transição.
+- A arte espera aprovação visual.
