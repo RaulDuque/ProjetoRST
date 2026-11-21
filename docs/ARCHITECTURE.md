@@ -29,7 +29,7 @@ biblioteca (`src/lib.rs`), o que permite testes de integração e o exemplo
 | Módulo | Regras puras (sem Bevy) | Camada Bevy |
 |---|---|---|
 | `core` | `rng.rs`, `pixel_art.rs` (V2.2: rasterizador da arte provisória) | `constants.rs`, `events.rs`, `resources.rs` (carregador de dados), `time.rs`, `pixel_image.rs` (V2.2) |
-| `player` | `attributes.rs`, `progression.rs`, `state.rs`, `action_rules.rs` (V2.4), `visual/{manifest,playback,selection,sockets}.rs` (`sockets`: V2.2), `visual/art_profile.rs` (N3.8), `visual/composition.rs` (N4-A), `visual/equipment_visual.rs` (N4-1-A), `visual/vfx/rules.rs` | `components.rs`, `movement.rs`, `systems.rs`, `animation.rs`, `visual/{mod,systems,composite}.rs` (`composite`: N4-A), `visual/vfx/{mod,systems}.rs` |
+| `player` | `attributes.rs`, `progression.rs`, `state.rs`, `action_rules.rs` (V2.4), `visual/{manifest,playback,selection,sockets}.rs` (`sockets`: V2.2), `visual/art_profile.rs` (N3.8), `visual/composition.rs` (N4-A), `visual/equipment_visual.rs` (N4-1-A), `visual/rig/*` (Modular Character Engine 01), `visual/vfx/rules.rs` | `components.rs`, `movement.rs`, `systems.rs`, `animation.rs`, `visual/{mod,systems,composite}.rs` (`composite`: N4-A), `visual/vfx/{mod,systems}.rs` |
 | `combat` | `damage.rs`, `command_buffer.rs`, `command_parser.rs`, `strike_timeline.rs`, `reaction.rs`, `simultaneous.rs` (V2.4) | `command_input.rs`, `hitboxes.rs`, `attacks.rs` |
 | `skills` | `definitions.rs`, `unlock.rs`, `cooldowns.rs`, `execution.rs` | `systems.rs` |
 | `magic` | `elements.rs` | `casting.rs`, `projectiles.rs` |
@@ -103,6 +103,15 @@ lê esses manifestos com o mesmo `equip` e os desenha com o mesmo compositor e
 `VisualPlayback`; nada é gerado em tempo de execução e nenhum código Rust
 mudou. Espadas, capas e ombreiras ficam isoladas (sem soquete/slot
 validado). Detalhes: `docs/development/n4/N41B_ARQUITETURA.md`.
+
+**Modular Character Engine 01 — rig 2D (laboratório isolado):**
+`player::visual::rig` (puro) marca um esqueleto invisível (15 marcos, 12
+ossos, FK, IK de dois ossos) nos quadros aprovados, corta cada quadro em 5
+camadas de profundidade sem perda e prende equipamentos desenhados uma vez a
+ossos (`RigItem`: osso, ponta, deslocamento, ângulo, fração de giro,
+`DepthSlot`). A movimentação pertence ao personagem; o item só segue. Só o
+exemplo `modular_character_engine` usa: o jogo não muda. Detalhes:
+`docs/development/modular_character_engine/01_ARQUITETURA.md`.
 
 ## Ordem de um frame
 

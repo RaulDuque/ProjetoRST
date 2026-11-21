@@ -858,3 +858,15 @@ O probe não é um playtest humano.
 - O método da N3.6 vira `art-src/n3-7-run-sync/scripts/animation_pipeline.py`, guiado por JSON, com proveniência por quadro. Ele tem que reconstruir a N3.6 texel a texel. Continua usando só Pillow e o GStreamer do sistema, sem dependência nova no projeto.
 
 **Consequências:** docs `development/n3_7/`. O exemplo isolado ganha a fonte `n3.7-sync-proof`. Cenário, contraste, transição e câmera 360 esperam o proprietário; a N4 e a N5 não começam.
+
+## D-046 — Motor de personagem modular: corpo aprovado + equipamento preso a ossos (Modular Character Engine 01)
+
+**Contexto:** O briefing `Md-usario/engine/Engine-01.md` suspendeu a geração de imagens completas do protagonista equipado (03D, Prompt 04) e pediu um sistema próprio de personagem 2D articulado, em que um equipamento criado uma vez acompanhe poses e animações.
+
+**Decisão:**
+- Abordagem **híbrida**: o corpo continua sendo os quadros aprovados (N3.5 e corrida N3.6), com um esqueleto marcado à mão em cada quadro. Os equipamentos são imagens únicas presas aos ossos. A abordagem totalmente articulada (peças do idle + FK/IK) fica só como comparação, porque perde a qualidade da arte aprovada.
+- Para pôr equipamento entre partes do corpo, cada quadro é cortado em 5 camadas (braço de trás, pernas, tronco, cabelo, braço da frente) por cápsulas do esqueleto e pela paleta N3.4. É uma partição: a recomposição é idêntica texel a texel.
+- Regras puras em `player::visual::rig`, Bevy só no exemplo isolado. Nenhuma dependência nova, nenhuma mudança no jogo.
+- FK e IK foram reescritos em Rust a partir do Agent Sprite Forge e do pixelfx (ambos MIT), com créditos no código e em `docs/development/modular_character_engine/01_ARQUITETURA.md`. JavaScript e Python não entram no jogo.
+
+**Consequências:** um item novo é só dados (RON) e uma imagem. Poses novas do corpo ainda exigem arte. A integração ao `CompositeCharacter`, um osso de pulso e os equipamentos articulados e flexíveis ficam para depois da avaliação do proprietário.
