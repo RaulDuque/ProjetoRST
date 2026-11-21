@@ -1,0 +1,27 @@
+{
+  "render_pixelspec": {
+    "output": "/home/raul/\u00c1rea de trabalho/Andvarion/ProjetoRST/target/equipment_studio/asf/buckle",
+    "metadata": "/home/raul/\u00c1rea de trabalho/Andvarion/ProjetoRST/target/equipment_studio/asf/buckle/codeart-meta.json",
+    "qa": "pass",
+    "variants": [
+      "iron",
+      "brass"
+    ],
+    "frames": 1,
+    "files": 3,
+    "failed_checks": [],
+    "warned_checks": []
+  },
+  "svg_render": {
+    "output": "/home/raul/\u00c1rea de trabalho/Andvarion/ProjetoRST/target/equipment_studio/asf/emblem",
+    "metadata": "/home/raul/\u00c1rea de trabalho/Andvarion/ProjetoRST/target/equipment_studio/asf/emblem/codeart-meta.json",
+    "qa": "pass",
+    "mode": "crisp",
+    "variants": [
+      "base"
+    ],
+    "files": 3,
+    "renderer": "google-chrome 158.0.8127.36",
+    "failed_checks": []
+  }
+}

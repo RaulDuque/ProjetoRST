@@ -1,0 +1,182 @@
+{
+  "asf_pixel_qa_painted_run": {
+    "gothic_cuirass": {
+      "returncode": 0,
+      "checks": [
+        {
+          "id": "partial_alpha",
+          "status": "pass",
+          "value": 0,
+          "threshold": 0
+        },
+        {
+          "id": "off_palette",
+          "status": "skipped",
+          "value": null,
+          "threshold": 0
+        },
+        {
+          "id": "outline_gaps",
+          "status": "skipped",
+          "value": null,
+          "threshold": 0
+        },
+        {
+          "id": "l_corners",
+          "status": "skipped",
+          "value": null,
+          "threshold": 10
+        },
+        {
+          "id": "same_size",
+          "status": "pass",
+          "value": [
+            [
+              112,
+              128
+            ]
+          ],
+          "threshold": "one canvas size"
+        }
+      ]
+    },
+    "leather_jerkin": {
+      "returncode": 0,
+      "checks": [
+        {
+          "id": "partial_alpha",
+          "status": "pass",
+          "value": 0,
+          "threshold": 0
+        },
+        {
+          "id": "off_palette",
+          "status": "skipped",
+          "value": null,
+          "threshold": 0
+        },
+        {
+          "id": "outline_gaps",
+          "status": "skipped",
+          "value": null,
+          "threshold": 0
+        },
+        {
+          "id": "l_corners",
+          "status": "skipped",
+          "value": null,
+          "threshold": 10
+        },
+        {
+          "id": "same_size",
+          "status": "pass",
+          "value": [
+            [
+              112,
+              128
+            ]
+          ],
+          "threshold": "one canvas size"
+        }
+      ]
+    },
+    "arming_sword": {
+      "returncode": 0,
+      "checks": [
+        {
+          "id": "partial_alpha",
+          "status": "pass",
+          "value": 0,
+          "threshold": 0
+        },
+        {
+          "id": "off_palette",
+          "status": "skipped",
+          "value": null,
+          "threshold": 0
+        },
+        {
+          "id": "outline_gaps",
+          "status": "skipped",
+          "value": null,
+          "threshold": 0
+        },
+        {
+          "id": "l_corners",
+          "status": "skipped",
+          "value": null,
+          "threshold": 10
+        },
+        {
+          "id": "same_size",
+          "status": "pass",
+          "value": [
+            [
+              112,
+              128
+            ]
+          ],
+          "threshold": "one canvas size"
+        }
+      ]
+    },
+    "studio_item_1": {
+      "returncode": 0,
+      "checks": [
+        {
+          "id": "partial_alpha",
+          "status": "pass",
+          "value": 0,
+          "threshold": 0
+        },
+        {
+          "id": "off_palette",
+          "status": "skipped",
+          "value": null,
+          "threshold": 0
+        },
+        {
+          "id": "outline_gaps",
+          "status": "skipped",
+          "value": null,
+          "threshold": 0
+        },
+        {
+          "id": "l_corners",
+          "status": "skipped",
+          "value": null,
+          "threshold": 10
+        },
+        {
+          "id": "same_size",
+          "status": "pass",
+          "value": [
+            [
+              112,
+              128
+            ]
+          ],
+          "threshold": "one canvas size"
+        }
+      ]
+    }
+  },
+  "tour": [
+    "[equipment_studio] body idle #0: 0 texels differ",
+    "[equipment_studio] body run #0: 0 texels differ",
+    "[equipment_studio] body run #1: 0 texels differ",
+    "[equipment_studio] body run #2: 0 texels differ",
+    "[equipment_studio] body run #3: 0 texels differ",
+    "[equipment_studio] body run #4: 0 texels differ",
+    "[equipment_studio] body run #5: 0 texels differ",
+    "[equipment_studio] RESULT: PASS",
+    "[equipment_studio] body idle #0: 0 texels differ",
+    "[equipment_studio] body run #0: 0 texels differ",
+    "[equipment_studio] body run #1: 0 texels differ",
+    "[equipment_studio] body run #2: 0 texels differ",
+    "[equipment_studio] body run #3: 0 texels differ",
+    "[equipment_studio] body run #4: 0 texels differ",
+    "[equipment_studio] body run #5: 0 texels differ",
+    "[equipment_studio] RESULT: PASS"
+  ]
+}
