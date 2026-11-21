@@ -479,3 +479,128 @@ fn rotating_a_parent_moves_its_children_in_every_pose() {
         }
     }
 }
+
+// ---------------------------------------------------------------- Engine 05
+
+use dark_castle_rpg::player::visual::rig::design::DesignSpace;
+use dark_castle_rpg::player::visual::rig::flex::angle_of;
+use dark_castle_rpg::player::visual::rig::paint::settled_chains;
+
+/// Angle of the hem (fixation -> last point) on a settled frame.
+fn hem_angle(rig: &RigLab, d: &EquipmentDesign, clip: &str, frame: usize) -> f32 {
+    let pts = settled_chains(rig, d, clip, frame)[0]
+        .clone()
+        .unwrap_or_else(|| panic!("{} {clip} #{frame}: no chain", d.id));
+    let (a, b) = (pts[0], pts[pts.len() - 1]);
+    angle_of((b.0 - a.0, b.1 - a.1))
+}
+
+#[test]
+fn the_refined_set_composes_every_pose_and_keeps_the_hands() {
+    let (rig, rest) = lab();
+    let set: Vec<EquipmentDesign> = [
+        "gothic_v2_cuirass",
+        "gothic_v2_pauldron",
+        "gothic_v2_bracers",
+        "gothic_v2_faulds",
+    ]
+    .iter()
+    .map(|id| design(id))
+    .collect();
+    for (key, clip) in &rig.clips {
+        let (w, h) = clip.cell;
+        for frame in 0..clip.frames.len() {
+            let bare = composite(&rig, &rest, key, frame, &[]);
+            let refs: Vec<&EquipmentDesign> = set.iter().collect();
+            let full = composite(&rig, &rest, key, frame, &refs);
+            let changed = bare.iter().zip(&full).filter(|(a, b)| a != b).count();
+            assert!(changed > 250, "{key} #{frame}: {changed}");
+            for d in &set {
+                let one = composite(&rig, &rest, key, frame, &[d]);
+                let c = bare.iter().zip(&one).filter(|(a, b)| a != b).count();
+                assert!(c > 8, "{key} #{frame}: {} changes {c} texels", d.id);
+            }
+            dump(&format!("v2_{key}_f{frame}"), w, h, &full);
+            let j = clip.frame_joints(frame).unwrap_or_else(|| panic!("j"));
+            let fist = clip.geometry().to_texel(j.get(Joint::HandNear));
+            let t = fist.1 as usize * w as usize + fist.0 as usize;
+            assert_eq!(full[t], bare[t], "{key} #{frame}: the fist was covered");
+        }
+    }
+}
+
+#[test]
+fn both_capes_hang_behind_the_body_in_every_pose() {
+    let (rig, rest) = lab();
+    for id in ["gothic_cape", "gothic_cape_short"] {
+        let mut d = design(id);
+        assert!(!d.flex.is_empty(), "{id}: no chain");
+        // Only the cloth (the clasp sits in front of the chest on purpose).
+        d.parts
+            .retain(|p| !matches!(p.bind, Some(DesignSpace::Torso)) || p.parent.is_some());
+        for (key, clip) in &rig.clips {
+            for frame in 0..clip.frames.len() {
+                let bare = composite(&rig, &rest, key, frame, &[]);
+                let worn = composite(&rig, &rest, key, frame, &[&d]);
+                let mut shown = 0;
+                for (a, b) in bare.iter().zip(&worn) {
+                    if a[3] > 0 {
+                        assert_eq!(a, b, "{id} {key} #{frame}: the cape covers the body");
+                    } else if b[3] > 0 {
+                        shown += 1;
+                    }
+                }
+                assert!(
+                    shown > 20,
+                    "{id} {key} #{frame}: only {shown} texels of cloth"
+                );
+                let pts = settled_chains(&rig, &d, key, frame)[0]
+                    .clone()
+                    .unwrap_or_else(|| panic!("chain"));
+                // Behind the fixation (the art faces +x).
+                assert!(
+                    pts.iter().all(|p| p.0 <= pts[0].0 + 0.5),
+                    "{id} {key} #{frame}: cloth in front"
+                );
+                let _ = &rest;
+            }
+        }
+    }
+}
+
+#[test]
+fn the_run_lifts_the_cape_and_the_idle_lets_it_hang() {
+    let (rig, _) = lab();
+    let d = design("gothic_cape");
+    let idle: Vec<f32> = (0..2).map(|f| hem_angle(&rig, &d, "idle", f)).collect();
+    let run: Vec<f32> = (0..6).map(|f| hem_angle(&rig, &d, "run", f)).collect();
+    assert!(idle.iter().all(|a| *a < 15.0), "idle {idle:?}");
+    assert!(run.iter().all(|a| *a > 30.0), "run {run:?}");
+    // It moves within the loop (not a rigid plate).
+    let spread =
+        run.iter().cloned().fold(f32::MIN, f32::max) - run.iter().cloned().fold(f32::MAX, f32::min);
+    assert!(spread > 3.0, "the run cape is still: {run:?}");
+}
+
+#[test]
+fn the_second_cape_is_only_data() {
+    let (rig, _) = lab();
+    let a = design("gothic_cape");
+    let b = design("gothic_cape_short");
+    assert_ne!(a.flex[0].segments, b.flex[0].segments);
+    assert!(a.flex[0].length > b.flex[0].length + 10.0);
+    let la = settled_chains(&rig, &a, "run", 2)[0]
+        .clone()
+        .unwrap_or_default();
+    let lb = settled_chains(&rig, &b, "run", 2)[0]
+        .clone()
+        .unwrap_or_default();
+    assert_eq!(la.len(), 9);
+    assert_eq!(lb.len(), 7);
+    // Saved and reloaded unchanged, chains included.
+    for d in [&a, &b] {
+        let text = d.to_ron().unwrap_or_else(|e| panic!("{e}"));
+        let back = EquipmentDesign::from_ron(&text).unwrap_or_else(|e| panic!("{e}"));
+        assert_eq!(&back, d);
+    }
+}
