@@ -1,0 +1,55 @@
+{
+  "original_vs_hybrid_bare_differing_screen_pixels": {
+    "bare_idle_f0": 0,
+    "bare_idle_f1": 4491,
+    "bare_run_f0": 0,
+    "bare_run_f1": 0,
+    "bare_run_f2": 0,
+    "bare_run_f3": 0,
+    "bare_run_f4": 0,
+    "bare_run_f5": 0
+  },
+  "note_bare": "bare_idle_f1 is the experimental breath frame (upper body one texel lower): it differs on purpose",
+  "stability": {
+    "shoulder_spread_in_spine_frame_texels": {
+      "01": 0.86,
+      "02": 1.14
+    },
+    "shoulder_jerk_in_spine_frame_texels": {
+      "01": 1.81,
+      "02": 1.0
+    },
+    "sword_angle_jerk_degrees": {
+      "01": 47.8,
+      "02": 5.8
+    },
+    "meaning": "spread = how far the socket travels (02 follows the arm swing on purpose); jerk = mean second difference around the loop (jitter)"
+  },
+  "rule_partition_vs_n4c_iou": "[(0, 0.62028986, 0.8365591), (2, 0.6404834, 0.7796258), (4, 0.65140843, 0.7589099)]",
+  "articulated_clamped_ankles": "[(1, AnkleA, 2.9379272), (4, AnkleB, 1.2460289)]",
+  "bevy_lab": [
+    "[modular_character_engine] partition idle #0 (02 rules): 0 texels differ",
+    "[modular_character_engine] partition run #0 (N4-C map): 0 texels differ",
+    "[modular_character_engine] partition run #1 (02 rules): 0 texels differ",
+    "[modular_character_engine] partition run #2 (N4-C map): 0 texels differ",
+    "[modular_character_engine] partition run #3 (02 rules): 0 texels differ",
+    "[modular_character_engine] partition run #4 (N4-C map): 0 texels differ",
+    "[modular_character_engine] partition run #5 (02 rules): 0 texels differ",
+    "[modular_character_engine] RESULT: PASS"
+  ],
+  "tool_evidence_files": [
+    "asf_rig_animate_review.png",
+    "asf_rig_animate_onion.png",
+    "asf_skeleton.rig.svg",
+    "asf_skeleton.anim.json",
+    "asf_pixel_motion_legs_approved.png",
+    "asf_pixel_motion_legs_hybrid_equipped.png",
+    "asf_build_animation_clips_contact.png",
+    "asf_pixel_qa_breastplate_run.png",
+    "asf_pixel_qa_breastplate_idle.png",
+    "pixelfx_act_sword_slash.png",
+    "external_tools.json",
+    "asf_rig_crosscheck.json",
+    "asf_build_animation_clips_turn_test.png"
+  ]
+}

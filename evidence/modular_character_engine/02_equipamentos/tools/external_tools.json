@@ -1,0 +1,542 @@
+{
+  "asf_rig_animate": {
+    "command": "-B /home/raul/.claude/plugins/cache/agent-sprite-forge/agent-sprite-forge/0.6.0/skills/codeart2d/scripts/rig_animate.py --anim /home/raul/\u00c1rea de trabalho/Andvarion/ProjetoRST/target/modular_character_engine/tools/asf_rig/skeleton.anim.json --output-dir /home/raul/\u00c1rea de trabalho/Andvarion/ProjetoRST/target/modular_character_engine/tools/asf_rig/render --route vector",
+    "returncode": 4,
+    "asf_zoom": 4.0,
+    "asf_ground_failures": [
+      {
+        "frame": "run-00",
+        "edge": 476,
+        "ground": 472,
+        "gap_px": -4
+      },
+      {
+        "frame": "run-01",
+        "edge": 453,
+        "ground": 472,
+        "gap_px": 19
+      },
+      {
+        "frame": "run-02",
+        "edge": 448,
+        "ground": 472,
+        "gap_px": 24
+      },
+      {
+        "frame": "run-03",
+        "edge": 461,
+        "ground": 472,
+        "gap_px": 11
+      },
+      {
+        "frame": "run-04",
+        "edge": 470,
+        "ground": 472,
+        "gap_px": 2
+      },
+      {
+        "frame": "run-05",
+        "edge": 447,
+        "ground": 472,
+        "gap_px": 25
+      }
+    ],
+    "asf_qa": {
+      "status": "fail",
+      "method": "rig_animate: FK and two-bone IK sampled per clip; vector route: anti-aliased frames, pixel gates not applicable; forge_core.seam_report (premultiplied MAE, seam over median adjacent step) on each loop of 3+ frames; planted-foot drift measured on the rig geometry (ankle x + stride * t, ankle y) per run of planted frames; IK clamps; lowest alpha row of grounded frames against the ground line; transparent margin; optional build_animation_clips run",
+      "notProven": [
+        "Appeal, silhouette, anatomy and readability at game scale: look at review/*.png.",
+        "Timing, weight and acting in motion: the checks measure geometry, not feel.",
+        "Planted-foot drift is measured on rig geometry; rendered pixels may still differ by coverage rounding or anti-aliasing when the per-frame travel is not a whole number of pixels.",
+        "Vector frames are anti-aliased: partial alpha and blended edge colours are expected, so palette conformance is not proven.",
+        "build_animation_clips was not run (--build-clips not given)."
+      ],
+      "checks": [
+        {
+          "id": "partial_alpha",
+          "status": "skipped",
+          "value": null,
+          "threshold": 0
+        },
+        {
+          "id": "off_palette",
+          "status": "skipped",
+          "value": null,
+          "threshold": 0
+        },
+        {
+          "id": "outline_gaps",
+          "status": "skipped",
+          "value": null,
+          "threshold": 0
+        },
+        {
+          "id": "l_corners",
+          "status": "skipped",
+          "value": null,
+          "threshold": 10
+        },
+        {
+          "id": "seam:run",
+          "status": "pass",
+          "value": 0.9961,
+          "threshold": [
+            0.8,
+            1.25
+          ]
+        },
+        {
+          "id": "ik_clamp",
+          "status": "pass",
+          "value": 0,
+          "threshold": 0
+        },
+        {
+          "id": "ground_row",
+          "status": "fail",
+          "value": 6,
+          "threshold": 0
+        },
+        {
+          "id": "margins",
+          "status": "pass",
+          "value": 0,
+          "threshold": 4
+        },
+        {
+          "id": "build_clips",
+          "status": "skipped",
+          "value": null,
+          "threshold": 0
+        }
+      ],
+      "inputs": [
+        {
+          "path": "../skeleton.rig.svg",
+          "sha256": "a761fd059b1dcd410dfc5679f2155675896d27173a1ad2491223a11bdc7e9bd1",
+          "bytes": 3381
+        },
+        {
+          "path": "../skeleton.anim.json",
+          "sha256": "f1d325956c824c7f5ff69110d6f82b40b535d3a7dbabba0d1c52fe95a38f36a4",
+          "bytes": 6068
+        }
+      ],
+      "outputs": [
+        {
+          "path": "frames/run-00.png",
+          "sha256": "e04c7627f2a43f7f98988a3432878e8e4cc75e9cf717bb29e4234c046b6fc00a",
+          "bytes": 12028
+        },
+        {
+          "path": "frames/run-01.png",
+          "sha256": "f3430cc5a49905687afc690524e851a83e406dae09850769336240d57fef9c13",
+          "bytes": 13986
+        },
+        {
+          "path": "frames/run-02.png",
+          "sha256": "f93c02a58bd0d4c5e0ea35b5a081a86ea06a04012c707f334b366af30d41ca18",
+          "bytes": 15423
+        },
+        {
+          "path": "frames/run-03.png",
+          "sha256": "f06aecdd51b02895bb1efd09bb2ede41f85a6cf7794699e3c6b3b44f023d0617",
+          "bytes": 12075
+        },
+        {
+          "path": "frames/run-04.png",
+          "sha256": "98c27b37d90993eb6d8f71d0ec4f93f8aa140c5cbcc626f5e5ad02b9b1da4274",
+          "bytes": 16221
+        },
+        {
+          "path": "frames/run-05.png",
+          "sha256": "7e09eea9dc5daeaf4cf8a1782af2301bc3e89bd080fa9d0eaa8e316e54b3f531",
+          "bytes": 13459
+        },
+        {
+          "path": "clips.json",
+          "sha256": "4704dfe07a5df4e626909247cbfd68b7d177056f446bcafe6e38197c0d96a77b",
+          "bytes": 970
+        }
+      ],
+      "tool": {
+        "name": "codeart2d/rig_animate.py",
+        "version": "0.6.0"
+      }
+    },
+    "frames_found": [
+      "render/frames/run-00.png",
+      "render/frames/run-01.png",
+      "render/frames/run-02.png",
+      "render/frames/run-03.png",
+      "render/frames/run-04.png",
+      "render/frames/run-05.png"
+    ],
+    "markers_found": 72,
+    "markers_expected": 72,
+    "max_error_texels": 1.549,
+    "mean_error_texels": 0.164
+  },
+  "asf_pixel_motion": {
+    "approved_run": {
+      "returncode": 0,
+      "stderr": "",
+      "measure": {
+        "facing": "right",
+        "frames": 18,
+        "fps": 15.0,
+        "marks": "footfalls (the front edge of the feet)",
+        "footfalls": [
+          0,
+          5,
+          11
+        ],
+        "evenSteps": true,
+        "stepByLags": [
+          6,
+          0
+        ],
+        "stepFrames": 5.5,
+        "stepSeconds": 0.367,
+        "strideCells": 10.0,
+        "repeatingFrames": 0,
+        "onTwos": false,
+        "cellsBackPerFrame": 0.0,
+        "speedPxPerSecond": 0.0,
+        "stepPair": {
+          "from": 0,
+          "to": 11,
+          "cellsThatDiffer": 2664,
+          "how": "from a footfall to the footfall after the next"
+        },
+        "warnings": []
+      }
+    },
+    "hybrid_run_equipped": {
+      "returncode": 0,
+      "stderr": "",
+      "measure": {
+        "facing": "right",
+        "frames": 18,
+        "fps": 15.0,
+        "marks": "footfalls (the front edge of the feet)",
+        "footfalls": [
+          0,
+          5,
+          11
+        ],
+        "evenSteps": true,
+        "stepByLags": [
+          6,
+          0
+        ],
+        "stepFrames": 5.5,
+        "stepSeconds": 0.367,
+        "strideCells": 10.0,
+        "repeatingFrames": 0,
+        "onTwos": false,
+        "cellsBackPerFrame": 0.0,
+        "speedPxPerSecond": 0.0,
+        "stepPair": {
+          "from": 0,
+          "to": 11,
+          "cellsThatDiffer": 3012,
+          "how": "from a footfall to the footfall after the next"
+        },
+        "warnings": []
+      }
+    }
+  },
+  "asf_build_animation_clips": {
+    "approved_run": {
+      "returncode": 0,
+      "stdout": "us\": \"ok\", \"output\": \"/home/raul/\\u00c1rea de trabalho/Andvarion/ProjetoRST/target/modular_character_engine/tools/clips_approved_run\", \"metadata\": \"/home/raul/\\u00c1rea de trabalho/Andvarion/ProjetoRST/target/modular_character_engine/tools/clips_approved_run/animation-clips.json\", \"schema\": \"generate2dsprite.animation_clips.v2\", \"clips\": 1, \"frames\": 6, \"warnings\": 0, \"qa\": \"needs-visual-review\"}\n",
+      "stderr": "",
+      "run": {
+        "events_ms": [
+          {
+            "name": "step_r",
+            "at_ms": 0,
+            "at": 0,
+            "position": 0,
+            "at_tick": 0
+          },
+          {
+            "name": "step_l",
+            "at_ms": 200,
+            "at": 3,
+            "position": 3,
+            "at_tick": 12
+          }
+        ],
+        "tick_grid": {
+          "hz": 60,
+          "max_drift_ms": 0.333,
+          "frame_ticks": [
+            4,
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "zero_tick_positions": [],
+          "even": true,
+          "cycle_ticks": 24.0,
+          "cycle_aligned": true,
+          "method": "cumulative integer-ms frame boundaries rounded half-up to the nearest tick"
+        },
+        "holds": []
+      },
+      "top_level": {}
+    },
+    "hybrid_run_equipped": {
+      "returncode": 0,
+      "stdout": "tput\": \"/home/raul/\\u00c1rea de trabalho/Andvarion/ProjetoRST/target/modular_character_engine/tools/clips_hybrid_run_equipped\", \"metadata\": \"/home/raul/\\u00c1rea de trabalho/Andvarion/ProjetoRST/target/modular_character_engine/tools/clips_hybrid_run_equipped/animation-clips.json\", \"schema\": \"generate2dsprite.animation_clips.v2\", \"clips\": 1, \"frames\": 6, \"warnings\": 0, \"qa\": \"needs-visual-review\"}\n",
+      "stderr": "",
+      "run": {
+        "events_ms": [
+          {
+            "name": "step_r",
+            "at_ms": 0,
+            "at": 0,
+            "position": 0,
+            "at_tick": 0
+          },
+          {
+            "name": "step_l",
+            "at_ms": 200,
+            "at": 3,
+            "position": 3,
+            "at_tick": 12
+          }
+        ],
+        "tick_grid": {
+          "hz": 60,
+          "max_drift_ms": 0.333,
+          "frame_ticks": [
+            4,
+            4,
+            4,
+            4,
+            4,
+            4
+          ],
+          "zero_tick_positions": [],
+          "even": true,
+          "cycle_ticks": 24.0,
+          "cycle_aligned": true,
+          "method": "cumulative integer-ms frame boundaries rounded half-up to the nearest tick"
+        },
+        "holds": []
+      },
+      "top_level": {}
+    }
+  },
+  "asf_pixel_qa_breastplate": {
+    "run": {
+      "returncode": 0,
+      "frames": 6,
+      "report": [
+        {
+          "id": "partial_alpha",
+          "status": "pass",
+          "value": 0,
+          "threshold": 0
+        },
+        {
+          "id": "off_palette",
+          "status": "pass",
+          "value": 0,
+          "threshold": 0
+        },
+        {
+          "id": "outline_gaps",
+          "status": "pass",
+          "value": 0,
+          "threshold": 0
+        },
+        {
+          "id": "l_corners",
+          "status": "pass",
+          "value": 4,
+          "threshold": 10
+        },
+        {
+          "id": "same_size",
+          "status": "pass",
+          "value": [
+            [
+              112,
+              128
+            ]
+          ],
+          "threshold": "one canvas size"
+        }
+      ]
+    },
+    "idle": {
+      "returncode": 0,
+      "frames": 2,
+      "report": [
+        {
+          "id": "partial_alpha",
+          "status": "pass",
+          "value": 0,
+          "threshold": 0
+        },
+        {
+          "id": "off_palette",
+          "status": "pass",
+          "value": 0,
+          "threshold": 0
+        },
+        {
+          "id": "outline_gaps",
+          "status": "pass",
+          "value": 0,
+          "threshold": 0
+        },
+        {
+          "id": "l_corners",
+          "status": "pass",
+          "value": 4,
+          "threshold": 10
+        },
+        {
+          "id": "same_size",
+          "status": "pass",
+          "value": [
+            [
+              80,
+              128
+            ]
+          ],
+          "threshold": "one canvas size"
+        }
+      ]
+    }
+  },
+  "asf_pixel_qa_pauldrons": {
+    "returncode": 0,
+    "report": [
+      {
+        "id": "partial_alpha",
+        "status": "pass",
+        "value": 0,
+        "threshold": 0
+      },
+      {
+        "id": "off_palette",
+        "status": "skipped",
+        "value": null,
+        "threshold": 0
+      },
+      {
+        "id": "outline_gaps",
+        "status": "skipped",
+        "value": null,
+        "threshold": 0
+      },
+      {
+        "id": "l_corners",
+        "status": "skipped",
+        "value": null,
+        "threshold": 10
+      },
+      {
+        "id": "same_size",
+        "status": "pass",
+        "value": [
+          [
+            14,
+            15
+          ]
+        ],
+        "threshold": "one canvas size"
+      }
+    ]
+  },
+  "pixelfx_rig_probe": {
+    "tool": "pixelfx 0.3.1 src/core/rig.js skeleton()",
+    "rows": [
+      {
+        "label": "sa -2.65, hand fixed",
+        "sa": -2.65,
+        "hand": [
+          12,
+          -21
+        ],
+        "forearm_deg": 4.5,
+        "blade_deg": 151.8
+      },
+      {
+        "label": "sa -1.45, hand fixed",
+        "sa": -1.45,
+        "hand": [
+          12,
+          -21
+        ],
+        "forearm_deg": 1,
+        "blade_deg": 83.1
+      },
+      {
+        "label": "sa -0.85, hand fixed",
+        "sa": -0.85,
+        "hand": [
+          12,
+          -21
+        ],
+        "forearm_deg": 1,
+        "blade_deg": 48.7
+      },
+      {
+        "label": "sa 0.62, hand fixed",
+        "sa": 0.62,
+        "hand": [
+          12,
+          -21
+        ],
+        "forearm_deg": 4.5,
+        "blade_deg": -35.5
+      },
+      {
+        "label": "hand 6,-16, sa fixed",
+        "sa": -0.85,
+        "hand": [
+          6,
+          -16
+        ],
+        "forearm_deg": -31.2,
+        "blade_deg": 48.7
+      },
+      {
+        "label": "hand 12,-21, sa fixed",
+        "sa": -0.85,
+        "hand": [
+          12,
+          -21
+        ],
+        "forearm_deg": 1,
+        "blade_deg": 48.7
+      },
+      {
+        "label": "hand 16,-30, sa fixed",
+        "sa": -0.85,
+        "hand": [
+          15.6,
+          -29.9
+        ],
+        "forearm_deg": 13.3,
+        "blade_deg": 48.7
+      }
+    ],
+    "forearm_spread_when_only_sa_changes_deg": 3.5,
+    "blade_spread_when_only_the_hand_moves_deg": 0
+  },
+  "pixelfx_act": {
+    "returncode": 0,
+    "stdout": "melee/sword-slash  21 steps  ->  /home/raul/\u00c1rea de trabalho/Andvarion/ProjetoRST/target/modular_character_engine/tools/pixelfx_act/sword-slash-act.png\n",
+    "stderr": ""
+  }
+}

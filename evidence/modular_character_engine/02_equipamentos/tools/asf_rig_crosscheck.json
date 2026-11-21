@@ -1,0 +1,264 @@
+{
+  "command": "-B /home/raul/.claude/plugins/cache/agent-sprite-forge/agent-sprite-forge/0.6.0/skills/codeart2d/scripts/rig_animate.py --anim /home/raul/\u00c1rea de trabalho/Andvarion/ProjetoRST/target/modular_character_engine/tools/asf_rig/skeleton.anim.json --output-dir /home/raul/\u00c1rea de trabalho/Andvarion/ProjetoRST/target/modular_character_engine/tools/asf_rig/render --route vector",
+  "returncode": 4,
+  "asf_zoom": 4.0,
+  "asf_ground_failures": [
+    {
+      "frame": "run-00",
+      "edge": 476,
+      "ground": 472,
+      "gap_px": -4
+    },
+    {
+      "frame": "run-01",
+      "edge": 453,
+      "ground": 472,
+      "gap_px": 19
+    },
+    {
+      "frame": "run-02",
+      "edge": 448,
+      "ground": 472,
+      "gap_px": 24
+    },
+    {
+      "frame": "run-03",
+      "edge": 461,
+      "ground": 472,
+      "gap_px": 11
+    },
+    {
+      "frame": "run-04",
+      "edge": 470,
+      "ground": 472,
+      "gap_px": 2
+    },
+    {
+      "frame": "run-05",
+      "edge": 447,
+      "ground": 472,
+      "gap_px": 25
+    }
+  ],
+  "asf_qa": {
+    "status": "fail",
+    "method": "rig_animate: FK and two-bone IK sampled per clip; vector route: anti-aliased frames, pixel gates not applicable; forge_core.seam_report (premultiplied MAE, seam over median adjacent step) on each loop of 3+ frames; planted-foot drift measured on the rig geometry (ankle x + stride * t, ankle y) per run of planted frames; IK clamps; lowest alpha row of grounded frames against the ground line; transparent margin; optional build_animation_clips run",
+    "notProven": [
+      "Appeal, silhouette, anatomy and readability at game scale: look at review/*.png.",
+      "Timing, weight and acting in motion: the checks measure geometry, not feel.",
+      "Planted-foot drift is measured on rig geometry; rendered pixels may still differ by coverage rounding or anti-aliasing when the per-frame travel is not a whole number of pixels.",
+      "Vector frames are anti-aliased: partial alpha and blended edge colours are expected, so palette conformance is not proven.",
+      "build_animation_clips was not run (--build-clips not given)."
+    ],
+    "checks": [
+      {
+        "id": "partial_alpha",
+        "status": "skipped",
+        "value": null,
+        "threshold": 0
+      },
+      {
+        "id": "off_palette",
+        "status": "skipped",
+        "value": null,
+        "threshold": 0
+      },
+      {
+        "id": "outline_gaps",
+        "status": "skipped",
+        "value": null,
+        "threshold": 0
+      },
+      {
+        "id": "l_corners",
+        "status": "skipped",
+        "value": null,
+        "threshold": 10
+      },
+      {
+        "id": "seam:run",
+        "status": "pass",
+        "value": 0.9961,
+        "threshold": [
+          0.8,
+          1.25
+        ]
+      },
+      {
+        "id": "ik_clamp",
+        "status": "pass",
+        "value": 0,
+        "threshold": 0
+      },
+      {
+        "id": "ground_row",
+        "status": "fail",
+        "value": 6,
+        "threshold": 0
+      },
+      {
+        "id": "margins",
+        "status": "pass",
+        "value": 0,
+        "threshold": 4
+      },
+      {
+        "id": "build_clips",
+        "status": "skipped",
+        "value": null,
+        "threshold": 0
+      }
+    ],
+    "inputs": [
+      {
+        "path": "../skeleton.rig.svg",
+        "sha256": "a761fd059b1dcd410dfc5679f2155675896d27173a1ad2491223a11bdc7e9bd1",
+        "bytes": 3381
+      },
+      {
+        "path": "../skeleton.anim.json",
+        "sha256": "f1d325956c824c7f5ff69110d6f82b40b535d3a7dbabba0d1c52fe95a38f36a4",
+        "bytes": 6068
+      }
+    ],
+    "outputs": [
+      {
+        "path": "frames/run-00.png",
+        "sha256": "e04c7627f2a43f7f98988a3432878e8e4cc75e9cf717bb29e4234c046b6fc00a",
+        "bytes": 12028
+      },
+      {
+        "path": "frames/run-01.png",
+        "sha256": "f3430cc5a49905687afc690524e851a83e406dae09850769336240d57fef9c13",
+        "bytes": 13986
+      },
+      {
+        "path": "frames/run-02.png",
+        "sha256": "f93c02a58bd0d4c5e0ea35b5a081a86ea06a04012c707f334b366af30d41ca18",
+        "bytes": 15423
+      },
+      {
+        "path": "frames/run-03.png",
+        "sha256": "f06aecdd51b02895bb1efd09bb2ede41f85a6cf7794699e3c6b3b44f023d0617",
+        "bytes": 12075
+      },
+      {
+        "path": "frames/run-04.png",
+        "sha256": "98c27b37d90993eb6d8f71d0ec4f93f8aa140c5cbcc626f5e5ad02b9b1da4274",
+        "bytes": 16221
+      },
+      {
+        "path": "frames/run-05.png",
+        "sha256": "7e09eea9dc5daeaf4cf8a1782af2301bc3e89bd080fa9d0eaa8e316e54b3f531",
+        "bytes": 13459
+      },
+      {
+        "path": "clips.json",
+        "sha256": "4704dfe07a5df4e626909247cbfd68b7d177056f446bcafe6e38197c0d96a77b",
+        "bytes": 970
+      }
+    ],
+    "tool": {
+      "name": "codeart2d/rig_animate.py",
+      "version": "0.6.0"
+    }
+  },
+  "frames_found": [
+    "render/frames/run-00.png",
+    "render/frames/run-01.png",
+    "render/frames/run-02.png",
+    "render/frames/run-03.png",
+    "render/frames/run-04.png",
+    "render/frames/run-05.png"
+  ],
+  "markers_found": 72,
+  "markers_expected": 72,
+  "max_error_texels": 1.549,
+  "mean_error_texels": 0.164,
+  "per_frame": [
+    {
+      "Spine": 0.016,
+      "Head": 0.192,
+      "UpperArmNear": 0.025,
+      "ForearmNear": 0.191,
+      "UpperArmFar": 0.067,
+      "ForearmFar": 0.232,
+      "ThighA": 0.112,
+      "ShinA": 0.112,
+      "FootA": 0.178,
+      "ThighB": 0.021,
+      "ShinB": 0.081,
+      "FootB": 0.138
+    },
+    {
+      "Spine": 0.016,
+      "Head": 0.192,
+      "UpperArmNear": 0.188,
+      "ForearmNear": 0.233,
+      "UpperArmFar": 0.142,
+      "ForearmFar": 0.188,
+      "ThighA": 0.023,
+      "ShinA": 0.079,
+      "FootA": 0.143,
+      "ThighB": 0.092,
+      "ShinB": 0.108,
+      "FootB": 0.143
+    },
+    {
+      "Spine": 0.016,
+      "Head": 0.192,
+      "UpperArmNear": 0.188,
+      "ForearmNear": 0.233,
+      "UpperArmFar": 0.16,
+      "ForearmFar": 1.238,
+      "ThighA": 0.056,
+      "ShinA": 0.019,
+      "FootA": 0.15,
+      "ThighB": 0.013,
+      "ShinB": 0.137,
+      "FootB": 0.157
+    },
+    {
+      "Spine": 0.016,
+      "Head": 0.229,
+      "UpperArmNear": 0.171,
+      "ForearmNear": 0.257,
+      "UpperArmFar": 0.159,
+      "ForearmFar": 0.204,
+      "ThighA": 0.082,
+      "ShinA": 0.118,
+      "FootA": 0.157,
+      "ThighB": 0.0,
+      "ShinB": 0.115,
+      "FootB": 0.157
+    },
+    {
+      "Spine": 0.016,
+      "Head": 0.229,
+      "UpperArmNear": 0.166,
+      "ForearmNear": 0.234,
+      "UpperArmFar": 0.159,
+      "ForearmFar": 1.549,
+      "ThighA": 0.094,
+      "ShinA": 0.087,
+      "FootA": 0.12,
+      "ThighB": 0.002,
+      "ShinB": 0.122,
+      "FootB": 0.163
+    },
+    {
+      "Spine": 0.016,
+      "Head": 0.192,
+      "UpperArmNear": 0.192,
+      "ForearmNear": 0.239,
+      "UpperArmFar": 0.151,
+      "ForearmFar": 0.266,
+      "ThighA": 0.038,
+      "ShinA": 0.146,
+      "FootA": 0.151,
+      "ThighB": 0.112,
+      "ShinB": 0.13,
+      "FootB": 0.129
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="112" height="128" viewBox="0 0 112 128"
+     data-codeart="rig.v1" data-anchor="56 118" data-facing="right">
+  <!-- Dark Castle Modular Character Engine skeleton (rest = approved idle), exported for an ASF cross-check. -->
+  <g id="root" data-pivot="56 118">
+    <g id="Spine" data-pivot="54.000 60.000">
+      <path data-z="30" fill="#9a96a2" d="M58.00 60.13 L59.00 29.13 L51.00 28.87 L50.00 59.87 Z"/>
+      <rect data-z="200" fill="#ff0000" x="53.500" y="27.500" width="3" height="3"/>
+      <g id="Head" data-pivot="55.000 29.000">
+        <path data-z="40" fill="#9a96a2" d="M57.98 29.37 L58.98 21.37 L53.02 20.63 L52.02 28.63 Z"/>
+        <rect data-z="201" fill="#00ff00" x="54.500" y="19.500" width="3" height="3"/>
+      </g>
+      <g id="UpperArmNear" data-pivot="57.000 35.000">
+        <path data-z="60" fill="#c8a088" d="M54.80 35.00 L54.80 49.00 L59.20 49.00 L59.20 35.00 Z"/>
+        <rect data-z="202" fill="#0000ff" x="55.500" y="47.500" width="3" height="3"/>
+        <g id="ForearmNear" data-pivot="57.000 49.000">
+          <path data-z="61" fill="#c8a088" d="M55.11 49.21 L57.11 67.21 L60.89 66.79 L58.89 48.79 Z"/>
+          <rect data-z="203" fill="#ffff00" x="57.500" y="65.500" width="3" height="3"/>
+        </g>
+      </g>
+      <g id="UpperArmFar" data-pivot="53.000 34.000">
+        <path data-z="5" fill="#7a6a66" d="M51.01 33.83 L50.01 45.83 L53.99 46.17 L54.99 34.17 Z"/>
+        <rect data-z="204" fill="#ff00ff" x="50.500" y="44.500" width="3" height="3"/>
+        <g id="ForearmFar" data-pivot="52.000 46.000">
+          <path data-z="6" fill="#7a6a66" d="M50.31 46.19 L51.31 55.19 L54.69 54.81 L53.69 45.81 Z"/>
+          <rect data-z="205" fill="#00ffff" x="51.500" y="53.500" width="3" height="3"/>
+        </g>
+      </g>
+      <g id="ThighA" data-pivot="54.000 60.000">
+        <path data-z="51" fill="#6a5050" d="M51.00 60.12 L52.00 86.12 L58.00 85.88 L57.00 59.88 Z"/>
+        <rect data-z="206" fill="#ff8000" x="53.500" y="84.500" width="3" height="3"/>
+        <g id="ShinA" data-pivot="55.000 86.000">
+          <path data-z="52" fill="#6a5050" d="M52.61 85.81 L50.61 110.81 L55.39 111.19 L57.39 86.19 Z"/>
+          <rect data-z="207" fill="#8000ff" x="51.500" y="109.500" width="3" height="3"/>
+          <g id="FootA" data-pivot="53.000 111.000">
+            <path data-z="53" fill="#6a5050" d="M52.22 112.40 L61.22 117.40 L62.78 114.60 L53.78 109.60 Z"/>
+            <rect data-z="208" fill="#00ff80" x="60.500" y="114.500" width="3" height="3"/>
+          </g>
+        </g>
+      </g>
+      <g id="ThighB" data-pivot="54.000 60.000">
+        <path data-z="10" fill="#4a3a3c" d="M51.20 60.00 L51.20 86.00 L56.80 86.00 L56.80 60.00 Z"/>
+        <rect data-z="209" fill="#ff0080" x="52.500" y="84.500" width="3" height="3"/>
+        <g id="ShinB" data-pivot="54.000 86.000">
+          <path data-z="11" fill="#4a3a3c" d="M51.81 85.82 L49.81 110.82 L54.19 111.18 L56.19 86.18 Z"/>
+          <rect data-z="210" fill="#80ff00" x="50.500" y="109.500" width="3" height="3"/>
+          <g id="FootB" data-pivot="52.000 111.000">
+            <path data-z="12" fill="#4a3a3c" d="M51.27 112.31 L60.27 117.31 L61.73 114.69 L52.73 109.69 Z"/>
+            <rect data-z="211" fill="#0080ff" x="59.500" y="114.500" width="3" height="3"/>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
