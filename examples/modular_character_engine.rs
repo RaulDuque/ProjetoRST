@@ -67,8 +67,7 @@ use dark_castle_rpg::player::visual::rig::equipment::{
 };
 use dark_castle_rpg::player::visual::rig::grip::hand_frame;
 use dark_castle_rpg::player::visual::rig::layers::{
-    BodyLayer, CUTOUT_BONES, DepthSlot, extract_cell, masked_rgba, material_of, parse_labels,
-    partition, partition_by_bone,
+    BodyLayer, CUTOUT_BONES, DepthSlot, extract_cell, masked_rgba, material_of, partition_by_bone,
 };
 use dark_castle_rpg::player::visual::rig::skeleton::{
     Bone, Joint, JointPositions, LocalPose, WorldPose, fit, forward, retarget,
@@ -876,59 +875,46 @@ fn build_layers(mut lab: ResMut<Lab>, mut images: ResMut<Assets<Image>>) {
             continue;
         };
         let cell = clip.geometry();
-        for source in 0..clip.sources.len() {
-            let (Some(texels), Some(joints)) = (
-                extract_cell(&data, strip_width, source, cell),
-                clip.source_joints(source),
-            ) else {
-                failures.push(format!("{key} #{source}: cannot cut the cell"));
-                continue;
-            };
+        // The shared cut (rig::data::RigClip::cut_layers): N4-C maps or rules.
+        match clip.cut_layers(&data, strip_width, |path| {
+            std::fs::read_to_string(root.join(path)).ok()
+        }) {
+            Ok(cut) => {
+                for set in cut {
+                    for (layer, bytes) in set.layers {
+                        let h =
+                            images.add(rgba_image(cell.width as u32, cell.height as u32, bytes));
+                        layers.insert((key.clone(), set.source, layer), h);
+                    }
+                    println!(
+                        "{TAG} partition {key} #{} ({}): {} texels differ",
+                        set.source,
+                        if set.authored { "N4-C map" } else { "02 rules" },
+                        set.differing
+                    );
+                    if set.differing != 0 {
+                        failures.push(format!(
+                            "{key} #{}: {} texels differ",
+                            set.source, set.differing
+                        ));
+                    }
+                }
+            }
+            Err(e) => failures.push(format!("{key}: {e}")),
+        }
+        // The articulated comparison's pieces, cut from the rest frame.
+        if *key == lab.rig.rest_clip
+            && let (Some(texels), Some(joints)) = (
+                extract_cell(&data, strip_width, 0, cell),
+                clip.source_joints(0),
+            )
+        {
             let materials: Vec<_> = texels.iter().map(|t| material_of(*t)).collect();
-            let authored = clip.labels.get(source).cloned().flatten();
-            let labels = match &authored {
-                Some(path) => match std::fs::read_to_string(root.join(path))
-                    .map_err(|e| e.to_string())
-                    .and_then(|t| parse_labels(&t, cell).map_err(|e| format!("{e:?}")))
-                {
-                    Ok(l) => l,
-                    Err(e) => {
-                        failures.push(format!("{key} #{source}: label map {path}: {e}"));
-                        partition(&materials, cell, &joints)
-                    }
-                },
-                None => partition(&materials, cell, &joints),
-            };
-            let mut union = vec![[0u8; 4]; texels.len()];
-            for layer in BodyLayer::ALL {
-                let bytes = masked_rgba(&texels, &labels, layer);
-                for (i, px) in bytes.as_chunks::<4>().0.iter().enumerate() {
-                    if px[3] > 0 {
-                        union[i] = *px;
-                    }
-                }
+            let bones = partition_by_bone(&materials, cell, &joints);
+            for bone in CUTOUT_BONES {
+                let bytes = masked_rgba(&texels, &bones, bone);
                 let h = images.add(rgba_image(cell.width as u32, cell.height as u32, bytes));
-                layers.insert((key.clone(), source, layer), h);
-            }
-            let differing = union.iter().zip(&texels).filter(|(a, b)| a != b).count();
-            println!(
-                "{TAG} partition {key} #{source} ({}): {differing} texels differ",
-                if authored.is_some() {
-                    "N4-C map"
-                } else {
-                    "02 rules"
-                }
-            );
-            if differing != 0 {
-                failures.push(format!("{key} #{source}: {differing} texels differ"));
-            }
-            if *key == lab.rig.rest_clip && source == 0 {
-                let bones = partition_by_bone(&materials, cell, &joints);
-                for bone in CUTOUT_BONES {
-                    let bytes = masked_rgba(&texels, &bones, bone);
-                    let h = images.add(rgba_image(cell.width as u32, cell.height as u32, bytes));
-                    pieces.insert(bone, h);
-                }
+                pieces.insert(bone, h);
             }
         }
     }
