@@ -9,6 +9,8 @@
 //!   a composition by data (OVERLAY / HIDE / REPLACE);
 //! - [`manifest`] (pure): atlases and clips of `assets/animations/player.ron`;
 //! - [`playback`] (pure): frame timing (loops, actions, per-frame durations);
+//! - [`rig`] (pure, Modular Character Engine 01): skeleton, IK, depth layers
+//!   and rig-bound equipment of the isolated lab (not used by the game);
 //! - [`selection`] (pure): which clip shows a gameplay state, and fallbacks;
 //! - [`sockets`] (pure, V2.2): per-frame equipment sockets (hands, head, back);
 //! - [`systems`] (Bevy): loading, attaching the child, animating it;
@@ -27,6 +29,7 @@ pub mod equipment_visual;
 pub mod manifest;
 pub mod modular_lab;
 pub mod playback;
+pub mod rig;
 pub mod selection;
 pub mod sockets;
 pub mod systems;
