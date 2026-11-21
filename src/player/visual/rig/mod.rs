@@ -28,6 +28,7 @@ pub mod chest;
 pub mod data;
 pub mod design;
 pub mod equipment;
+pub mod flex;
 pub mod grip;
 pub mod history;
 pub mod ik;

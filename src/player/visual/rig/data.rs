@@ -45,6 +45,10 @@ pub struct RigClip {
     /// `layers::parse_labels`); empty or `None` = the rule partition.
     #[serde(default)]
     pub labels: Vec<Option<String>>,
+    /// The body's ground speed in this clip (texels per second towards the
+    /// face): what drags flexible equipment (05). 0 = standing.
+    #[serde(default)]
+    pub ground_speed: f32,
 }
 
 /// One played frame.

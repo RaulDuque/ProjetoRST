@@ -104,6 +104,9 @@
             // N4-C layers (scripts/n4c_label_maps.py) where they exist; the
             // 02 rule partition elsewhere.
             labels: [Some("layers/run_0.txt"), None, Some("layers/run_2.txt"), None, Some("layers/run_4.txt"), None],
+            // Engine 05: the speed the run would move the body (estimate: two
+            // steps of about 22 texels per 0.4 s loop). It drags capes.
+            ground_speed: 110.0,
         ),
     },
     // Reusable grips (the same profile for every sword).

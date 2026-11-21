@@ -66,12 +66,13 @@ use dark_castle_rpg::player::visual::rig::design::{
     pixel_index,
 };
 use dark_castle_rpg::player::visual::rig::equipment::{BoneEnd, RigSlot};
+use dark_castle_rpg::player::visual::rig::flex::{ChainMap, FlexState};
 use dark_castle_rpg::player::visual::rig::grip::HandSide;
 use dark_castle_rpg::player::visual::rig::history::History;
 use dark_castle_rpg::player::visual::rig::layers::{BodyRegion, DepthSlot};
 use dark_castle_rpg::player::visual::rig::paint::{
-    Painted, RgbaImage, SpaceMap, WornItem, compose_frame, paint_on_frame, pixel_cell_at,
-    space_map, split_by_depth,
+    Painted, RgbaImage, SpaceMap, WornItem, compose_frame, flex_input, paint_on_frame_with,
+    pixel_cell_at, settled_chains, space_map, split_by_depth,
 };
 use dark_castle_rpg::player::visual::rig::skeleton::{Bone, LocalPose, fit, forward};
 
@@ -100,6 +101,11 @@ const VIEW_2X: (f32, f32) = (870.0, 630.0);
 const VIEW_1X: (f32, f32) = (870.0, 330.0);
 const ZOOM_RANGE: (u32, u32) = (2, 8);
 const SPEEDS: [f32; 4] = [0.25, 0.5, 1.0, 2.0];
+/// How fast the body reaches or leaves the clip's ground speed (texels per
+/// second squared): starts and stops are not instant, so cloth swings.
+const BODY_ACCEL: f32 = 450.0;
+/// The tours step the clock and the cloth at a fixed rate (repeatable).
+const TOUR_DT: f32 = 1.0 / 60.0;
 /// Mouse: how close (screen px) a vertex must be to be grabbed.
 const GRAB_RADIUS: f32 = 24.0;
 /// Seconds a second Ctrl+R / close request has to confirm a discard.
@@ -158,6 +164,24 @@ enum Tool {
 enum Target {
     Shape,
     Region(usize),
+}
+
+/// Cloth chain parameters editable in the panel.
+#[derive(Debug, Clone, Copy, PartialEq)]
+enum FlexField {
+    Segments,
+    Length,
+    Stiffness,
+    Damping,
+    Influence,
+    Gravity,
+    Rest,
+    Reach,
+    Bend,
+    Flutter,
+    Shelter,
+    AnchorU,
+    AnchorV,
 }
 
 /// Numeric fields of the properties panel.
@@ -233,6 +257,11 @@ enum Action {
     Isolated,
     Unequipped,
     Skeleton,
+    /// Cloth chain parameter of the selected design (05).
+    Flex(FlexField, f32),
+    /// Region under vertex editing: next material / tone shift.
+    RegionMaterial,
+    RegionTone(i8),
 }
 
 struct Entry {
@@ -312,6 +341,9 @@ enum Op {
     DragVertex(usize, f32, f32),
     /// One brush stroke over these cells of the selected pixel part.
     PaintCells(Vec<(usize, usize)>),
+    /// Starts writing the raw composite of every following frame (the ops
+    /// go on meanwhile): `v2/rec/NAME_<i>[_m]_WxH.rgba`, `_m` = mirrored.
+    Record(&'static str, u32),
     Wait(u32),
 }
 
@@ -366,7 +398,17 @@ struct Studio {
     composite_key: Option<String>,
     pick: Vec<Option<(usize, usize)>>,
     last_composite: Vec<[u8; 4]>,
-    painted: HashMap<(usize, u64, String, usize), (Painted, DepthSlot)>,
+    painted: HashMap<(usize, u64, String, u64), (Painted, DepthSlot)>,
+    /// Live cloth: (design, chain) -> simulation.
+    flex: HashMap<(usize, usize), FlexState>,
+    /// The body's ground speed now (eases towards the clip's).
+    body_speed: f32,
+    /// Bumped every cloth step (repaints flexible items).
+    flex_tick: u64,
+    /// Fixed clock step (tours).
+    fixed_dt: Option<f32>,
+    /// Raw composites recorded every frame: (name, frames left, index).
+    recording: Option<(&'static str, u32, u32)>,
     ui_key: String,
     close_armed: f32,
     revert_armed: f32,
@@ -461,11 +503,53 @@ impl Studio {
         self.edit()?.parts.get_mut(part)
     }
 
-    /// The space map of the selected part on the current frame.
+    /// The space map of the selected part on the current frame (a chain
+    /// space reads the live cloth).
     fn part_map(&self) -> Option<SpaceMap> {
         let d = self.design()?;
-        let space = d.effective_space(self.part);
-        space_map(&self.rig, &self.rest, &space, &self.clip, self.frame).map(|(m, _)| m)
+        match d.effective_space(self.part) {
+            DesignSpace::Flex { chain } => {
+                let pts = self.chain_points(self.selected, usize::from(chain))?;
+                ChainMap::new(&pts).map(|c| SpaceMap::Chain(std::sync::Arc::new(c)))
+            }
+            space => {
+                space_map(&self.rig, &self.rest, &space, &self.clip, self.frame).map(|(m, _)| m)
+            }
+        }
+    }
+
+    /// Points of a design's chain now: the live cloth, else its settled pose.
+    fn chain_points(&self, design: usize, chain: usize) -> Option<Vec<(f32, f32)>> {
+        if let Some(st) = self.flex.get(&(design, chain)) {
+            return Some(st.points.clone());
+        }
+        let d = &self.entries.get(design)?.design;
+        settled_chains(&self.rig, d, &self.clip, self.frame)
+            .get(chain)
+            .cloned()
+            .flatten()
+    }
+
+    /// The designs drawn now.
+    fn worn(&self) -> Vec<usize> {
+        if self.isolated {
+            vec![self.selected]
+        } else if self.unequipped {
+            Vec::new()
+        } else {
+            self.equipped.values().copied().collect()
+        }
+    }
+
+    /// Cache key of a painted design (flexible ones change every step).
+    fn paint_key(&self, i: usize) -> Option<(usize, u64, String, u64)> {
+        let e = self.entries.get(i)?;
+        let tick = if e.design.flex.is_empty() {
+            0
+        } else {
+            self.flex_tick
+        };
+        Some((i, e.rev, self.clip.clone(), self.frame as u64 | tick << 8))
     }
 
     fn part_in_torso(&self) -> bool {
@@ -732,6 +816,7 @@ fn space_name(s: &DesignSpace) -> String {
         DesignSpace::Torso => "torso cage".into(),
         DesignSpace::Hand { side } => format!("hand {side:?}"),
         DesignSpace::Bone { bone, follow, .. } => format!("bone {bone:?} {follow:.1}"),
+        DesignSpace::Flex { chain } => format!("cloth chain {chain}"),
     }
 }
 
@@ -802,7 +887,7 @@ fn panel_node(left: f32, top: f32, width: f32, height: f32) -> Node {
         align_items: AlignItems::Center,
         padding: UiRect::all(px(4)),
         column_gap: px(3),
-        row_gap: px(2),
+        row_gap: px(1),
         overflow: Overflow::clip(),
         ..default()
     }
@@ -948,6 +1033,7 @@ fn new_design(s: &mut Studio) {
         aspect_range: (0.67, 0.78),
         materials: vec![steel()],
         parts: Vec::new(),
+        flex: Vec::new(),
         provisional: true,
         source: "created in the Equipment Studio".into(),
     };
@@ -1176,8 +1262,12 @@ fn apply(a: &Action, s: &mut Studio, server: &AssetServer) {
                 return;
             }
             s.record("part binding");
+            // The fixed spaces, then every cloth chain of the design.
+            let chains = s.design().map_or(0, |d| d.flex.len());
+            let mut options = SPACES.to_vec();
+            options.extend((0..chains).map(|k| DesignSpace::Flex { chain: k as u8 }));
             if let Some(p) = s.edit_part() {
-                p.bind = cycle_opt(&SPACES, p.bind);
+                p.bind = cycle_opt(&options, p.bind);
             }
         }
         Action::PartDepth => {
@@ -1325,6 +1415,7 @@ fn apply(a: &Action, s: &mut Studio, server: &AssetServer) {
                         points: vec![(x0 + inset, cy), (x1 - inset, cy)],
                         tone: 5,
                         dashed: true,
+                        material: None,
                     }
                 } else {
                     Ornament::Rivet { at: (cx, cy) }
@@ -1390,7 +1481,15 @@ fn apply(a: &Action, s: &mut Studio, server: &AssetServer) {
         Action::Speed(d) => {
             s.speed = (s.speed as i32 + d).clamp(0, SPEEDS.len() as i32 - 1) as usize;
         }
-        Action::Mirror => s.flip = !s.flip,
+        Action::Mirror => {
+            // A turnaround: the cloth stays in the world for an instant, the
+            // body's motion flips in its own (mirrored) frame.
+            s.flip = !s.flip;
+            for st in s.flex.values_mut() {
+                st.turn_around();
+            }
+            s.body_speed = -s.body_speed;
+        }
         Action::Zoom(d) => {
             s.zoom = (s.zoom as i32 + d).clamp(ZOOM_RANGE.0 as i32, ZOOM_RANGE.1 as i32) as u32;
         }
@@ -1399,6 +1498,34 @@ fn apply(a: &Action, s: &mut Studio, server: &AssetServer) {
         Action::Isolated => s.isolated = !s.isolated,
         Action::Unequipped => s.unequipped = !s.unequipped,
         Action::Skeleton => s.skeleton = !s.skeleton,
+        Action::Flex(f, d) => flex_nudge(s, *f, *d),
+        Action::RegionMaterial | Action::RegionTone(_) => {
+            let Target::Region(k) = s.target else {
+                s.status = "pick a region first (regions: edit)".into();
+                return;
+            };
+            s.record("region");
+            let part = s.part;
+            if let Some(d) = s.edit() {
+                let ids: Vec<String> = d.materials.iter().map(|m| m.id.clone()).collect();
+                if let Some(r) = d.parts.get_mut(part).and_then(|p| p.regions.get_mut(k)) {
+                    match a {
+                        Action::RegionTone(t) => r.tone = (r.tone + t).clamp(-4, 4),
+                        _ => {
+                            // None -> each material -> None.
+                            let i = r
+                                .material
+                                .as_ref()
+                                .and_then(|m| ids.iter().position(|x| x == m));
+                            r.material = match i {
+                                None => ids.first().cloned(),
+                                Some(i) => ids.get(i + 1).cloned(),
+                            };
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -1544,6 +1671,38 @@ fn nudge(s: &mut Studio, field: Field, delta: f32) {
                 *smooth = (i32::from(*smooth) + delta as i32).clamp(0, 3) as u8;
             }
         }
+    }
+}
+
+/// Edits a cloth parameter of the selected design (the chain of the
+/// selected part, else the first), kept inside its valid range.
+fn flex_nudge(s: &mut Studio, f: FlexField, d: f32) {
+    let chain = match s.design().map(|x| x.effective_space(s.part)) {
+        Some(DesignSpace::Flex { chain }) => usize::from(chain),
+        _ => 0,
+    };
+    if s.design().is_none_or(|x| x.flex.get(chain).is_none()) {
+        s.status = "this design has no cloth chain".into();
+        return;
+    }
+    s.record("cloth");
+    let Some(c) = s.edit().and_then(|x| x.flex.get_mut(chain)) else {
+        return;
+    };
+    match f {
+        FlexField::Segments => c.segments = (i32::from(c.segments) + d as i32).clamp(2, 16) as u8,
+        FlexField::Length => c.length = (c.length + d).max(4.0),
+        FlexField::Stiffness => c.stiffness = (c.stiffness + d).max(0.0),
+        FlexField::Damping => c.damping = (c.damping + d).clamp(0.5, 1.0),
+        FlexField::Influence => c.influence = (c.influence + d).max(0.0),
+        FlexField::Gravity => c.gravity = (c.gravity + d).max(10.0),
+        FlexField::Rest => c.rest_deg = (c.rest_deg + d).clamp(c.limits.0, c.limits.1),
+        FlexField::Reach => c.limits.1 = (c.limits.1 + d).clamp(c.rest_deg.max(c.limits.0), 180.0),
+        FlexField::Bend => c.bend = (c.bend + d).clamp(2.0, 90.0),
+        FlexField::Flutter => c.flutter = (c.flutter + d).clamp(0.0, 1.0),
+        FlexField::Shelter => c.shelter = (c.shelter + d).clamp(0.0, 0.9),
+        FlexField::AnchorU => c.anchor.0 += d,
+        FlexField::AnchorV => c.anchor.1 += d,
     }
 }
 
@@ -1918,7 +2077,7 @@ fn canvas_press(s: &mut Studio, pos: Vec2) {
 fn paint_at(s: &mut Studio, pos: Vec2, first: bool) {
     let cell = match (s.design(), s.part_map(), s.clip()) {
         (Some(d), Some(map), Some(c)) => {
-            pixel_cell_at(d, s.part, map, c.geometry(), s.screen_to_rig(pos))
+            pixel_cell_at(d, s.part, &map, c.geometry(), s.screen_to_rig(pos))
         }
         _ => None,
     };
@@ -2014,12 +2173,56 @@ fn guard_close(
     }
 }
 
-fn advance(time: Res<Time>, mut s: ResMut<Studio>) {
+fn advance(time: Res<Time>, mut res: ResMut<Studio>) {
+    let s = &mut *res;
+    let dt = s.fixed_dt.unwrap_or_else(|| clamp_delta(time.delta_secs())) * SPEEDS[s.speed];
     if s.playing {
-        s.elapsed += clamp_delta(time.delta_secs()) * SPEEDS[s.speed];
+        s.elapsed += dt;
     }
     let durations = s.clip().map(RigClip::durations).unwrap_or_default();
     s.frame = loop_frame(&durations, s.elapsed);
+    step_cloth(s, if s.playing { dt } else { 0.0 });
+}
+
+/// Steps the live cloth of every worn flexible design: the body's speed
+/// eases towards the clip's, every chain follows its fixation on the pose.
+fn step_cloth(s: &mut Studio, dt: f32) {
+    let target = s.clip().map_or(0.0, |c| c.ground_speed);
+    let change = BODY_ACCEL * dt;
+    s.body_speed += (target - s.body_speed).clamp(-change, change);
+    let worn = s.worn();
+    s.flex.retain(|(i, _), _| worn.contains(i));
+    let mut stepped = false;
+    for i in worn {
+        let Some(e) = s.entries.get(i) else { continue };
+        for (k, spec) in e.design.flex.iter().enumerate() {
+            let Some(mut input) = flex_input(&s.rig, spec, &s.clip, s.frame) else {
+                continue;
+            };
+            input.ground_speed = s.body_speed;
+            // New cloth starts in the settled shape of this frame.
+            let speed = s.body_speed;
+            let rig = &s.rig;
+            let clip = &s.clip;
+            let frame = s.frame;
+            let st = s.flex.entry((i, k)).or_insert_with(|| {
+                settled_chains(rig, &e.design, clip, frame)
+                    .get(k)
+                    .cloned()
+                    .flatten()
+                    .map_or_else(
+                        || FlexState::rest(spec, input.anchor),
+                        |pts| FlexState::from_points(spec, &pts, speed),
+                    )
+            });
+            let before = st.points.clone();
+            st.step(spec, input, dt);
+            stepped |= st.points != before;
+        }
+    }
+    if stepped {
+        s.flex_tick += 1;
+    }
 }
 
 // ------------------------------------------------------------ render
@@ -2036,16 +2239,10 @@ fn render(mut res: ResMut<Studio>, mut images: ResMut<Assets<Image>>) {
     let Some(f) = c.frames.get(s.frame).copied() else {
         return;
     };
-    let worn: Vec<usize> = if s.isolated {
-        vec![s.selected]
-    } else if s.unequipped {
-        Vec::new()
-    } else {
-        s.equipped.values().copied().collect()
-    };
+    let worn = s.worn();
     let revs: Vec<u64> = worn
         .iter()
-        .map(|i| s.entries.get(*i).map_or(0, |e| e.rev))
+        .filter_map(|i| s.paint_key(*i).map(|k| k.1 * 1_000_000 + k.3))
         .collect();
     let key = format!(
         "{}|{}|{}|{worn:?}|{revs:?}|{}",
@@ -2058,14 +2255,20 @@ fn render(mut res: ResMut<Studio>, mut images: ResMut<Assets<Image>>) {
         return;
     }
     for &i in &worn {
-        let Some(e) = s.entries.get(i) else { continue };
-        let pk = (i, e.rev, s.clip.clone(), s.frame);
+        let Some(pk) = s.paint_key(i) else { continue };
         if s.painted.contains_key(&pk) {
             continue;
         }
+        let Some(e) = s.entries.get(i) else { continue };
+        let chains: Vec<Option<Vec<(f32, f32)>>> = (0..e.design.flex.len())
+            .map(|k| s.chain_points(i, k))
+            .collect();
         let decoded = &s.decoded;
         let lookup = |p: &str| decoded.get(p);
-        if let Some(r) = paint_on_frame(&s.rig, &s.rest, &e.design, &s.clip, s.frame, &lookup) {
+        let painted = paint_on_frame_with(
+            &s.rig, &s.rest, &e.design, &s.clip, s.frame, &lookup, &chains,
+        );
+        if let Some(r) = painted {
             s.painted.insert(pk, r);
         }
     }
@@ -2083,7 +2286,7 @@ fn render(mut res: ResMut<Studio>, mut images: ResMut<Assets<Image>>) {
         .iter()
         .filter_map(|i| {
             let e = s.entries.get(*i)?;
-            let (p, d) = s.painted.get(&(*i, e.rev, s.clip.clone(), s.frame))?;
+            let (p, d) = s.painted.get(&s.paint_key(*i)?)?;
             Some((
                 *i,
                 WornItem {
@@ -2254,6 +2457,22 @@ fn overlays(s: Res<Studio>, mut gizmos: Gizmos) {
     if let Some(p) = s.local_to_screen(part.transform.pivot) {
         gizmos.cross_2d(Isometry2d::from_translation(world(p)), 9.0, magenta);
     }
+    // Cloth chains of the selected design: joints and fixation.
+    if let Some(d) = s.design() {
+        for k in 0..d.flex.len() {
+            let Some(pts) = s.chain_points(s.selected, k) else {
+                continue;
+            };
+            let sc: Vec<Vec2> = pts.iter().map(|q| world(s.rig_to_screen(*q))).collect();
+            for w in sc.windows(2) {
+                gizmos.line_2d(w[0], w[1], Color::srgb(1.0, 0.6, 0.2));
+            }
+            for (i, q) in sc.iter().enumerate() {
+                let r = if i == 0 { 5.0 } else { 3.0 };
+                gizmos.circle_2d(*q, r, Color::srgb(1.0, 0.6, 0.2));
+            }
+        }
+    }
     // The socket (mount origin) of the whole item.
     if let (Some(d), Some(map)) = (s.design(), s.part_map()) {
         let o = s.rig_to_screen(map.to_rig(d.mount.position));
@@ -2288,7 +2507,7 @@ fn button(p: &mut ChildSpawnerCommands<'_>, content: impl Into<String>, action: 
     p.spawn((
         UiButton(action),
         Node {
-            padding: UiRect::axes(px(5), px(2)),
+            padding: UiRect::axes(px(4), px(0)),
             ..default()
         },
         BackgroundColor(if on { BUTTON_ON } else { BUTTON }),
@@ -2301,7 +2520,7 @@ fn swatch(p: &mut ChildSpawnerCommands<'_>, c: [u8; 4], action: Action, on: bool
         UiButton(action),
         Node {
             width: px(22),
-            height: px(16),
+            height: px(13),
             border: UiRect::all(px(if on { 2 } else { 0 })),
             ..default()
         },
@@ -2313,7 +2532,7 @@ fn swatch(p: &mut ChildSpawnerCommands<'_>, c: [u8; 4], action: Action, on: bool
 fn break_row(p: &mut ChildSpawnerCommands<'_>) {
     p.spawn(Node {
         width: percent(100),
-        height: px(1),
+        height: px(0),
         ..default()
     });
 }
@@ -2479,6 +2698,94 @@ fn left_panel(p: &mut ChildSpawnerCommands<'_>, s: &Studio) {
     button(p, "group", Action::Group, false);
     button(p, "remove", Action::Remove, false);
     button(p, "hide", Action::ToggleHide, false);
+    cloth_panel(p, d);
+}
+
+fn flex_row(p: &mut ChildSpawnerCommands<'_>, name: &str, value: String, f: FlexField, step: f32) {
+    label(p, format!("{name} {value}"), DIM, 74.0);
+    button(p, "-", Action::Flex(f, -step), false);
+    button(p, "+", Action::Flex(f, step), false);
+}
+
+/// Cloth chain parameters (shown for designs with a chain).
+fn cloth_panel(p: &mut ChildSpawnerCommands<'_>, d: &EquipmentDesign) {
+    let Some(c) = d.flex.first() else { return };
+    break_row(p);
+    label(p, format!("CLOTH CHAIN {}", c.id), INK, 230.0);
+    let rows = [
+        (
+            "segs",
+            format!("{}", c.segments),
+            FlexField::Segments,
+            1.0,
+            "len",
+            format!("{:.0}", c.length),
+            FlexField::Length,
+            2.0,
+        ),
+        (
+            "drag",
+            format!("{:.1}", c.influence),
+            FlexField::Influence,
+            0.5,
+            "damp",
+            format!("{:.2}", c.damping),
+            FlexField::Damping,
+            0.01,
+        ),
+        (
+            "stiff",
+            format!("{:.2}", c.stiffness),
+            FlexField::Stiffness,
+            0.01,
+            "grav",
+            format!("{:.0}", c.gravity),
+            FlexField::Gravity,
+            20.0,
+        ),
+        (
+            "rest",
+            format!("{:.0}", c.rest_deg),
+            FlexField::Rest,
+            2.0,
+            "reach",
+            format!("{:.0}", c.limits.1),
+            FlexField::Reach,
+            5.0,
+        ),
+        (
+            "bend",
+            format!("{:.0}", c.bend),
+            FlexField::Bend,
+            2.0,
+            "ripple",
+            format!("{:.2}", c.flutter),
+            FlexField::Flutter,
+            0.05,
+        ),
+        (
+            "shelt",
+            format!("{:.2}", c.shelter),
+            FlexField::Shelter,
+            0.05,
+            "fix u",
+            format!("{:.2}", c.anchor.0),
+            FlexField::AnchorU,
+            0.02,
+        ),
+    ];
+    for (a, av, af, astep, b, bv, bf, bstep) in rows {
+        flex_row(p, a, av, af, astep);
+        flex_row(p, b, bv, bf, bstep);
+        break_row(p);
+    }
+    flex_row(
+        p,
+        "fix v",
+        format!("{:.2}", c.anchor.1),
+        FlexField::AnchorV,
+        0.02,
+    );
 }
 
 fn field(p: &mut ChildSpawnerCommands<'_>, name: &str, value: String, f: Field, step: f32) {
@@ -2586,6 +2893,16 @@ fn right_panel(p: &mut ChildSpawnerCommands<'_>, s: &Studio) {
     button(p, "+", Action::AddRegion, false);
     button(p, "-", Action::DeleteRegion, false);
     button(p, "edit", Action::TargetNext, false);
+    if let Target::Region(k) = s.target
+        && let Some(r) = part.regions.get(k)
+    {
+        break_row(p);
+        let m = r.material.clone().unwrap_or_else(|| "(part)".into());
+        label(p, format!("region {k}: {m}, tone {:+}", r.tone), DIM, 150.0);
+        button(p, "mat", Action::RegionMaterial, false);
+        button(p, "tone-", Action::RegionTone(-1), false);
+        button(p, "tone+", Action::RegionTone(1), false);
+    }
     break_row(p);
     label(p, format!("ornaments {}", part.ornaments.len()), DIM, 90.0);
     button(p, "+rivet", Action::AddRivet, false);
@@ -2659,7 +2976,7 @@ fn bottom_panel(p: &mut ChildSpawnerCommands<'_>, s: &Studio) {
     button(p, "skeleton", Action::Skeleton, s.skeleton);
     button(p, "isolated", Action::Isolated, s.isolated);
     button(p, "unequipped", Action::Unequipped, s.unequipped);
-    label(p, "   right: same composite, 2x and 1x", DIM, 230.0);
+    label(p, "   right: same image, 2x and 1x", DIM, 230.0);
 }
 
 // ------------------------------------------------------------ tour
@@ -2733,6 +3050,7 @@ fn tour_steps() -> Vec<Step> {
     v.extend(mouse_steps());
     v.extend(pose_steps());
     v.extend(mix_steps());
+    v.extend(engine05_steps());
     v.extend(save_steps());
     v
 }
@@ -3085,6 +3403,246 @@ fn pose_steps() -> Vec<Step> {
     v
 }
 
+/// Engine 05: the refined set, the capes and their motion (the E04 pieces
+/// are taken off first; every proof is on the body, then recorded).
+fn engine05_steps() -> Vec<Step> {
+    use Op::*;
+    let v2 = [
+        ("gothic_v2_cuirass", "e05_r2_cuirass"),
+        ("gothic_v2_pauldron", "e05_r3_pauldron"),
+        ("gothic_v2_bracers", "e05_r4_bracers"),
+        ("gothic_v2_faulds", "e05_r5_faulds"),
+        ("gothic_cape", "e05_r6_cape"),
+    ];
+    let mut v = vec![step(
+        "e05_r1_default_clothes",
+        vec![
+            Click(Action::Clip("run")),
+            Click(Action::Frame(2)),
+            ClickEquip("arming_sword"),
+            ClickEquip("gothic_set_cuirass"),
+            ClickEquip("gothic_set_pauldron"),
+            ClickEquip("gothic_set_bracers"),
+            ClickEquip("gothic_set_faulds"),
+            Wait(4),
+        ],
+        true,
+        |s| s.equipped.is_empty() && !s.guides,
+    )];
+    for (id, name) in v2 {
+        v.push(step(name, vec![ClickEquip(id), Wait(4)], true, |s| {
+            s.equipped.len() == 1
+        }));
+        v.push(step("e05_off", vec![ClickEquip(id), Wait(2)], false, |s| {
+            s.equipped.is_empty()
+        }));
+    }
+    v.extend([
+        step(
+            "e05_r7_full_set",
+            vec![
+                ClickEquip("gothic_v2_cuirass"),
+                ClickEquip("gothic_v2_pauldron"),
+                ClickEquip("gothic_v2_bracers"),
+                ClickEquip("gothic_v2_faulds"),
+                ClickEquip("gothic_cape"),
+                ClickEquip("arming_sword"),
+                Wait(4),
+            ],
+            true,
+            |s| s.equipped.len() == 6,
+        ),
+        step(
+            "e05_r8_leather_mix",
+            vec![
+                ClickEquip("leather_v2_jerkin"),
+                ClickEquip("gothic_v2_faulds"),
+                Wait(4),
+            ],
+            true,
+            |s| {
+                worn(s, RigSlot::Chest, "leather_v2_jerkin")
+                    && worn(s, RigSlot::Cape, "gothic_cape")
+            },
+        ),
+        // The cape on the idle (breath) and on the run, recorded per frame.
+        step(
+            "e05_idle_settle",
+            vec![
+                ClickEquip("leather_v2_jerkin"),
+                ClickEquip("gothic_v2_cuirass"),
+                ClickEquip("gothic_v2_faulds"),
+                Click(Action::Clip("idle")),
+                Click(Action::Play),
+                Wait(90),
+            ],
+            false,
+            |s| s.playing && s.clip == "idle",
+        ),
+        step(
+            "e05_rec_full_idle",
+            vec![Record("full_idle", 72), Wait(74)],
+            false,
+            ok,
+        ),
+        step(
+            "e05_run_settle",
+            vec![Click(Action::Clip("run")), Wait(120)],
+            false,
+            |s| s.body_speed > 100.0,
+        ),
+        step(
+            "e05_rec_full_run",
+            vec![Record("full_run", 48), Wait(50)],
+            false,
+            ok,
+        ),
+        // Start and stop: idle -> run -> idle, recorded without a gap.
+        step(
+            "e05_rec_start_stop",
+            vec![
+                Click(Action::Clip("idle")),
+                Wait(120),
+                Record("start_stop", 190),
+                Wait(24),
+                Click(Action::Clip("run")),
+                Wait(70),
+                Click(Action::Clip("run")),
+                Click(Action::Clip("idle")),
+                Wait(96),
+            ],
+            false,
+            |s| s.clip == "idle",
+        ),
+        // Turnaround while running (the cloth stays in the world, then
+        // swings back behind).
+        step(
+            "e05_rec_turnaround",
+            vec![
+                Click(Action::Clip("run")),
+                Wait(120),
+                Record("turnaround", 150),
+                Wait(24),
+                Click(Action::Mirror),
+                Wait(60),
+                Click(Action::Mirror),
+                Wait(60),
+            ],
+            false,
+            |s| !s.flip,
+        ),
+        // Swaps during the run: the clock goes on.
+        step(
+            "e05_r9_swap_run",
+            vec![
+                Record("swap_run", 160),
+                Wait(20),
+                ClickEquip("gothic_v2_pauldron"),
+                Wait(24),
+                ClickEquip("gothic_v2_bracers"),
+                Wait(24),
+                ClickEquip("gothic_v2_pauldron"),
+                ClickEquip("gothic_v2_bracers"),
+                Wait(24),
+                ClickEquip("gothic_cape"),
+                Wait(30),
+                ClickEquip("gothic_cape"),
+                Wait(30),
+            ],
+            true,
+            |s| s.playing && worn(s, RigSlot::Cape, "gothic_cape"),
+        ),
+        // The second cape, made only with data, on the same code.
+        step(
+            "e05_r10_short_cape",
+            vec![
+                ClickEquip("gothic_cape_short"),
+                Wait(90),
+                Record("short_run", 48),
+                Wait(50),
+            ],
+            true,
+            |s| worn(s, RigSlot::Cape, "gothic_cape_short"),
+        ),
+        step(
+            "e05_rec_cape_only_run",
+            vec![
+                ClickEquip("gothic_cape"),
+                ClickEquip("gothic_v2_cuirass"),
+                ClickEquip("gothic_v2_pauldron"),
+                ClickEquip("gothic_v2_bracers"),
+                ClickEquip("gothic_v2_faulds"),
+                ClickEquip("arming_sword"),
+                Wait(90),
+                Record("cape_run", 48),
+                Wait(50),
+            ],
+            false,
+            |s| s.equipped.len() == 1,
+        ),
+        step(
+            "e05_rec_cape_only_idle",
+            vec![
+                Click(Action::Clip("idle")),
+                Wait(120),
+                Record("cape_idle", 72),
+                Wait(74),
+            ],
+            false,
+            ok,
+        ),
+        // The editor itself: the cape selected, guides and the chain shown.
+        step(
+            "e05_15_editor",
+            vec![
+                Click(Action::Play),
+                Click(Action::Clip("run")),
+                Click(Action::Frame(2)),
+                ClickEquip("gothic_v2_cuirass"),
+                ClickEquip("gothic_v2_pauldron"),
+                ClickEquip("gothic_v2_bracers"),
+                ClickEquip("gothic_v2_faulds"),
+                ClickDesign("gothic_cape"),
+                ClickRow("cloth"),
+                Click(Action::Guides),
+                Wait(8),
+            ],
+            true,
+            |s| s.guides && sel(s, "gothic_cape") && !s.playing,
+        ),
+        step(
+            "e05_cloth_edit",
+            vec![Click(Action::Flex(FlexField::Length, 2.0)), Wait(3)],
+            true,
+            |s| {
+                s.design()
+                    .is_some_and(|d| d.flex.first().is_some_and(|c| c.length > 50.0))
+            },
+        ),
+        step(
+            "e05_back",
+            vec![
+                Keys(vec![KeyCode::ControlLeft, KeyCode::KeyZ]),
+                Click(Action::Guides),
+                ClickEquip("gothic_cape"),
+                ClickEquip("gothic_set_cuirass"),
+                ClickEquip("gothic_set_pauldron"),
+                ClickEquip("gothic_set_bracers"),
+                ClickEquip("gothic_set_faulds"),
+                ClickEquip("arming_sword"),
+                Wait(3),
+            ],
+            false,
+            |s| {
+                clean(s, "gothic_cape")
+                    && !s.guides
+                    && worn(s, RigSlot::Chest, "gothic_set_cuirass")
+            },
+        ),
+    ]);
+    v
+}
+
 fn mix_steps() -> Vec<Step> {
     use Op::*;
     vec![
@@ -3375,7 +3933,7 @@ fn start_op(
             for cell in cells {
                 let hit = (0..g.width * g.height).find(|t| {
                     let p = g.texel_centre(t % g.width, t / g.width);
-                    pixel_cell_at(d, s.part, map, g, p) == Some(*cell)
+                    pixel_cell_at(d, s.part, &map, g, p) == Some(*cell)
                 });
                 let t = hit
                     .and_then(|t| s.texel_screen(t))
@@ -3390,6 +3948,10 @@ fn start_op(
                 q.push(PointerFrame::up(last.pos));
             }
             s.queue = q;
+        }
+        Op::Record(name, frames) => {
+            let _ = std::fs::create_dir_all(s.out.join("rec"));
+            s.recording = Some((name, *frames, 0));
         }
         Op::Wait(_) => {}
     }
@@ -3410,6 +3972,17 @@ fn run_tour(
     if !s.body_ready || s.composite_key.is_none() || s.warm < 40 {
         s.warm += 1;
         return;
+    }
+    if let Some((name, left, i)) = s.recording
+        && let Some(c) = s.clip()
+    {
+        let m = if s.flip { "_m" } else { "" };
+        let file = format!("{name}_{i:03}{m}_{}x{}.rgba", c.cell.0, c.cell.1);
+        let bytes: Vec<u8> = s.last_composite.iter().flatten().copied().collect();
+        if let Err(e) = std::fs::write(s.out.join("rec").join(file), bytes) {
+            s.failures.push(format!("record {name}: {e}"));
+        }
+        s.recording = (left > 1).then_some((name, left - 1, i + 1));
     }
     for k in std::mem::take(&mut s.keys_held) {
         keyboard.release(k);
@@ -3645,6 +4218,11 @@ fn main() -> AppExit {
         pick: Vec::new(),
         last_composite: Vec::new(),
         painted: HashMap::new(),
+        flex: HashMap::new(),
+        body_speed: 0.0,
+        flex_tick: 0,
+        fixed_dt: scripted.then_some(TOUR_DT),
+        recording: None,
         ui_key: String::new(),
         close_armed: 0.0,
         revert_armed: 0.0,

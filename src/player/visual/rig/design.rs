@@ -21,6 +21,7 @@ use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
 use super::equipment::{BoneEnd, RigSlot};
+use super::flex::{FlexChain, FlexError};
 use super::grip::HandSide;
 use super::layers::{BodyRegion, DepthSlot};
 use super::skeleton::Bone;
@@ -39,6 +40,11 @@ pub enum DesignSpace {
         bone: Bone,
         at: BoneEnd,
         follow: f32,
+    },
+    /// A flexible chain of the design (05): `x` texels along the chain from
+    /// its fixation, `y` texels across it (+ towards the body's front).
+    Flex {
+        chain: u8,
     },
 }
 
@@ -292,6 +298,9 @@ pub enum Ornament {
         tone: u8,
         #[serde(default)]
         dashed: bool,
+        /// Another material of the design (a trim); `None` = the part's.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        material: Option<String>,
     },
 }
 
@@ -381,6 +390,9 @@ pub struct EquipmentDesign {
     pub provisional: bool,
     #[serde(default)]
     pub source: String,
+    /// Flexible chains (capes, cloth), simulated by `rig::flex` (05).
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub flex: Vec<FlexChain>,
 }
 
 fn default_light() -> (f32, f32) {
@@ -421,6 +433,10 @@ pub enum DesignError {
     BindOnChild(String),
     #[error("part {0}: the pixel rows do not match the size or the palette")]
     Pixels(String),
+    #[error("{0}")]
+    Flex(#[from] FlexError),
+    #[error("a space names flexible chain {0}, which does not exist")]
+    FlexChain(u8),
 }
 
 impl EquipmentDesign {
@@ -457,6 +473,15 @@ impl EquipmentDesign {
             }
             if self.material(&p.material).is_none() {
                 return Err(DesignError::Material(p.id.clone(), p.material.clone()));
+            }
+            for o in &p.ornaments {
+                if let Ornament::Line {
+                    material: Some(m), ..
+                } = o
+                    && self.material(m).is_none()
+                {
+                    return Err(DesignError::RegionMaterial(p.id.clone(), m.clone()));
+                }
             }
             for r in &p.regions {
                 if let Some(m) = &r.material
@@ -507,6 +532,17 @@ impl EquipmentDesign {
             .all(|v| v.is_finite());
             if !finite || t.scale.0.abs() < 1e-6 || t.scale.1.abs() < 1e-6 {
                 return Err(DesignError::Transform(p.id.clone()));
+            }
+        }
+        for c in &self.flex {
+            c.validate()?;
+        }
+        let spaces = std::iter::once(self.space).chain(self.parts.iter().filter_map(|p| p.bind));
+        for sp in spaces {
+            if let DesignSpace::Flex { chain } = sp
+                && usize::from(chain) >= self.flex.len()
+            {
+                return Err(DesignError::FlexChain(chain));
             }
         }
         for i in 0..self.parts.len() {
@@ -801,6 +837,7 @@ pub fn from_chest_model(id: &str, model: &super::chest::ChestModel) -> Equipment
             points: vec![(-0.1, *b), (1.2, *b)],
             tone: DEEP as u8,
             dashed: false,
+            material: None,
         });
     }
     let ridge = (model.ridge.0 + model.ridge.1) * 0.5;
@@ -811,6 +848,7 @@ pub fn from_chest_model(id: &str, model: &super::chest::ChestModel) -> Equipment
         ],
         tone: HIGHLIGHT as u8,
         dashed: false,
+        material: None,
     });
     EquipmentDesign {
         version: DESIGN_VERSION,
@@ -823,6 +861,7 @@ pub fn from_chest_model(id: &str, model: &super::chest::ChestModel) -> Equipment
         light: default_light(),
         aspect_range: model.aspect_range,
         materials: vec![plate, trim],
+        flex: Vec::new(),
         parts: vec![Part {
             id: "plate".into(),
             parent: None,
@@ -888,6 +927,7 @@ pub(crate) mod tests {
             light: default_light(),
             aspect_range: default_aspect(),
             materials: vec![steel, gold],
+            flex: Vec::new(),
             parts: vec![
                 Part {
                     id: "body".into(),

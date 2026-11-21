@@ -20,6 +20,7 @@ use super::design::{
     Affine, BASE, DEEP, DesignSpace, EquipmentDesign, Finish, HIGHLIGHT, INK, LIGHT, Ornament,
     Outline, PaintMaterial, Part, PartSource, SHADOW, chaikin, pixel_index,
 };
+use super::flex::{ChainMap, FlexFrame, FlexInput, angle_of, settle};
 use super::layers::{BodyRegion, CellGeometry, DepthSlot, point_in_polygon};
 use super::xform::{RigPoint, Xform2};
 
@@ -41,12 +42,14 @@ impl RgbaImage {
 }
 
 /// How cell points map into the design space of a pose.
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum SpaceMap {
     /// Torso cage `(u, v)`.
     Cage(TorsoCage),
     /// A hand or bone frame (texels, `+x` along it).
     Frame(Xform2),
+    /// A flexible chain (texels along and across it, 05; shared, it is big).
+    Chain(std::sync::Arc<ChainMap>),
 }
 
 impl SpaceMap {
@@ -55,6 +58,7 @@ impl SpaceMap {
         match self {
             Self::Cage(c) => c.uv(p),
             Self::Frame(f) => Some(f.inverse().apply(p)),
+            Self::Chain(c) => Some(c.to_space(p)),
         }
     }
 
@@ -63,6 +67,7 @@ impl SpaceMap {
         match self {
             Self::Cage(c) => c.point(s.0, s.1),
             Self::Frame(f) => f.apply(s),
+            Self::Chain(c) => c.to_rig(s),
         }
     }
 
@@ -74,7 +79,7 @@ impl SpaceMap {
                 let h = (c.waist_back.0 - c.chest_back.0).hypot(c.waist_back.1 - c.chest_back.1);
                 (1.0 / w.max(1.0), 1.0 / h.max(1.0))
             }
-            Self::Frame(_) => (1.0, 1.0),
+            Self::Frame(_) | Self::Chain(_) => (1.0, 1.0),
         }
     }
 }
@@ -226,7 +231,7 @@ fn cover(job: &PaintJob<'_, '_>, i: usize) -> Vec<Option<Fill>> {
                         }
                     }
                 }
-                SpaceMap::Frame(_) => {
+                SpaceMap::Frame(_) | SpaceMap::Chain(_) => {
                     for (t, o) in out.iter_mut().enumerate() {
                         let p = cell.texel_centre(t % cell.width, t / cell.width);
                         let Some(l) = local_of(&f, p) else {
@@ -472,7 +477,9 @@ pub fn paint(job: &PaintJob<'_, '_>) -> Painted {
                     points,
                     tone,
                     dashed,
+                    material,
                 } => {
+                    let m = material.as_deref().and_then(mat_index).unwrap_or(own);
                     let tex: Vec<(f32, f32)> = points
                         .iter()
                         .map(|p| local_to_texel(&frame, job.cell, *p))
@@ -487,7 +494,7 @@ pub fn paint(job: &PaintJob<'_, '_>) -> Painted {
                             if let Some(t) = texel_index(w, h, x as f32 + 0.5, y as f32 + 0.5)
                                 .filter(|t| owner[*t] == Some(k))
                             {
-                                tones[t] = Some((own, (*tone as usize).clamp(INK, HIGHLIGHT)));
+                                tones[t] = Some((m, (*tone as usize).clamp(INK, HIGHLIGHT)));
                             }
                         }
                     }
@@ -600,7 +607,65 @@ pub fn space_map(
                 None,
             )
         }
+        // A chain needs the design's data and a simulation: `chain_maps`.
+        DesignSpace::Flex { .. } => return None,
     })
+}
+
+/// Seconds-per-loop passes [`settle`] runs before reading a clip.
+const SETTLE_LOOPS: usize = 6;
+
+/// What a flexible chain receives on every played frame of a clip: the
+/// fixation on the torso cage, the back line and the clip's ground speed.
+pub fn flex_frames(
+    rig: &super::data::RigLab,
+    chain: &super::flex::FlexChain,
+    clip: &str,
+) -> Option<Vec<FlexFrame>> {
+    let c = rig.clips.get(clip)?;
+    (0..c.frames.len())
+        .map(|f| {
+            Some(FlexFrame {
+                input: flex_input(rig, chain, clip, f)?,
+                duration: c.frames[f].duration,
+            })
+        })
+        .collect()
+}
+
+/// The input of a chain on one played frame.
+pub fn flex_input(
+    rig: &super::data::RigLab,
+    chain: &super::flex::FlexChain,
+    clip: &str,
+    frame: usize,
+) -> Option<FlexInput> {
+    let c = rig.clips.get(clip)?;
+    let cage = TorsoCage::from_joints(&c.frame_joints(frame)?);
+    let (b, w) = (cage.chest_back, cage.waist_back);
+    Some(FlexInput {
+        anchor: cage.point(chain.anchor.0, chain.anchor.1),
+        back_deg: angle_of((w.0 - b.0, w.1 - b.1)),
+        ground_speed: c.ground_speed,
+    })
+}
+
+/// Every chain of a design on one frame, in the steady loop of the clip
+/// (the deterministic pose; the studio passes its live simulation instead).
+pub fn settled_chains(
+    rig: &super::data::RigLab,
+    design: &EquipmentDesign,
+    clip: &str,
+    frame: usize,
+) -> Vec<Option<Vec<RigPoint>>> {
+    design
+        .flex
+        .iter()
+        .map(|chain| {
+            let frames = flex_frames(rig, chain, clip)?;
+            settle(chain, &frames, SETTLE_LOOPS).get(frame).cloned()
+        })
+        .collect()
 }
 
 /// Where a design sits on one played frame of a clip: the map of its own
@@ -615,7 +680,11 @@ pub fn pose_map(
 ) -> Option<(SpaceMap, DepthSlot, f32)> {
     let joints = rig.clips.get(clip)?.frame_joints(frame)?;
     let turn = design.turn(TorsoCage::from_joints(&joints).aspect());
-    let (map, grip_depth) = space_map(rig, rest, &design.space, clip, frame)?;
+    let own = match design.space {
+        DesignSpace::Flex { .. } => DesignSpace::Torso,
+        s => s,
+    };
+    let (map, grip_depth) = space_map(rig, rest, &own, clip, frame)?;
     Some((map, grip_depth.unwrap_or(design.depth), turn))
 }
 
@@ -629,9 +698,46 @@ pub fn paint_on_frame<'i>(
     frame: usize,
     images: &dyn Fn(&str) -> Option<&'i RgbaImage>,
 ) -> Option<(Painted, DepthSlot)> {
+    let chains = settled_chains(rig, design, clip, frame);
+    paint_on_frame_with(rig, rest, design, clip, frame, images, &chains)
+}
+
+/// [`paint_on_frame`] with the chains given (one entry per
+/// `EquipmentDesign::flex`, `None` = settled): the studio's live cloth.
+pub fn paint_on_frame_with<'i>(
+    rig: &super::data::RigLab,
+    rest: &super::skeleton::LocalPose,
+    design: &EquipmentDesign,
+    clip: &str,
+    frame: usize,
+    images: &dyn Fn(&str) -> Option<&'i RgbaImage>,
+    chains: &[Option<Vec<RigPoint>>],
+) -> Option<(Painted, DepthSlot)> {
     let (_, depth, turn) = pose_map(rig, rest, design, clip, frame)?;
     let cell = rig.clips.get(clip)?.geometry();
-    let maps = |space: &DesignSpace| space_map(rig, rest, space, clip, frame).map(|(m, _)| m);
+    let settled = if chains.iter().any(Option::is_none) && !design.flex.is_empty() {
+        settled_chains(rig, design, clip, frame)
+    } else {
+        Vec::new()
+    };
+    let chain_maps: Vec<Option<ChainMap>> = (0..design.flex.len())
+        .map(|k| {
+            let pts = chains
+                .get(k)
+                .cloned()
+                .flatten()
+                .or_else(|| settled.get(k).cloned().flatten())?;
+            ChainMap::new(&pts)
+        })
+        .collect();
+    let maps = |space: &DesignSpace| match space {
+        DesignSpace::Flex { chain } => chain_maps
+            .get(usize::from(*chain))
+            .copied()
+            .flatten()
+            .map(|c| SpaceMap::Chain(std::sync::Arc::new(c))),
+        _ => space_map(rig, rest, space, clip, frame).map(|(m, _)| m),
+    };
     let job = PaintJob {
         design,
         maps: &maps,
@@ -728,7 +834,7 @@ pub fn compose(len: usize, layers: &mut [CompositeLayer<'_>]) -> Vec<[u8; 4]> {
 pub fn pixel_cell_at(
     design: &EquipmentDesign,
     i: usize,
-    map: SpaceMap,
+    map: &SpaceMap,
     cell: CellGeometry,
     p: RigPoint,
 ) -> Option<(usize, usize)> {
@@ -745,7 +851,7 @@ pub fn pixel_cell_at(
                 t.1.floor() as i64 - anchor.1.floor() as i64 + pivot.1.floor() as i64,
             )
         }
-        SpaceMap::Frame(_) => {
+        SpaceMap::Frame(_) | SpaceMap::Chain(_) => {
             let l = world.inverse()?.apply(map.to_space(p)?);
             (
                 (pivot.0 + l.0).floor() as i64,
@@ -871,7 +977,7 @@ mod tests {
         map: SpaceMap,
         images: &dyn Fn(&str) -> Option<&'i RgbaImage>,
     ) -> Painted {
-        let maps = move |_: &DesignSpace| Some(map);
+        let maps = move |_: &DesignSpace| Some(map.clone());
         paint(&PaintJob {
             design: d,
             maps: &maps,
@@ -1073,14 +1179,14 @@ mod tests {
         };
         d.parts[1].outline = Outline::None;
         let map = SpaceMap::Cage(cage(16.0));
-        let p = paint_at(&d, map, &no_images);
+        let p = paint_at(&d, map.clone(), &no_images);
         let t = p
             .rgba
             .iter()
             .position(|px| *px == [200, 10, 10, 255])
             .unwrap_or_else(|| panic!("red"));
         let centre = CELL.texel_centre(t % CELL.width, t / CELL.width);
-        assert_eq!(pixel_cell_at(&d, 1, map, CELL, centre), Some((0, 0)));
+        assert_eq!(pixel_cell_at(&d, 1, &map, CELL, centre), Some((0, 0)));
     }
 
     #[test]
