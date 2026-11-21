@@ -82,6 +82,21 @@ Regras detalhadas (carregadas automaticamente): `.claude/rules/`.
 19. Não esconda erros de compilação (nada de `#[allow]` amplo para silenciar problemas reais).
 20. Atualize a documentação quando modificar a arquitetura.
 
+## Relatório ao final de toda tarefa (regra permanente)
+
+Toda tarefa termina com um relatório em `docs/relatorios/`, mesmo se ficou bloqueada,
+parcial ou rejeitada. Isso vale para prompt, implementação, correção, investigação, teste
+ou etapa artística.
+
+1. Siga o modelo de `docs/relatorios/PADRAO_RELATORIO.md`: 27 itens e um status, entre
+   CONCLUÍDO, CONCLUÍDO COM RESSALVAS, PARCIALMENTE CONCLUÍDO, BLOQUEADO, REJEITADO e
+   AGUARDANDO APROVAÇÃO VISUAL.
+2. Atualize `docs/relatorios/INDICE.md` e `docs/relatorios/ULTIMO_RELATORIO.md`.
+3. Faça commit e push, sem force, dos arquivos da tarefa junto com os relatórios.
+4. No terminal, responda só com o resumo curto.
+
+Execução técnica não é aprovação artística. Detalhes em `.claude/rules/relatorios.md`.
+
 ## Commits atômicos (regra crítica)
 
 Cada commit = **uma** alteração lógica independente, no formato Conventional Commits:
