@@ -133,6 +133,16 @@ O editor é `examples/equipment_studio.rs` e salva um RON por item em
 corte das camadas entre o laboratório e o editor. O jogo continua sem
 mudança. Detalhes: `docs/development/modular_character_engine/03_EQUIPMENT_STUDIO.md`.
 
+**Modular Character Engine 04 — Equipment Studio V2 (ferramenta):**
+as partes de um design formam uma hierarquia (pai, grupo, transformação local
+e global, visibilidade e profundidade herdadas, `bind` de uma raiz a outro
+espaço). O corpo é cortado em 8 regiões semânticas (`rig::layers::BodyRegion`)
+e uma parte pode substituir regiões (`hides`). `rig::paint::compose_frame`
+monta o quadro final único que todas as vistas do editor mostram.
+`rig::history` (puro) dá o desfazer por instantâneos. O editor tem painéis em
+Bevy UI e roteiros isolados numa cópia em `target/`. O jogo continua sem
+mudança. Detalhes: `docs/development/modular_character_engine/04_STUDIO_V2.md`.
+
 ## Ordem de um frame
 
 `GameSet` (`src/app/states.rs`), encadeados e executados só em `GameState::Playing`:

@@ -1,4 +1,4 @@
-# Dark Castle Equipment Studio — dados e fontes (Engine 03)
+# Dark Castle Equipment Studio — dados e fontes (Engine 03 e 04)
 
 - `items/*.ron`: um equipamento por arquivo, independente do personagem, no modelo genérico
   `src/player/visual/rig/design.rs`.
@@ -7,6 +7,9 @@
   - `arming_sword.ron`: espada da prova de importação de PNG.
   - `studio_item_1.ron`: cinto criado **só pelo editor**, salvo pelo próprio Ctrl+S no
     roteiro `--tour`.
+  - `gothic_set_cuirass.ron`, `gothic_set_pauldron.ron`, `gothic_set_bracers.ron`,
+    `gothic_set_faulds.ron` (Engine 04): o Modelo A refeito como quatro peças
+    independentes e hierárquicas (peitoral, ombreira, braçais, proteção da cintura).
 - `import/*.png`: imagens que a tecla `I` do editor importa como parte.
   - Gerados por `scripts/build_imports.py`: a fivela renderizada da PixelSpec
     (`sources/buckle.pixelspec.json`, variantes ferro e latão) pelo `render_pixelspec.py` do
@@ -16,15 +19,18 @@
 
 ```bash
 cargo run --example equipment_studio                        # o editor
-cargo run --example equipment_studio -- --tour              # roteiro de evidências (teclas reais)
-cargo run --example equipment_studio -- --tour-reload       # reabre o que o --tour salvou
+cargo run --example equipment_studio -- --tour              # roteiro de evidências na cópia isolada
+cargo run --example equipment_studio -- --tour-reload       # reabre a cópia que o --tour salvou
+~/.local/share/dc-art-tools/asf-venv/bin/python -B art-src/equipment-studio/scripts/make_evidence_04.py
 STUDIO_DUMP=1 cargo test --test equipment_studio_tests      # rasters 1x em target/equipment_studio/preview/
 PATH=~/.local/share/dc-art-tools/asf-venv/bin:$PATH python -B art-src/equipment-studio/scripts/build_imports.py
 ~/.local/share/dc-art-tools/asf-venv/bin/python -B art-src/equipment-studio/scripts/make_evidence_03.py
 ```
 
-O `--tour` cria `studio_item_1.ron` se ele ainda não existir. Com o arquivo já presente, ele
-cria `studio_item_2`, e as verificações do roteiro (que esperam o `_1`) falham.
+Desde a Engine 04 os roteiros trabalham numa cópia em `target/equipment_studio/workspace/`:
+esta pasta só é lida e os roteiros repetem. `--items DIR` abre outra pasta.
+`scripts/make_evidence_04.py` monta `evidence/modular_character_engine/04_studio_v2/`.
 
 O Python e o Node só rodam na produção de assets e evidências. O jogo, o editor e os testes
-não dependem deles. Documentação: `docs/development/modular_character_engine/03_EQUIPMENT_STUDIO.md`.
+não dependem deles. Documentação: `docs/development/modular_character_engine/03_EQUIPMENT_STUDIO.md` e
+`04_STUDIO_V2.md`.

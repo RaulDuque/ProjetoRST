@@ -149,3 +149,7 @@ Não foi implementada, para não tirar qualidade do editor e dos peitorais.
 | Esqueleto, gaiola do tronco, empunhadura, camadas do corpo, laboratório e regras de profundidade | Modular Character Engine 01/02 (Dark Castle) |
 | Espada | Fábrica N41-B (PNG sem mudança) |
 | Modelo genérico, pintor, editor, Modelos A e B, contrato RON e roteiros | Desenvolvidos nesta etapa |
+
+## Atualização (04)
+
+A etapa 04 acrescentou hierarquia de partes, regiões do corpo, composição única, desfazer e o editor com painéis, e mudou os roteiros para uma cópia isolada. Ver [`04_STUDIO_V2.md`](04_STUDIO_V2.md).

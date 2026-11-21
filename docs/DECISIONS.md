@@ -911,3 +911,23 @@ O probe não é um playtest humano.
 - Ainda não há desfazer.
 - O editor não abre seletor de arquivo: a importação percorre `import/`.
 - A integração ao jogo espera a aprovação visual.
+
+## D-049 — Hierarquia de partes, regiões do corpo e composição única (Modular Character Engine 04)
+
+**Contexto:** O briefing `Md-usario/engine/Engine-04.md` pediu hierarquia de partes, um editor gráfico com desfazer, encaixe real das armaduras (peitoral atrás dos braços, ombreira no ombro, braçais nos antebraços, cabelo à frente) e prévias 1×/2×/4×/8× iguais.
+
+**Decisão:**
+- **Hierarquia no próprio `Part`:** `parent` pelo `id`, com transformação afim composta. Campos novos com `serde(default)`, então os RON da 03 continuam válidos. `reparent` recusa ciclos e pode manter a posição global.
+- **Regiões do corpo em vez de camadas grossas:** o braço de perto vira braço, antebraço e mão, e a faixa da cintura sai do tronco, por regras geométricas sobre o corte da 02 (recomposição exata mantida). Cada região e cada peça tem um `DepthSlot` numa ordem única.
+- **Substituir em vez de só sobrepor:** `hides` remove do corpo os texels sob a peça (pegada + 1 texel), para a ombreira e o braçal terem volume próprio.
+- **Uma composição na CPU:** `compose_frame` é a única fonte de imagem do editor, dos testes e das evidências. As vistas diferem só no zoom inteiro.
+- **Desfazer por instantâneos** (`rig::history`), um passo por ação ou por arraste.
+- **UI com teste de clique próprio** (`ComputedNode::contains_point`), sem o widget `Button` com picking, para os roteiros clicarem pelo mesmo caminho do mouse por um ponteiro sintético.
+- **Roteiros numa cópia** em `target/equipment_studio/workspace/`.
+- Nenhuma dependência nova. O jogo não muda.
+
+**Consequências:**
+- Itens novos, inclusive hierárquicos e com pixels pintados, continuam sendo só dados.
+- A ordem de profundidade é fixa por região; exceções por pose exigiriam outra regra.
+- Não há campo de texto nem seletor de arquivo no editor.
+- A integração ao jogo espera a aprovação visual.
