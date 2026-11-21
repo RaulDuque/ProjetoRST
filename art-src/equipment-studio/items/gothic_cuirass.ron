@@ -1,0 +1,60 @@
+// Model A — gothic breastplate, purple and gold (Equipment Studio, Engine 03).
+// Torso space: u from the back (0) to the front (1), v from the shoulder line
+// (0) to the waist (1). Drawn by src/player/visual/rig/paint.rs; no Rust code
+// knows this item. Original design for Dark Castle (not approved art).
+(
+    version: 1,
+    id: "gothic_cuirass",
+    name: "Gothic cuirass (purple and gold)",
+    slot: Chest,
+    space: Torso,
+    depth: ChestGear,
+    light: (0.45, 0.8),
+    aspect_range: (0.67, 0.78),
+    materials: [
+        (id: "purple_steel", ramp: ((22, 14, 30), (46, 28, 64), (74, 46, 100), (108, 68, 142), (148, 106, 184), (204, 174, 228)), finish: Metal),
+        (id: "dark_steel", ramp: ((18, 12, 24), (34, 22, 46), (54, 36, 72), (78, 54, 100), (110, 84, 136), (160, 136, 186)), finish: Metal),
+        (id: "gold", ramp: ((44, 26, 14), (106, 66, 24), (150, 100, 36), (200, 150, 58), (232, 196, 96), (252, 236, 170)), finish: Flat),
+    ],
+    parts: [
+        // Backplate: the dark rear half of the torso.
+        (id: "backplate", source: Polygon(points: [(-0.06, 0.04), (0.5, -0.02), (0.52, 0.9), (0.02, 0.92), (-0.08, 0.5)], smooth: 0),
+         material: "dark_steel", layer: 0, outline: Selective, bevel: 1.0),
+        // Segmented faulds: three flared lames under the breastplate.
+        (id: "lame_3", source: Polygon(points: [(0.2, 0.9), (1.02, 0.88), (1.14, 1.08), (0.24, 1.06)], smooth: 0),
+         material: "purple_steel", layer: 1, outline: Selective, bevel: 1.0,
+         regions: [(points: [(-0.2, 1.01), (1.3, 0.99), (1.3, 1.2), (-0.2, 1.2)], material: Some("gold"))]),
+        (id: "lame_2", source: Polygon(points: [(0.12, 0.8), (1.02, 0.78), (1.1, 0.95), (0.14, 0.96)], smooth: 0),
+         material: "purple_steel", layer: 2, outline: Selective, bevel: 1.0,
+         regions: [(points: [(-0.2, 0.9), (1.3, 0.88), (1.3, 1.0), (-0.2, 1.0)], material: Some("gold"))]),
+        (id: "lame_1", source: Polygon(points: [(0.08, 0.7), (1.04, 0.68), (1.08, 0.84), (0.04, 0.86)], smooth: 0),
+         material: "purple_steel", layer: 3, outline: Selective, bevel: 1.0,
+         ornaments: [Rivet(at: (0.5, 0.76))]),
+        // Angular side plate with rivets.
+        (id: "side_plate", source: Polygon(points: [(0.08, 0.16), (0.44, 0.1), (0.5, 0.5), (0.3, 0.62), (0.1, 0.52)], smooth: 0),
+         material: "purple_steel", layer: 4, outline: Selective, bevel: 1.5,
+         regions: [(points: [(0.14, 0.24), (0.4, 0.2), (0.42, 0.44), (0.16, 0.48)], tone: -1)],
+         ornaments: [Rivet(at: (0.18, 0.24)), Rivet(at: (0.22, 0.48))]),
+        // Breastplate: angular plates meeting at the keel, gold trim at the hem.
+        (id: "breastplate", source: Polygon(points: [(0.38, 0.0), (0.84, -0.06), (1.1, 0.1), (1.18, 0.38), (1.08, 0.64), (0.86, 0.74), (0.42, 0.74), (0.34, 0.4)], smooth: 0),
+         material: "purple_steel", layer: 5, outline: Selective, bevel: 2.5,
+         regions: [
+             (points: [(0.32, 0.66), (1.2, 0.6), (1.2, 0.8), (0.32, 0.8)], material: Some("gold")),
+             (points: [(0.38, 0.1), (0.6, 0.06), (0.62, 0.62), (0.4, 0.64)], tone: -1),
+         ]),
+        // The keel: a gold ridge down the front of the breastplate.
+        (id: "keel", source: Polygon(points: [(0.83, 0.02), (0.91, 0.02), (0.97, 0.34), (0.9, 0.68), (0.84, 0.68), (0.8, 0.34)], smooth: 0),
+         material: "gold", layer: 6, outline: Selective, bevel: 1.0),
+        // Gorget: the gold collar.
+        (id: "gorget", source: Polygon(points: [(0.16, -0.12), (0.96, -0.16), (1.04, 0.02), (0.88, 0.1), (0.3, 0.1), (0.12, 0.02)], smooth: 1),
+         material: "gold", layer: 7, outline: Selective, bevel: 1.0,
+         regions: [(points: [(0.1, 0.03), (1.1, 0.0), (1.1, 0.2), (0.1, 0.2)], tone: -1)]),
+        // Emblem (ASF svg_render, emblem.svg) on the breastplate, three-quarter view only.
+        (id: "emblem", source: Image(path: "import/emblem_gothic.png", pivot: (3.0, 4.0)),
+         transform: (position: (0.62, 0.3), rotation_deg: 0.0, scale: (1.0, 1.0), pivot: (0.0, 0.0)),
+         material: "gold", layer: 8, outline: None, bevel: 0.0,
+         visibility: (clips: [], turn: Some((0.5, 1.0)))),
+    ],
+    provisional: true,
+    source: "Equipment Studio data, Engine 03 (original design)",
+)

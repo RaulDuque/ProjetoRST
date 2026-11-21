@@ -1,0 +1,38 @@
+{
+  "schema": "codeart2d.pixelspec.v1",
+  "name": "buckle",
+  "canvas": [5, 5],
+  "anchor_px": [2, 2],
+  "palette": {
+    "k": "#16161c",
+    "d": "#50525c",
+    "m": "#a0a4ae",
+    "H": "#dcdee6",
+    "s": "#3c2616"
+  },
+  "variants": {
+    "iron": {},
+    "brass": {"d": "#6a4218", "m": "#c89a3c", "H": "#f4dc96"}
+  },
+  "poses": {
+    "rest": [
+      "kkkkk",
+      "kHmmk",
+      "kmsdk",
+      "kmddk",
+      "kkkkk"
+    ]
+  },
+  "layers": [
+    {"name": "buckle", "z": 0, "origin": [0, 0], "rows": [
+      "kkkkk",
+      "kHmmk",
+      "kmsdk",
+      "kmddk",
+      "kkkkk"
+    ]}
+  ],
+  "frames": [
+    {"name": "buckle", "layers": {"buckle": {}}}
+  ]
+}

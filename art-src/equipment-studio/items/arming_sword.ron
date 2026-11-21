@@ -1,0 +1,27 @@
+// Independent sword: the PNG import proof (Equipment Studio, Engine 03).
+// Hand space: texels in the hand frame, +x along the blade (grip profiles of
+// rig_lab.ron). The blade is the N41-B factory PNG imported unchanged; the
+// part is turned -90 degrees so the image's "up" lies along the blade, and a
+// polygon ruby is added on the pommel. Not approved art.
+(
+    version: 1,
+    id: "arming_sword",
+    name: "Arming sword (imported PNG + ruby)",
+    slot: MainHand,
+    space: Hand(side: Near),
+    depth: MainHandGear,
+    materials: [
+        (id: "steel", ramp: ((22, 22, 30), (52, 56, 70), (84, 90, 108), (122, 130, 148), (168, 176, 192), (220, 226, 236)), finish: Metal),
+        (id: "ruby", ramp: ((30, 8, 14), (82, 14, 30), (128, 22, 44), (176, 38, 60), (220, 82, 98), (252, 170, 180)), finish: Flat),
+    ],
+    parts: [
+        (id: "blade", source: Image(path: "import/sword_arming_cross.png", pivot: (10.0, 53.5)),
+         transform: (position: (0.0, 0.0), rotation_deg: -90.0, scale: (1.0, 1.0), pivot: (0.0, 0.0)),
+         material: "steel", layer: 0, outline: None, bevel: 0.0),
+        (id: "pommel_ruby", source: Polygon(points: [(0.0, -11.5), (1.6, -9.5), (0.0, -7.5), (-1.6, -9.5)], smooth: 0),
+         transform: (position: (0.0, 0.0), rotation_deg: -90.0, scale: (1.0, 1.0), pivot: (0.0, 0.0)),
+         material: "ruby", layer: 1, outline: Selective, bevel: 1.0),
+    ],
+    provisional: true,
+    source: "blade: N41-B factory PNG (art-src/n4-sprite-machine/stage/factory/isolated/sword_arming_cross.png)",
+)

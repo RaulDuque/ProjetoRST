@@ -1,0 +1,60 @@
+// Model B — reinforced dark leather jerkin with asymmetric iron plates,
+// straps and buckles (Equipment Studio, Engine 03). Torso space (u back ->
+// front, v shoulder -> waist). Buckles: PixelSpec rendered by Agent Sprite
+// Forge (sources/buckle.pixelspec.json). Original design (not approved art).
+(
+    version: 1,
+    id: "leather_jerkin",
+    name: "Reinforced leather jerkin",
+    slot: Chest,
+    space: Torso,
+    depth: ChestGear,
+    light: (0.45, 0.8),
+    aspect_range: (0.67, 0.78),
+    materials: [
+        (id: "dark_leather", ramp: ((18, 12, 10), (40, 27, 22), (60, 40, 31), (84, 57, 42), (112, 79, 57), (140, 104, 76)), finish: Leather),
+        (id: "strap", ramp: ((24, 14, 8), (58, 36, 20), (86, 56, 32), (116, 80, 46), (148, 106, 64), (178, 136, 88)), finish: Leather),
+        (id: "iron", ramp: ((20, 20, 26), (46, 48, 56), (76, 80, 90), (110, 114, 124), (154, 158, 168), (210, 212, 220)), finish: Metal),
+    ],
+    parts: [
+        // The jerkin: a long, rounded body with an asymmetric hem that runs past
+        // the belt to a point at the front.
+        (id: "jerkin", source: Polygon(points: [(-0.14, 0.06), (0.56, -0.05), (1.04, 0.04), (1.17, 0.4), (1.12, 0.8), (1.2, 1.36), (0.74, 1.24), (0.26, 1.2), (-0.06, 1.08), (-0.16, 0.5)], smooth: 1),
+         material: "dark_leather", layer: 0, outline: Selective, bevel: 1.5,
+         regions: [
+             (points: [(0.3, 0.1), (0.38, 0.1), (0.38, 1.2), (0.3, 1.2)], tone: -1),
+             (points: [(-0.2, 1.04), (1.4, 1.04), (1.4, 1.5), (-0.2, 1.5)], tone: -1),
+         ],
+         ornaments: [
+             Line(points: [(1.02, 0.1), (1.08, 0.44), (1.04, 1.04)], tone: 5, dashed: true),
+             Line(points: [(0.0, 1.04), (0.5, 1.12), (1.1, 1.24)], tone: 4, dashed: true),
+         ]),
+        // Rolled leather collar.
+        (id: "collar", source: Polygon(points: [(0.12, -0.12), (0.92, -0.14), (0.98, 0.04), (0.18, 0.08)], smooth: 2),
+         material: "strap", layer: 1, outline: Selective, bevel: 1.0),
+        // Asymmetric iron plates: a large one high on the front of the chest,
+        // a small one low on the back.
+        (id: "chest_plate", source: Polygon(points: [(0.56, 0.08), (1.04, 0.06), (1.13, 0.32), (0.88, 0.48), (0.6, 0.38)], smooth: 0),
+         material: "iron", layer: 2, outline: Selective, bevel: 1.0,
+         ornaments: [Rivet(at: (0.62, 0.14)), Rivet(at: (1.0, 0.12)), Rivet(at: (0.86, 0.4))]),
+        (id: "back_plate", source: Polygon(points: [(0.0, 0.46), (0.3, 0.42), (0.34, 0.66), (0.04, 0.72)], smooth: 0),
+         material: "iron", layer: 2, outline: Selective, bevel: 1.0,
+         ornaments: [Rivet(at: (0.08, 0.52)), Rivet(at: (0.26, 0.62))]),
+        // Straps: one across the chest, one around the waist.
+        (id: "strap_diagonal", source: Polygon(points: [(0.02, 0.0), (0.16, -0.04), (1.02, 0.62), (0.92, 0.72)], smooth: 0),
+         material: "strap", layer: 3, outline: Selective, bevel: 1.0,
+         ornaments: [Line(points: [(0.1, 0.0), (0.97, 0.66)], tone: 2, dashed: true)]),
+        (id: "strap_waist", source: Polygon(points: [(-0.1, 0.8), (1.12, 0.76), (1.12, 0.86), (-0.1, 0.9)], smooth: 0),
+         material: "strap", layer: 3, outline: Selective, bevel: 1.0),
+        // Buckles (ASF PixelSpec, iron variant).
+        (id: "buckle_waist", source: Image(path: "import/buckle_iron.png", pivot: (2.0, 2.0)),
+         transform: (position: (0.84, 0.81), rotation_deg: 0.0, scale: (1.0, 1.0), pivot: (0.0, 0.0)),
+         material: "iron", layer: 4, outline: None, bevel: 0.0),
+        (id: "buckle_chest", source: Image(path: "import/buckle_iron.png", pivot: (2.0, 2.0)),
+         transform: (position: (0.58, 0.36), rotation_deg: 0.0, scale: (1.0, 1.0), pivot: (0.0, 0.0)),
+         material: "iron", layer: 4, outline: None, bevel: 0.0,
+         visibility: (clips: [], turn: Some((0.4, 1.0)))),
+    ],
+    provisional: true,
+    source: "Equipment Studio data, Engine 03 (original design)",
+)

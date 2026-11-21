@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="7" height="9" viewBox="0 0 7 9" shape-rendering="crispEdges">
+  <!-- Gothic flame emblem for the Model A breastplate (Dark Castle, original). -->
+  <rect x="3" y="0" width="1" height="9" fill="#2c1a0e"/>
+  <rect x="0" y="3" width="7" height="1" fill="#2c1a0e"/>
+  <rect x="3" y="1" width="1" height="7" fill="#e8c460"/>
+  <rect x="1" y="3" width="5" height="1" fill="#e8c460"/>
+  <rect x="2" y="2" width="3" height="3" fill="#b07c2c"/>
+  <rect x="3" y="3" width="1" height="1" fill="#fcecaa"/>
+  <rect x="2" y="6" width="3" height="1" fill="#b07c2c"/>
+</svg>
