@@ -1,0 +1,36 @@
+// Gothic set (Engine 04) — pauldron of the near shoulder. Bone space: texels
+// in the upper arm's frame (+x from the shoulder towards the elbow, +y to
+// the front), following half of the arm's swing. Depth ShoulderGear: over the
+// upper arm and its sleeve, under the forearm and the hair. Hides the sleeve
+// under its footprint. Hierarchy: pauldron group -> top plate -> middle lame
+// -> lower lame. Original design (not approved art).
+(
+    version: 1,
+    id: "gothic_set_pauldron",
+    name: "Gothic set: pauldron",
+    slot: Shoulder,
+    space: Bone(bone: upper_arm_near, at: Start, follow: 0.5),
+    depth: ShoulderGear,
+    materials: [
+        (id: "purple_steel", ramp: ((22, 14, 30), (46, 28, 64), (74, 46, 100), (108, 68, 142), (148, 106, 184), (204, 174, 228)), finish: Metal),
+        (id: "gold", ramp: ((44, 26, 14), (106, 66, 24), (150, 100, 36), (200, 150, 58), (232, 196, 96), (252, 236, 170)), finish: Flat),
+    ],
+    parts: [
+        (id: "pauldron", source: Group, material: "purple_steel", layer: 0, outline: None,
+         transform: (position: (1.0, 0.0), rotation_deg: 0.0, scale: (1.0, 1.0), pivot: (0.0, 0.0))),
+        (id: "lower_lame", parent: Some("pauldron"),
+         source: Polygon(points: [(4.5, -5.5), (8.0, -5.0), (8.5, 0.0), (8.0, 5.5), (4.5, 6.0)], smooth: 1),
+         material: "purple_steel", layer: 1, outline: Selective, bevel: 1.0, hides: [NearUpperArm],
+         regions: [(points: [(7.0, -8.0), (10.0, -8.0), (10.0, 8.0), (7.0, 8.0)], material: Some("gold"))]),
+        (id: "middle_lame", parent: Some("pauldron"),
+         source: Polygon(points: [(1.5, -6.5), (5.5, -6.0), (6.0, 0.0), (5.5, 6.5), (1.5, 7.0)], smooth: 1),
+         material: "purple_steel", layer: 2, outline: Selective, bevel: 1.0, hides: [NearUpperArm],
+         regions: [(points: [(4.6, -9.0), (7.0, -9.0), (7.0, 9.0), (4.6, 9.0)], material: Some("gold"))]),
+        (id: "top_plate", parent: Some("pauldron"),
+         source: Polygon(points: [(-4.0, -6.0), (-1.5, -7.5), (2.5, -7.0), (3.5, 0.0), (2.5, 7.5), (-1.5, 7.0), (-4.0, 5.0)], smooth: 2),
+         material: "purple_steel", layer: 3, outline: Selective, bevel: 2.0, hides: [NearUpperArm],
+         ornaments: [Rivet(at: (0.0, 4.0)), Rivet(at: (0.0, -4.0))]),
+    ],
+    provisional: true,
+    source: "Equipment Studio data, Engine 04 gothic set (original design)",
+)

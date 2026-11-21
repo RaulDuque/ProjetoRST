@@ -1,0 +1,32 @@
+// Gothic set (Engine 04) — bracers. Bone space of the near forearm (+x from
+// the elbow to the fist), depth BracerGear (over the forearm, under the fist
+// and the sword). The far bracer is a root part bound to the far forearm,
+// at the far arm's depth. Original design (not approved art).
+(
+    version: 1,
+    id: "gothic_set_bracers",
+    name: "Gothic set: bracers",
+    slot: Bracers,
+    space: Bone(bone: forearm_near, at: Start, follow: 1.0),
+    depth: BracerGear,
+    materials: [
+        (id: "purple_steel", ramp: ((22, 14, 30), (46, 28, 64), (74, 46, 100), (108, 68, 142), (148, 106, 184), (204, 174, 228)), finish: Metal),
+        (id: "gold", ramp: ((44, 26, 14), (106, 66, 24), (150, 100, 36), (200, 150, 58), (232, 196, 96), (252, 236, 170)), finish: Flat),
+    ],
+    parts: [
+        (id: "near_bracer", source: Group, material: "purple_steel", layer: 0, outline: None),
+        (id: "near_plate", parent: Some("near_bracer"),
+         source: Polygon(points: [(3.0, -3.2), (10.0, -2.8), (10.5, 0.0), (10.0, 2.8), (3.0, 3.4), (2.5, 0.0)], smooth: 0),
+         material: "purple_steel", layer: 1, outline: Selective, bevel: 1.0,
+         regions: [(points: [(8.6, -5.0), (12.0, -5.0), (12.0, 5.0), (8.6, 5.0)], material: Some("gold"))]),
+        (id: "near_cuff", parent: Some("near_bracer"),
+         source: Polygon(points: [(2.0, -3.8), (4.0, -3.8), (4.0, 4.0), (2.0, 4.0)], smooth: 0),
+         material: "gold", layer: 2, outline: Selective, bevel: 0.0),
+        (id: "far_plate", bind: Some(Bone(bone: forearm_far, at: Start, follow: 1.0)), depth: Some(FarHandGear),
+         source: Polygon(points: [(3.0, -3.0), (9.5, -2.6), (10.0, 0.0), (9.5, 2.6), (3.0, 3.0), (2.5, 0.0)], smooth: 0),
+         material: "purple_steel", layer: 1, outline: Selective, bevel: 1.0,
+         regions: [(points: [(8.2, -5.0), (12.0, -5.0), (12.0, 5.0), (8.2, 5.0)], material: Some("gold"))]),
+    ],
+    provisional: true,
+    source: "Equipment Studio data, Engine 04 gothic set (original design)",
+)

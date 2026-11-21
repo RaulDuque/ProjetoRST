@@ -17,10 +17,10 @@ use std::collections::VecDeque;
 
 use super::chest::TorsoCage;
 use super::design::{
-    BASE, DEEP, DesignSpace, EquipmentDesign, Finish, HIGHLIGHT, INK, LIGHT, Ornament, Outline,
-    PaintMaterial, Part, PartSource, SHADOW, chaikin,
+    Affine, BASE, DEEP, DesignSpace, EquipmentDesign, Finish, HIGHLIGHT, INK, LIGHT, Ornament,
+    Outline, PaintMaterial, Part, PartSource, SHADOW, chaikin, pixel_index,
 };
-use super::layers::{CellGeometry, point_in_polygon};
+use super::layers::{BodyRegion, CellGeometry, DepthSlot, point_in_polygon};
 use super::xform::{RigPoint, Xform2};
 
 /// A decoded RGBA image (row-major from the top-left).
@@ -79,16 +79,18 @@ impl SpaceMap {
     }
 }
 
-/// What to paint: a design on one pose.
-pub struct PaintJob<'a> {
+/// What to paint: a design on one pose (`'i`: the decoded images).
+pub struct PaintJob<'a, 'i> {
     pub design: &'a EquipmentDesign,
-    pub map: SpaceMap,
+    /// The space map of a design space on this pose (the design's own and
+    /// any part binding, 04).
+    pub maps: &'a dyn Fn(&DesignSpace) -> Option<SpaceMap>,
     pub cell: CellGeometry,
     pub clip: &'a str,
     /// Torso turn (0 side view, 1 three-quarter), see `EquipmentDesign::turn`.
     pub turn: f32,
     /// Decoded images by `PartSource::Image::path`.
-    pub images: &'a dyn Fn(&str) -> Option<&'a RgbaImage>,
+    pub images: &'a dyn Fn(&str) -> Option<&'i RgbaImage>,
 }
 
 /// The painted item: cell-sized RGBA and which part owns each texel.
@@ -116,69 +118,123 @@ enum Fill {
     Pixel([u8; 4]),
 }
 
-fn local_of(job: &PaintJob<'_>, part: &Part, p: RigPoint) -> Option<(f32, f32)> {
-    let s = job.map.to_space(p)?;
-    let d = job.design.mount.invert(s)?;
-    part.transform.invert(d)
+/// The space map and local <-> design map of a part.
+struct PartFrame {
+    map: SpaceMap,
+    world: Affine,
+    inverse: Affine,
+}
+
+fn part_frame(job: &PaintJob<'_, '_>, i: usize) -> Option<PartFrame> {
+    let d = job.design;
+    let map = (job.maps)(&d.effective_space(i))?;
+    // local -> design (hierarchy) -> mount -> space.
+    let world = d.mount.affine().then(&d.world_affine(i));
+    Some(PartFrame {
+        map,
+        inverse: world.inverse()?,
+        world,
+    })
+}
+
+fn local_of(f: &PartFrame, p: RigPoint) -> Option<(f32, f32)> {
+    Some(f.inverse.apply(f.map.to_space(p)?))
 }
 
 /// Local point -> cell texel coordinates (y down).
-fn local_to_texel(job: &PaintJob<'_>, part: &Part, l: (f32, f32)) -> (f32, f32) {
-    let s = job.design.mount.apply(part.transform.apply(l));
-    job.cell.to_texel(job.map.to_rig(s))
+fn local_to_texel(f: &PartFrame, cell: CellGeometry, l: (f32, f32)) -> (f32, f32) {
+    cell.to_texel(f.map.to_rig(f.world.apply(l)))
+}
+
+/// A pixel source: an imported PNG or a grid painted in the studio.
+#[allow(clippy::type_complexity)]
+fn pixel_source<'a, 'i: 'a>(
+    job: &PaintJob<'a, 'i>,
+    part: &'a Part,
+) -> Option<(Box<dyn Fn(i64, i64) -> Option<[u8; 4]> + 'a>, (f32, f32))> {
+    match &part.source {
+        PartSource::Image { path, pivot } => {
+            let img = (job.images)(path)?;
+            Some((
+                Box::new(move |x, y| img.get(x, y).filter(|p| p[3] > 0)),
+                *pivot,
+            ))
+        }
+        PartSource::Pixels {
+            size,
+            pivot,
+            palette,
+            rows,
+        } => {
+            let (w, h) = (size.0 as i64, size.1 as i64);
+            let grid: Vec<Vec<char>> = rows.iter().map(|r| r.chars().collect()).collect();
+            Some((
+                Box::new(move |x, y| {
+                    if x < 0 || y < 0 || x >= w || y >= h {
+                        return None;
+                    }
+                    let c = *grid.get(y as usize)?.get(x as usize)?;
+                    pixel_index(c)
+                        .and_then(|i| palette.get(i).copied())
+                        .filter(|p| p[3] > 0)
+                }),
+                *pivot,
+            ))
+        }
+        _ => None,
+    }
 }
 
 /// Which texels a part covers and how.
-fn cover(job: &PaintJob<'_>, part: &Part) -> Vec<Option<Fill>> {
-    let n = job.cell.width * job.cell.height;
+fn cover(job: &PaintJob<'_, '_>, i: usize) -> Vec<Option<Fill>> {
+    let cell = job.cell;
+    let n = cell.width * cell.height;
     let mut out = vec![None; n];
+    let part = &job.design.parts[i];
+    let Some(f) = part_frame(job, i) else {
+        return out;
+    };
     match &part.source {
+        PartSource::Group => {}
         PartSource::Polygon { points, smooth } => {
             let poly = chaikin(points, *smooth);
-            for (i, o) in out.iter_mut().enumerate() {
-                let p = job
-                    .cell
-                    .texel_centre(i % job.cell.width, i / job.cell.width);
-                if let Some(l) = local_of(job, part, p)
+            for (t, o) in out.iter_mut().enumerate() {
+                let p = cell.texel_centre(t % cell.width, t / cell.width);
+                if let Some(l) = local_of(&f, p)
                     && point_in_polygon(l, &poly)
                 {
                     *o = Some(Fill::Shape(l));
                 }
             }
         }
-        PartSource::Image { path, pivot } => {
-            let Some(img) = (job.images)(path) else {
+        PartSource::Image { .. } | PartSource::Pixels { .. } => {
+            let Some((sample, pivot)) = pixel_source(job, part) else {
                 return out;
             };
-            match (job.design.space, job.map) {
-                (DesignSpace::Torso, _) | (_, SpaceMap::Cage(_)) => {
+            match f.map {
+                SpaceMap::Cage(_) => {
                     // A decal: pixel-aligned on the anchor, never stretched.
-                    let anchor = local_to_texel(job, part, part.transform.pivot);
+                    let anchor = local_to_texel(&f, cell, (0.0, 0.0));
                     let (ax, ay) = (anchor.0.floor() as i64, anchor.1.floor() as i64);
-                    for (i, o) in out.iter_mut().enumerate() {
-                        let (x, y) = ((i % job.cell.width) as i64, (i / job.cell.width) as i64);
-                        let ix = x - ax + pivot.0.floor() as i64;
-                        let iy = y - ay + pivot.1.floor() as i64;
-                        if let Some(px) = img.get(ix, iy)
-                            && px[3] > 0
-                        {
+                    for (t, o) in out.iter_mut().enumerate() {
+                        let (x, y) = ((t % cell.width) as i64, (t / cell.width) as i64);
+                        if let Some(px) = sample(
+                            x - ax + pivot.0.floor() as i64,
+                            y - ay + pivot.1.floor() as i64,
+                        ) {
                             *o = Some(Fill::Pixel(px));
                         }
                     }
                 }
-                _ => {
-                    for (i, o) in out.iter_mut().enumerate() {
-                        let p = job
-                            .cell
-                            .texel_centre(i % job.cell.width, i / job.cell.width);
-                        let Some(l) = local_of(job, part, p) else {
+                SpaceMap::Frame(_) => {
+                    for (t, o) in out.iter_mut().enumerate() {
+                        let p = cell.texel_centre(t % cell.width, t / cell.width);
+                        let Some(l) = local_of(&f, p) else {
                             continue;
                         };
                         let ix = (pivot.0 + l.0).floor() as i64;
                         let iy = (pivot.1 - l.1).floor() as i64;
-                        if let Some(px) = img.get(ix, iy)
-                            && px[3] > 0
-                        {
+                        if let Some(px) = sample(ix, iy) {
                             *o = Some(Fill::Pixel(px));
                         }
                     }
@@ -282,16 +338,23 @@ fn colour(m: &PaintMaterial, tone: usize) -> [u8; 4] {
 }
 
 /// Paints a design on a pose.
-pub fn paint(job: &PaintJob<'_>) -> Painted {
+pub fn paint(job: &PaintJob<'_, '_>) -> Painted {
     let (w, h) = (job.cell.width, job.cell.height);
     let n = w * h;
     let d = job.design;
     // Visible parts in draw order (back to front).
-    let mut order: Vec<usize> = (0..d.parts.len())
-        .filter(|i| d.parts[*i].visible && d.parts[*i].visibility.allows(job.clip, job.turn))
-        .collect();
+    // A part shows when it and every ancestor are visible and allowed in
+    // this clip and turn; groups have no texels of their own.
+    let shown = |i: usize| {
+        d.effective_visible(i)
+            && std::iter::once(i)
+                .chain(d.ancestors(i).unwrap_or_default())
+                .all(|a| d.parts[a].visibility.allows(job.clip, job.turn))
+            && !matches!(d.parts[i].source, PartSource::Group)
+    };
+    let mut order: Vec<usize> = (0..d.parts.len()).filter(|i| shown(*i)).collect();
     order.sort_by_key(|i| d.parts[*i].layer);
-    let covers: Vec<Vec<Option<Fill>>> = order.iter().map(|i| cover(job, &d.parts[*i])).collect();
+    let covers: Vec<Vec<Option<Fill>>> = order.iter().map(|i| cover(job, *i)).collect();
     let mut owner: Vec<Option<usize>> = vec![None; n];
     for (k, c) in covers.iter().enumerate() {
         for (t, f) in c.iter().enumerate() {
@@ -307,6 +370,9 @@ pub fn paint(job: &PaintJob<'_>) -> Painted {
     for (k, &pi) in order.iter().enumerate() {
         let part = &d.parts[pi];
         let Some(mat) = d.material(&part.material) else {
+            continue;
+        };
+        let Some(frame) = part_frame(job, pi) else {
             continue;
         };
         let mask: Vec<bool> = covers[k].iter().map(Option::is_some).collect();
@@ -325,8 +391,8 @@ pub fn paint(job: &PaintJob<'_>) -> Painted {
                 Some(Fill::Shape(l)) => {
                     // Normal: the body's cylinder (torso) plus the bevel.
                     let (mut nx, mut ny, mut nz) = (0.0f32, 0.0f32, 1.0f32);
-                    if let SpaceMap::Cage(_) = job.map
-                        && let Some(s) = job.map.to_space(job.cell.texel_centre(t % w, t / w))
+                    if let SpaceMap::Cage(_) = frame.map
+                        && let Some(s) = frame.map.to_space(job.cell.texel_centre(t % w, t / w))
                     {
                         let theta = (s.0 - 0.55) * 1.6;
                         nx = theta.sin() * 0.8;
@@ -391,7 +457,7 @@ pub fn paint(job: &PaintJob<'_>) -> Painted {
         for o in &part.ornaments {
             match o {
                 Ornament::Rivet { at } => {
-                    let (x, y) = local_to_texel(job, part, *at);
+                    let (x, y) = local_to_texel(&frame, job.cell, *at);
                     let t = texel_index(w, h, x, y);
                     if let Some(t) = t.filter(|t| owner[*t] == Some(k)) {
                         tones[t] = Some((own, HIGHLIGHT));
@@ -409,7 +475,7 @@ pub fn paint(job: &PaintJob<'_>) -> Painted {
                 } => {
                     let tex: Vec<(f32, f32)> = points
                         .iter()
-                        .map(|p| local_to_texel(job, part, *p))
+                        .map(|p| local_to_texel(&frame, job.cell, *p))
                         .collect();
                     let mut step = 0usize;
                     for seg in tex.windows(2) {
@@ -470,7 +536,11 @@ pub fn paint(job: &PaintJob<'_>) -> Painted {
             }
         }
         // Outlined images: ink around their opaque pixels on the silhouette.
-        if matches!(part.source, PartSource::Image { .. }) && part.outline != Outline::None {
+        if matches!(
+            part.source,
+            PartSource::Image { .. } | PartSource::Pixels { .. }
+        ) && part.outline != Outline::None
+        {
             for t in 0..n {
                 if owner[t] != Some(k) {
                     continue;
@@ -494,32 +564,27 @@ pub fn paint(job: &PaintJob<'_>) -> Painted {
     Painted { rgba, owner }
 }
 
-/// Where a design sits on one played frame of a clip: the space map, the
-/// depth (a hand item takes the grip profile's per-frame depth) and the
-/// torso turn. `None` when the clip, frame or grip is missing.
-pub fn pose_map(
+/// The space map of a design space on one played frame, and the grip
+/// profile's depth for hand spaces. `None` when the clip, frame or grip is
+/// missing.
+pub fn space_map(
     rig: &super::data::RigLab,
     rest: &super::skeleton::LocalPose,
-    design: &EquipmentDesign,
+    space: &DesignSpace,
     clip: &str,
     frame: usize,
-) -> Option<(SpaceMap, super::layers::DepthSlot, f32)> {
+) -> Option<(SpaceMap, Option<DepthSlot>)> {
     use super::equipment::{Mount, place_on_bone};
     let c = rig.clips.get(clip)?;
     let joints = c.frame_joints(frame)?;
     let pose = super::skeleton::forward(&super::skeleton::fit(&joints));
-    let cage = TorsoCage::from_joints(&joints);
-    let turn = design.turn(cage.aspect());
-    Some(match design.space {
-        DesignSpace::Torso => (SpaceMap::Cage(cage), design.depth, turn),
+    Some(match *space {
+        DesignSpace::Torso => (SpaceMap::Cage(TorsoCage::from_joints(&joints)), None),
         DesignSpace::Hand { side } => {
             let grip = rig.grip(clip)?;
             let hand = super::grip::hand_frame(side, &joints, &pose, rest, grip);
-            (
-                SpaceMap::Frame(hand),
-                grip.depth_at(frame, design.depth),
-                turn,
-            )
+            let depth = grip.depth.get(frame).copied();
+            (SpaceMap::Frame(hand), depth)
         }
         DesignSpace::Bone { bone, at, follow } => {
             let mount = Mount::Bone {
@@ -529,14 +594,227 @@ pub fn pose_map(
                 up_degrees: 90.0,
                 follow,
             };
-            let p = place_on_bone(&mount, design.depth, &pose, rest)?;
+            let p = place_on_bone(&mount, DepthSlot::Torso, &pose, rest)?;
             (
                 SpaceMap::Frame(Xform2::new(p.position.0, p.position.1, p.rotation)),
-                design.depth,
-                turn,
+                None,
             )
         }
     })
+}
+
+/// Where a design sits on one played frame of a clip: the map of its own
+/// space, its default depth (a hand item takes the grip profile's per-frame
+/// depth) and the torso turn.
+pub fn pose_map(
+    rig: &super::data::RigLab,
+    rest: &super::skeleton::LocalPose,
+    design: &EquipmentDesign,
+    clip: &str,
+    frame: usize,
+) -> Option<(SpaceMap, DepthSlot, f32)> {
+    let joints = rig.clips.get(clip)?.frame_joints(frame)?;
+    let turn = design.turn(TorsoCage::from_joints(&joints).aspect());
+    let (map, grip_depth) = space_map(rig, rest, &design.space, clip, frame)?;
+    Some((map, grip_depth.unwrap_or(design.depth), turn))
+}
+
+/// Paints a design on one frame of a clip, every part in its own space.
+/// Returns the painted item and the design's default depth on that frame.
+pub fn paint_on_frame<'i>(
+    rig: &super::data::RigLab,
+    rest: &super::skeleton::LocalPose,
+    design: &EquipmentDesign,
+    clip: &str,
+    frame: usize,
+    images: &dyn Fn(&str) -> Option<&'i RgbaImage>,
+) -> Option<(Painted, DepthSlot)> {
+    let (_, depth, turn) = pose_map(rig, rest, design, clip, frame)?;
+    let cell = rig.clips.get(clip)?.geometry();
+    let maps = |space: &DesignSpace| space_map(rig, rest, space, clip, frame).map(|(m, _)| m);
+    let job = PaintJob {
+        design,
+        maps: &maps,
+        cell,
+        clip,
+        turn,
+        images,
+    };
+    Some((paint(&job), depth))
+}
+
+/// Splits a painted item by the depth of the part that owns each texel
+/// (part depth, else an ancestor's, else `default`).
+pub fn split_by_depth(
+    design: &EquipmentDesign,
+    painted: &Painted,
+    default: DepthSlot,
+) -> Vec<(DepthSlot, Vec<[u8; 4]>)> {
+    let mut out: Vec<(DepthSlot, Vec<[u8; 4]>)> = Vec::new();
+    for (t, o) in painted.owner.iter().enumerate() {
+        let Some(i) = *o else {
+            continue;
+        };
+        let depth = design.effective_depth(i, default);
+        let k = match out.iter().position(|(d, _)| *d == depth) {
+            Some(k) => k,
+            None => {
+                out.push((depth, vec![[0; 4]; painted.rgba.len()]));
+                out.len() - 1
+            }
+        };
+        out[k].1[t] = painted.rgba[t];
+    }
+    out.sort_by_key(|(d, _)| *d);
+    out
+}
+
+/// Texels of `region` hidden by a painted item: under the footprint
+/// (dilated one texel) of every part whose `hides` names the region.
+pub fn hide_mask(
+    design: &EquipmentDesign,
+    painted: &Painted,
+    width: usize,
+    region: BodyRegion,
+) -> Vec<bool> {
+    let n = painted.owner.len();
+    let core: Vec<bool> = painted
+        .owner
+        .iter()
+        .map(|o| o.is_some_and(|i| design.parts[i].hides.contains(&region)))
+        .collect();
+    let mut out = core.clone();
+    for (t, _) in core.iter().enumerate().filter(|(_, c)| **c) {
+        let (x, y) = (t % width, t / width);
+        for (nx, ny) in [
+            (x.wrapping_sub(1), y),
+            (x + 1, y),
+            (x, y.wrapping_sub(1)),
+            (x, y + 1),
+        ] {
+            if nx < width && ny * width + nx < n {
+                out[ny * width + nx] = true;
+            }
+        }
+    }
+    out
+}
+
+/// One layer of the final composite: its depth, a sub-order and its texels.
+pub struct CompositeLayer<'a> {
+    pub depth: DepthSlot,
+    pub sub: u8,
+    pub texels: &'a [[u8; 4]],
+}
+
+/// The final image: every layer over the ones behind it (depth, then
+/// sub-order). The editor shows this one image at every zoom, so 1x, 2x,
+/// 4x and 8x are the same composition.
+pub fn compose(len: usize, layers: &mut [CompositeLayer<'_>]) -> Vec<[u8; 4]> {
+    layers.sort_by_key(|l| (l.depth, l.sub));
+    let mut out = vec![[0u8; 4]; len];
+    for l in layers.iter() {
+        for (o, t) in out.iter_mut().zip(l.texels) {
+            if t[3] > 0 {
+                *o = *t;
+            }
+        }
+    }
+    out
+}
+
+/// The cell of a pixel part under a rig point (the brush of the studio),
+/// with the same mapping the painter draws it with; `None` off the grid.
+pub fn pixel_cell_at(
+    design: &EquipmentDesign,
+    i: usize,
+    map: SpaceMap,
+    cell: CellGeometry,
+    p: RigPoint,
+) -> Option<(usize, usize)> {
+    let PartSource::Pixels { size, pivot, .. } = &design.parts.get(i)?.source else {
+        return None;
+    };
+    let world = design.mount.affine().then(&design.world_affine(i));
+    let (x, y) = match map {
+        SpaceMap::Cage(_) => {
+            let anchor = cell.to_texel(map.to_rig(world.apply((0.0, 0.0))));
+            let t = cell.to_texel(p);
+            (
+                t.0.floor() as i64 - anchor.0.floor() as i64 + pivot.0.floor() as i64,
+                t.1.floor() as i64 - anchor.1.floor() as i64 + pivot.1.floor() as i64,
+            )
+        }
+        SpaceMap::Frame(_) => {
+            let l = world.inverse()?.apply(map.to_space(p)?);
+            (
+                (pivot.0 + l.0).floor() as i64,
+                (pivot.1 - l.1).floor() as i64,
+            )
+        }
+    };
+    (x >= 0 && y >= 0 && (x as u32) < size.0 && (y as u32) < size.1)
+        .then_some((x as usize, y as usize))
+}
+
+/// One worn item on a frame: the design, what the painter drew and its
+/// default depth on that frame.
+pub struct WornItem<'a> {
+    pub design: &'a EquipmentDesign,
+    pub painted: &'a Painted,
+    pub depth: DepthSlot,
+}
+
+/// The final frame (04): the body regions (RGBA8 bytes, cell-sized; the
+/// upper ones lowered by `drop` texels for the idle breath) with the texels
+/// hidden by the worn items removed, and every item part at its own depth.
+/// The same pure function feeds every view of the studio and the tests, so
+/// 1x, 2x, 4x and 8x show one composition.
+pub fn compose_frame(
+    body: &[(BodyRegion, Vec<u8>)],
+    drop: usize,
+    width: usize,
+    items: &[WornItem<'_>],
+) -> Vec<[u8; 4]> {
+    let len = body.first().map_or(0, |(_, b)| b.len() / 4);
+    let mut regions: Vec<(BodyRegion, Vec<[u8; 4]>)> = Vec::new();
+    for (region, bytes) in body {
+        let mut px: Vec<[u8; 4]> = bytes.as_chunks::<4>().0.to_vec();
+        if region.is_upper_body() && drop > 0 {
+            let shift = drop * width;
+            let mut moved = vec![[0u8; 4]; len];
+            let keep = len.saturating_sub(shift);
+            moved[shift.min(len)..shift.min(len) + keep].copy_from_slice(&px[..keep]);
+            px = moved;
+        }
+        for item in items {
+            let mask = hide_mask(item.design, item.painted, width, *region);
+            for (p, m) in px.iter_mut().zip(&mask) {
+                if *m {
+                    *p = [0; 4];
+                }
+            }
+        }
+        regions.push((*region, px));
+    }
+    let gear: Vec<(DepthSlot, Vec<[u8; 4]>)> = items
+        .iter()
+        .flat_map(|i| split_by_depth(i.design, i.painted, i.depth))
+        .collect();
+    let mut layers: Vec<CompositeLayer<'_>> = regions
+        .iter()
+        .map(|(r, px)| CompositeLayer {
+            depth: r.depth(),
+            sub: 0,
+            texels: px,
+        })
+        .chain(gear.iter().map(|(d, px)| CompositeLayer {
+            depth: *d,
+            sub: 1,
+            texels: px,
+        }))
+        .collect();
+    compose(len, &mut layers)
 }
 
 fn texel_index(w: usize, h: usize, x: f32, y: f32) -> Option<usize> {
@@ -588,19 +866,20 @@ mod tests {
         None
     }
 
-    fn job<'a>(
-        d: &'a EquipmentDesign,
+    fn paint_at<'i>(
+        d: &EquipmentDesign,
         map: SpaceMap,
-        images: &'a dyn Fn(&str) -> Option<&'a RgbaImage>,
-    ) -> PaintJob<'a> {
-        PaintJob {
+        images: &dyn Fn(&str) -> Option<&'i RgbaImage>,
+    ) -> Painted {
+        let maps = move |_: &DesignSpace| Some(map);
+        paint(&PaintJob {
             design: d,
-            map,
+            maps: &maps,
             cell: CELL,
             clip: "run",
             turn: 1.0,
             images,
-        }
+        })
     }
 
     fn palette(d: &EquipmentDesign) -> Vec<[u8; 3]> {
@@ -610,7 +889,7 @@ mod tests {
     #[test]
     fn a_design_paints_binary_alpha_palette_texels_on_the_cage() {
         let d = sample();
-        let p = paint(&job(&d, SpaceMap::Cage(cage(16.0)), &no_images));
+        let p = paint_at(&d, SpaceMap::Cage(cage(16.0)), &no_images);
         let pal = palette(&d);
         assert!(p.opaque() > 200);
         for px in p.rgba.iter().filter(|px| px[3] > 0) {
@@ -637,37 +916,37 @@ mod tests {
     #[test]
     fn the_same_source_follows_a_wider_torso() {
         let d = sample();
-        let narrow = paint(&job(&d, SpaceMap::Cage(cage(12.0)), &no_images));
-        let wide = paint(&job(&d, SpaceMap::Cage(cage(22.0)), &no_images));
+        let narrow = paint_at(&d, SpaceMap::Cage(cage(12.0)), &no_images);
+        let wide = paint_at(&d, SpaceMap::Cage(cage(22.0)), &no_images);
         assert!(wide.opaque() > narrow.opaque() * 3 / 2);
     }
 
     #[test]
     fn the_topmost_part_owns_its_texels_and_hidden_parts_vanish() {
         let mut d = sample();
-        let p = paint(&job(&d, SpaceMap::Cage(cage(16.0)), &no_images));
+        let p = paint_at(&d, SpaceMap::Cage(cage(16.0)), &no_images);
         assert!(p.owner.contains(&Some(1)), "collar on top");
         assert!(p.owner.contains(&Some(0)));
         d.parts[1].visible = false;
-        let q = paint(&job(&d, SpaceMap::Cage(cage(16.0)), &no_images));
+        let q = paint_at(&d, SpaceMap::Cage(cage(16.0)), &no_images);
         assert!(!q.owner.contains(&Some(1)));
         d.parts[1].visible = true;
         d.parts[1].visibility = Visibility {
             clips: vec!["idle".into()],
             turn: None,
         };
-        let r = paint(&job(&d, SpaceMap::Cage(cage(16.0)), &no_images));
+        let r = paint_at(&d, SpaceMap::Cage(cage(16.0)), &no_images);
         assert!(!r.owner.contains(&Some(1)), "idle-only part in the run");
     }
 
     #[test]
     fn moving_a_vertex_changes_the_silhouette() {
         let mut d = sample();
-        let before = paint(&job(&d, SpaceMap::Cage(cage(16.0)), &no_images)).opaque();
+        let before = paint_at(&d, SpaceMap::Cage(cage(16.0)), &no_images).opaque();
         if let PartSource::Polygon { points, .. } = &mut d.parts[0].source {
             points[2] = (1.6, 0.5);
         }
-        let after = paint(&job(&d, SpaceMap::Cage(cage(16.0)), &no_images)).opaque();
+        let after = paint_at(&d, SpaceMap::Cage(cage(16.0)), &no_images).opaque();
         assert!(after > before + 5, "{before} -> {after}");
     }
 
@@ -684,6 +963,10 @@ mod tests {
         };
         d.parts = vec![Part {
             id: "blade".into(),
+            parent: None,
+            bind: None,
+            depth: None,
+            hides: Vec::new(),
             source: PartSource::Image {
                 path: "x.png".into(),
                 pivot: (1.0, 4.0),
@@ -701,7 +984,7 @@ mod tests {
         let images = |p: &str| (p == "x.png").then_some(&img);
         // Frame on the texel centre (0.5, 50.5): identity rotation.
         let frame = Xform2::new(0.0, 50.0, 0.0);
-        let p = paint(&job(&d, SpaceMap::Frame(frame), &images));
+        let p = paint_at(&d, SpaceMap::Frame(frame), &images);
         assert_eq!(p.opaque(), 15, "every image pixel, unstretched");
         let colours: Vec<u8> = p
             .rgba
@@ -718,11 +1001,108 @@ mod tests {
     #[test]
     fn mount_transform_moves_the_whole_item() {
         let mut d = sample();
-        let a = paint(&job(&d, SpaceMap::Cage(cage(16.0)), &no_images));
+        let a = paint_at(&d, SpaceMap::Cage(cage(16.0)), &no_images);
         d.mount.position = (0.0, 0.3);
-        let b = paint(&job(&d, SpaceMap::Cage(cage(16.0)), &no_images));
+        let b = paint_at(&d, SpaceMap::Cage(cage(16.0)), &no_images);
         let top = |p: &Painted| p.rgba.iter().position(|px| px[3] > 0).unwrap_or(0) / CELL.width;
         assert!(top(&b) > top(&a), "the item moved down the torso");
+    }
+
+    #[test]
+    fn a_child_turns_with_its_parent_and_depths_split() {
+        let mut d = sample();
+        d.parts[1].parent = Some("body".into());
+        d.parts[1].depth = Some(DepthSlot::ShoulderGear);
+        let a = paint_at(&d, SpaceMap::Cage(cage(16.0)), &no_images);
+        let parts = split_by_depth(&d, &a, DepthSlot::ChestGear);
+        assert_eq!(parts.len(), 2);
+        assert_eq!(parts[0].0, DepthSlot::ChestGear);
+        assert_eq!(parts[1].0, DepthSlot::ShoulderGear);
+        // Moving the parent moves the child's texels.
+        let collar = |p: &Painted| p.owner.iter().position(|o| *o == Some(1));
+        d.parts[0].transform.position = (0.0, 0.25);
+        let b = paint_at(&d, SpaceMap::Cage(cage(16.0)), &no_images);
+        assert_ne!(collar(&a), collar(&b));
+        // Hiding the parent hides the child.
+        d.parts[0].visible = false;
+        let c = paint_at(&d, SpaceMap::Cage(cage(16.0)), &no_images);
+        assert_eq!(c.opaque(), 0);
+    }
+
+    #[test]
+    fn pixel_parts_draw_their_grid_and_hide_masks_dilate() {
+        let mut d = sample();
+        d.parts[1].source = PartSource::Pixels {
+            size: (3, 2),
+            pivot: (1.0, 1.0),
+            palette: vec![[200, 10, 10, 255], [10, 200, 10, 255]],
+            rows: vec!["010".into(), "1.1".into()],
+        };
+        d.parts[1].hides = vec![BodyRegion::NearUpperArm];
+        d.parts[1].outline = Outline::None;
+        let p = paint_at(&d, SpaceMap::Cage(cage(16.0)), &no_images);
+        let reds = p
+            .rgba
+            .iter()
+            .filter(|px| **px == [200, 10, 10, 255])
+            .count();
+        let greens = p
+            .rgba
+            .iter()
+            .filter(|px| **px == [10, 200, 10, 255])
+            .count();
+        assert_eq!((reds, greens), (2, 3));
+        let mask = hide_mask(&d, &p, CELL.width, BodyRegion::NearUpperArm);
+        let core = p.owner.iter().filter(|o| **o == Some(1)).count();
+        assert!(mask.iter().filter(|m| **m).count() > core);
+        assert!(
+            !hide_mask(&d, &p, CELL.width, BodyRegion::Hair)
+                .iter()
+                .any(|m| *m)
+        );
+    }
+
+    #[test]
+    fn the_brush_cell_matches_the_painted_texel() {
+        let mut d = sample();
+        d.parts[1].source = PartSource::Pixels {
+            size: (3, 2),
+            pivot: (1.0, 1.0),
+            palette: vec![[200, 10, 10, 255]],
+            rows: vec!["0..".into(), "...".into()],
+        };
+        d.parts[1].outline = Outline::None;
+        let map = SpaceMap::Cage(cage(16.0));
+        let p = paint_at(&d, map, &no_images);
+        let t = p
+            .rgba
+            .iter()
+            .position(|px| *px == [200, 10, 10, 255])
+            .unwrap_or_else(|| panic!("red"));
+        let centre = CELL.texel_centre(t % CELL.width, t / CELL.width);
+        assert_eq!(pixel_cell_at(&d, 1, map, CELL, centre), Some((0, 0)));
+    }
+
+    #[test]
+    fn compose_stacks_by_depth() {
+        let back = vec![[1, 1, 1, 255]; 2];
+        let front = vec![[9, 9, 9, 255], [0, 0, 0, 0]];
+        let mut layers = [
+            CompositeLayer {
+                depth: DepthSlot::Hair,
+                sub: 0,
+                texels: &front,
+            },
+            CompositeLayer {
+                depth: DepthSlot::Torso,
+                sub: 0,
+                texels: &back,
+            },
+        ];
+        assert_eq!(
+            compose(2, &mut layers),
+            vec![[9, 9, 9, 255], [1, 1, 1, 255]]
+        );
     }
 
     #[test]

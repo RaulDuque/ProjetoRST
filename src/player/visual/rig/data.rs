@@ -15,7 +15,8 @@ use super::chest::ChestModel;
 use super::equipment::{ItemArt, ItemProblem, RigItem, RigSlot};
 use super::grip::GripProfile;
 use super::layers::{
-    BodyLayer, CellGeometry, extract_cell, masked_rgba, material_of, parse_labels, partition,
+    BodyRegion, CellGeometry, extract_cell, masked_rgba, material_of, parse_labels, partition,
+    refine_regions,
 };
 use super::skeleton::{Joint, JointPositions};
 
@@ -141,11 +142,12 @@ impl RigClip {
     }
 }
 
-/// The depth layers of one source column (RGBA8 per layer, cell-sized).
+/// The depth layers of one source column (RGBA8 per fine body region,
+/// cell-sized).
 #[derive(Debug, Clone, PartialEq)]
 pub struct SourceLayers {
     pub source: usize,
-    pub layers: Vec<(BodyLayer, Vec<u8>)>,
+    pub layers: Vec<(BodyRegion, Vec<u8>)>,
     /// Texels where the recomposed layers differ from the approved frame
     /// (0 for a valid partition).
     pub differing: usize,
@@ -181,9 +183,10 @@ impl RigClip {
                 }
                 None => partition(&materials, cell, &joints),
             };
+            let labels = refine_regions(&labels, cell, &joints);
             let mut union = vec![[0u8; 4]; texels.len()];
             let mut layers = Vec::new();
-            for layer in BodyLayer::ALL {
+            for layer in BodyRegion::ALL {
                 let bytes = masked_rgba(&texels, &labels, layer);
                 for (i, px) in bytes.as_chunks::<4>().0.iter().enumerate() {
                     if px[3] > 0 {
@@ -379,7 +382,7 @@ mod tests {
         assert_eq!(cut.len(), 1);
         assert_eq!(cut[0].differing, 0);
         assert!(!cut[0].authored);
-        assert_eq!(cut[0].layers.len(), 5);
+        assert_eq!(cut[0].layers.len(), 8);
         assert!(clip.cut_layers(&strip[..100], 80, |_| None).is_err());
     }
 

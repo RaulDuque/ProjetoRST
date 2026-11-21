@@ -21,7 +21,7 @@ use bevy::asset::RenderAssetUsages;
 use bevy::image::{CompressedImageFormats, Image, ImageSampler, ImageType};
 use dark_castle_rpg::player::visual::rig::data::RigLab;
 use dark_castle_rpg::player::visual::rig::design::{EquipmentDesign, PartSource, from_chest_model};
-use dark_castle_rpg::player::visual::rig::paint::{PaintJob, Painted, RgbaImage, paint, pose_map};
+use dark_castle_rpg::player::visual::rig::paint::{Painted, RgbaImage, paint_on_frame};
 use dark_castle_rpg::player::visual::rig::skeleton::{Joint, LocalPose, fit};
 
 fn root() -> &'static Path {
@@ -78,7 +78,7 @@ fn images_of(d: &EquipmentDesign) -> HashMap<String, RgbaImage> {
         .iter()
         .filter_map(|p| match &p.source {
             PartSource::Image { path, .. } => Some((path.clone(), decode(&studio().join(path)))),
-            PartSource::Polygon { .. } => None,
+            _ => None,
         })
         .collect()
 }
@@ -90,17 +90,8 @@ fn paint_all(rig: &RigLab, rest: &LocalPose, d: &EquipmentDesign) -> Vec<(String
     let mut out = Vec::new();
     for (key, clip) in &rig.clips {
         for frame in 0..clip.frames.len() {
-            let (map, _, turn) =
-                pose_map(rig, rest, d, key, frame).unwrap_or_else(|| panic!("{key} {frame}"));
-            let job = PaintJob {
-                design: d,
-                map,
-                cell: clip.geometry(),
-                clip: key,
-                turn,
-                images: &lookup,
-            };
-            let p = paint(&job);
+            let (p, _) = paint_on_frame(rig, rest, d, key, frame, &lookup)
+                .unwrap_or_else(|| panic!("{key} {frame}"));
             if std::env::var_os("STUDIO_DUMP").is_some() {
                 let dir = root().join("target/equipment_studio/preview");
                 let _ = std::fs::create_dir_all(&dir);
@@ -307,4 +298,184 @@ fn editing_a_vertex_in_data_changes_the_silhouette() {
     }
     let after = paint_all(&rig, &rest, &d)[3].2.opaque();
     assert!(after > before, "{before} -> {after}");
+}
+
+// ---------------------------------------------------------------- Engine 04
+
+use dark_castle_rpg::player::visual::rig::data::SourceLayers;
+use dark_castle_rpg::player::visual::rig::paint::{WornItem, compose_frame};
+
+/// The body regions of every source of a clip, from the approved strip.
+fn body_layers(rig: &RigLab, clip: &str) -> Vec<SourceLayers> {
+    let c = &rig.clips[clip];
+    let rel = c.texture.trim_start_matches("approved://");
+    let strip = decode(&root().join("art-src/n3-8-production-run/stage").join(rel));
+    let bytes: Vec<u8> = strip.pixels.iter().flatten().copied().collect();
+    let stage = root().join("art-src/modular-character-engine/stage");
+    c.cut_layers(&bytes, strip.width, |p| {
+        std::fs::read_to_string(stage.join(p)).ok()
+    })
+    .unwrap_or_else(|e| panic!("{e}"))
+}
+
+/// The final frame with some designs worn (the studio's composition).
+fn composite(
+    rig: &RigLab,
+    rest: &LocalPose,
+    clip: &str,
+    frame: usize,
+    worn: &[&EquipmentDesign],
+) -> Vec<[u8; 4]> {
+    let c = &rig.clips[clip];
+    let f = c.frames[frame];
+    let body = body_layers(rig, clip);
+    let images: Vec<HashMap<String, RgbaImage>> = worn.iter().map(|d| images_of(d)).collect();
+    let painted: Vec<(Painted, _)> = worn
+        .iter()
+        .zip(&images)
+        .map(|(d, imgs)| {
+            let lookup = |p: &str| imgs.get(p);
+            paint_on_frame(rig, rest, d, clip, frame, &lookup).unwrap_or_else(|| panic!("paint"))
+        })
+        .collect();
+    let items: Vec<WornItem<'_>> = worn
+        .iter()
+        .zip(&painted)
+        .map(|(d, (p, depth))| WornItem {
+            design: d,
+            painted: p,
+            depth: *depth,
+        })
+        .collect();
+    compose_frame(
+        &body[f.source].layers,
+        f.drop as usize,
+        c.cell.0 as usize,
+        &items,
+    )
+}
+
+fn dump(name: &str, w: u32, h: u32, px: &[[u8; 4]]) {
+    if std::env::var_os("STUDIO_DUMP").is_some() {
+        let dir = root().join("target/equipment_studio/composite");
+        let _ = std::fs::create_dir_all(&dir);
+        let bytes: Vec<u8> = px.iter().flatten().copied().collect();
+        let _ = std::fs::write(dir.join(format!("{name}_{w}x{h}.rgba")), bytes);
+    }
+}
+
+#[test]
+fn the_bare_composite_is_the_approved_art() {
+    let (rig, rest) = lab();
+    for (key, clip) in &rig.clips {
+        let rel = clip.texture.trim_start_matches("approved://");
+        let strip = decode(&root().join("art-src/n3-8-production-run/stage").join(rel));
+        for frame in 0..clip.frames.len() {
+            let f = clip.frames[frame];
+            if f.drop != 0 {
+                continue; // the experimental breath frame moves the upper body
+            }
+            let bare = composite(&rig, &rest, key, frame, &[]);
+            let w = clip.cell.0 as usize;
+            for (t, px) in bare.iter().enumerate() {
+                let (x, y) = (t % w + f.source * w, t / w);
+                assert_eq!(
+                    *px,
+                    strip.pixels[y * strip.width + x],
+                    "{key} #{frame} texel {t}"
+                );
+            }
+        }
+    }
+}
+
+#[test]
+fn the_gothic_set_and_a_mix_compose_every_pose() {
+    let (rig, rest) = lab();
+    let set: Vec<EquipmentDesign> = [
+        "gothic_set_cuirass",
+        "gothic_set_pauldron",
+        "gothic_set_bracers",
+        "gothic_set_faulds",
+    ]
+    .iter()
+    .map(|id| design(id))
+    .collect();
+    let mix: Vec<EquipmentDesign> = [
+        "leather_jerkin",
+        "gothic_set_pauldron",
+        "gothic_set_bracers",
+    ]
+    .iter()
+    .map(|id| design(id))
+    .collect();
+    for (key, clip) in &rig.clips {
+        let (w, h) = clip.cell;
+        for frame in 0..clip.frames.len() {
+            let bare = composite(&rig, &rest, key, frame, &[]);
+            let refs: Vec<&EquipmentDesign> = set.iter().collect();
+            let full = composite(&rig, &rest, key, frame, &refs);
+            let changed = bare.iter().zip(&full).filter(|(a, b)| a != b).count();
+            assert!(
+                changed > 200,
+                "{key} #{frame}: the set changed only {changed} texels"
+            );
+            // Every piece alone changes the frame: they are independent.
+            for d in &set {
+                let one = composite(&rig, &rest, key, frame, &[d]);
+                let c = bare.iter().zip(&one).filter(|(a, b)| a != b).count();
+                // In the side-view idle the hanging near arm covers most of the waist.
+                assert!(c > 8, "{key} #{frame}: {} changes {c} texels", d.id);
+            }
+            let mix_refs: Vec<&EquipmentDesign> = mix.iter().collect();
+            let m = composite(&rig, &rest, key, frame, &mix_refs);
+            dump(&format!("bare_{key}_f{frame}"), w, h, &bare);
+            dump(&format!("set_{key}_f{frame}"), w, h, &full);
+            dump(&format!("mix_{key}_f{frame}"), w, h, &m);
+            // The near fist stays in front of the bracer and the sword.
+            let j = clip.frame_joints(frame).unwrap_or_else(|| panic!("j"));
+            let fist = clip.geometry().to_texel(j.get(Joint::HandNear));
+            let t = fist.1 as usize * w as usize + fist.0 as usize;
+            assert_eq!(full[t], bare[t], "{key} #{frame}: the fist was covered");
+        }
+    }
+}
+
+#[test]
+fn rotating_a_parent_moves_its_children_in_every_pose() {
+    let (rig, rest) = lab();
+    let mut d = design("arming_sword");
+    // Make the ruby a child of the blade (both had the same transform).
+    let blade = d.index_of("blade").unwrap_or_else(|| panic!("blade"));
+    let ruby = d.index_of("pommel_ruby").unwrap_or_else(|| panic!("ruby"));
+    d.reparent(ruby, Some(blade), true)
+        .unwrap_or_else(|e| panic!("{e}"));
+    let images = images_of(&d);
+    let lookup = |p: &str| images.get(p);
+    for (key, clip) in &rig.clips {
+        for frame in 0..clip.frames.len() {
+            let before = paint_on_frame(&rig, &rest, &d, key, frame, &lookup)
+                .unwrap_or_else(|| panic!("p"))
+                .0;
+            let mut turned = d.clone();
+            turned.parts[blade].transform.rotation_deg += 40.0;
+            let after = paint_on_frame(&rig, &rest, &turned, key, frame, &lookup)
+                .unwrap_or_else(|| panic!("p"))
+                .0;
+            let ruby_at = |p: &Painted| -> Vec<usize> {
+                (0..p.owner.len())
+                    .filter(|t| p.owner[*t] == Some(ruby))
+                    .collect()
+            };
+            assert_ne!(
+                ruby_at(&before),
+                ruby_at(&after),
+                "{key} #{frame}: the ruby stayed"
+            );
+            assert!(
+                !ruby_at(&after).is_empty(),
+                "{key} #{frame}: the ruby vanished"
+            );
+        }
+    }
 }

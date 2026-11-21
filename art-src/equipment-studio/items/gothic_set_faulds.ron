@@ -1,0 +1,35 @@
+// Gothic set (Engine 04) — faulds (waist protection). Torso space, depth
+// WaistGear: over the breastplate's hem and the waist band, under the arms.
+// Hierarchy: faulds group -> three flared lames with gold hems. Original
+// design (not approved art).
+(
+    version: 1,
+    id: "gothic_set_faulds",
+    name: "Gothic set: faulds",
+    slot: Belt,
+    space: Torso,
+    depth: WaistGear,
+    light: (0.45, 0.8),
+    aspect_range: (0.67, 0.78),
+    materials: [
+        (id: "purple_steel", ramp: ((22, 14, 30), (46, 28, 64), (74, 46, 100), (108, 68, 142), (148, 106, 184), (204, 174, 228)), finish: Metal),
+        (id: "gold", ramp: ((44, 26, 14), (106, 66, 24), (150, 100, 36), (200, 150, 58), (232, 196, 96), (252, 236, 170)), finish: Flat),
+    ],
+    parts: [
+        (id: "faulds", source: Group, material: "purple_steel", layer: 0, outline: None),
+        (id: "lame_3", parent: Some("faulds"),
+         source: Polygon(points: [(0.1, 1.02), (1.12, 1.0), (1.24, 1.22), (0.12, 1.24)], smooth: 0),
+         material: "purple_steel", layer: 1, outline: Selective, bevel: 1.0,
+         regions: [(points: [(-0.2, 1.17), (1.4, 1.15), (1.4, 1.4), (-0.2, 1.4)], material: Some("gold"))]),
+        (id: "lame_2", parent: Some("faulds"),
+         source: Polygon(points: [(0.06, 0.92), (1.12, 0.9), (1.2, 1.08), (0.08, 1.1)], smooth: 0),
+         material: "purple_steel", layer: 2, outline: Selective, bevel: 1.0,
+         regions: [(points: [(-0.2, 1.04), (1.4, 1.02), (1.4, 1.2), (-0.2, 1.2)], material: Some("gold"))]),
+        (id: "lame_1", parent: Some("faulds"),
+         source: Polygon(points: [(0.0, 0.8), (1.14, 0.78), (1.18, 0.96), (0.02, 0.98)], smooth: 0),
+         material: "purple_steel", layer: 3, outline: Selective, bevel: 1.0,
+         ornaments: [Rivet(at: (0.4, 0.87)), Rivet(at: (0.9, 0.86))]),
+    ],
+    provisional: true,
+    source: "Equipment Studio data, Engine 04 gothic set (original design)",
+)

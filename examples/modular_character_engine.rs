@@ -67,7 +67,7 @@ use dark_castle_rpg::player::visual::rig::equipment::{
 };
 use dark_castle_rpg::player::visual::rig::grip::hand_frame;
 use dark_castle_rpg::player::visual::rig::layers::{
-    BodyLayer, CUTOUT_BONES, DepthSlot, extract_cell, masked_rgba, material_of, partition_by_bone,
+    BodyRegion, CUTOUT_BONES, DepthSlot, extract_cell, masked_rgba, material_of, partition_by_bone,
 };
 use dark_castle_rpg::player::visual::rig::skeleton::{
     Bone, Joint, JointPositions, LocalPose, WorldPose, fit, forward, retarget,
@@ -118,28 +118,29 @@ impl Panel {
     }
 }
 
-/// What the layer view shows (key L).
+/// What the layer view shows (key L): every region, one fine body region
+/// (Engine 04 split the near arm and the waist), or the equipment only.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum LayerView {
     All,
-    Solo(BodyLayer),
+    Solo(BodyRegion),
     GearOnly,
 }
 
 impl LayerView {
     fn next(self) -> Self {
+        let all = BodyRegion::ALL;
         match self {
-            Self::All => Self::Solo(BodyLayer::FarArm),
-            Self::Solo(BodyLayer::FarArm) => Self::Solo(BodyLayer::Legs),
-            Self::Solo(BodyLayer::Legs) => Self::Solo(BodyLayer::Torso),
-            Self::Solo(BodyLayer::Torso) => Self::Solo(BodyLayer::Hair),
-            Self::Solo(BodyLayer::Hair) => Self::Solo(BodyLayer::NearArm),
-            Self::Solo(BodyLayer::NearArm) => Self::GearOnly,
+            Self::All => Self::Solo(all[0]),
+            Self::Solo(r) => match all.iter().position(|x| *x == r) {
+                Some(i) if i + 1 < all.len() => Self::Solo(all[i + 1]),
+                _ => Self::GearOnly,
+            },
             Self::GearOnly => Self::All,
         }
     }
 
-    fn shows_layer(self, layer: BodyLayer) -> bool {
+    fn shows_layer(self, layer: BodyRegion) -> bool {
         match self {
             Self::All => true,
             Self::Solo(l) => l == layer,
@@ -167,7 +168,7 @@ struct OriginalSprite;
 struct PanelRoot(Panel);
 
 #[derive(Component)]
-struct HybridLayer(BodyLayer);
+struct HybridLayer(BodyRegion);
 
 #[derive(Component)]
 struct PieceSprite(Bone);
@@ -209,8 +210,8 @@ fn piece_depth(bone: Bone) -> (DepthSlot, f32) {
         Bone::ThighA | Bone::ShinA | Bone::FootA => (DepthSlot::Legs, 0.5),
         Bone::Spine => (DepthSlot::Torso, 0.0),
         Bone::Head => (DepthSlot::Hair, 0.0),
-        Bone::UpperArmNear => (DepthSlot::NearArm, 0.0),
-        Bone::ForearmNear => (DepthSlot::NearArm, 0.5),
+        Bone::UpperArmNear => (DepthSlot::NearUpperArm, 0.0),
+        Bone::ForearmNear => (DepthSlot::NearForearm, 0.0),
     }
 }
 
@@ -238,13 +239,16 @@ fn exploded_item_spot(slot: RigSlot) -> (f32, f32) {
 }
 
 /// Debug colours of the depth layers (tint mode).
-fn layer_tint(layer: BodyLayer) -> Color {
+fn layer_tint(layer: BodyRegion) -> Color {
     match layer {
-        BodyLayer::FarArm => Color::srgb(0.35, 0.55, 1.0),
-        BodyLayer::Legs => Color::srgb(0.55, 0.45, 0.35),
-        BodyLayer::Torso => Color::srgb(0.6, 0.6, 0.6),
-        BodyLayer::Hair => Color::srgb(1.0, 0.95, 0.4),
-        BodyLayer::NearArm => Color::srgb(1.0, 0.35, 0.35),
+        BodyRegion::FarArm => Color::srgb(0.35, 0.55, 1.0),
+        BodyRegion::Legs => Color::srgb(0.55, 0.45, 0.35),
+        BodyRegion::Waist => Color::srgb(0.45, 0.45, 0.5),
+        BodyRegion::Torso => Color::srgb(0.6, 0.6, 0.6),
+        BodyRegion::Hair => Color::srgb(1.0, 0.95, 0.4),
+        BodyRegion::NearUpperArm => Color::srgb(1.0, 0.35, 0.35),
+        BodyRegion::NearForearm => Color::srgb(1.0, 0.55, 0.3),
+        BodyRegion::NearHand => Color::srgb(1.0, 0.75, 0.6),
     }
 }
 
@@ -434,7 +438,7 @@ fn tour() -> Vec<Shot> {
     }
     // Layers shown one at a time.
     let mut view = LayerView::All;
-    for i in 0..7 {
+    for i in 0..10 {
         push(StateShot {
             wear: ALL,
             layer_view: view,
@@ -572,14 +576,17 @@ fn tour() -> Vec<Shot> {
                 KeyCode::KeyL,
                 KeyCode::KeyL,
                 KeyCode::KeyL,
+                KeyCode::KeyL,
             ],
             None,
             6,
-            |l| l.layer_view == LayerView::Solo(BodyLayer::NearArm),
+            |l| l.layer_view == LayerView::Solo(BodyRegion::NearUpperArm),
         ),
         input(
             "ui_11_tint_mesh_warp",
             &[
+                KeyCode::KeyL,
+                KeyCode::KeyL,
                 KeyCode::KeyL,
                 KeyCode::KeyL,
                 KeyCode::KeyT,
@@ -617,7 +624,7 @@ fn mode_tag(mode: ChestMode) -> &'static str {
 /// Images built from the approved frames once they are loaded.
 struct Built {
     /// (clip, source, layer) -> layer image.
-    layers: HashMap<(String, usize, BodyLayer), Handle<Image>>,
+    layers: HashMap<(String, usize, BodyRegion), Handle<Image>>,
     /// Cutout pieces of the idle (cell-sized images).
     pieces: HashMap<Bone, Handle<Image>>,
     /// (clip, frame, mode) -> breastplate image (cell-sized; the rigid mode
@@ -772,7 +779,7 @@ fn setup(
             ))
             .id();
         if panel == Panel::Hybrid {
-            for layer in BodyLayer::ALL {
+            for layer in BodyRegion::ALL {
                 commands.entity(root).with_child((
                     HybridLayer(layer),
                     Sprite::default(),

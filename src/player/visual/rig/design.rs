@@ -22,7 +22,7 @@ use thiserror::Error;
 
 use super::equipment::{BoneEnd, RigSlot};
 use super::grip::HandSide;
-use super::layers::DepthSlot;
+use super::layers::{BodyRegion, DepthSlot};
 use super::skeleton::Bone;
 
 /// Only version understood.
@@ -86,6 +86,94 @@ pub enum PartSource {
     /// folder; `pivot` is the image texel placed on the part position. In
     /// the torso space an image is a decal: pixel-aligned, never stretched.
     Image { path: String, pivot: (f32, f32) },
+    /// No geometry: a group that only carries a transform, visibility and
+    /// depth for its children (04).
+    Group,
+    /// Pixels painted in the studio (04): one character per texel, `.`
+    /// transparent, otherwise an index into `palette` (`0`-`9`, `a`-`z`),
+    /// PixelSpec-like rows. Drawn like an image.
+    Pixels {
+        size: (u32, u32),
+        pivot: (f32, f32),
+        palette: Vec<[u8; 4]>,
+        rows: Vec<String>,
+    },
+}
+
+/// Palette index of a pixel-grid character (`None` for `.`).
+pub fn pixel_index(c: char) -> Option<usize> {
+    match c {
+        '0'..='9' => Some(c as usize - '0' as usize),
+        'a'..='z' => Some(10 + c as usize - 'a' as usize),
+        _ => None,
+    }
+}
+
+/// The character of a palette index (`.` beyond 36 entries).
+pub fn pixel_char(i: usize) -> char {
+    match i {
+        0..=9 => (b'0' + i as u8) as char,
+        10..=35 => (b'a' + (i - 10) as u8) as char,
+        _ => '.',
+    }
+}
+
+/// A 2D affine map (`x' = a x + c y + tx`, `y' = b x + d y + ty`): the
+/// composition of part transforms down the hierarchy.
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct Affine {
+    pub a: f32,
+    pub b: f32,
+    pub c: f32,
+    pub d: f32,
+    pub tx: f32,
+    pub ty: f32,
+}
+
+impl Affine {
+    pub const IDENTITY: Self = Self {
+        a: 1.0,
+        b: 0.0,
+        c: 0.0,
+        d: 1.0,
+        tx: 0.0,
+        ty: 0.0,
+    };
+
+    pub fn apply(&self, p: (f32, f32)) -> (f32, f32) {
+        (
+            self.a * p.0 + self.c * p.1 + self.tx,
+            self.b * p.0 + self.d * p.1 + self.ty,
+        )
+    }
+
+    /// `self ∘ other` (apply `other` first).
+    pub fn then(&self, other: &Self) -> Self {
+        Self {
+            a: self.a * other.a + self.c * other.b,
+            b: self.b * other.a + self.d * other.b,
+            c: self.a * other.c + self.c * other.d,
+            d: self.b * other.c + self.d * other.d,
+            tx: self.a * other.tx + self.c * other.ty + self.tx,
+            ty: self.b * other.tx + self.d * other.ty + self.ty,
+        }
+    }
+
+    pub fn inverse(&self) -> Option<Self> {
+        let det = self.a * self.d - self.b * self.c;
+        if det.abs() < 1e-9 {
+            return None;
+        }
+        let (a, b, c, d) = (self.d / det, -self.b / det, -self.c / det, self.a / det);
+        Some(Self {
+            a,
+            b,
+            c,
+            d,
+            tx: -(a * self.tx + c * self.ty),
+            ty: -(b * self.tx + d * self.ty),
+        })
+    }
 }
 
 /// Local transform of a part (or of the whole design for the mount).
@@ -110,6 +198,41 @@ impl Default for PartTransform {
 }
 
 impl PartTransform {
+    /// The transform as an affine map (local -> parent).
+    pub fn affine(&self) -> Affine {
+        let (sn, cs) = self.rotation_deg.to_radians().sin_cos();
+        let (a, b, c, d) = (
+            cs * self.scale.0,
+            sn * self.scale.0,
+            -sn * self.scale.1,
+            cs * self.scale.1,
+        );
+        Affine {
+            a,
+            b,
+            c,
+            d,
+            tx: self.position.0 - (a * self.pivot.0 + c * self.pivot.1),
+            ty: self.position.1 - (b * self.pivot.0 + d * self.pivot.1),
+        }
+    }
+
+    /// The transform (keeping `pivot`) closest to an affine map: position,
+    /// rotation and per-axis scale; a shear (non-uniform parent scale under
+    /// rotation) is dropped.
+    pub fn from_affine(m: &Affine, pivot: (f32, f32)) -> Self {
+        let sx = m.a.hypot(m.b);
+        let rot = m.b.atan2(m.a);
+        let det = m.a * m.d - m.b * m.c;
+        let sy = if sx > 1e-9 { det / sx } else { m.c.hypot(m.d) };
+        Self {
+            position: m.apply(pivot),
+            rotation_deg: rot.to_degrees(),
+            scale: (sx, sy),
+            pivot,
+        }
+    }
+
     /// Local geometry point -> design space.
     pub fn apply(&self, p: (f32, f32)) -> (f32, f32) {
         let (s, c) = self.rotation_deg.to_radians().sin_cos();
@@ -195,6 +318,21 @@ impl Visibility {
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Part {
     pub id: String,
+    /// Parent part id (04): the part's transform is relative to its
+    /// parent's, and it is hidden when the parent is.
+    #[serde(default)]
+    pub parent: Option<String>,
+    /// Binding of a root part to another space than the design's (04): e.g.
+    /// the far bracer of a pair on the far forearm.
+    #[serde(default)]
+    pub bind: Option<DesignSpace>,
+    /// Depth of the part (and of its children) instead of the design's.
+    #[serde(default)]
+    pub depth: Option<DepthSlot>,
+    /// Body regions hidden under this part's footprint (dilated one texel):
+    /// e.g. the sleeve under a pauldron.
+    #[serde(default)]
+    pub hides: Vec<BodyRegion>,
     pub source: PartSource,
     #[serde(default)]
     pub transform: PartTransform,
@@ -275,6 +413,14 @@ pub enum DesignError {
     DuplicateMaterial(String),
     #[error("the design has no part")]
     Empty,
+    #[error("part {0}: unknown parent {1}")]
+    Parent(String, String),
+    #[error("part {0}: the parent chain loops")]
+    Cycle(String),
+    #[error("part {0}: only a root part may bind to another space")]
+    BindOnChild(String),
+    #[error("part {0}: the pixel rows do not match the size or the palette")]
+    Pixels(String),
 }
 
 impl EquipmentDesign {
@@ -324,6 +470,31 @@ impl EquipmentDesign {
             {
                 return Err(DesignError::Polygon(p.id.clone()));
             }
+            if let PartSource::Pixels {
+                size,
+                palette,
+                rows,
+                ..
+            } = &p.source
+            {
+                let ok = rows.len() == size.1 as usize
+                    && rows.iter().all(|r| r.chars().count() == size.0 as usize)
+                    && rows
+                        .iter()
+                        .flat_map(|r| r.chars())
+                        .all(|c| c == '.' || pixel_index(c).is_some_and(|i| i < palette.len()));
+                if !ok {
+                    return Err(DesignError::Pixels(p.id.clone()));
+                }
+            }
+            if let Some(parent) = &p.parent {
+                if !self.parts.iter().any(|o| &o.id == parent) {
+                    return Err(DesignError::Parent(p.id.clone(), parent.clone()));
+                }
+                if p.bind.is_some() {
+                    return Err(DesignError::BindOnChild(p.id.clone()));
+                }
+            }
             let t = &p.transform;
             let finite = [
                 t.position.0,
@@ -338,7 +509,212 @@ impl EquipmentDesign {
                 return Err(DesignError::Transform(p.id.clone()));
             }
         }
+        for i in 0..self.parts.len() {
+            if self.ancestors(i).is_none() {
+                return Err(DesignError::Cycle(self.parts[i].id.clone()));
+            }
+        }
         Ok(())
+    }
+
+    /// Index of a part by id.
+    pub fn index_of(&self, id: &str) -> Option<usize> {
+        self.parts.iter().position(|p| p.id == id)
+    }
+
+    /// Parent index of a part.
+    pub fn parent_of(&self, i: usize) -> Option<usize> {
+        self.index_of(self.parts.get(i)?.parent.as_deref()?)
+    }
+
+    /// The ancestors of a part, nearest first; `None` when the chain loops
+    /// or names a missing part.
+    pub fn ancestors(&self, i: usize) -> Option<Vec<usize>> {
+        let mut out = Vec::new();
+        let mut cur = i;
+        while let Some(parent) = self.parts.get(cur)?.parent.as_deref() {
+            let p = self.index_of(parent)?;
+            if p == i || out.contains(&p) {
+                return None;
+            }
+            out.push(p);
+            cur = p;
+        }
+        Some(out)
+    }
+
+    /// Direct children of a part (in list order).
+    pub fn children(&self, i: usize) -> Vec<usize> {
+        let id = &self.parts[i].id;
+        (0..self.parts.len())
+            .filter(|j| self.parts[*j].parent.as_deref() == Some(id.as_str()))
+            .collect()
+    }
+
+    /// A part and every descendant (depth first).
+    pub fn subtree(&self, i: usize) -> Vec<usize> {
+        let mut out = vec![i];
+        let mut k = 0;
+        while k < out.len() {
+            let fresh: Vec<usize> = self
+                .children(out[k])
+                .into_iter()
+                .filter(|j| !out.contains(j))
+                .collect();
+            out.extend(fresh);
+            k += 1;
+        }
+        out
+    }
+
+    /// Local -> design-space map of a part through its parents.
+    pub fn world_affine(&self, i: usize) -> Affine {
+        let mut m = self.parts[i].transform.affine();
+        for a in self.ancestors(i).unwrap_or_default() {
+            m = self.parts[a].transform.affine().then(&m);
+        }
+        m
+    }
+
+    /// Visible itself and through every ancestor.
+    pub fn effective_visible(&self, i: usize) -> bool {
+        self.parts[i].visible
+            && self
+                .ancestors(i)
+                .unwrap_or_default()
+                .iter()
+                .all(|a| self.parts[*a].visible)
+    }
+
+    /// The space of a part: its root's binding or the design's.
+    pub fn effective_space(&self, i: usize) -> DesignSpace {
+        let root = self
+            .ancestors(i)
+            .and_then(|a| a.last().copied())
+            .unwrap_or(i);
+        self.parts[root].bind.unwrap_or(self.space)
+    }
+
+    /// The depth of a part: its own, the nearest ancestor's, or `default`.
+    pub fn effective_depth(&self, i: usize, default: DepthSlot) -> DepthSlot {
+        if let Some(d) = self.parts[i].depth {
+            return d;
+        }
+        self.ancestors(i)
+            .unwrap_or_default()
+            .iter()
+            .find_map(|a| self.parts[*a].depth)
+            .unwrap_or(default)
+    }
+
+    /// Changes a part's parent (`None` = root). With `keep_global` the part
+    /// stays where it is on screen (its local transform is recomputed);
+    /// otherwise it keeps its local transform and moves with the new parent.
+    /// Refuses a parent inside the part's own subtree.
+    pub fn reparent(
+        &mut self,
+        i: usize,
+        parent: Option<usize>,
+        keep_global: bool,
+    ) -> Result<(), DesignError> {
+        if let Some(p) = parent
+            && self.subtree(i).contains(&p)
+        {
+            return Err(DesignError::Cycle(self.parts[i].id.clone()));
+        }
+        let world = self.world_affine(i);
+        self.parts[i].parent = parent.map(|p| self.parts[p].id.clone());
+        if parent.is_some() {
+            self.parts[i].bind = None;
+        }
+        if keep_global {
+            let base = parent.map_or(Affine::IDENTITY, |p| self.world_affine(p));
+            if let Some(inv) = base.inverse() {
+                let local = inv.then(&world);
+                let pivot = self.parts[i].transform.pivot;
+                self.parts[i].transform = PartTransform::from_affine(&local, pivot);
+            }
+        }
+        Ok(())
+    }
+
+    /// Duplicates a part and its subtree (new ids, same parent); returns
+    /// the copy of the root.
+    pub fn duplicate_subtree(&mut self, i: usize) -> usize {
+        let nodes = self.subtree(i);
+        let mut renamed: Vec<(String, String)> = Vec::new();
+        for n in &nodes {
+            let old = self.parts[*n].id.clone();
+            let mut new = self.free_id(&old);
+            while renamed.iter().any(|(_, r)| *r == new) {
+                new = format!("{new}_");
+            }
+            renamed.push((old, new));
+        }
+        let first = self.parts.len();
+        for n in &nodes {
+            let mut copy = self.parts[*n].clone();
+            let rename = |id: &str| {
+                renamed
+                    .iter()
+                    .find(|(o, _)| o == id)
+                    .map(|(_, r)| r.clone())
+            };
+            copy.id = rename(&copy.id).unwrap_or(copy.id.clone());
+            if *n != i {
+                copy.parent = copy.parent.as_deref().and_then(rename);
+            }
+            self.parts.push(copy);
+        }
+        first
+    }
+
+    /// Puts parts under a new group (at their first part's parent); the
+    /// parts keep their place on screen. Returns the group's index.
+    pub fn group(&mut self, members: &[usize], name: &str) -> usize {
+        let parent = members.first().and_then(|m| self.parent_of(*m));
+        let id = self.free_id(name);
+        let layer = members
+            .iter()
+            .map(|m| self.parts[*m].layer)
+            .max()
+            .unwrap_or(0);
+        self.parts.push(Part {
+            id,
+            parent: parent.map(|p| self.parts[p].id.clone()),
+            bind: None,
+            depth: None,
+            hides: Vec::new(),
+            source: PartSource::Group,
+            transform: PartTransform::default(),
+            material: self
+                .materials
+                .first()
+                .map_or_else(String::new, |m| m.id.clone()),
+            layer,
+            outline: Outline::None,
+            bevel: 0.0,
+            regions: Vec::new(),
+            ornaments: Vec::new(),
+            visible: true,
+            visibility: Visibility::default(),
+        });
+        let g = self.parts.len() - 1;
+        for m in members {
+            if *m != g {
+                let _ = self.reparent(*m, Some(g), true);
+            }
+        }
+        g
+    }
+
+    /// Removes a part and its subtree.
+    pub fn remove_subtree(&mut self, i: usize) {
+        let mut nodes = self.subtree(i);
+        nodes.sort_unstable_by(|a, b| b.cmp(a));
+        for n in nodes {
+            self.parts.remove(n);
+        }
     }
 
     /// Turn (0 side, 1 three-quarter) of a torso cage aspect.
@@ -449,6 +825,10 @@ pub fn from_chest_model(id: &str, model: &super::chest::ChestModel) -> Equipment
         materials: vec![plate, trim],
         parts: vec![Part {
             id: "plate".into(),
+            parent: None,
+            bind: None,
+            depth: None,
+            hides: Vec::new(),
             source: PartSource::Polygon {
                 points: model.silhouette.clone(),
                 smooth: 0,
@@ -511,6 +891,10 @@ pub(crate) mod tests {
             parts: vec![
                 Part {
                     id: "body".into(),
+                    parent: None,
+                    bind: None,
+                    depth: None,
+                    hides: Vec::new(),
                     source: PartSource::Polygon {
                         points: vec![(0.0, 0.0), (1.05, 0.0), (1.1, 0.5), (1.0, 1.0), (0.0, 1.0)],
                         smooth: 0,
@@ -531,6 +915,10 @@ pub(crate) mod tests {
                 },
                 Part {
                     id: "collar".into(),
+                    parent: None,
+                    bind: None,
+                    depth: None,
+                    hides: Vec::new(),
                     source: PartSource::Polygon {
                         points: vec![(0.1, -0.05), (1.0, -0.05), (0.95, 0.12), (0.15, 0.12)],
                         smooth: 1,
@@ -632,6 +1020,137 @@ pub(crate) mod tests {
         assert_eq!(d.turn(0.9), 1.0);
         assert_eq!(d.free_id("body"), "body_2");
         assert_eq!(d.free_id("strap"), "strap");
+    }
+
+    #[test]
+    fn affine_and_transform_agree_and_invert() {
+        let t = PartTransform {
+            position: (3.0, -2.0),
+            rotation_deg: 33.0,
+            scale: (1.5, 0.75),
+            pivot: (1.0, 1.0),
+        };
+        let m = t.affine();
+        for p in [(0.0, 0.0), (2.0, 5.0)] {
+            let (a, b) = (m.apply(p), t.apply(p));
+            assert!((a.0 - b.0).abs() < 1e-4 && (a.1 - b.1).abs() < 1e-4);
+        }
+        let back = PartTransform::from_affine(&m, t.pivot);
+        assert!((back.rotation_deg - 33.0).abs() < 1e-3);
+        assert!((back.scale.0 - 1.5).abs() < 1e-4 && (back.scale.1 - 0.75).abs() < 1e-4);
+        let inv = m.inverse().unwrap_or_else(|| panic!("inverse"));
+        let q = inv.apply(m.apply((7.0, -3.0)));
+        assert!((q.0 - 7.0).abs() < 1e-3 && (q.1 + 3.0).abs() < 1e-3);
+    }
+
+    /// body <- collar <- (gem); the collar is a child of the body.
+    fn family() -> EquipmentDesign {
+        let mut d = sample();
+        d.parts[1].parent = Some("body".into());
+        let mut gem = d.parts[1].clone();
+        gem.id = "gem".into();
+        gem.parent = Some("collar".into());
+        d.parts.push(gem);
+        d
+    }
+
+    #[test]
+    fn children_follow_their_parent_and_inherit_visibility() {
+        let mut d = family();
+        assert_eq!(d.validate(), Ok(()));
+        let before = d.world_affine(2).apply((0.5, 0.5));
+        d.parts[0].transform.position = (1.0, 2.0);
+        d.parts[0].transform.rotation_deg = 90.0;
+        let after = d.world_affine(2).apply((0.5, 0.5));
+        let moved = (after.0 - before.0).hypot(after.1 - before.1);
+        assert!(moved > 0.1, "the grandchild moved ({moved})");
+        assert_eq!(d.subtree(0), vec![0, 1, 2]);
+        assert_eq!(d.children(0), vec![1]);
+        d.parts[0].visible = false;
+        assert!(!d.effective_visible(2));
+        d.parts[0].visible = true;
+        d.parts[0].depth = Some(DepthSlot::ShoulderGear);
+        assert_eq!(
+            d.effective_depth(2, DepthSlot::ChestGear),
+            DepthSlot::ShoulderGear
+        );
+    }
+
+    #[test]
+    fn cycles_and_bad_parents_are_refused() {
+        let mut d = family();
+        d.parts[0].parent = Some("gem".into());
+        assert!(matches!(d.validate(), Err(DesignError::Cycle(_))));
+        let mut d = family();
+        d.parts[1].parent = Some("ghost".into());
+        assert!(matches!(d.validate(), Err(DesignError::Parent(..))));
+        let mut d = family();
+        d.parts[1].bind = Some(DesignSpace::Torso);
+        assert!(matches!(d.validate(), Err(DesignError::BindOnChild(_))));
+        let mut d = family();
+        assert!(
+            d.reparent(0, Some(2), false).is_err(),
+            "a part under its own grandchild"
+        );
+    }
+
+    #[test]
+    fn reparenting_can_keep_the_global_transform() {
+        let mut d = family();
+        d.parts[0].transform.position = (2.0, 1.0);
+        d.parts[0].transform.rotation_deg = 30.0;
+        let p = (0.4, 0.2);
+        let before = d.world_affine(2).apply(p);
+        d.reparent(2, None, true).unwrap_or_else(|e| panic!("{e}"));
+        let kept = d.world_affine(2).apply(p);
+        assert!((kept.0 - before.0).abs() < 1e-3 && (kept.1 - before.1).abs() < 1e-3);
+        d.reparent(2, Some(1), false)
+            .unwrap_or_else(|e| panic!("{e}"));
+        let moved = d.world_affine(2).apply(p);
+        assert!((moved.0 - kept.0).abs() > 1e-3 || (moved.1 - kept.1).abs() > 1e-3);
+    }
+
+    #[test]
+    fn groups_duplicate_and_remove_whole_subtrees() {
+        let mut d = family();
+        let copy = d.duplicate_subtree(1);
+        assert_eq!(d.parts.len(), 5);
+        assert_eq!(d.parts[copy].parent.as_deref(), Some("body"));
+        assert_eq!(
+            d.parts[copy + 1].parent.as_deref(),
+            Some(d.parts[copy].id.as_str())
+        );
+        assert_eq!(d.validate(), Ok(()));
+        let g = d.group(&[1, copy], "trims");
+        assert!(matches!(d.parts[g].source, PartSource::Group));
+        assert_eq!(d.parts[1].parent.as_deref(), Some("trims"));
+        assert_eq!(d.validate(), Ok(()));
+        let n = d.parts.len();
+        let removed = d.subtree(g).len();
+        d.remove_subtree(g);
+        assert_eq!(d.parts.len(), n - removed);
+        assert_eq!(d.validate(), Ok(()));
+    }
+
+    #[test]
+    fn pixel_rows_are_checked() {
+        let mut d = sample();
+        d.parts[1].source = PartSource::Pixels {
+            size: (2, 2),
+            pivot: (1.0, 1.0),
+            palette: vec![[1, 2, 3, 255]],
+            rows: vec!["0.".into(), ".0".into()],
+        };
+        assert_eq!(d.validate(), Ok(()));
+        d.parts[1].source = PartSource::Pixels {
+            size: (2, 2),
+            pivot: (1.0, 1.0),
+            palette: vec![[1, 2, 3, 255]],
+            rows: vec!["01".into(), ".0".into()],
+        };
+        assert!(matches!(d.validate(), Err(DesignError::Pixels(_))));
+        assert_eq!(pixel_index(pixel_char(17)), Some(17));
+        assert_eq!(pixel_index('.'), None);
     }
 
     #[test]

@@ -104,16 +104,6 @@ impl BodyLayer {
         Self::NearArm,
     ];
 
-    pub const fn depth(self) -> DepthSlot {
-        match self {
-            Self::FarArm => DepthSlot::FarArm,
-            Self::Legs => DepthSlot::Legs,
-            Self::Torso => DepthSlot::Torso,
-            Self::Hair => DepthSlot::Hair,
-            Self::NearArm => DepthSlot::NearArm,
-        }
-    }
-
     /// Whether an idle breath lowers this layer (the legs stay planted).
     pub const fn is_upper_body(self) -> bool {
         !matches!(self, Self::Legs)
@@ -146,10 +136,11 @@ impl BodyLayer {
     }
 }
 
-/// Draw order of the whole character, back to front: body layers with the
-/// equipment slots between them. Mirroring keeps the order (the sprite is
-/// flipped, so the near arm stays towards the camera). A weapon may pick
-/// another slot per frame (`grip::GripProfile::depth`).
+/// Draw order of the whole character, back to front: the fine body regions
+/// ([`BodyRegion`], 04) with the equipment slots between them. Mirroring
+/// keeps the order (the sprite is flipped, so the near arm stays towards the
+/// camera). A weapon may pick another slot per frame
+/// (`grip::GripProfile::depth`); a part of a design may pick its own.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Deserialize, Serialize)]
 pub enum DepthSlot {
     /// Capes and anything behind the whole body.
@@ -157,26 +148,36 @@ pub enum DepthSlot {
     /// A weapon passing behind the body (02).
     MainHandBehind,
     FarArm,
-    /// A shield or second weapon in the far hand.
+    /// A shield, a far bracer or a second weapon on the far arm.
     FarHandGear,
     Legs,
     /// Greaves and trousers armour over the legs.
     LegGear,
     BootGear,
+    /// Body: the waist band above the belt (04).
+    Waist,
+    /// Body: the torso (shirt, neck, face).
     Torso,
-    /// Breastplate: over the shirt, under the hair and the near arm.
+    /// Breastplate: over the shirt, under the near arm and the hair.
     ChestGear,
+    /// Faulds / waist protection: over the chest plate's hem (04).
+    WaistGear,
     BeltGear,
+    /// Body: the near upper arm and its sleeve (04).
+    NearUpperArm,
+    /// Pauldron: over the upper arm, under the forearm and the hair.
+    ShoulderGear,
+    /// Body: the hair, in front of chest and shoulder pieces.
     Hair,
     HelmetGear,
-    /// The weapon in the near hand: over the body and the hair, under the
-    /// fist that grips it.
-    MainHandGear,
-    NearArm,
+    /// Body: the near forearm (04).
+    NearForearm,
     /// Bracer of the near forearm.
     BracerGear,
-    /// Pauldron of the near shoulder: over the upper arm.
-    ShoulderGear,
+    /// The weapon in the near hand: under the fist that grips it.
+    MainHandGear,
+    /// Body: the near fist (04).
+    NearHand,
 }
 
 impl DepthSlot {
@@ -184,6 +185,119 @@ impl DepthSlot {
     pub const fn order(self) -> u8 {
         self as u8
     }
+}
+
+/// The fine regions of the body (04): the [`BodyLayer`] partition with the
+/// near arm split into upper arm (with the sleeve), forearm and hand, and
+/// the torso's waist band apart. Equipment can be drawn between any two of
+/// them and can hide texels of a region under its own footprint
+/// (`design::Part::hides`).
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Deserialize, Serialize)]
+pub enum BodyRegion {
+    FarArm,
+    Legs,
+    Waist,
+    Torso,
+    Hair,
+    NearUpperArm,
+    NearForearm,
+    NearHand,
+}
+
+impl BodyRegion {
+    pub const ALL: [Self; 8] = [
+        Self::FarArm,
+        Self::Legs,
+        Self::Waist,
+        Self::Torso,
+        Self::Hair,
+        Self::NearUpperArm,
+        Self::NearForearm,
+        Self::NearHand,
+    ];
+
+    pub const fn depth(self) -> DepthSlot {
+        match self {
+            Self::FarArm => DepthSlot::FarArm,
+            Self::Legs => DepthSlot::Legs,
+            Self::Waist => DepthSlot::Waist,
+            Self::Torso => DepthSlot::Torso,
+            Self::Hair => DepthSlot::Hair,
+            Self::NearUpperArm => DepthSlot::NearUpperArm,
+            Self::NearForearm => DepthSlot::NearForearm,
+            Self::NearHand => DepthSlot::NearHand,
+        }
+    }
+
+    /// Whether an idle breath lowers this region (the legs stay planted).
+    pub const fn is_upper_body(self) -> bool {
+        !matches!(self, Self::Legs)
+    }
+
+    pub const fn key(self) -> &'static str {
+        match self {
+            Self::FarArm => "far_arm",
+            Self::Legs => "legs",
+            Self::Waist => "waist",
+            Self::Torso => "torso",
+            Self::Hair => "hair",
+            Self::NearUpperArm => "near_upper_arm",
+            Self::NearForearm => "near_forearm",
+            Self::NearHand => "near_hand",
+        }
+    }
+}
+
+/// Texels above the waist line that belong to the waist band.
+const WAIST_BAND: f32 = 4.0;
+/// Texels around the fist joint that are the hand.
+const HAND_RADIUS: f32 = 3.5;
+
+/// Refines a coarse partition into [`BodyRegion`]s: near-arm texels go to
+/// the nearest of upper arm, forearm and fist (the fist within
+/// `HAND_RADIUS` of its joint); torso texels within `WAIST_BAND` of the
+/// waist line go to the waist. Still a partition of the same texels.
+pub fn refine_regions(
+    labels: &[Option<BodyLayer>],
+    cell: CellGeometry,
+    joints: &JointPositions,
+) -> Vec<Option<BodyRegion>> {
+    let (s, e) = joints.segment(Bone::UpperArmNear);
+    let h = joints.get(Joint::HandNear);
+    let (wb, wf) = (joints.get(Joint::WaistBack), joints.get(Joint::WaistFront));
+    labels
+        .iter()
+        .enumerate()
+        .map(|(i, l)| {
+            let p = cell.texel_centre(i % cell.width, i / cell.width);
+            Some(match (*l)? {
+                BodyLayer::FarArm => BodyRegion::FarArm,
+                BodyLayer::Legs => BodyRegion::Legs,
+                BodyLayer::Hair => BodyRegion::Hair,
+                BodyLayer::Torso => {
+                    let waist_y = if (wf.0 - wb.0).abs() > f32::EPSILON {
+                        wb.1 + (p.0 - wb.0) / (wf.0 - wb.0) * (wf.1 - wb.1)
+                    } else {
+                        wb.1
+                    };
+                    if p.1 < waist_y + WAIST_BAND {
+                        BodyRegion::Waist
+                    } else {
+                        BodyRegion::Torso
+                    }
+                }
+                BodyLayer::NearArm => {
+                    if distance(p, h) <= HAND_RADIUS {
+                        BodyRegion::NearHand
+                    } else if distance_to_segment(p, e, h) < distance_to_segment(p, s, e) {
+                        BodyRegion::NearForearm
+                    } else {
+                        BodyRegion::NearUpperArm
+                    }
+                }
+            })
+        })
+        .collect()
 }
 
 /// Capsule radii (texels) of the arm partition (02: tighter inside the
@@ -704,17 +818,43 @@ mod tests {
     }
 
     #[test]
+    fn regions_refine_the_partition_without_losing_texels() {
+        let j = standing();
+        let mut labels = vec![None; CELL.width * CELL.height];
+        let fist = CELL.to_texel(j.get(Joint::HandNear));
+        let fi = fist.1 as usize * CELL.width + fist.0 as usize;
+        labels[fi] = Some(BodyLayer::NearArm);
+        let sh = CELL.to_texel(j.get(Joint::ShoulderNear));
+        let si = (sh.1 as usize + 2) * CELL.width + sh.0 as usize;
+        labels[si] = Some(BodyLayer::NearArm);
+        let w = CELL.to_texel(j.get(Joint::WaistFront));
+        let wi = (w.1 as usize - 1) * CELL.width + w.0 as usize - 2;
+        labels[wi] = Some(BodyLayer::Torso);
+        let r = refine_regions(&labels, CELL, &j);
+        assert_eq!(r[fi], Some(BodyRegion::NearHand));
+        assert_eq!(r[si], Some(BodyRegion::NearUpperArm));
+        assert_eq!(r[wi], Some(BodyRegion::Waist));
+        assert_eq!(r.iter().filter(|x| x.is_some()).count(), 3);
+        for region in BodyRegion::ALL {
+            assert!(region.depth() <= DepthSlot::NearHand);
+        }
+    }
+
+    #[test]
     fn the_draw_order_puts_the_weapon_under_the_fist_and_the_pauldron_over_it() {
         assert!(DepthSlot::Hair < DepthSlot::MainHandGear);
-        assert!(DepthSlot::MainHandGear < DepthSlot::NearArm);
-        assert!(DepthSlot::NearArm < DepthSlot::ShoulderGear);
+        assert!(DepthSlot::MainHandGear < DepthSlot::NearHand);
+        assert!(DepthSlot::NearUpperArm < DepthSlot::ShoulderGear);
+        assert!(DepthSlot::ShoulderGear < DepthSlot::Hair);
+        assert!(DepthSlot::NearForearm < DepthSlot::BracerGear);
+        assert!(DepthSlot::ChestGear < DepthSlot::NearUpperArm);
         assert!(DepthSlot::BackGear < DepthSlot::FarArm);
         assert!(DepthSlot::FarHandGear < DepthSlot::Torso);
         assert!(DepthSlot::Torso < DepthSlot::ChestGear);
         assert!(DepthSlot::ChestGear < DepthSlot::Hair);
         assert!(DepthSlot::MainHandBehind < DepthSlot::Legs);
-        for l in BodyLayer::ALL {
-            assert!(l.depth() != DepthSlot::MainHandGear);
+        for r in BodyRegion::ALL {
+            assert!(r.depth() != DepthSlot::MainHandGear);
         }
     }
 }
