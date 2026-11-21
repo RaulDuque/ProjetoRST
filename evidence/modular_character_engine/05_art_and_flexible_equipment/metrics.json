@@ -1,0 +1,34 @@
+{
+  "tours": [
+    "[equipment_studio] body idle #0: 0 texels differ",
+    "[equipment_studio] body run #0: 0 texels differ",
+    "[equipment_studio] body run #1: 0 texels differ",
+    "[equipment_studio] body run #2: 0 texels differ",
+    "[equipment_studio] body run #3: 0 texels differ",
+    "[equipment_studio] body run #4: 0 texels differ",
+    "[equipment_studio] body run #5: 0 texels differ",
+    "[equipment_studio] RESULT: PASS",
+    "[equipment_studio] body idle #0: 0 texels differ",
+    "[equipment_studio] body run #0: 0 texels differ",
+    "[equipment_studio] body run #1: 0 texels differ",
+    "[equipment_studio] body run #2: 0 texels differ",
+    "[equipment_studio] body run #3: 0 texels differ",
+    "[equipment_studio] body run #4: 0 texels differ",
+    "[equipment_studio] body run #5: 0 texels differ",
+    "[equipment_studio] RESULT: PASS"
+  ],
+  "tools05": {
+    "stop_frame": 150,
+    "hem_running_deg": 43.98,
+    "hem_rest_deg": 4.2,
+    "best_spring": {
+      "k": 106.0,
+      "d": 16.5,
+      "rms": 0.0863
+    },
+    "underdamped": true,
+    "forward_overshoot_fraction": 0.192,
+    "settle_time_s": 0.65,
+    "trace_points": 120
+  }
+}

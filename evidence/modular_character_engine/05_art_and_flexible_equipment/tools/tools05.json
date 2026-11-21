@@ -1,0 +1,326 @@
+{
+  "isolated_palette": {
+    "gothic_v2_cuirass": {
+      "exit": 0,
+      "checks": {
+        "partial_alpha": [
+          "pass",
+          0
+        ],
+        "off_palette": [
+          "pass",
+          0
+        ],
+        "outline_gaps": [
+          "skipped",
+          null
+        ],
+        "l_corners": [
+          "skipped",
+          null
+        ],
+        "same_size": [
+          "warn",
+          [
+            [
+              80,
+              128
+            ],
+            [
+              112,
+              128
+            ]
+          ]
+        ]
+      }
+    },
+    "gothic_v2_pauldron": {
+      "exit": 0,
+      "checks": {
+        "partial_alpha": [
+          "pass",
+          0
+        ],
+        "off_palette": [
+          "pass",
+          0
+        ],
+        "outline_gaps": [
+          "skipped",
+          null
+        ],
+        "l_corners": [
+          "skipped",
+          null
+        ],
+        "same_size": [
+          "warn",
+          [
+            [
+              80,
+              128
+            ],
+            [
+              112,
+              128
+            ]
+          ]
+        ]
+      }
+    },
+    "gothic_v2_bracers": {
+      "exit": 0,
+      "checks": {
+        "partial_alpha": [
+          "pass",
+          0
+        ],
+        "off_palette": [
+          "pass",
+          0
+        ],
+        "outline_gaps": [
+          "skipped",
+          null
+        ],
+        "l_corners": [
+          "skipped",
+          null
+        ],
+        "same_size": [
+          "warn",
+          [
+            [
+              80,
+              128
+            ],
+            [
+              112,
+              128
+            ]
+          ]
+        ]
+      }
+    },
+    "gothic_v2_faulds": {
+      "exit": 0,
+      "checks": {
+        "partial_alpha": [
+          "pass",
+          0
+        ],
+        "off_palette": [
+          "pass",
+          0
+        ],
+        "outline_gaps": [
+          "skipped",
+          null
+        ],
+        "l_corners": [
+          "skipped",
+          null
+        ],
+        "same_size": [
+          "warn",
+          [
+            [
+              80,
+              128
+            ],
+            [
+              112,
+              128
+            ]
+          ]
+        ]
+      }
+    },
+    "gothic_cape": {
+      "exit": 0,
+      "checks": {
+        "partial_alpha": [
+          "pass",
+          0
+        ],
+        "off_palette": [
+          "pass",
+          0
+        ],
+        "outline_gaps": [
+          "skipped",
+          null
+        ],
+        "l_corners": [
+          "skipped",
+          null
+        ],
+        "same_size": [
+          "warn",
+          [
+            [
+              80,
+              128
+            ],
+            [
+              112,
+              128
+            ]
+          ]
+        ]
+      }
+    },
+    "gothic_cape_short": {
+      "exit": 0,
+      "checks": {
+        "partial_alpha": [
+          "pass",
+          0
+        ],
+        "off_palette": [
+          "pass",
+          0
+        ],
+        "outline_gaps": [
+          "skipped",
+          null
+        ],
+        "l_corners": [
+          "skipped",
+          null
+        ],
+        "same_size": [
+          "warn",
+          [
+            [
+              80,
+              128
+            ],
+            [
+              112,
+              128
+            ]
+          ]
+        ]
+      }
+    },
+    "leather_v2_jerkin": {
+      "exit": 0,
+      "checks": {
+        "partial_alpha": [
+          "pass",
+          0
+        ],
+        "off_palette": [
+          "pass",
+          0
+        ],
+        "outline_gaps": [
+          "skipped",
+          null
+        ],
+        "l_corners": [
+          "skipped",
+          null
+        ],
+        "same_size": [
+          "warn",
+          [
+            [
+              80,
+              128
+            ],
+            [
+              112,
+              128
+            ]
+          ]
+        ]
+      }
+    }
+  },
+  "loop": {
+    "full_set_run": {
+      "exit": 0,
+      "checks": {
+        "partial_alpha": [
+          "pass",
+          0
+        ],
+        "off_palette": [
+          "skipped",
+          null
+        ],
+        "outline_gaps": [
+          "skipped",
+          null
+        ],
+        "l_corners": [
+          "skipped",
+          null
+        ],
+        "same_size": [
+          "pass",
+          [
+            [
+              112,
+              128
+            ]
+          ]
+        ],
+        "loop_seam": [
+          "pass",
+          1.041
+        ]
+      }
+    },
+    "cape_run": {
+      "exit": 0,
+      "checks": {
+        "partial_alpha": [
+          "pass",
+          0
+        ],
+        "off_palette": [
+          "skipped",
+          null
+        ],
+        "outline_gaps": [
+          "skipped",
+          null
+        ],
+        "l_corners": [
+          "skipped",
+          null
+        ],
+        "same_size": [
+          "pass",
+          [
+            [
+              112,
+              128
+            ]
+          ]
+        ],
+        "loop_seam": [
+          "pass",
+          1.017
+        ]
+      }
+    }
+  },
+  "spring": {
+    "stop_frame": 150,
+    "hem_running_deg": 43.98,
+    "hem_rest_deg": 4.2,
+    "best_spring": {
+      "k": 106.0,
+      "d": 16.5,
+      "rms": 0.0863
+    },
+    "underdamped": true,
+    "forward_overshoot_fraction": 0.192,
+    "settle_time_s": 0.65,
+    "trace_points": 120
+  }
+}
