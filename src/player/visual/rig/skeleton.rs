@@ -42,10 +42,20 @@ pub enum Joint {
     KneeB,
     AnkleB,
     ToeB,
+    /// Torso box (02): back and front of the chest at the shoulder line,
+    /// front and back of the waist above the belt. They drive the torso
+    /// cage of flexible chest equipment and bound the torso in partitions.
+    ChestBack,
+    ChestFront,
+    WaistFront,
+    WaistBack,
 }
 
+/// Number of joints.
+pub const JOINT_COUNT: usize = 19;
+
 impl Joint {
-    pub const ALL: [Self; 15] = [
+    pub const ALL: [Self; JOINT_COUNT] = [
         Self::Pelvis,
         Self::Neck,
         Self::Head,
@@ -61,6 +71,10 @@ impl Joint {
         Self::KneeB,
         Self::AnkleB,
         Self::ToeB,
+        Self::ChestBack,
+        Self::ChestFront,
+        Self::WaistFront,
+        Self::WaistBack,
     ];
 
     /// Joints of the upper body (moved by an idle breath, see
@@ -76,6 +90,8 @@ impl Joint {
                 | Self::ShoulderFar
                 | Self::ElbowFar
                 | Self::HandFar
+                | Self::ChestBack
+                | Self::ChestFront
         )
     }
 }
@@ -159,13 +175,13 @@ impl Bone {
 /// Every joint of one pose, in rig space (y up, origin on the pivot).
 #[derive(Debug, Clone, PartialEq)]
 pub struct JointPositions {
-    points: [RigPoint; 15],
+    points: [RigPoint; JOINT_COUNT],
 }
 
 impl JointPositions {
     /// Builds from a complete map; `None` names the first missing joint.
     pub fn from_map(map: &BTreeMap<Joint, RigPoint>) -> Result<Self, Joint> {
-        let mut points = [(0.0, 0.0); 15];
+        let mut points = [(0.0, 0.0); JOINT_COUNT];
         for (i, joint) in Joint::ALL.iter().enumerate() {
             points[i] = *map.get(joint).ok_or(*joint)?;
         }
@@ -323,6 +339,10 @@ pub(crate) mod tests {
             (Joint::KneeB, (0.0, 32.0)),
             (Joint::AnkleB, (-4.0, 7.0)),
             (Joint::ToeB, (4.0, 2.0)),
+            (Joint::ChestBack, (-7.0, 86.0)),
+            (Joint::ChestFront, (5.0, 86.0)),
+            (Joint::WaistFront, (4.0, 68.0)),
+            (Joint::WaistBack, (-5.0, 68.0)),
         ]
         .into_iter()
         .collect();

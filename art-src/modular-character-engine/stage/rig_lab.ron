@@ -1,77 +1,96 @@
-// Dark Castle Modular Character Engine, prototype 01: rig data of the lab.
+// Dark Castle Modular Character Engine, prototype 02: rig data of the lab.
 // Read by src/player/visual/rig/data.rs (examples/modular_character_engine.rs).
+// The prototype 01 data is kept in history/rig_lab_01.ron.
 //
 // Joints: texel coordinates read on the approved frames, x right and y DOWN
-// from the cell's top-left corner. They were marked by hand by Claude on
-// 8x zoomed grids (estimate, about +-2 texels; the hidden far arm and which
-// leg is near are interpretation). Approved art, read only:
+// from the cell's top-left corner. 02 refinement:
+//   - run #0, #2, #4: the N4-C marks (art-src/n4-sprite-machine/scripts/
+//     run_poses.py), measured on the high-resolution video frames;
+//   - run #1, #3, #5: measured by Claude on the high-resolution video frames
+//     (art-src/n3-6-animation-proof/frames/video_050/054/058.png) through the
+//     reduction mapping (canvas = video * 0.23661 + (-3, -5));
+//   - shoulders on the shoulder ball (y 38 in the run) following the arm
+//     swing on a smooth curve (x 60, 61, 61, 59.5, 58, 58.5), one far
+//     shoulder for the whole run, the neck steady at x 63.5 (it moves less
+//     than a texel in the art), the head on the N4-C head circle;
+//   - run #4 fist on the fist's skin (51, 56): the N4-C mark (57, 58) lies on
+//     the trousers;
+//   - chest_* / waist_*: the torso box (N4-C torso polygons on #0, #2, #4).
+// Estimate, about +-1 texel. Leg A is the rear leg in run frames 0-2 and the
+// front leg in 3-5 (interpretation, as in N4-C).
+// Approved art, read only:
 //   idle: art-src/n3-8-production-run/stage/sprites/player/n35_idle.png
-//         (byte copy of N3.5 candidate_106)
 //   run:  art-src/n3-8-production-run/stage/sprites/player/n36_run6.png
-//         (byte copy of N3.6 run6: video frames 48, 50, 52, 54, 56, 58)
-// Leg A is the rear leg in run frames 0-2 and the front leg in 3-5.
 (
     version: 1,
     rest_clip: "idle",
     clips: {
         // One approved idle pose; frame 1 lowers the upper body one texel
-        // (breath, new and experimental: the legs stay planted).
+        // (breath, experimental: the legs stay planted).
         "idle": (
             texture: "approved://sprites/player/n35_idle.png",
             cell: (80, 128), columns: 1, pivot: (40.0, 118.0),
             sources: [
-                { pelvis: (38, 60), neck: (39, 29), head: (40, 20),
-                  shoulder_near: (39, 33), elbow_near: (40, 49), hand_near: (42, 67),
-                  shoulder_far: (36, 33), elbow_far: (36, 46), hand_far: (37, 55),
+                { pelvis: (38, 60), neck: (39, 29), head: (40, 21),
+                  shoulder_near: (41, 35), elbow_near: (41, 49), hand_near: (43, 67),
+                  shoulder_far: (37, 34), elbow_far: (36, 46), hand_far: (37, 55),
                   knee_a: (39, 86), ankle_a: (37, 111), toe_a: (46, 116),
-                  knee_b: (38, 86), ankle_b: (36, 111), toe_b: (45, 116) },
+                  knee_b: (38, 86), ankle_b: (36, 111), toe_b: (45, 116),
+                  chest_back: (33, 32), chest_front: (45, 32), waist_front: (44, 50), waist_back: (35, 50) },
             ],
             frames: [
                 (source: 0, drop: 0, duration: 0.7),
                 (source: 0, drop: 1, duration: 0.5),
             ],
+            grip: Some("sword_idle"),
         ),
         // The six approved run frames at the N3.8 rate (6 x 1/15 s = 0.4 s).
         "run": (
             texture: "approved://sprites/player/n36_run6.png",
             cell: (112, 128), columns: 6, pivot: (56.0, 118.0),
             sources: [
-                // 0 (video 48): contact.
-                { pelvis: (57, 62), neck: (64, 30), head: (68, 22),
-                  shoulder_near: (61, 35), elbow_near: (58, 52), hand_near: (76, 54),
-                  shoulder_far: (56, 34), elbow_far: (59, 49), hand_far: (65, 58),
-                  knee_a: (50, 86), ankle_a: (33, 84), toe_a: (26, 92),
-                  knee_b: (66, 86), ankle_b: (60, 110), toe_b: (72, 115) },
-                // 1 (video 50).
-                { pelvis: (58, 62), neck: (62, 30), head: (66, 22),
-                  shoulder_near: (60, 35), elbow_near: (70, 51), hand_near: (79, 40),
-                  shoulder_far: (54, 34), elbow_far: (45, 46), hand_far: (47, 57),
+                // 0 (video 48): contact. N4-C marks.
+                { pelvis: (58, 62), neck: (63.5, 33), head: (66, 25),
+                  shoulder_near: (60, 38), elbow_near: (57, 54), hand_near: (75, 54),
+                  shoulder_far: (57, 38), elbow_far: (55, 52), hand_far: (66, 61),
+                  knee_a: (50, 87), ankle_a: (33, 85), toe_a: (23, 91),
+                  knee_b: (60, 89), ankle_b: (59, 111), toe_b: (72, 117),
+                  chest_back: (53, 36), chest_front: (69, 36), waist_front: (69, 58), waist_back: (54, 60) },
+                // 1 (video 50): measured on the video frame.
+                { pelvis: (58, 62), neck: (63.5, 33), head: (66, 25),
+                  shoulder_near: (61, 38), elbow_near: (67, 50), hand_near: (80, 40),
+                  shoulder_far: (57, 38), elbow_far: (47, 46), hand_far: (49, 56),
                   knee_a: (44, 84), ankle_a: (24, 104), toe_a: (28, 113),
-                  knee_b: (78, 78), ankle_b: (68, 106), toe_b: (74, 112) },
-                // 2 (video 52): open stride.
-                { pelvis: (58, 62), neck: (64, 30), head: (68, 22),
-                  shoulder_near: (62, 35), elbow_near: (71, 51), hand_near: (80, 40),
-                  shoulder_far: (55, 34), elbow_far: (45, 45), hand_far: (47, 57),
-                  knee_a: (46, 82), ankle_a: (16, 86), toe_a: (12, 98),
-                  knee_b: (78, 80), ankle_b: (75, 108), toe_b: (90, 112) },
-                // 3 (video 54): contact, other leg.
-                { pelvis: (58, 62), neck: (66, 30), head: (70, 22),
-                  shoulder_near: (62, 36), elbow_near: (49, 48), hand_near: (63, 58),
-                  shoulder_far: (58, 35), elbow_far: (73, 52), hand_far: (80, 50),
+                  knee_b: (77, 79), ankle_b: (68, 106), toe_b: (74, 112),
+                  chest_back: (51, 35), chest_front: (69, 35), waist_front: (70, 58), waist_back: (53, 60) },
+                // 2 (video 52): open stride. N4-C marks (elbow on the bend).
+                { pelvis: (58, 62), neck: (63.5, 33), head: (66, 25),
+                  shoulder_near: (61, 38), elbow_near: (67, 50), hand_near: (80, 40),
+                  shoulder_far: (57, 38), elbow_far: (45, 45), hand_far: (48, 57),
+                  knee_a: (45, 82), ankle_a: (25, 88), toe_a: (18, 93),
+                  knee_b: (73, 80), ankle_b: (79, 106), toe_b: (92, 111),
+                  chest_back: (51, 35), chest_front: (69, 35), waist_front: (70, 58), waist_back: (53, 60) },
+                // 3 (video 54): contact, other leg. Measured on the video frame.
+                { pelvis: (58, 62), neck: (63.5, 33), head: (67, 25),
+                  shoulder_near: (59.5, 38), elbow_near: (48, 48), hand_near: (63, 58),
+                  shoulder_far: (57, 38), elbow_far: (70, 53), hand_far: (80, 49),
                   knee_a: (66, 88), ankle_a: (54, 110), toe_a: (66, 116),
-                  knee_b: (58, 86), ankle_b: (33, 86), toe_b: (30, 94) },
-                // 4 (video 56).
-                { pelvis: (58, 62), neck: (62, 30), head: (66, 22),
-                  shoulder_near: (58, 35), elbow_near: (42, 40), hand_near: (51, 57),
-                  shoulder_far: (56, 34), elbow_far: (74, 51), hand_far: (79, 38),
-                  knee_a: (78, 80), ankle_a: (61, 103), toe_a: (64, 109),
-                  knee_b: (46, 84), ankle_b: (30, 107), toe_b: (36, 117) },
-                // 5 (video 58): open stride, other leg.
-                { pelvis: (58, 62), neck: (62, 30), head: (66, 22),
-                  shoulder_near: (60, 35), elbow_near: (42, 44), hand_near: (54, 56),
-                  shoulder_far: (56, 34), elbow_far: (75, 50), hand_far: (82, 42),
+                  knee_b: (58, 86), ankle_b: (33, 86), toe_b: (30, 94),
+                  chest_back: (52, 35), chest_front: (70, 35), waist_front: (70, 58), waist_back: (54, 60) },
+                // 4 (video 56): recovery. N4-C marks.
+                { pelvis: (58, 62), neck: (63.5, 33), head: (67, 25),
+                  shoulder_near: (58, 38), elbow_near: (44, 46), hand_near: (51, 56),
+                  shoulder_far: (57, 38), elbow_far: (70, 50), hand_far: (81, 41),
+                  knee_a: (77, 79), ankle_a: (57, 100), toe_a: (61, 109),
+                  knee_b: (48, 87), ankle_b: (35, 109), toe_b: (42, 117),
+                  chest_back: (50, 34), chest_front: (70, 34), waist_front: (70, 58), waist_back: (53, 60) },
+                // 5 (video 58): open stride, other leg. Measured on the video frame.
+                { pelvis: (58, 62), neck: (63.5, 33), head: (66, 25),
+                  shoulder_near: (58.5, 38), elbow_near: (42, 45), hand_near: (53, 56),
+                  shoulder_far: (57, 38), elbow_far: (73, 53), hand_far: (82, 42),
                   knee_a: (76, 84), ankle_a: (75, 108), toe_a: (90, 112),
-                  knee_b: (50, 82), ankle_b: (20, 84), toe_b: (14, 92) },
+                  knee_b: (50, 82), ankle_b: (20, 84), toe_b: (14, 92),
+                  chest_back: (50, 34), chest_front: (70, 34), waist_front: (70, 58), waist_back: (53, 60) },
             ],
             frames: [
                 (source: 0, drop: 0, duration: 0.06666667),
@@ -81,44 +100,79 @@
                 (source: 4, drop: 0, duration: 0.06666667),
                 (source: 5, drop: 0, duration: 0.06666667),
             ],
+            grip: Some("sword_run"),
+            // N4-C layers (scripts/n4c_label_maps.py) where they exist; the
+            // 02 rule partition elsewhere.
+            labels: [Some("layers/run_0.txt"), None, Some("layers/run_2.txt"), None, Some("layers/run_4.txt"), None],
+        ),
+    },
+    // Reusable grips (the same profile for every sword).
+    grips: {
+        // Held low at the side, blade diagonally down and forward.
+        "sword_idle": (reference: Body, angle_degrees: -55.0, follow_forearm: 0.0),
+        // Carried back: blade behind, slightly down, swinging a little with
+        // the forearm; behind the body when the hand swings back.
+        "sword_run": (reference: Body, angle_degrees: 200.0, follow_forearm: 0.15,
+            depth: [MainHandGear, MainHandGear, MainHandGear, MainHandBehind, MainHandBehind, MainHandBehind]),
+    },
+    models: {
+        // One breastplate source (vector, in torso-cage coordinates). Diagnostic
+        // design authored for prototype 02, not approved art.
+        "plate_cuirass": (
+            silhouette: [(0.04, -0.02), (0.55, -0.06), (0.96, -0.01), (1.1, 0.22), (1.13, 0.45),
+                         (1.06, 0.72), (1.03, 1.03), (0.0, 1.03), (-0.07, 0.62), (-0.08, 0.28)],
+            ramp: ((34, 30, 42), (60, 64, 80), (92, 98, 116), (132, 138, 156), (174, 180, 196), (222, 226, 236)),
+            trim: ((128, 92, 40), (206, 164, 76)),
+            collar: 0.12,
+            lames: [0.7, 0.85],
+            ridge: (0.8, 0.62),
+            aspect_range: (0.67, 0.78),
         ),
     },
     items: {
         // Existing N41-B factory swords (art not approved), used as they are.
         // Grip pivot from the factory provenance (grip_pivot: (10, 53)).
         "sword_arming_cross": (
-            slot: MainHand, texture: "factory://sword_arming_cross.png",
-            size: (21, 64), pivot: (10.0, 53.5),
-            bone: forearm_near, at: End, offset: (0.0, 0.0),
-            up_degrees: 90.0, follow: 1.0, depth: MainHandGear, provisional: false,
+            slot: MainHand, kind: Rigid,
+            art: Sprite((texture: "factory://sword_arming_cross.png", size: (21, 64), pivot: (10.0, 53.5))),
+            mount: Hand(side: Near, up_degrees: 0.0),
+            depth: MainHandGear, provisional: false,
             source: "N41-B factory, art-src/n4-sprite-machine/stage/factory/isolated/sword_arming_cross.png",
         ),
         "sword_estoc_ring": (
-            slot: MainHand, texture: "factory://sword_estoc_ring.png",
-            size: (21, 64), pivot: (10.0, 53.5),
-            bone: forearm_near, at: End, offset: (0.0, 0.0),
-            up_degrees: 90.0, follow: 1.0, depth: MainHandGear, provisional: false,
+            slot: MainHand, kind: Rigid,
+            art: Sprite((texture: "factory://sword_estoc_ring.png", size: (21, 64), pivot: (10.0, 53.5))),
+            mount: Hand(side: Near, up_degrees: 0.0),
+            depth: MainHandGear, provisional: false,
             source: "N41-B factory, art-src/n4-sprite-machine/stage/factory/isolated/sword_estoc_ring.png",
         ),
         // N41-B factory pauldrons reduced 2:1 (scripts/derive_pauldrons.py):
         // derived, provisional art. They follow half of the upper arm's swing.
         "pauldron_steel": (
-            slot: Shoulder, texture: "mce://equipment/pauldron_steel_half.png",
-            size: (14, 15), pivot: (7.0, 5.0),
-            bone: upper_arm_near, at: Start, offset: (0.0, 0.0),
-            up_degrees: 180.0, follow: 0.5, depth: ShoulderGear, provisional: true,
+            slot: Shoulder, kind: Rigid,
+            art: Sprite((texture: "mce://equipment/pauldron_steel_half.png", size: (14, 15), pivot: (7.0, 5.0))),
+            mount: Bone(bone: upper_arm_near, at: Start, offset: (0.0, 0.0), up_degrees: 180.0, follow: 0.5),
+            depth: ShoulderGear, provisional: true,
             source: "derived 2:1 from N41-B pauldron_steel",
         ),
         "pauldron_bronze": (
-            slot: Shoulder, texture: "mce://equipment/pauldron_bronze_half.png",
-            size: (14, 15), pivot: (7.0, 5.0),
-            bone: upper_arm_near, at: Start, offset: (0.0, 0.0),
-            up_degrees: 180.0, follow: 0.5, depth: ShoulderGear, provisional: true,
+            slot: Shoulder, kind: Rigid,
+            art: Sprite((texture: "mce://equipment/pauldron_bronze_half.png", size: (14, 15), pivot: (7.0, 5.0))),
+            mount: Bone(bone: upper_arm_near, at: Start, offset: (0.0, 0.0), up_degrees: 180.0, follow: 0.5),
+            depth: ShoulderGear, provisional: true,
             source: "derived 2:1 from N41-B pauldron_bronze",
+        ),
+        // One breastplate model on the torso cage (flexible: projected per
+        // pose; the lab can switch to the rigid and mesh-warp approaches).
+        "plate_cuirass": (
+            slot: Chest, kind: Flexible, art: Model("plate_cuirass"), mount: Torso,
+            depth: ChestGear, provisional: true,
+            source: "vector model authored for MCE 02 (diagnostic, not approved)",
         ),
     },
     variants: {
         MainHand: ["sword_arming_cross", "sword_estoc_ring"],
         Shoulder: ["pauldron_steel", "pauldron_bronze"],
+        Chest: ["plate_cuirass"],
     },
 )

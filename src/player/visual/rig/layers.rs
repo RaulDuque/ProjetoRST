@@ -119,6 +119,21 @@ impl BodyLayer {
         !matches!(self, Self::Legs)
     }
 
+    /// One-character code of the label maps (`stage/layers/*.txt`).
+    pub const fn code(self) -> char {
+        match self {
+            Self::FarArm => 'F',
+            Self::Legs => 'L',
+            Self::Torso => 'T',
+            Self::Hair => 'H',
+            Self::NearArm => 'N',
+        }
+    }
+
+    pub fn from_code(c: char) -> Option<Self> {
+        Self::ALL.into_iter().find(|l| l.code() == c)
+    }
+
     /// Short name for files and overlays.
     pub const fn key(self) -> &'static str {
         match self {
@@ -133,21 +148,33 @@ impl BodyLayer {
 
 /// Draw order of the whole character, back to front: body layers with the
 /// equipment slots between them. Mirroring keeps the order (the sprite is
-/// flipped, so the near arm stays towards the camera).
+/// flipped, so the near arm stays towards the camera). A weapon may pick
+/// another slot per frame (`grip::GripProfile::depth`).
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Deserialize)]
 pub enum DepthSlot {
     /// Capes and anything behind the whole body.
     BackGear,
+    /// A weapon passing behind the body (02).
+    MainHandBehind,
     FarArm,
     /// A shield or second weapon in the far hand.
     FarHandGear,
     Legs,
+    /// Greaves and trousers armour over the legs.
+    LegGear,
+    BootGear,
     Torso,
+    /// Breastplate: over the shirt, under the hair and the near arm.
+    ChestGear,
+    BeltGear,
     Hair,
+    HelmetGear,
     /// The weapon in the near hand: over the body and the hair, under the
     /// fist that grips it.
     MainHandGear,
     NearArm,
+    /// Bracer of the near forearm.
+    BracerGear,
     /// Pauldron of the near shoulder: over the upper arm.
     ShoulderGear,
 }
@@ -159,14 +186,32 @@ impl DepthSlot {
     }
 }
 
-/// Capsule radii (texels) of the arm partition.
-const UPPER_ARM_RADIUS: f32 = 4.5;
-const FOREARM_RADIUS: f32 = 4.0;
-const FIST_RADIUS: f32 = 4.0;
-/// Hair-coloured texels this far behind the spine line are hair.
-const HAIR_BEHIND_SPINE: f32 = 3.0;
+/// Capsule radii (texels) of the arm partition (02: tighter inside the
+/// torso box, where the sleeve lies over the shirt of the torso).
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct ArmRadii {
+    pub upper_arm: f32,
+    pub forearm: f32,
+    pub fist: f32,
+    pub sleeve_over_torso: f32,
+    pub skin_over_torso: f32,
+}
+
+impl Default for ArmRadii {
+    fn default() -> Self {
+        Self {
+            upper_arm: 4.5,
+            forearm: 4.0,
+            fist: 4.0,
+            sleeve_over_torso: 4.0,
+            skin_over_torso: 3.5,
+        }
+    }
+}
 /// Hair-coloured texels above the shoulders minus this are hair.
 const HAIR_ABOVE_SHOULDER: f32 = 1.0;
+/// Head circle: hair inside it is hair, anything else is the face.
+const HEAD_RADIUS: f32 = 7.5;
 
 /// A frame's grid geometry: cell size and sole pivot (texels from the
 /// top-left corner).
@@ -204,62 +249,148 @@ fn arm_material(m: Material) -> bool {
     )
 }
 
-fn in_arm(p: RigPoint, joints: &JointPositions, upper: Bone, fore: Bone, fist: Joint) -> bool {
+/// Distance from `p` to the arm chain (upper arm, forearm, fist).
+fn arm_distance(
+    p: RigPoint,
+    joints: &JointPositions,
+    upper: Bone,
+    fore: Bone,
+    fist: Joint,
+) -> [f32; 3] {
     let (s, e) = joints.segment(upper);
     let (_, h) = joints.segment(fore);
-    distance_to_segment(p, s, e) <= UPPER_ARM_RADIUS
-        || distance_to_segment(p, e, h) <= FOREARM_RADIUS
-        || distance(p, joints.get(fist)) <= FIST_RADIUS
+    [
+        distance_to_segment(p, s, e),
+        distance_to_segment(p, e, h),
+        distance(p, joints.get(fist)),
+    ]
 }
 
-/// x of the spine line (pelvis -> neck) at height `y`.
-fn spine_x(joints: &JointPositions, y: f32) -> f32 {
-    let (p, n) = (joints.get(Joint::Pelvis), joints.get(Joint::Neck));
-    if (n.1 - p.1).abs() < f32::EPSILON {
-        return p.0;
+/// The torso box (chest back, chest front, waist front, waist back).
+pub fn torso_quad(joints: &JointPositions) -> [RigPoint; 4] {
+    [
+        joints.get(Joint::ChestBack),
+        joints.get(Joint::ChestFront),
+        joints.get(Joint::WaistFront),
+        joints.get(Joint::WaistBack),
+    ]
+}
+
+/// Even-odd point-in-polygon test.
+pub fn point_in_polygon(p: RigPoint, polygon: &[RigPoint]) -> bool {
+    let mut inside = false;
+    let n = polygon.len();
+    for i in 0..n {
+        let (a, b) = (polygon[i], polygon[(i + n - 1) % n]);
+        if (a.1 > p.1) != (b.1 > p.1) {
+            let x = a.0 + (p.1 - a.1) / (b.1 - a.1) * (b.0 - a.0);
+            if p.0 < x {
+                inside = !inside;
+            }
+        }
     }
-    let t = (y - p.1) / (n.1 - p.1);
-    p.0 + t * (n.0 - p.0)
+    inside
 }
 
 /// Which layer one texel belongs to (`None` for transparent texels).
+///
+/// 02 rules (the N4-C `classify` order, adapted): the near arm is drawn
+/// over the torso, but inside the torso box only texels close to the arm
+/// bones belong to it; hair is hair-coloured texels inside the head circle,
+/// outside the torso box or above the shoulders; the far arm only shows
+/// outside the torso box.
 pub fn layer_of(material: Material, p: RigPoint, joints: &JointPositions) -> Option<BodyLayer> {
+    layer_with(material, p, joints, ArmRadii::default())
+}
+
+/// [`layer_of`] with explicit radii.
+pub fn layer_with(
+    material: Material,
+    p: RigPoint,
+    joints: &JointPositions,
+    r: ArmRadii,
+) -> Option<BodyLayer> {
     if material == Material::Transparent {
         return None;
     }
-    if arm_material(material)
-        && in_arm(
+    let quad = torso_quad(joints);
+    let in_torso = point_in_polygon(p, &quad);
+    let below_shoulders = p.1 < joints.get(Joint::ShoulderNear).1;
+    // The shirt's shading reuses the cool hair greys: below the shoulders
+    // they count as sleeve for the near arm.
+    let sleeve_shade = material == Material::Hair && below_shoulders;
+    // The sleeve's shadows also reuse the trousers browns: inside the upper
+    // arm capsule they are sleeve too (not near the fist, which can lie over
+    // the real trousers).
+    let sleeve_brown = material == Material::Trousers && below_shoulders;
+    if arm_material(material) || sleeve_shade || sleeve_brown {
+        let [upper, fore, fist] = arm_distance(
             p,
             joints,
             Bone::UpperArmNear,
             Bone::ForearmNear,
             Joint::HandNear,
-        )
-    {
-        return Some(BodyLayer::NearArm);
-    }
-    if material == Material::Hair {
-        let shoulder = joints.get(Joint::ShoulderNear).1;
-        let behind = p.0 < spine_x(joints, p.1) - HAIR_BEHIND_SPINE;
-        if behind || p.1 > shoulder - HAIR_ABOVE_SHOULDER {
-            return Some(BodyLayer::Hair);
+        );
+        let near = if sleeve_brown {
+            upper
+                <= if in_torso {
+                    r.sleeve_over_torso
+                } else {
+                    r.upper_arm
+                }
+        } else if in_torso {
+            let radius = if matches!(material, Material::Shirt | Material::Hair) {
+                r.sleeve_over_torso
+            } else {
+                r.skin_over_torso
+            };
+            upper.min(fore).min(fist) <= radius
+        } else {
+            upper <= r.upper_arm || fore <= r.forearm || fist <= r.fist
+        };
+        if near {
+            return Some(BodyLayer::NearArm);
         }
     }
-    if arm_material(material)
-        && in_arm(
+    let head = joints.get(Joint::Head);
+    let in_head = distance(p, head) <= HEAD_RADIUS;
+    let shoulder = joints.get(Joint::ShoulderNear).1;
+    let above_shoulders = p.1 > shoulder - HAIR_ABOVE_SHOULDER;
+    let hair = match material {
+        Material::Hair => in_head || !in_torso || above_shoulders,
+        // N4-C: the ink behind the face belongs to the hair.
+        Material::Outline => in_head && p.0 < head.0,
+        Material::Skin | Material::Eye => false,
+        // Anything else outside the torso and above the shoulders is
+        // hair (its shading and ink), unless it is the near arm (above).
+        _ => !in_torso && above_shoulders && !in_head,
+    };
+    if hair {
+        return Some(BodyLayer::Hair);
+    }
+    if arm_material(material) && !in_torso {
+        let [upper, fore, fist] = arm_distance(
             p,
             joints,
             Bone::UpperArmFar,
             Bone::ForearmFar,
             Joint::HandFar,
-        )
-    {
-        return Some(BodyLayer::FarArm);
+        );
+        if upper <= r.upper_arm || fore <= r.forearm || fist <= r.fist {
+            return Some(BodyLayer::FarArm);
+        }
     }
-    if p.1 >= joints.get(Joint::Pelvis).1 {
-        Some(BodyLayer::Torso)
+    // N4-C: below the waist (the belt) is trousers, i.e. legs.
+    let (wb, wf) = (joints.get(Joint::WaistBack), joints.get(Joint::WaistFront));
+    let waist_y = if (wf.0 - wb.0).abs() > f32::EPSILON {
+        wb.1 + (p.0 - wb.0) / (wf.0 - wb.0) * (wf.1 - wb.1)
     } else {
+        wb.1
+    };
+    if p.1 < waist_y {
         Some(BodyLayer::Legs)
+    } else {
+        Some(BodyLayer::Torso)
     }
 }
 
@@ -269,14 +400,75 @@ pub fn partition(
     cell: CellGeometry,
     joints: &JointPositions,
 ) -> Vec<Option<BodyLayer>> {
+    partition_with(materials, cell, joints, ArmRadii::default())
+}
+
+/// [`partition`] with explicit radii.
+pub fn partition_with(
+    materials: &[Material],
+    cell: CellGeometry,
+    joints: &JointPositions,
+    radii: ArmRadii,
+) -> Vec<Option<BodyLayer>> {
     materials
         .iter()
         .enumerate()
         .map(|(i, m)| {
             let p = cell.texel_centre(i % cell.width, i / cell.width);
-            layer_of(*m, p, joints)
+            layer_with(*m, p, joints, radii)
         })
         .collect()
+}
+
+/// A label map that does not fit its frame.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum LabelError {
+    /// Wrong number of rows or columns.
+    Size,
+    /// A character that is neither `.` nor a layer code.
+    Code(char),
+}
+
+/// Parses a label map: one row per line, `.` transparent, a layer code
+/// otherwise (authored offline, e.g. from the N4-C layers).
+pub fn parse_labels(text: &str, cell: CellGeometry) -> Result<Vec<Option<BodyLayer>>, LabelError> {
+    let rows: Vec<&str> = text.lines().filter(|l| !l.is_empty()).collect();
+    if rows.len() != cell.height || rows.iter().any(|r| r.chars().count() != cell.width) {
+        return Err(LabelError::Size);
+    }
+    rows.iter()
+        .flat_map(|r| r.chars())
+        .map(|c| match c {
+            '.' => Ok(None),
+            c => BodyLayer::from_code(c).map(Some).ok_or(LabelError::Code(c)),
+        })
+        .collect()
+}
+
+/// Texels where a label map disagrees with the art's opacity (a label on a
+/// transparent texel or an opaque texel without label).
+pub fn label_mismatches(materials: &[Material], labels: &[Option<BodyLayer>]) -> usize {
+    materials
+        .iter()
+        .zip(labels)
+        .filter(|(m, l)| (**m == Material::Transparent) != l.is_none())
+        .count()
+}
+
+/// Intersection over union of one layer in two labelings (1 when both are
+/// empty).
+pub fn layer_iou(a: &[Option<BodyLayer>], b: &[Option<BodyLayer>], layer: BodyLayer) -> f32 {
+    let (mut inter, mut union) = (0usize, 0usize);
+    for (x, y) in a.iter().zip(b) {
+        let (ix, iy) = (*x == Some(layer), *y == Some(layer));
+        inter += usize::from(ix && iy);
+        union += usize::from(ix || iy);
+    }
+    if union == 0 {
+        1.0
+    } else {
+        inter as f32 / union as f32
+    }
 }
 
 /// The near chain whose pieces the articulated comparison cuts.
@@ -398,7 +590,7 @@ mod tests {
     }
 
     #[test]
-    fn hair_behind_the_back_or_above_the_shoulders_is_hair() {
+    fn hair_outside_the_torso_box_or_above_the_shoulders_is_hair() {
         let j = standing();
         assert_eq!(
             layer_of(Material::Hair, (-10.0, 70.0), &j),
@@ -408,12 +600,69 @@ mod tests {
             layer_of(Material::Hair, (0.0, 95.0), &j),
             Some(BodyLayer::Hair)
         );
-        // Hair-coloured shading in front of the spine, below the shoulders,
-        // stays with the shirt.
+        // Hair-coloured shading inside the torso box, below the shoulders:
+        // the sleeve's shading when it is close to the near arm, the shirt's
+        // otherwise.
         assert_eq!(
-            layer_of(Material::Hair, (3.0, 70.0), &j),
+            layer_of(Material::Hair, (0.0, 76.0), &j),
+            Some(BodyLayer::NearArm)
+        );
+        assert_eq!(
+            layer_of(Material::Hair, (-5.0, 76.0), &j),
             Some(BodyLayer::Torso)
         );
+    }
+
+    #[test]
+    fn inside_the_torso_box_only_texels_close_to_the_arm_are_near_arm() {
+        let j = standing();
+        // The upper arm runs from (-1, 85) to (0, 69): x = 3.8 is within the
+        // old 4.5 capsule but beyond the 4.0 sleeve radius over the torso.
+        assert_eq!(
+            layer_of(Material::Shirt, (3.8, 77.0), &j),
+            Some(BodyLayer::Torso)
+        );
+        assert_eq!(
+            layer_of(Material::Shirt, (1.5, 77.0), &j),
+            Some(BodyLayer::NearArm)
+        );
+        // The far arm never shows through the torso box.
+        let far = j.get(Joint::ElbowFar);
+        assert!(point_in_polygon(far, &torso_quad(&j)) || far.0 < -6.0);
+    }
+
+    #[test]
+    fn label_maps_parse_and_are_checked_against_the_art() {
+        let cell = CellGeometry {
+            width: 3,
+            height: 2,
+            pivot: (1.0, 2.0),
+        };
+        let labels = parse_labels("N.T\nHHF\n", cell).unwrap_or_else(|e| panic!("{e:?}"));
+        assert_eq!(labels[0], Some(BodyLayer::NearArm));
+        assert_eq!(labels[1], None);
+        assert_eq!(parse_labels("N.T\n", cell), Err(LabelError::Size));
+        assert_eq!(parse_labels("N.X\nHHF\n", cell), Err(LabelError::Code('X')));
+        let materials = [
+            Material::Skin,
+            Material::Transparent,
+            Material::Shirt,
+            Material::Hair,
+            Material::Hair,
+            Material::Transparent,
+        ];
+        assert_eq!(label_mismatches(&materials, &labels), 1);
+        assert!((layer_iou(&labels, &labels, BodyLayer::Hair) - 1.0).abs() < 1e-6);
+        let mut other = labels.clone();
+        other[3] = Some(BodyLayer::Torso);
+        assert!((layer_iou(&labels, &other, BodyLayer::Hair) - 0.5).abs() < 1e-6);
+    }
+
+    #[test]
+    fn polygon_test_is_even_odd() {
+        let square = [(0.0, 0.0), (4.0, 0.0), (4.0, 4.0), (0.0, 4.0)];
+        assert!(point_in_polygon((2.0, 2.0), &square));
+        assert!(!point_in_polygon((5.0, 2.0), &square));
     }
 
     #[test]
@@ -461,6 +710,9 @@ mod tests {
         assert!(DepthSlot::NearArm < DepthSlot::ShoulderGear);
         assert!(DepthSlot::BackGear < DepthSlot::FarArm);
         assert!(DepthSlot::FarHandGear < DepthSlot::Torso);
+        assert!(DepthSlot::Torso < DepthSlot::ChestGear);
+        assert!(DepthSlot::ChestGear < DepthSlot::Hair);
+        assert!(DepthSlot::MainHandBehind < DepthSlot::Legs);
         for l in BodyLayer::ALL {
             assert!(l.depth() != DepthSlot::MainHandGear);
         }
