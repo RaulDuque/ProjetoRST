@@ -891,3 +891,23 @@ O probe não é um playtest humano.
 - Itens novos de qualquer um dos 10 slots são só dados.
 - Capas e calças flexíveis ainda precisam de gaiolas próprias, e as variantes de perspectiva de sprites não foram implementadas.
 - A integração ao jogador espera a aprovação visual.
+
+## D-048 — Equipamento como dados genéricos, pintado por pose, editado num estúdio próprio (Modular Character Engine 03)
+
+**Contexto:** O briefing `Md-usario/engine/Engine-03.md` aprovou tecnicamente a 02 e não aprovou a arte das peças. O `ChestModel` limitava o desenho a uma silhueta, gola, lamelas e quilha. O pedido foi uma ferramenta para criar equipamentos com estruturas diferentes sem mudar Rust.
+
+**Decisão:**
+- **Modelo:** `rig::design::EquipmentDesign`, uma lista de partes independentes (polígono com curvas de Chaikin ou PNG, com transformação, pivô, material, regiões, ornamentos e visibilidade), num espaço de tronco, mão ou osso. Um RON por item, sem referência ao personagem.
+- **Pintor:** `rig::paint` interpreta qualquer design direto na grade de texels da pose, com a regra de luz e de tinta × emenda do pixelfx (MIT). O PNG mantém os próprios pixels.
+- **SVG:** entra pelo `svg_render.py --crisp` do ASF, offline, para não acrescentar dependência no Rust.
+- **Editor:** um exemplo Bevy separado do jogo, que reaproveita o esqueleto, as camadas (agora `RigClip::cut_layers`, compartilhado com o laboratório) e os perfis de empunhadura. A prova de "sem código" é um item salvo pelo próprio editor, num commit só com RON.
+- **Compatibilidade:** `design::from_chest_model` adapta o formato da 02, que continua no laboratório.
+- **Capa:** fica para a Engine 04.
+- Nenhuma dependência nova. O jogo não muda.
+
+**Consequências:**
+- Itens novos são dados.
+- Partes não têm hierarquia (girar uma parte não leva as outras).
+- Ainda não há desfazer.
+- O editor não abre seletor de arquivo: a importação percorre `import/`.
+- A integração ao jogo espera a aprovação visual.

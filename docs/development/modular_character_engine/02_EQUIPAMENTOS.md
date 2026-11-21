@@ -162,3 +162,7 @@ verificações e `RESULT`. `MCE_INTERACTIVE=1` abre o modo interativo.
 
 As capturas `ui_*` são feitas apertando as teclas de verdade pelo `ButtonInput`, e cada uma
 confere o estado resultante.
+
+## Atualização (03)
+
+A etapa 03 trocou o `ChestModel` por um modelo genérico de partes e criou o Equipment Studio. Há um adaptador explícito do formato desta etapa. Ver [`03_EQUIPMENT_STUDIO.md`](03_EQUIPMENT_STUDIO.md).

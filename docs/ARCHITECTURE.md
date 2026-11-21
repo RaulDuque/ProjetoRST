@@ -122,6 +122,17 @@ modelo de peitoral desenhado em cada pose). As camadas usam os mapas da N4-C
 onde existem e regras portadas da N4-C nos demais quadros. O jogo continua
 sem mudança. Detalhes: `docs/development/modular_character_engine/02_EQUIPAMENTOS.md`.
 
+**Modular Character Engine 03 — Equipment Studio (ferramenta):**
+`player::visual::rig::design` (puro) descreve um equipamento genérico: partes
+poligonais com curvas ou PNG, transformação, pivô, material e rampa,
+profundidade, contorno, regiões, ornamentos, visibilidade e faixa de
+perspectiva, presas à gaiola do tronco, à mão ou a um osso.
+`rig::paint` (puro) pinta qualquer design na grade de texels de cada pose.
+O editor é `examples/equipment_studio.rs` e salva um RON por item em
+`art-src/equipment-studio/items/`. `RigClip::cut_layers` compartilha o
+corte das camadas entre o laboratório e o editor. O jogo continua sem
+mudança. Detalhes: `docs/development/modular_character_engine/03_EQUIPMENT_STUDIO.md`.
+
 ## Ordem de um frame
 
 `GameSet` (`src/app/states.rs`), encadeados e executados só em `GameState::Playing`:
