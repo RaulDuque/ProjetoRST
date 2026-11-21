@@ -17,6 +17,7 @@ marcadas com "(commit)" são a hora do commit, porque a hora da execução não 
 | 10 | 2026-11-21 15:30 | Erro-Corretion 03D Take 03, pedido | CONCLUÍDO | [03D_TAKE03_PEDIDO](erro-corretion/03D_TAKE03_PEDIDO.md) | Pedido `ask-pose` do Take 03 (pixels inteiros, ombreira de 2 placas, dourado só em faixas grossas) e prompt para o Claude; aguarda a imagem do ChatGPT |
 | 11 | 2026-11-21 16:00 | Erro-Corretion 03D Take 03 | AGUARDANDO APROVAÇÃO VISUAL | [03D_TAKE03](erro-corretion/03D_TAKE03.md) | Imagem nova lida pelo `pose`; mais limpa e legível que o Take 01, sem regressão, mas lê como túnica (ombreira sem volume, dourado parte com 1 px). Avaliação: melhor, mas insuficiente |
 | 12 | 2026-11-21 16:05 | Modular Character Engine 01 | AGUARDANDO APROVAÇÃO VISUAL | [01_PROTOTIPO](modular-character-engine/01_PROTOTIPO.md) | Rig 2D em Rust/Bevy: esqueleto marcado nos quadros aprovados, camadas sem perda, espada e ombreira presas a ossos, troca e espelho sem reiniciar; a articulação completa fica bem abaixo da arte, então a proposta é a abordagem híbrida |
+| 13 | 2026-11-21 17:15 | Modular Character Engine 02 | AGUARDANDO APROVAÇÃO VISUAL | [02_EQUIPAMENTOS](modular-character-engine/02_EQUIPAMENTOS.md) | Empunhadura por perfil (tremor da espada 47,8° → 5,8°), contrato de 10 slots, um peitoral nas 7 poses (projetada escolhida entre 3 abordagens), camadas da N4-C, ASF/pixelfx executados (`rig_animate` confere o FK: 0,16 texel), laboratório interativo |
 
 ## Correções registradas
 
