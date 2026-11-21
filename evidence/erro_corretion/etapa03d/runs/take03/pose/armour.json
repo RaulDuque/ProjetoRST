@@ -1,0 +1,116 @@
+{
+ "schema": "generate2dsprite.pixel_look.v2",
+ "tool": "pixel_look",
+ "kind": "pose",
+ "name": "armour",
+ "size": [
+  23,
+  106
+ ],
+ "cells": 1362,
+ "colours": 29,
+ "palette": [
+  "#1a141a",
+  "#23041a",
+  "#2c2226",
+  "#2d0523",
+  "#2e2424",
+  "#3e3032",
+  "#463632",
+  "#48444e",
+  "#4c2342",
+  "#54024e",
+  "#584646",
+  "#621e28",
+  "#68544a",
+  "#68646c",
+  "#686c82",
+  "#6b1669",
+  "#73243e",
+  "#7d237b",
+  "#8a868c",
+  "#926256",
+  "#9ca0b4",
+  "#a84fa7",
+  "#cc9a7e",
+  "#ccceda",
+  "#d08916",
+  "#ecc8ac",
+  "#eeeef4",
+  "#f2a620",
+  "#f6b221"
+ ],
+ "feet": {
+  "middle": 14.0,
+  "row": 105
+ },
+ "anchor": [
+  14.5,
+  106
+ ],
+ "change": "he now wears a gothic medieval fantasy armour in deep purple and gold over the torso and arms only. Draw the armour with squares EXACTLY as big as the squares of his hair and boots: every armour pixel is one full 9 px square of the attached grid, never smaller, never half squares, never thin lines. Keep it very simple, readable at the tiny game size: (1) a breastplate with a central keel ridge from the collar to the belt, drawn as one column of light purple squares beside one column of dark purple squares; (2) a pauldron of only TWO big flat plates with straight edges on the upper arm, each plate at least 4 squares tall, not round; (3) plain purple vambraces on the forearms; (4) two short tassets over the hips. Gold appears ONLY as a few solid bands, each at least 2 squares thick: the collar rim, the lower edge of each pauldron plate, the belt and the lower edge of the tassets; nothing else is gold, no parallel stripes, no rivets, no engraving. Use at most four purples and two golds, all flat. The long silver hair stays EXACTLY as in the attached image and lies OVER the pauldron and the back plate. Face, neck line, hands, trousers, boots, proportions, position and the side view facing right stay pixel for pixel identical; repaint nothing outside the armour. The output image is 1024x1024, the same size as the attached image, with the figure in the same place; every square is one flat colour, with a 1-square dark outline, no anti-aliasing, no blur, no gradients, no soft edges",
+ "masterAt": [
+  0,
+  0
+ ],
+ "lattice": {
+  "cell": 11.021,
+  "offset": [
+   -0.0,
+   -1.0
+  ],
+  "equal": 840,
+  "cells": 1320,
+  "share": 0.6364
+ },
+ "taken": {
+  "how": "the new part outside the silhouette and what hangs together with it",
+  "pictureEqual": 863,
+  "cellsTaken": 494,
+  "newCells": 38,
+  "cellsEmptied": 4
+ },
+ "masterCellsKept": 866,
+ "masterCells": 1320,
+ "masterKeptShare": 0.6561,
+ "newColours": 12,
+ "edge": {
+  "keyMixed": {
+   "removed": 0,
+   "darkened": 9
+  },
+  "keyTinted": 8,
+  "keyNear": 0,
+  "keyHoles": 0,
+  "keyInked": 0,
+  "keySpill": {
+   "removed": 0,
+   "recoloured": 0
+  },
+  "islandCells": 0
+ },
+ "outline": {
+  "line": [
+   26,
+   20,
+   26
+  ],
+  "specks": 1,
+  "bareCells": 8,
+  "lineCellsAdded": 9,
+  "closed": true,
+  "offset": [
+   0,
+   0
+  ],
+  "mode": "rule"
+ },
+ "source": {
+  "image": "/home/raul/\u00c1rea de trabalho/Andvarion/ProjetoRST/evidence/erro_corretion/etapa03d/runs/take03/source.png",
+  "sha256": "e46890d4d59c82779c07bbd9fe7fe7a9204fd7698a0dd12017bb7d7094cb5b66"
+ },
+ "files": {
+  "sprite": "armour.png",
+  "review": "armour-review.png"
+ }
+}

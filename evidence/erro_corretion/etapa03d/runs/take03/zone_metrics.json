@@ -1,0 +1,112 @@
+{
+ "canvas": [
+  80,
+  128
+ ],
+ "pivot": [
+  40,
+  118
+ ],
+ "texels_changed": 500,
+ "silhouette_added": 46,
+ "silhouette_removed": 4,
+ "zones": {
+  "head": {
+   "texels": 175,
+   "identical": 175,
+   "changed": 0,
+   "identical_pct": 100.0
+  },
+  "legs": {
+   "texels": 465,
+   "identical": 465,
+   "changed": 0,
+   "identical_pct": 100.0
+  },
+  "hair_anywhere": {
+   "texels": 207,
+   "identical": 181,
+   "changed": 26,
+   "identical_pct": 87.44
+  },
+  "torso_band": {
+   "texels": 680,
+   "identical": 226,
+   "changed": 454,
+   "identical_pct": 33.24
+  }
+ },
+ "alpha_values": [
+  0,
+  255
+ ],
+ "colours": {
+  "original": 17,
+  "result": 29,
+  "new": 12,
+  "new_rgb": [
+   [
+    35,
+    4,
+    26
+   ],
+   [
+    45,
+    5,
+    35
+   ],
+   [
+    76,
+    35,
+    66
+   ],
+   [
+    84,
+    2,
+    78
+   ],
+   [
+    98,
+    30,
+    40
+   ],
+   [
+    107,
+    22,
+    105
+   ],
+   [
+    115,
+    36,
+    62
+   ],
+   [
+    125,
+    35,
+    123
+   ],
+   [
+    168,
+    79,
+    167
+   ],
+   [
+    208,
+    137,
+    22
+   ],
+   [
+    242,
+    166,
+    32
+   ],
+   [
+    246,
+    178,
+    33
+   ]
+  ]
+ },
+ "changed_edge_cells": 55,
+ "changed_edge_cells_with_outline_K": 55
+}

@@ -1,0 +1,75 @@
+{
+ "source": {
+  "file": "source.png",
+  "sha256": "e46890d4d59c82779c07bbd9fe7fe7a9204fd7698a0dd12017bb7d7094cb5b66",
+  "size": [
+   1254,
+   1254
+  ],
+  "from": "evidence/erro_corretion/etapa03d/inbox/armour_master_03.png"
+ },
+ "pixel_look_pose": {
+  "status": "ok",
+  "sprite": "/home/raul/\u00c1rea de trabalho/Andvarion/ProjetoRST/evidence/erro_corretion/etapa03d/runs/take03/pose/armour.png",
+  "size": [
+   23,
+   106
+  ],
+  "masterAt": [
+   0,
+   0
+  ],
+  "pictureEqualShare": 0.6364,
+  "cellsTaken": 494,
+  "masterKeptShare": 0.6561,
+  "review": "/home/raul/\u00c1rea de trabalho/Andvarion/ProjetoRST/evidence/erro_corretion/etapa03d/runs/take03/pose/armour-review.png",
+  "record": "/home/raul/\u00c1rea de trabalho/Andvarion/ProjetoRST/evidence/erro_corretion/etapa03d/runs/take03/pose/armour.json"
+ },
+ "placement": {
+  "offset_on_80x128": [
+   26,
+   13
+  ],
+  "equal_cells_share_at_offset": 0.6366
+ },
+ "per_material": {
+  "shirt": {
+   "texels": 278,
+   "changed": 201,
+   "changed_pct": 72.3
+  },
+  "hair": {
+   "texels": 207,
+   "changed": 26,
+   "changed_pct": 12.56
+  },
+  "trousers": {
+   "texels": 327,
+   "changed": 95,
+   "changed_pct": 29.05
+  },
+  "face": {
+   "texels": 33,
+   "changed": 0,
+   "changed_pct": 0.0
+  },
+  "leather_boots": {
+   "texels": 230,
+   "changed": 79,
+   "changed_pct": 34.35
+  },
+  "outline": {
+   "texels": 180,
+   "changed": 21,
+   "changed_pct": 11.67
+  },
+  "skin": {
+   "texels": 65,
+   "changed": 32,
+   "changed_pct": 49.23
+  }
+ },
+ "protected_changed_texels": 200,
+ "new_silhouette_texels": 46,
+ "new_colours": 12
+}

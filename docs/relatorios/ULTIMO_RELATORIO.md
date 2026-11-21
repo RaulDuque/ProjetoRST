@@ -2,30 +2,36 @@
 
 | | |
 |---|---|
-| **Tarefa** | Erro-Corretion 03D, Take 03: preparação do pedido |
+| **Tarefa** | Erro-Corretion 03D, Take 03 |
 | **Data** | 2026-11-21 |
-| **Status** | CONCLUÍDO (sem imagem ainda; não há aprovação artística a dar) |
-| **Relatório completo** | [`docs/relatorios/erro-corretion/03D_TAKE03_PEDIDO.md`](erro-corretion/03D_TAKE03_PEDIDO.md) |
+| **Status** | AGUARDANDO APROVAÇÃO VISUAL. Técnica OK; avaliação do Claude: melhor que o Take 01, mas insuficiente |
+| **Relatório completo** | [`docs/relatorios/erro-corretion/03D_TAKE03.md`](erro-corretion/03D_TAKE03.md) |
 | **Branch** | `art/v1.2-protagonist` |
 
 ## Resumo
 
-- **Pedido do Take 03:** gerado com o `ask-pose` do ASF, em
-  `evidence/erro_corretion/etapa03d/request_pose_take03/`. A referência é idêntica à dos
-  takes anteriores.
-- **Mudanças em relação ao Take 02:**
-  - pixels da armadura do tamanho dos quadrados do cabelo;
-  - ombreira de 2 placas;
-  - dourado só em faixas com 2 quadrados ou mais;
-  - no máximo 4 roxos e 2 dourados;
-  - saída de 1024×1024 com nada repintado fora da armadura.
-- **Passo a passo:** `evidence/erro_corretion/etapa03d/prompts/PROMPT_03D_take03.md`, com o
-  ChatGPT na Parte A e o texto para o Claude Code na Parte B.
+- **Fluxo:** a imagem nova do ChatGPT foi lida pelo `pose` e encaixada em 80×128 (pivô
+  40,118). A imagem estava em `request_pose_take03/` e foi movida para `inbox/`.
+- **Preservação:** cabeça, rosto e pernas ficaram 100 % idênticos. O cabelo teve 3 texels
+  trocados, que voltaram a 0 com a N4.
+- **Ganhos:** a armadura ficou muito mais limpa e legível em 1× que a do Take 01.
+- **Falhas:**
+  - lê como túnica ou gibão;
+  - a ombreira não tem volume de placa (silhueta +46 texels);
+  - a quilha parece borda;
+  - cerca de 60 % das faixas douradas têm só 1 px.
 
-## Próximo passo
+## Imagens principais
 
-O proprietário gera a imagem no ChatGPT e a salva em
-`evidence/erro_corretion/etapa03d/inbox/armour_master_03.png`. Depois cola a Parte B no
-Claude Code.
+- `evidence/erro_corretion/etapa03d/runs/take03/takes_01_vs_03_comparison.png`
+- `evidence/erro_corretion/etapa03d/runs/take03/takes_dark_preview.png`
+- `evidence/erro_corretion/etapa03d/runs/take03/take03_torso_source_vs_1x.png`
+
+## Próxima decisão
+
+Escolher entre três caminhos:
+- aprovar o Take 03;
+- pedir um Take 04 (recomendações na seção 25 do relatório);
+- voltar à rota Blender da 03B.
 
 O Prompt 04 não foi iniciado.

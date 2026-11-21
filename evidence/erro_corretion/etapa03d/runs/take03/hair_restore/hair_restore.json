@@ -1,0 +1,12 @@
+{
+ "n4_hair_texels": 235,
+ "n4_hair_equal_to_approved": 235,
+ "hair_texels_changed_in_take": 3,
+ "hair_texels_changed_after_restore": 0,
+ "armour_texels_given_back_to_hair": 3,
+ "take01_report_note": {
+  "hair_key_texels_changed": 26,
+  "of_which_hair_by_n4_layers": 0,
+  "of_which_shirt_shading_with_hair_keys": 26
+ }
+}
