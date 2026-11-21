@@ -1,0 +1,36 @@
+{
+ "take01": {
+  "texels_changed": 538,
+  "silhouette_added": 97,
+  "colours": 29,
+  "new_colours": 12,
+  "canvas": [
+   80,
+   128
+  ],
+  "alpha_binary": true,
+  "zones_identical": {
+   "head": "175/175",
+   "legs": "465/465",
+   "hair_n4": "235/235",
+   "torso_band": "239/680"
+  }
+ },
+ "take02": {
+  "texels_changed": 538,
+  "silhouette_added": 97,
+  "colours": 29,
+  "new_colours": 12,
+  "canvas": [
+   80,
+   128
+  ],
+  "alpha_binary": true,
+  "zones_identical": {
+   "head": "175/175",
+   "legs": "465/465",
+   "hair_n4": "235/235",
+   "torso_band": "239/680"
+  }
+ }
+}

@@ -1,0 +1,116 @@
+{
+ "schema": "generate2dsprite.pixel_look.v2",
+ "tool": "pixel_look",
+ "kind": "pose",
+ "name": "armour",
+ "size": [
+  24,
+  106
+ ],
+ "cells": 1415,
+ "colours": 29,
+ "palette": [
+  "#1a141a",
+  "#2c2226",
+  "#2e2424",
+  "#394020",
+  "#3e3032",
+  "#411a3e",
+  "#463632",
+  "#48444e",
+  "#4b1f48",
+  "#584646",
+  "#60342e",
+  "#622a62",
+  "#644522",
+  "#682f58",
+  "#68544a",
+  "#68646c",
+  "#686c82",
+  "#7e5d26",
+  "#8a868c",
+  "#926256",
+  "#9ca0b4",
+  "#9e7330",
+  "#b48632",
+  "#cc9a7e",
+  "#ccceda",
+  "#ce9f3b",
+  "#d7a841",
+  "#ecc8ac",
+  "#eeeef4"
+ ],
+ "feet": {
+  "middle": 14.0,
+  "row": 105
+ },
+ "anchor": [
+  14.5,
+  106
+ ],
+ "change": "he now wears a gothic medieval fantasy armour in deep purple and gold over the torso and arms only, drawn with LARGE simple shapes on this same coarse pixel grid: (1) a breastplate with a clearly visible central keel ridge running from the collar to the waist, shown by one bright purple column of pixels next to one dark purple column; (2) angular pauldrons made of three overlapping plates stepping down the upper arm, flat plates with straight edges, not round; (3) plate vambraces on the forearms; (4) a short plated waist with two tassets over the hips. Every gold edge band is at least 2 grid pixels thick, flat gold with no thin lines; use few details, no parallel stripes, no tiny rivets. The long silver hair stays EXACTLY as in the attached image and lies OVER the pauldron and the back plate (hair in front of the armour). The face, neck line, trousers, boots, hands, proportions, position and the side view facing right are unchanged pixel for pixel. Every pixel is one flat colour on the same square grid with a 1-pixel dark outline; no anti-aliasing, no blur, no gradients, no soft edges",
+ "masterAt": [
+  0,
+  0
+ ],
+ "lattice": {
+  "cell": 11.021,
+  "offset": [
+   -0.0,
+   -0.0
+  ],
+  "equal": 799,
+  "cells": 1320,
+  "share": 0.6053
+ },
+ "taken": {
+  "how": "the new part outside the silhouette and what hangs together with it",
+  "pictureEqual": 853,
+  "cellsTaken": 551,
+  "newCells": 86,
+  "cellsEmptied": 4
+ },
+ "masterCellsKept": 855,
+ "masterCells": 1320,
+ "masterKeptShare": 0.6477,
+ "newColours": 12,
+ "edge": {
+  "keyMixed": {
+   "removed": 0,
+   "darkened": 9
+  },
+  "keyTinted": 4,
+  "keyNear": 0,
+  "keyHoles": 0,
+  "keyInked": 1,
+  "keySpill": {
+   "removed": 0,
+   "recoloured": 0
+  },
+  "islandCells": 0
+ },
+ "outline": {
+  "line": [
+   26,
+   20,
+   26
+  ],
+  "specks": 1,
+  "bareCells": 15,
+  "lineCellsAdded": 15,
+  "closed": true,
+  "offset": [
+   0,
+   0
+  ],
+  "mode": "rule"
+ },
+ "source": {
+  "image": "/home/raul/\u00c1rea de trabalho/Andvarion/ProjetoRST/evidence/erro_corretion/etapa03d/runs/take02/source.png",
+  "sha256": "d5aed573380b521e1293c79bc45e2507a584133cda14ab4b64869ccfda2a7d9c"
+ },
+ "files": {
+  "sprite": "armour.png",
+  "review": "armour-review.png"
+ }
+}
