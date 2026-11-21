@@ -1,0 +1,23 @@
+{
+  "original_vs_hybrid_bare_differing_screen_pixels": {
+    "bare_idle_f0": 0,
+    "bare_idle_f1": 4671,
+    "bare_run_f0": 0,
+    "bare_run_f1": 0,
+    "bare_run_f2": 0,
+    "bare_run_f3": 0,
+    "bare_run_f4": 0,
+    "bare_run_f5": 0
+  },
+  "note": "bare_idle_f1 is the breath frame: the hybrid lowers the upper body one texel while the single approved idle has no such frame, so it differs on purpose",
+  "bevy_tour_result": "[modular_character_engine] RESULT: PASS",
+  "partition_recomposition_differing_texels": {
+    "idle#0": 0,
+    "run#0": 0,
+    "run#1": 0,
+    "run#2": 0,
+    "run#3": 0,
+    "run#4": 0,
+    "run#5": 0
+  }
+}
