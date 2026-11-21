@@ -1,0 +1,68 @@
+{
+  "asf_pixel_qa_exit": 1,
+  "asf_pixel_qa_checks": [
+    {
+      "id": "partial_alpha",
+      "status": "pass",
+      "value": 0,
+      "threshold": 0
+    },
+    {
+      "id": "off_palette",
+      "status": "skipped",
+      "value": null,
+      "threshold": 0
+    },
+    {
+      "id": "outline_gaps",
+      "status": "skipped",
+      "value": null,
+      "threshold": 0
+    },
+    {
+      "id": "l_corners",
+      "status": "skipped",
+      "value": null,
+      "threshold": 10
+    },
+    {
+      "id": "same_size",
+      "status": "pass",
+      "value": [
+        [
+          112,
+          128
+        ]
+      ],
+      "threshold": "one canvas size"
+    },
+    {
+      "id": "loop_seam",
+      "status": "pass",
+      "value": 1.029,
+      "threshold": 2.0,
+      "detail": {
+        "seam": 16.8865,
+        "adjacent_median": 16.4062
+      }
+    }
+  ],
+  "tours": [
+    "[equipment_studio] body idle #0: 0 texels differ",
+    "[equipment_studio] body run #0: 0 texels differ",
+    "[equipment_studio] body run #1: 0 texels differ",
+    "[equipment_studio] body run #2: 0 texels differ",
+    "[equipment_studio] body run #3: 0 texels differ",
+    "[equipment_studio] body run #4: 0 texels differ",
+    "[equipment_studio] body run #5: 0 texels differ",
+    "[equipment_studio] RESULT: PASS",
+    "[equipment_studio] body idle #0: 0 texels differ",
+    "[equipment_studio] body run #0: 0 texels differ",
+    "[equipment_studio] body run #1: 0 texels differ",
+    "[equipment_studio] body run #2: 0 texels differ",
+    "[equipment_studio] body run #3: 0 texels differ",
+    "[equipment_studio] body run #4: 0 texels differ",
+    "[equipment_studio] body run #5: 0 texels differ",
+    "[equipment_studio] RESULT: PASS"
+  ]
+}

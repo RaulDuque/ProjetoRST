@@ -1,0 +1,229 @@
+{
+  "status": "pass",
+  "method": "pixel_qa.py: every input PNG is loaded as 8-bit RGBA and measured with codeart_core.qa_pixels (alpha census, exact palette lookup, 4-neighbour outline gaps and L-corners against codeart_core.QA_PIXEL_GATES); optional codeart_core.detect_grid, an anchor bounds check and forge_core.seam_report on the frame loop; each check is valued at the worst frame",
+  "notProven": [
+    "Readability, silhouette and appeal at game scale; look at the review sheet.",
+    "Motion quality, timing and spacing; the onion row and loop seam only flag symptoms.",
+    "That the frames share a registered root; the anchor is only checked to lie inside each canvas.",
+    "Palette conformance: no --palette was given.",
+    "Outline continuity and L-corners: no --outline colour was given."
+  ],
+  "checks": [
+    {
+      "id": "partial_alpha",
+      "status": "pass",
+      "value": 0,
+      "threshold": 0
+    },
+    {
+      "id": "off_palette",
+      "status": "skipped",
+      "value": null,
+      "threshold": 0
+    },
+    {
+      "id": "outline_gaps",
+      "status": "skipped",
+      "value": null,
+      "threshold": 0
+    },
+    {
+      "id": "l_corners",
+      "status": "skipped",
+      "value": null,
+      "threshold": 10
+    },
+    {
+      "id": "same_size",
+      "status": "pass",
+      "value": [
+        [
+          112,
+          128
+        ]
+      ],
+      "threshold": "one canvas size"
+    },
+    {
+      "id": "loop_seam",
+      "status": "pass",
+      "value": 1.029,
+      "threshold": 2.0,
+      "detail": {
+        "seam": 16.8865,
+        "adjacent_median": 16.4062
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "path": "../../../../target/equipment_studio/v2/qa/06_p_run_0.png",
+      "sha256": "518c4b0841cc134467c05885b48c4a20ecec4a523fb6c969a995e4b16f8432d5",
+      "bytes": 3703
+    },
+    {
+      "path": "../../../../target/equipment_studio/v2/qa/06_p_run_1.png",
+      "sha256": "627bde76836210a966d8dd63ff8b2af079e17257512b8485a6cfedfece59b2a5",
+      "bytes": 3981
+    },
+    {
+      "path": "../../../../target/equipment_studio/v2/qa/06_p_run_2.png",
+      "sha256": "dfcf9b7fe18805b5e986a4c0c658ec6a2c105fe24af3e836b95e0329ca504060",
+      "bytes": 4182
+    },
+    {
+      "path": "../../../../target/equipment_studio/v2/qa/06_p_run_3.png",
+      "sha256": "f2c6a31ebc196efdcedda2fecb6a69a2ba406dbea12cd5c468b1238cd294a6e4",
+      "bytes": 3755
+    },
+    {
+      "path": "../../../../target/equipment_studio/v2/qa/06_p_run_4.png",
+      "sha256": "f3bef93977b5ae4f712d0110020063ed6e63a5213eafa4678dd6c3ee626b0d8d",
+      "bytes": 4345
+    },
+    {
+      "path": "../../../../target/equipment_studio/v2/qa/06_p_run_5.png",
+      "sha256": "2bc2288986f56d2777bc3e7b0c4f7fd7bb357efebba10e5691fc9117347564d3",
+      "bytes": 4002
+    }
+  ],
+  "outputs": [
+    {
+      "path": "asf_pixel_qa_run_review.png",
+      "sha256": "236f088702f2b9a31698dee70f0d34673a4ad76487788e084950ea68509635d5",
+      "bytes": 244996
+    }
+  ],
+  "tool": {
+    "name": "pixel_qa.py",
+    "version": "0.6.0"
+  },
+  "frames": [
+    {
+      "file": "../../../../target/equipment_studio/v2/qa/06_p_run_0.png",
+      "size": [
+        112,
+        128
+      ],
+      "source_mode": "RGBA",
+      "visible": 2414,
+      "partial_alpha": 0,
+      "off_palette": null,
+      "colors": 46,
+      "orphans": 311,
+      "l_corners": null,
+      "outline_gaps": null,
+      "bbox": [
+        23,
+        16,
+        85,
+        119
+      ]
+    },
+    {
+      "file": "../../../../target/equipment_studio/v2/qa/06_p_run_1.png",
+      "size": [
+        112,
+        128
+      ],
+      "source_mode": "RGBA",
+      "visible": 2653,
+      "partial_alpha": 0,
+      "off_palette": null,
+      "colors": 50,
+      "orphans": 349,
+      "l_corners": null,
+      "outline_gaps": null,
+      "bbox": [
+        17,
+        14,
+        90,
+        118
+      ]
+    },
+    {
+      "file": "../../../../target/equipment_studio/v2/qa/06_p_run_2.png",
+      "size": [
+        112,
+        128
+      ],
+      "source_mode": "RGBA",
+      "visible": 2675,
+      "partial_alpha": 0,
+      "off_palette": null,
+      "colors": 53,
+      "orphans": 394,
+      "l_corners": null,
+      "outline_gaps": null,
+      "bbox": [
+        10,
+        14,
+        95,
+        115
+      ]
+    },
+    {
+      "file": "../../../../target/equipment_studio/v2/qa/06_p_run_3.png",
+      "size": [
+        112,
+        128
+      ],
+      "source_mode": "RGBA",
+      "visible": 2491,
+      "partial_alpha": 0,
+      "off_palette": null,
+      "colors": 36,
+      "orphans": 336,
+      "l_corners": null,
+      "outline_gaps": null,
+      "bbox": [
+        21,
+        16,
+        84,
+        119
+      ]
+    },
+    {
+      "file": "../../../../target/equipment_studio/v2/qa/06_p_run_4.png",
+      "size": [
+        112,
+        128
+      ],
+      "source_mode": "RGBA",
+      "visible": 2876,
+      "partial_alpha": 0,
+      "off_palette": null,
+      "colors": 45,
+      "orphans": 408,
+      "l_corners": null,
+      "outline_gaps": null,
+      "bbox": [
+        8,
+        14,
+        84,
+        119
+      ]
+    },
+    {
+      "file": "../../../../target/equipment_studio/v2/qa/06_p_run_5.png",
+      "size": [
+        112,
+        128
+      ],
+      "source_mode": "RGBA",
+      "visible": 2887,
+      "partial_alpha": 0,
+      "off_palette": null,
+      "colors": 45,
+      "orphans": 344,
+      "l_corners": null,
+      "outline_gaps": null,
+      "bbox": [
+        10,
+        15,
+        94,
+        119
+      ]
+    }
+  ]
+}
