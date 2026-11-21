@@ -1,0 +1,80 @@
+(
+    version: 1,
+    id: "studio_item_1",
+    name: "New item 1 (made in the studio)",
+    slot: Belt,
+    space: Torso,
+    depth: BeltGear,
+    mount: (
+        position: (0.0, 0.0),
+        rotation_deg: 0.0,
+        scale: (1.0, 1.0),
+        pivot: (0.0, 0.0),
+    ),
+    light: (0.45, 0.8),
+    aspect_range: (0.67, 0.78),
+    materials: [
+        (
+            id: "steel",
+            ramp: ((22, 22, 30), (52, 56, 70), (84, 74, 68), (106, 98, 84), (160, 152, 136), (220, 226, 236)),
+            finish: Metal,
+        ),
+    ],
+    parts: [
+        (
+            id: "plate",
+            source: Polygon(
+                points: [
+                    (-0.19999999, 0.88282764),
+                    (1.2, 0.8411971),
+                    (1.2, 0.99956644),
+                    (-0.19999999, 0.99956644),
+                ],
+                smooth: 0,
+            ),
+            transform: (
+                position: (0.0, 0.0),
+                rotation_deg: 0.0,
+                scale: (1.0, 1.0),
+                pivot: (0.0, 0.0),
+            ),
+            material: "steel",
+            layer: 1,
+            outline: Selective,
+            bevel: 1.0,
+            regions: [],
+            ornaments: [],
+            visible: true,
+            visibility: (
+                clips: [],
+                turn: None,
+            ),
+        ),
+        (
+            id: "image",
+            source: Image(
+                path: "import/buckle_brass.png",
+                pivot: (2.0, 2.0),
+            ),
+            transform: (
+                position: (0.85, 0.9330443),
+                rotation_deg: 0.0,
+                scale: (1.0, 1.0),
+                pivot: (0.0, 0.0),
+            ),
+            material: "steel",
+            layer: 2,
+            outline: r#None,
+            bevel: 1.0,
+            regions: [],
+            ornaments: [],
+            visible: true,
+            visibility: (
+                clips: [],
+                turn: None,
+            ),
+        ),
+    ],
+    provisional: true,
+    source: "created in the Equipment Studio",
+)
