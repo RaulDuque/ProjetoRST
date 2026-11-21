@@ -14,7 +14,9 @@ use thiserror::Error;
 use super::chest::ChestModel;
 use super::equipment::{ItemArt, ItemProblem, RigItem, RigSlot};
 use super::grip::GripProfile;
-use super::layers::CellGeometry;
+use super::layers::{
+    BodyLayer, CellGeometry, extract_cell, masked_rgba, material_of, parse_labels, partition,
+};
 use super::skeleton::{Joint, JointPositions};
 
 /// Only version understood.
@@ -136,6 +138,69 @@ impl RigClip {
 
     pub fn durations(&self) -> Vec<f32> {
         self.frames.iter().map(|f| f.duration).collect()
+    }
+}
+
+/// The depth layers of one source column (RGBA8 per layer, cell-sized).
+#[derive(Debug, Clone, PartialEq)]
+pub struct SourceLayers {
+    pub source: usize,
+    pub layers: Vec<(BodyLayer, Vec<u8>)>,
+    /// Texels where the recomposed layers differ from the approved frame
+    /// (0 for a valid partition).
+    pub differing: usize,
+    /// The labels came from an authored map (N4-C) rather than the rules.
+    pub authored: bool,
+}
+
+impl RigClip {
+    /// Cuts every source column of the approved strip into its depth layers:
+    /// the authored label map when the clip names one (read through
+    /// `read_labels`, a path relative to the stage), the rule partition
+    /// otherwise. Shared by the lab and the Equipment Studio.
+    pub fn cut_layers(
+        &self,
+        strip: &[u8],
+        strip_width: usize,
+        read_labels: impl Fn(&str) -> Option<String>,
+    ) -> Result<Vec<SourceLayers>, String> {
+        let cell = self.geometry();
+        let mut out = Vec::new();
+        for source in 0..self.sources.len() {
+            let texels = extract_cell(strip, strip_width, source, cell)
+                .ok_or_else(|| format!("source {source}: the strip is too small"))?;
+            let joints = self
+                .source_joints(source)
+                .ok_or_else(|| format!("source {source}: joints missing"))?;
+            let materials: Vec<_> = texels.iter().map(|t| material_of(*t)).collect();
+            let authored = self.labels.get(source).cloned().flatten();
+            let labels = match &authored {
+                Some(path) => {
+                    let text = read_labels(path).ok_or_else(|| format!("cannot read {path}"))?;
+                    parse_labels(&text, cell).map_err(|e| format!("{path}: {e:?}"))?
+                }
+                None => partition(&materials, cell, &joints),
+            };
+            let mut union = vec![[0u8; 4]; texels.len()];
+            let mut layers = Vec::new();
+            for layer in BodyLayer::ALL {
+                let bytes = masked_rgba(&texels, &labels, layer);
+                for (i, px) in bytes.as_chunks::<4>().0.iter().enumerate() {
+                    if px[3] > 0 {
+                        union[i] = *px;
+                    }
+                }
+                layers.push((layer, bytes));
+            }
+            let differing = union.iter().zip(&texels).filter(|(a, b)| a != b).count();
+            out.push(SourceLayers {
+                source,
+                layers,
+                differing,
+                authored: authored.is_some(),
+            });
+        }
+        Ok(out)
     }
 }
 
@@ -295,6 +360,27 @@ mod tests {
         assert_eq!(clip.durations(), vec![0.7, 0.5]);
         let grip = lab.grip("idle").unwrap_or_else(|| panic!("grip"));
         assert_eq!(grip.angle_degrees, -60.0);
+    }
+
+    #[test]
+    fn layers_are_cut_from_a_strip_without_loss() {
+        let lab = RigLab::from_ron(&lab()).unwrap_or_else(|e| panic!("{e}"));
+        let clip = lab.rest().unwrap_or_else(|| panic!("rest"));
+        // An 80x128 strip with a few opaque palette texels.
+        let mut strip = vec![0u8; 80 * 128 * 4];
+        for (i, px) in strip.chunks_mut(4).enumerate() {
+            if i % 7 == 0 {
+                px.copy_from_slice(&[138, 134, 140, 255]);
+            }
+        }
+        let cut = clip
+            .cut_layers(&strip, 80, |_| None)
+            .unwrap_or_else(|e| panic!("{e}"));
+        assert_eq!(cut.len(), 1);
+        assert_eq!(cut[0].differing, 0);
+        assert!(!cut[0].authored);
+        assert_eq!(cut[0].layers.len(), 5);
+        assert!(clip.cut_layers(&strip[..100], 80, |_| None).is_err());
     }
 
     #[test]

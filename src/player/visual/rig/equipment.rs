@@ -13,7 +13,7 @@
 
 use std::collections::BTreeMap;
 
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use super::grip::HandSide;
 use super::layers::DepthSlot;
@@ -22,7 +22,7 @@ use super::xform::{RigPoint, Xform2, wrap_angle};
 use crate::player::visual::sockets;
 
 /// Equipment slot.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Deserialize, Serialize)]
 pub enum RigSlot {
     /// Sword (near hand).
     MainHand,
@@ -66,7 +66,7 @@ pub enum DeformKind {
 }
 
 /// Which end of the bone an item hangs from.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize, Serialize)]
 pub enum BoneEnd {
     Start,
     End,

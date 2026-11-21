@@ -12,7 +12,7 @@
 //! [`partition_by_bone`] cuts a frame into one piece per bone of the near
 //! chain instead: the pieces of the fully articulated comparison.
 
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use super::skeleton::{Bone, Joint, JointPositions};
 use super::xform::{RigPoint, distance, distance_to_segment};
@@ -150,7 +150,7 @@ impl BodyLayer {
 /// equipment slots between them. Mirroring keeps the order (the sprite is
 /// flipped, so the near arm stays towards the camera). A weapon may pick
 /// another slot per frame (`grip::GripProfile::depth`).
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Deserialize, Serialize)]
 pub enum DepthSlot {
     /// Capes and anything behind the whole body.
     BackGear,

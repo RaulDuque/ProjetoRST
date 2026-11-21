@@ -8,14 +8,14 @@
 //! angle `sa` that is independent of the arm (`src/core/rig.js`, MIT,
 //! Copyright (c) 2026 Patch, Hugo Duprez), adapted to marked frames.
 
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use super::layers::DepthSlot;
 use super::skeleton::{Bone, Joint, JointPositions, LocalPose, WorldPose};
 use super::xform::{Xform2, wrap_angle};
 
 /// Which hand holds the item.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Deserialize, Serialize)]
 pub enum HandSide {
     Near,
     Far,

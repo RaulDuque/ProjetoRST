@@ -15,7 +15,7 @@
 
 use std::collections::BTreeMap;
 
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use super::xform::{RigPoint, Xform2, direction, distance, wrap_angle};
 
@@ -97,7 +97,7 @@ impl Joint {
 }
 
 /// A rigid segment between two joints.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum Bone {
     Spine,

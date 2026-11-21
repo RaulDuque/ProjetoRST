@@ -26,10 +26,12 @@
 pub mod articulated;
 pub mod chest;
 pub mod data;
+pub mod design;
 pub mod equipment;
 pub mod grip;
 pub mod ik;
 pub mod layers;
 pub mod measure;
+pub mod paint;
 pub mod skeleton;
 pub mod xform;
