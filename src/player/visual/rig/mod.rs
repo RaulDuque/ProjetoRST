@@ -29,6 +29,7 @@ pub mod data;
 pub mod design;
 pub mod equipment;
 pub mod grip;
+pub mod history;
 pub mod ik;
 pub mod layers;
 pub mod measure;
