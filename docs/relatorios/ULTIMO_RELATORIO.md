@@ -2,36 +2,40 @@
 
 | | |
 |---|---|
-| **Tarefa** | Modular Character Engine 04, Equipment Studio V2 |
+| **Tarefa** | Modular Character Engine 05, produção artística e equipamentos flexíveis |
 | **Data** | 2026-11-21 |
-| **Status** | AGUARDANDO APROVAÇÃO VISUAL. Técnica validada; arte das peças pendente |
-| **Relatório completo** | [`docs/relatorios/modular-character-engine/04_STUDIO_V2.md`](modular-character-engine/04_STUDIO_V2.md) |
+| **Status** | AGUARDANDO APROVAÇÃO VISUAL. Técnica validada; arte pendente |
+| **Relatório completo** | [`docs/relatorios/modular-character-engine/05_ART_AND_FLEXIBLE_EQUIPMENT.md`](modular-character-engine/05_ART_AND_FLEXIBLE_EQUIPMENT.md) |
 | **Branch** | `art/v1.2-protagonist` |
 
 ## Resumo
 
-- **Hierarquia de partes:** pai, grupo, transformações local e global, visibilidade e
-  profundidade herdadas, vínculo de uma raiz a outro osso; ciclos recusados.
-- **Encaixe:** corpo em 8 regiões, com o peitoral atrás dos braços, a ombreira sob o cabelo e
-  o braçal sob a mão. As peças podem substituir regiões. Uma composição única alimenta todas
-  as vistas.
-- **Editor V2** (`cargo run --example equipment_studio`):
-  - painéis em Bevy UI;
-  - mouse: selecionar, mover, girar, vértices, pivô;
-  - pincel/borracha/balde/conta-gotas para pixels;
-  - material novo e rampa;
-  - regiões, ornamentos e visibilidade;
-  - undo/redo (Ctrl+Z, Ctrl+Y, Ctrl+Shift+Z);
-  - proteção contra perda de alterações.
-- **Conjunto gótico** em 4 peças independentes (peitoral, ombreira, braçais, faldas),
-  combinável com o gibão de couro.
+- **Conjunto gótico refinado** (itens novos; os da 04 ficam intactos):
+  - peitoral anatômico com quilha;
+  - ombreira em cúpula que muda a silhueta;
+  - braçais com cotoveleira e punho;
+  - faldas curtas e escarcelas que seguem as coxas;
+  - metal mais escuro, frisos dourados contínuos e menos linhas horizontais;
+  - couro refinado no Modelo B.
+- **Equipamento flexível por dados (`rig::flex`):** cadeia de pêndulos amortecidos com ar da
+  corrida, ondulação, limites e virada.
+  - Capa roxa com atraso e balanço na corrida, queda e ultrapassagem na parada, retorno depois
+    da virada, sempre atrás do corpo.
+  - Segunda capa (curta, barra recortada) feita só com dados.
+- **Editor:**
+  - pano ao vivo, com partida e parada suavizadas e espelhar como virada;
+  - painel de parâmetros do pano;
+  - material e tom das regiões;
+  - roteiro com gravação quadro a quadro.
 - **Validação:**
-  - 780 testes;
+  - 792 testes;
   - clippy limpo;
-  - `--tour` (72 passos) e `--tour-reload` com PASS numa cópia isolada;
-  - laboratório com PASS.
+  - `--tour` (98 passos) e `--tour-reload` com PASS numa cópia isolada;
+  - laboratório com PASS;
+  - ASF `pixel_qa`: paleta e alfa 0 em todos os itens novos, emenda do loop 1,04;
+  - a parada da capa segue a mola amortecida do ASF (RMS 0,086).
 
 ## Próxima decisão
 
-Aprovar ou reprovar a arte e o encaixe do conjunto gótico (evidências em
-`evidence/modular_character_engine/04_studio_v2/`).
+Aprovar ou reprovar a arte do conjunto refinado e das capas (evidências em
+`evidence/modular_character_engine/05_art_and_flexible_equipment/`).
